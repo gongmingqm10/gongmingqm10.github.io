@@ -3,7 +3,7 @@
 # ----------------------- #
 
 url: http://gongmingqm10.github.io
-title: 技术随笔
+title: gongmingqm10
 subtitle: 思考技术，更思考人生
 author: Gong Ming
 simple_search: http://google.com/search
@@ -65,7 +65,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # Github repositories
 github_user: gongmingqm10
 github_repo_count: 0
-github_show_profile_link: true
+github_show_profile_link: false
 github_skip_forks: true
 
 # Google +1
@@ -100,7 +100,7 @@ facebook_like: false
 # ---------------------- #
 
 social:
-  title: More about me
+  title: Follow Me
   adn: # App.net
   dribbble: 
   facebook: 
