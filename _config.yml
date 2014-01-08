@@ -3,8 +3,8 @@
 # ----------------------- #
 
 url: http://gongmingqm10.github.io
-title: Programming World
-subtitle: Dream what you want.
+title: 技术随笔
+subtitle: 思考技术，更思考人生
 author: Gong Ming
 simple_search: http://google.com/search
 description:
@@ -94,3 +94,20 @@ google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: false
+
+# ---------------------- #
+#  The Oscailter Theme social settings
+# ---------------------- #
+
+social:
+  title: More about me
+  adn: # App.net
+  dribbble: 
+  facebook: 
+  github: gongmingqm10
+  googleplus: gongmingqm10@gmail.com
+  linkedin: 
+  pinterest: 
+  stackoverflow: gongmingqm10@gmail.com
+  twitter: 
+  youtube: 
