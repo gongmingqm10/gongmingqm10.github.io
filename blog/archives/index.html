@@ -9,8 +9,8 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content=" Blog Archive 2014 我在华科这四年
-Jan 08 2014 Recent Posts 我在华科这四年 ">
+  <meta name="description" content="Blog Archive 2014 我在华科这四年
+Jan 08 2014 Recent Posts 我在华科这四年 GitHub Repos Status updating... @gongmingqm10 on GitHub $(document).ready(function(){ if &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,7 +105,45 @@ Jan 08 2014 Recent Posts 我在华科这四年 ">
   </ul>
 </section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/gongmingqm10">@gongmingqm10</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
 
+        github.showRepos({
+            user: 'gongmingqm10',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/gongmingqm10@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
 
 
 
