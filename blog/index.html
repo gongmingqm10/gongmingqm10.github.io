@@ -11,7 +11,7 @@
     <title>gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="在rails集成mongodb开发应用 Jan 18th, 2014 rails 最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置： &hellip;">
+    <meta name="description" content="在rails集成mongodb开发应用 Jan 18th, 2014 rails, mongodb 最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置： &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -91,7 +91,9 @@
     <i class="icon-tags"></i>
     <ul class="tags unstyled">
     
-      <li><a href="/blog/categories/rails/">rails</a></li>
+      <li><a href="/blog/categories/rails,/">rails,</a></li>
+    
+      <li><a href="/blog/categories/mongodb/">mongodb</a></li>
     
     </ul>
   </div>
@@ -105,10 +107,8 @@
 
 
 
-  <pre><code>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
-</code></pre>
-
-<p>如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
+  <p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
+如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
 
 <figure class='code'><figcaption><span>config/application.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -132,21 +132,19 @@
 
 
 
-<figure class='code'><figcaption><span>config/environments/development.rb start:23 </span></figcaption>
+<figure class='code'><figcaption><span>config/environments/development.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="c1">#config.active_record.migration_error = :page_load</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<pre><code>上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：
-</code></pre>
+<p>上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rails new appname --skip-active-record</span></code></pre></td></tr></table></div></figure>
 
 
-<pre><code>到这里我们的app中基本就算是干净的了。下面我们只需要在Gemfile中加入我们所需要的数据库依赖包就可以了，我这里直接加入mongoid
-</code></pre>
+<p>到这里我们的app中基本就算是干净的了。下面我们只需要在Gemfile中加入我们所需要的数据库依赖包就可以了，我这里直接加入mongoid</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;mongoid&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 4.0.0.alpha1&#39;</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;mongoid/mongoid&#39;</span>
@@ -259,7 +257,7 @@
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/rails' style='font-size: 160.0%'>rails(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/mongodb' style='font-size: 160.0%'>mongodb(1)</a> <a href='/blog/categories/rails' style='font-size: 160.0%'>rails,(1)</a> </span>
 </section>
 <section id="about me" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">About Me</h1>

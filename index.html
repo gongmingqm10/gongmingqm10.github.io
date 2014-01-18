@@ -8,10 +8,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>This is the title for you homepage - gongmingqm10</title>
+    <title>gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="Hear no evil Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, facilis illo magni nobis ea quibusdam blanditiis officia ex dolorum &hellip;">
+    <meta name="description" content="在rails集成mongodb开发应用 Jan 18th, 2014 rails, mongodb 最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置： &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -48,100 +48,226 @@
     </header>
 
     
-      <div class="hero" style="background-image: url('/images/cliffs_of_moher.jpg');">
-  <div class="grid-wrapper">
-    <div class="grid flex">
-      <div class="grid__item flex__item two-fifths palm-one-whole avatar">
-        <img class="gravatar" src="/images/gravatar.jpg" alt="Gong Ming's Picture">
-      </div>
-      <div class="grid__item flex__item three-fifths palm-one-whole">
-       <h1>Gong Ming</h1>
- <hr>
- <p class="lead">
-Welcome! Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.
-</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="credit">
-    <p>
-      Cliffs of Moher, by <a href="http://www.flickr.com/photos/alfarese/2780612581/" target="_blank">Alessandro Farese</a> <a href="http://creativecommons.org/licenses/by-nc-nd/2.0/deed.en" target="_blank" class="licence"><small>(by-nc-nd)</small></a>
-    </p>
-  </div>
-</div>
-
-    
 
     <div class="grid-wrapper">
       <div class="grid grid-center">
         
-        <div class="grid__item one-whole">
+        <div class="grid__item two-thirds lap-one-whole palm-one-whole">
         
 
           
 
-<div class="grid-wrapper">
-  <div class="grid">
-    <div class="grid__item one-third lap-one-whole palm-one-whole usp">
-      <div class="grid">
-        <div class="grid__item one-whole lap-one-third">
-          <span class="icon">
-            <i class="icon-laptop"></i>
-          </span>
-        </div>
 
-        <div class="grid__item one-whole lap-two-thirds">
-          <h2 class="title">Hear no evil</h2>
-<hr>
-<p>
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, facilis illo magni nobis ea quibusdam blanditiis officia ex dolorum laboriosam dolor earum inventore aperiam nam molestiae. Aperiam, est temporibus officiis.
-</p>
-        </div>
-      </div>
-    </div>
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/">在rails集成mongodb开发应用</a>
+  </h1>
+  
 
-    <div class="grid__item one-third lap-one-whole palm-one-whole usp">
-      <div class="grid">
-        <div class="grid__item one-whole lap-one-third">
-          <span class="icon">
-            <i class="icon-search"></i>
-          </span>
-        </div>
+  
+  <div class="meta clearfix">
+    
 
-        <div class="grid__item one-whole lap-two-thirds">
-          <h2 class="title">See no evil</h2>
-<hr>
-<p>
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, quia magni ipsum sapiente libero perspiciatis adipisci quibusdam nam nemo aut asperiores deserunt consectetur. Rem distinctio libero amet molestias saepe vero!
-</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="grid__item one-third lap-one-whole palm-one-whole usp">
-      <div class="grid">
-        <div class="grid__item one-whole lap-one-third">
-          <span class="icon">
-            <i class="icon-coffee"></i>
-          </span>
-        </div>
-		 
-        <div class="grid__item one-whole lap-two-thirds">
-         <h2 class="title">Speak no evil</h2>
-<hr>
-<p>
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus repellendus officia iusto reiciendis quae quod consequuntur tempora. Rem, placeat laboriosam perferendis eum obcaecati illo iste molestias? Optio in expedita dolor!
-</p>
-        </div>
-      </div>
-    </div>
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2014-01-18T16:04:48+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jan 18<span>th</span>, 2014</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/rails,/">rails,</a></li>
+    
+      <li><a href="/blog/categories/mongodb/">mongodb</a></li>
+    
+    </ul>
   </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
+如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
+
+<figure class='code'><figcaption><span>config/application.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rails/all&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>替换为 =></p>
+
+<figure class='code'><figcaption><span>config/application.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;action_controller/railtie&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;action_mailer/railtie&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;sprockets/railtie&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;rails/test_unit/railtie&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/environments/development.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="c1">#config.active_record.migration_error = :page_load</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rails new appname --skip-active-record</span></code></pre></td></tr></table></div></figure>
+
+
+<p>到这里我们的app中基本就算是干净的了。下面我们只需要在Gemfile中加入我们所需要的数据库依赖包就可以了，我这里直接加入mongoid</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;mongoid&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 4.0.0.alpha1&#39;</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;mongoid/mongoid&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改Gemfile后，我们 bundle install 就会把相关包依赖下载下来，剩下的我们就可以直接使用mongo了。config目录下还有 database.yml 文件，查看内容应该是sqlite的数据库配置文件，我们remove之，然后新建一个属于我们自己的 mongoid.yml.</p>
+
+<figure class='code'><figcaption><span>config/mongoid.yml </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">sessions</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_development</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">test</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">sessions</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_test</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">production</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">sessions</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_production</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>文件新建完毕，下面我们就需要怎么使app加载这个文件。继续新建文件 config/initializers/mongoid.rb</p>
+
+<figure class='code'><figcaption><span>config/initializers/mongoid.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Mongoid</span><span class="o">.</span><span class="n">load!</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">to_s</span><span class="o">+</span><span class="s1">&#39;/config/mongoid.yml&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>至此，数据库也基本配置完毕。到命令行中 rake 下面的task</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake db:mongoid:create_indexes</span></code></pre></td></tr></table></div></figure>
+
+
+<p>开始在model中新建model ～～ rails + mongo 模式开启！</p>
+
+
+  </article>
+  <hr>
+
+        
+        </div>
+        
+        
+        <aside id="sidebar" class="grid__item one-third lap-one-whole palm-one-whole">
+          <div class="grid">
+
+  
+<section class="social aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">
+    Follow Me
+  </h1>
+  <ul class="unstyled">
+    
+    
+    <li><a class="github" href="//github.com/gongmingqm10"><i class="icon-github"></i> Github</a></li>
+    
+    
+    
+    
+    <li><a class="stackoverflow" href="//stackoverflow.com/users/gongmingqm10@gmail.com"><i class="icon-stackexchange"></i> StackOverflow</a></li>
+    
+    
+  </ul>
+</section>
+
+
+  <section id="recent-posts" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">Recent Posts</h1>
+  <ul class="divided">
+    
+      <li class="post">
+        <a href="/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/">在rails集成mongodb开发应用</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/mongodb' style='font-size: 160.0%'>mongodb(1)</a> <a href='/blog/categories/rails' style='font-size: 160.0%'>rails,(1)</a> </span>
+</section>
+<section id="about me" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">About Me</h1>
+  <p>龚铭，目前就职于Thoughtworks，Developer一枚。热爱生活，热爱新技术。思考技术，思考人生</p>
+</section>
+
+
 </div>
 
-        
-        </div>
-        
+        </aside>
         
       </div>
     </div>
@@ -167,6 +293,11 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus repellendus o
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
 <script defer src="/javascripts/octopress.js"></script>
+
+
+
+
+
 
 
 
