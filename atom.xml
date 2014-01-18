@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://gongmingqm10.github.io/atom.xml" rel="self"/>
   <link href="http://gongmingqm10.github.io/"/>
-  <updated>2014-01-18T23:08:13+08:00</updated>
+  <updated>2014-01-19T00:13:58+08:00</updated>
   <id>http://gongmingqm10.github.io/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -129,6 +129,18 @@
 
 
 <p>开始在model中新建model ～～ rails + mongo 模式开启！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tywin Lannister Quote]]></title>
+    <link href="http://gongmingqm10.github.io/blog/2013/06/15/tywin-lannister-quote/"/>
+    <updated>2013-06-15T09:28:00+08:00</updated>
+    <id>http://gongmingqm10.github.io/blog/2013/06/15/tywin-lannister-quote</id>
+    <content type="html"><![CDATA[<p>A nice quote by Tywin Lannister taken from <em>A Storm of Sword</em> book.</p>
+
+<blockquote><p>The greatest fools are ofttimes more clever then the men who laugh at them.</p><footer><strong>Tywin Lannister</strong> <cite>A Storm of Swords</cite></footer></blockquote>
+
 ]]></content>
   </entry>
   
