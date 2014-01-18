@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://gongmingqm10.github.io/atom.xml" rel="self"/>
   <link href="http://gongmingqm10.github.io/"/>
-  <updated>2014-01-18T17:52:06+08:00</updated>
+  <updated>2014-01-18T18:03:25+08:00</updated>
   <id>http://gongmingqm10.github.io/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -47,6 +47,11 @@
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="c1">#config.active_record.migration_error = :page_load</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
 
 
 <p>上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：</p>
