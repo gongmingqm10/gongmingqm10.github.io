@@ -3,10 +3,9 @@ layout: post
 title: "在rails集成mongodb开发应用"
 date: 2014-01-18 16:04:48 +0800
 comments: true
-comments: true
 sharing: true
 footer: true
-categories: rails
+categories: [rails]
 ---
 最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb
@@ -25,7 +24,7 @@ require "rails/test_unit/railtie"
 {% codeblock lang:ruby config/environments/development.rb %}
  #config.active_record.migration_error = :page_load
 {% endcodeblock %}
-
+<!-- more -->
 上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：
 {% codeblock %}
 rails new appname --skip-active-record
