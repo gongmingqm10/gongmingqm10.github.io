@@ -95,7 +95,7 @@ duoshuo_comments: true
 duoshuo_short_name: gongmingqm10
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-48787063-1
 
 # Facebook Like
 facebook_like: false
