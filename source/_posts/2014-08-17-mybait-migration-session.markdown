@@ -1,0 +1,325 @@
+---
+layout: post
+title: "mybait migration session"
+date: 2014-08-17 18:20:41 +0530
+comments: true
+categories: database
+
+---
+##Mybatis Migration 初探
+持续交付项目中，项目会不断的迭代上线，这是会出现数据库的改动问题。在一个还未上线的项目中，我更改数据库可以使用简单的直接对sql进行更改，但是面对一个已投入使用的系统而言，每次部署都对数据库进行init显得有点不太可能。于是便有了数据库Migration的诞生。
+
+我所在的项目是SpringMVC配合Mybatis的开发框架。作为一个数据库集成框架，Mybatis在使用上还是比较方便的。言归正传，为了项目需要，于是便开始了Mybatis Migration的初探，文章中出现的不妥之处还请大家不吝赐教。
+
+####Mybatis Migration 安装
+安装过程主要参照Mybatis的官网： <http://mybatis.github.io/migrations/index.html>，以及Mybatis源代码授权地址: <https://github.com/mybatis/migrations>，参照github上的README文件可以轻易的完成其安装过程。README文件中所有的Mybatis包可以直接在其Git repo的releases中找到，我选择了3.2.0进行下载安装。安装完成后就可以直接在terminal中运行migrate相关的命令了。
+
+####Mybatus Migration 初始化
+	minggong:migration-test minggong$ migrate init
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - init
+	------------------------------------------------------------------------
+	Initializing: .
+	Creating: environments
+	Creating: scripts
+	Creating: drivers
+	Creating: README
+	Creating: development.properties
+	Creating: bootstrap.sql
+	Creating: 20140817132704_create_changelog.sql
+	Creating: 20140817132705_first_migration.sql
+	Done!
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 2s
+	-- Finished at: Sun Aug 17 18:57:05 GMT+05:30 2014
+	-- Final Memory: 3M/493M
+	------------------------------------------------------------------------
+	minggong:migration-test minggong$ ls
+	README		drivers		environments	scripts
+初始化之后的目录下面会自动生成一些和Migration相关的项目文件及目录 README, drivers, environments, scripts。drivers中放置连接数据库需要的jdbc，environments主要放置连接数据库的地址以及授权信息等，scripts目录下则放置数据库相关的sql，init的时候就已经生成了上述显示的create_changelog.sql和first_migration.sql文件。
+
+为了以实例说明问题，本次测试采用了mysql数据库，从mysql官网下载了`mysql-connector-java-5.1.32`，并对environment的数据库信息进行了简单的配置，配置如下：
+
+	## JDBC connection properties.
+	driver=com.mysql.jdbc.Driver
+	url=jdbc:mysql://localhost:3306/arctic
+	username=root
+	password=
+这里的arctic是已经存在本地的一个mysql数据库。
+
+
+####Migrate bootstrap
+	minggong:migration-test minggong$ migrate bootstrap
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - bootstrap
+	------------------------------------------------------------------------
+	========== Applying: bootstrap.sql =============================================
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 19:43:29 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+运行之后，scripts文件中将会生成另外一个bootstrap文件。主要可以进行一些数据库初始化工作。
+####Migrate new 
+`new`命令能够创建新的sql脚本，我们只需要填充数据表结构信息，便可以方便的创建我们所需的数据表
+
+	minggong:migration-test minggong$ migrate new "create blog table"
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - new
+	------------------------------------------------------------------------
+	Creating: 20140817142201_create_blog_table.sql
+	Done!
+
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 1s
+	-- Finished at: Sun Aug 17 19:52:01 GMT+05:30 2014
+	-- Final Memory: 3M/493M
+	------------------------------------------------------------------------
+scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create_blog_table.sql`， 其内容如下：
+
+	-- // create blog table
+	-- Migration SQL that makes the change goes here.
+
+	-- //@UNDO
+	-- SQL to undo the change goes here.
+
+文件内容主要包含`create table`和`undo`，分别表示表的创建和删除命令：
+
+	-- // create blog table
+	-- Migration SQL that makes the change goes here.
+	CREATE TABLE BLOG (
+	  ID INT,
+	  NAME VARCHAR(255),
+	  PRIMARY KEY(ID)
+	);
+	-- //@UNDO
+	-- SQL to undo the change goes here.
+	DROP TABLE BLOG;
+已经将表结构写在了sql里面，那么怎样执行这个脚本，从而改变数据库中的表结构呢。首先我们需要了解当前数据库的状态。
+####Migrate status
+	minggong:migration-test minggong$ migrate status
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - status
+	------------------------------------------------------------------------
+	ID             Applied At          Description
+	================================================================================
+	20140817132704    ...pending...    create changelog
+	20140817132705    ...pending...    first migration
+	20140817142201    ...pending...    create blog table
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 20:21:06 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+
+由于我们没有运行过migration, 所以所有migration脚本都处于`pending`状态，包括changelog table本身。当我们运行`migrate up`命令之后，脚本的状态便会发生相应的改变。
+####Migrate up, down
+为了显示更多up, down以及后续的version操作，再次新建一个数据表`migrate new 'create table author'`此时的author和blog应该都处于pending状态。
+	
+	minggong:migration-test minggong$ migrate status
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - status
+	------------------------------------------------------------------------
+	ID             Applied At          Description
+	================================================================================
+	20140817132704    ...pending...    create changelog
+	20140817132705    ...pending...    first migration
+	20140817142201    ...pending...    create blog table
+	20140817154537    ...pending...    create table author
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 21:21:49 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+	minggong:migration-test minggong$ migrate up
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - up
+	------------------------------------------------------------------------
+	========== Applying: 20140817132704_create_changelog.sql =======================
+	--  Create Changelog
+	-- Default DDL for changelog table that will keep
+	-- a record of the migrations that have been run.
+	-- You can modify this to suit your database before
+	-- running your first migration.
+	-- Be sure that ID and DESCRIPTION fields exist in
+	-- BigInteger and String compatible fields respectively.
+	CREATE TABLE CHANGELOG (
+	ID NUMERIC(20,0) NOT NULL,
+	APPLIED_AT VARCHAR(25) NOT NULL,
+	DESCRIPTION VARCHAR(255) NOT NULL
+	)
+	
+	ALTER TABLE CHANGELOG
+	ADD CONSTRAINT PK_CHANGELOG
+	PRIMARY KEY (id)
+	
+	
+	========== Applying: 20140817132705_first_migration.sql ========================
+	--  First migration.
+	-- Migration SQL that makes the change goes here.
+	
+	========== Applying: 20140817142201_create_blog_table.sql ======================
+	--  create blog table
+	-- Migration SQL that makes the change goes here.
+	
+	========== Applying: 20140817154537_create_table_author.sql ====================
+	--  create table author
+	-- Migration SQL that makes the change goes here.
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 21:22:17 GMT+05:30 2014
+	-- Final Memory: 13M/493M
+	------------------------------------------------------------------------
+`migrate up`命令会将所有的sql进行up,所有处于pending状态的SQL脚本都会进行执行。对应的`migrate down`则是undo sql脚本的执行，也就是执行sql中用户自定义的UNDO部分。不同的是`migrate down`只能回退一步，所以回退到初始状态则需要运行多次的`migrate down`操作。当然也可以直接指定参数，本例中我们指定回退4步`migrate down 4`:
+	minggong:migration-test minggong$ migrate status
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - status
+	------------------------------------------------------------------------
+	ID             Applied At          Description
+	================================================================================
+	20140817132704 2014-08-17 21:22:17 create changelog
+	20140817132705 2014-08-17 21:22:17 first migration
+	20140817142201 2014-08-17 21:22:17 create blog table
+	20140817154537 2014-08-17 21:26:01 create table author
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 21:26:07 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+	minggong:migration-test minggong$ migrate down 4
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - down
+	------------------------------------------------------------------------
+	========== Undoing: 20140817154537_create_table_author.sql =====================
+	-- @UNDO
+	-- SQL to undo the change goes here.
+	
+	========== Undoing: 20140817142201_create_blog_table.sql =======================
+	-- @UNDO
+	-- SQL to undo the change goes here.
+
+	========== Undoing: 20140817132705_first_migration.sql =========================
+	-- @UNDO
+	-- SQL to undo the change goes here.
+	
+	========== Undoing: 20140817132704_create_changelog.sql ========================
+	-- @UNDO
+	DROP TABLE CHANGELOG
+	
+	Changelog doesn't exist. No further migrations will be undone (normal for the last migration).
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 21:29:53 GMT+05:30 2014
+	-- Final Memory: 14M/493M
+	------------------------------------------------------------------------
+	minggong:migration-test minggong$ migrate status
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - status
+	------------------------------------------------------------------------
+	ID             Applied At          Description
+	================================================================================
+	20140817132704    ...pending...    create changelog
+	20140817132705    ...pending...    first migration
+	20140817142201    ...pending...    create blog table
+	20140817154537    ...pending...    create table author
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 21:30:09 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+####Migrate verison
+回滚到指定的version状态，后面需要加上version的ID： `migrate verison 20140817132705`
+
+	minggong:migration-test minggong$ migrate status
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - status
+	------------------------------------------------------------------------
+	ID             Applied At          Description
+	================================================================================
+	20140817132704 2014-08-17 22:23:05 create changelog
+	20140817132705 2014-08-17 22:23:25 first migration
+	20140817142201 2014-08-17 22:23:25 create blog table
+	20140817154537 2014-08-17 22:23:25 create table author
+	20140817164341 2014-08-17 22:23:25 create table book
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 22:23:36 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+	minggong:migration-test minggong$ migrate version 20140817142201
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - version
+	------------------------------------------------------------------------
+	Downgrading to: 20140817142201
+	========== Undoing: 20140817164341_create_table_book.sql =======================
+	-- @UNDO
+	-- SQL to undo the change goes here.
+	
+	========== Undoing: 20140817154537_create_table_author.sql =====================
+	-- @UNDO
+	-- SQL to undo the change goes here.
+	
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 22:23:43 GMT+05:30 2014
+	-- Final Memory: 13M/493M
+	------------------------------------------------------------------------
+	minggong:migration-test minggong$ migrate status
+	------------------------------------------------------------------------
+	-- MyBatis Migrations - status
+	------------------------------------------------------------------------
+	ID             Applied At          Description
+	================================================================================
+	20140817132704 2014-08-17 22:23:05 create changelog
+	20140817132705 2014-08-17 22:23:25 first migration
+	20140817142201 2014-08-17 22:23:25 create blog table
+	20140817154537    ...pending...    create table author
+	20140817164341    ...pending...    create table book
+	
+	------------------------------------------------------------------------
+	-- MyBatis Migrations SUCCESS
+	-- Total time: 0s
+	-- Finished at: Sun Aug 17 22:23:47 GMT+05:30 2014
+	-- Final Memory: 11M/493M
+	------------------------------------------------------------------------
+####Migrate pending
+`migrate up` 命令只能向上upgrade，而在多人合作中如果migration sql脚本先创建但是后提交，同步到一台服务器上就有可能出现中间某个文件处于`pending`状态，这时使用`migrate up`是不能使其执行的。
+
+这种情况如果这个sql基本和其他sql无依赖时，可以直接使用`migrate up`使处于pending状态的脚本被执行。官方解释这是不推荐的做法。另外一种做法是使用`migrate version [ID]`回到pending版本之前的状态，然后再次执行`migrate up`，从而完成整个执行操作，这种做法是推荐的比较安全的。
+
+####Migrate script
+使用方法为`migrate script <V1> <V2> > file.sql`
+
+` migrate 20140817142201 20140817164341 > do.sql`这个do脚本的执行将会应用上述两个状态的执行author和book。
+
+` migrate 20140817164341 20140817142201 > undo.sql` 这个将undo脚本执行可以回滚V1和V2之间的即上述状态。
+
+如果要在首尾之间回滚，则可以用 0 代替原始版本ID
+
+` migrate 0 20140817164341 > do.sql`
+
+` migrate 20140817164341 0 > undo.sql`
+
+---
+但是对于上述的script脚本直接使用 migrate do.sql执行却一直报错！官方也没有对单个的脚本执行有说明。后续弄清楚了再补充上来。
