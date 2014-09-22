@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://gongmingqm10.github.io/atom.xml" rel="self"/>
   <link href="http://gongmingqm10.github.io/"/>
-  <updated>2014-08-20T23:42:57+05:30</updated>
+  <updated>2014-09-22T10:23:20+08:00</updated>
   <id>http://gongmingqm10.github.io/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -14,9 +14,72 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Android best practice]]></title>
+    <link href="http://gongmingqm10.github.io/blog/2014/09/16/android-best-practice/"/>
+    <updated>2014-09-16T10:41:25+08:00</updated>
+    <id>http://gongmingqm10.github.io/blog/2014/09/16/android-best-practice</id>
+    <content type="html"><![CDATA[<h1>Android 最佳实践</h1>
+
+<p>从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。</p>
+
+<h3>Android Activity 的生命周期</h3>
+
+<p>生命周期（Lifecycle）描述的是Android一个页面从开始创建到消亡的整个过程。伴随着一系列对象的创建及消失，涵盖着整个页面所包含的业务逻辑。以及与用户之间的交互，接受用户的输入并返回输出信息给用户。</p>
+
+<p><img src="http://i.imgur.com/rPrTr.png" alt="Android Lifecycle" /></p>
+
+<p>从其生命流程图中，我们可以看到Android单个Activity的生命周期主要为 onCreate &ndash;> onStart &ndash;> onResume &ndash;> Activity Running &ndash;> onPause &ndash;> onStop &ndash;> onDestroy. 通常单个App是由诸多的Activity组成的，一般情况我们肉眼所见的一个页面就是一个Activity，我们也经常再APP中点击Button或者Back，于是我们实现了Activity之间的切换。</p>
+
+<h5>1. onCreate()与onDestroy()</h5>
+
+<p>如何理解onCreate()呢？首先通过来自Google的官方解释来看onCreate()方法的作用：</p>
+
+<blockquote><p>onCreate(Bundle) is where you initialize your activity. Most importantly, here you will usually call setContentView(int) with a layout resource defining your UI, and using findViewById(int) to retrieve the widgets in that UI that you need to interact with programmatically</p></blockquote>
+
+<p>所以onCreate方法主要用于初始化我们的Activity。在onCreate()方法中，我们通过setContentView(int)来为当前的Activity指定对应的View， 然后通过findViewById(int)通过id检索当前View中的组件。至此，onCreate()的一些基本的初始化工作完成, Activity全局的初始化工作应该都在onCreate()中完成，这些初始化状态一直会被保存直到onDestroy()被调用，也就意味着Activity消亡。</p>
+
+<p>细心观察发现，Activity的onCreate(Bundle)函数会有一个Bundle类型的参数savedInstanceState，通过这个meaningful的名字可以看到此参数主要用于使用之前保存的数据。</p>
+
+<p>与onCreate()对应的方法是onDestroy(), 后者主要是Activity被销毁时会被执行的方法，当我们调用this.finish()手动结束当前的Activity, 此时onDestroy()会被回调，我们可以在这里面做一些程序被销毁前的保存性操作。</p>
+
+<h5>2. onStart()与onStop()</h5>
+
+<p>这两种状态一般出现在，当用户从Activity A 跳转到Activity B 中，此时Activity A 的 onStop函数会被回调，此时Activity A 被压入到堆栈中，并处于不可见状态。一旦用户结束Activity B, 再次进入Activity A 中，系统会重新调用onRestart()和onStart()函数，于是这个Activity重新被唤醒。</p>
+
+<h5>3. onResume()与onPause()</h5>
+
+<p>通过字面意思理解为Activity的恢复和停止，一个典型的例子是APP运行过程中突然有电话或者闹铃，以至于当前的Activity被其他的Activity覆盖，这种情况下会触发onResume()和onPause()事件，当然如果APP经历onStart()和onStop()事件，也必然会先经过onResume()和onPause()事件。生命周期的流程图如上图所示，其形成的是一个完成的闭路。</p>
+
+<p> ===
+通过应用程序的一套完整的Lifecycle，Android保证了APP在手机上进行良好的运行，并且运行过程互不干扰。Android生命周期的存在也表明在APP开发中，应该使Activity功能彼此对应，在onStart()中注册了某些事件，在onStop()中就应该进行反注册，例如地图开发中的GPS定位，就需要在onStart中进行注册，而在onStop()中进行反注册。还有一些网络访问回调也存在类似的情形，都需要我们在APP开发中注意，确保APP以最佳的状态运行。</p>
+
+<h3>Activity的职能－避免Activity类承载太多职能</h3>
+
+<p>Activity作为Android的Controller，直接负载着与用户的交互过程。开发中Activitiy很容易由于大量的动画，布局等操作而变得臃肿，特别使业务逻辑渐渐复杂时，Activity过大的代码量增加了维护成本，甚至开发者自己都很难读懂这个Activity真正的含义。为了避免这种情况，我们要尽量将纯UI布局和动画逻辑分离到第三方类中，在Activity与用户交互过程中，一旦需要某些UI操作和动画表现等，直接对其相关的UI布局等进行调用即可。我们的Activity只作为真正的Controller，控制着接收用户输入以及反馈输出，至于中间的逻辑则完全可以交给“Presenter”调用。</p>
+
+<h3>Android布局多屏适配</h3>
+
+<p>Android由于设备众多，分辨率众多，不同厂家定制的SDK也增加了适配成本。所以我们开发过程，就不应该使用太过绝对的布局，而应该尽量使用相对布局。过于绝对的布局可能在当前设备上表现良好，一旦在其他机器上运行则可能会出现布局错乱的问题。布局时也要避免View之间的深嵌套，根据你的设计图选择合适的布局方式，过重的布局会拖慢页面的渲染速度，进而影响整个APP的性能表现。</p>
+
+<h3>用Fragment代替Activity</h3>
+
+<p>自Android4.0之后，Android开始使用Fragment，并保持不断更新中。简言之，Fragment也是可以直接代替Activity的Controller，Fragment主要是为了适配手机和平板而生的，Fragment在手机上和Activity的表现无异，但是在平板上却可以以类似于组件的形式表现出来，这种形式更适合平板的大屏显示方式。Fragment让我们不用去同时维护手机和平板上的两套代码，方便了开发过程。</p>
+
+<h3>MVC最佳实践</h3>
+
+<p>和Web开发中的MVC框架类似，我们同样可以对APP进行MVC化。具体而言，Activity是我们的Controller控制器，而对数据的读取与查询等具体语句则应该通过DataManager进行处理，类似于我们通常所说的Service，Service不直接和界面进行交互。用户的交互都是与Activity发生的，Service会提供一些数据读取相关的方法，以供Activity调用。</p>
+
+<p>===
+本文抛砖引玉，参考别人的文章，结合自己的实践经历总结了一些实践性的经验。个中不足，烦请大家不吝赐教，当然更欢迎大家一起交流。</p>
+
+<p>文章参考：<a href="http://clayallsopp.com/posts/android-best-practices-tips/">http://clayallsopp.com/posts/android-best-practices-tips/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[mybait migration session]]></title>
     <link href="http://gongmingqm10.github.io/blog/2014/08/17/mybait-migration-session/"/>
-    <updated>2014-08-17T18:20:41+05:30</updated>
+    <updated>2014-08-17T20:50:41+08:00</updated>
     <id>http://gongmingqm10.github.io/blog/2014/08/17/mybait-migration-session</id>
     <content type="html"><![CDATA[<h2>Mybatis Migration 初探</h2>
 
@@ -373,7 +436,7 @@ ID             Applied At          Description
   <entry>
     <title type="html"><![CDATA[Fontello 使用心得]]></title>
     <link href="http://gongmingqm10.github.io/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
-    <updated>2014-03-19T05:49:49+05:30</updated>
+    <updated>2014-03-19T08:19:49+08:00</updated>
     <id>http://gongmingqm10.github.io/blog/2014/03/19/fontello-shi-yong-xin-de</id>
     <content type="html"><![CDATA[<h2>Overview</h2>
 
@@ -447,7 +510,7 @@ ID             Applied At          Description
   <entry>
     <title type="html"><![CDATA[订餐网之死]]></title>
     <link href="http://gongmingqm10.github.io/blog/2014/03/08/ding-can-wang-zhi-si/"/>
-    <updated>2014-03-08T16:07:11+05:30</updated>
+    <updated>2014-03-08T18:37:11+08:00</updated>
     <id>http://gongmingqm10.github.io/blog/2014/03/08/ding-can-wang-zhi-si</id>
     <content type="html"><![CDATA[<h3>起源</h3>
 
@@ -475,7 +538,7 @@ ID             Applied At          Description
   <entry>
     <title type="html"><![CDATA[在rails集成mongodb开发应用]]></title>
     <link href="http://gongmingqm10.github.io/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/"/>
-    <updated>2014-01-18T13:34:48+05:30</updated>
+    <updated>2014-01-18T16:04:48+08:00</updated>
     <id>http://gongmingqm10.github.io/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
     <content type="html"><![CDATA[<p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
