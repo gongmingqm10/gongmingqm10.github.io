@@ -2,11 +2,11 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://gongmingqm10.github.io
+url: http://www.gongmingqm10.net/
 title: gongmingqm10
-subtitle: 思考技术，思考人生
+subtitle: Life is a journey, not a destination
 author: Gong Ming
-simple_search: http://google.com/search
+simple_search: https://www.google.com/search
 description:
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
