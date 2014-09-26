@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: database | gongmingqm10]]></title>
-  <link href="http://gongmingqm10.github.io/blog/categories/database/atom.xml" rel="self"/>
-  <link href="http://gongmingqm10.github.io/"/>
-  <updated>2014-09-22T16:15:43+08:00</updated>
-  <id>http://gongmingqm10.github.io/</id>
+  <link href="http://www.gongmingqm10.net//blog/categories/database/atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net//"/>
+  <updated>2014-09-27T00:16:25+08:00</updated>
+  <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[mybait migration session]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/08/17/mybait-migration-session/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/08/17/mybait-migration-session/"/>
     <updated>2014-08-17T20:50:41+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/08/17/mybait-migration-session</id>
+    <id>http://www.gongmingqm10.net//blog/2014/08/17/mybait-migration-session</id>
     <content type="html"><![CDATA[<h2>Mybatis Migration 初探</h2>
 
 <p>持续交付项目中，项目会不断的迭代上线，这是会出现数据库的改动问题。在一个还未上线的项目中，我更改数据库可以使用简单的直接对sql进行更改，但是面对一个已投入使用的系统而言，每次部署都对数据库进行init显得有点不太可能。于是便有了数据库Migration的诞生。</p>

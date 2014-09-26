@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Design | gongmingqm10]]></title>
-  <link href="http://gongmingqm10.github.io/blog/categories/design/atom.xml" rel="self"/>
-  <link href="http://gongmingqm10.github.io/"/>
-  <updated>2014-09-22T16:15:43+08:00</updated>
-  <id>http://gongmingqm10.github.io/</id>
+  <link href="http://www.gongmingqm10.net//blog/categories/design/atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net//"/>
+  <updated>2014-09-27T00:16:25+08:00</updated>
+  <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Fontello 使用心得]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de/"/>
     <updated>2014-03-19T08:19:49+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/03/19/fontello-shi-yong-xin-de</id>
+    <id>http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de</id>
     <content type="html"><![CDATA[<h2>Overview</h2>
 
 <p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>

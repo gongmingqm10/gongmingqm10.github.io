@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[gongmingqm10]]></title>
-  <link href="http://gongmingqm10.github.io/atom.xml" rel="self"/>
-  <link href="http://gongmingqm10.github.io/"/>
-  <updated>2014-09-22T16:15:43+08:00</updated>
-  <id>http://gongmingqm10.github.io/</id>
+  <link href="http://www.gongmingqm10.net//atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net//"/>
+  <updated>2014-09-27T00:16:25+08:00</updated>
+  <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
     
@@ -14,18 +14,310 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Android自定义View]]></title>
+    <link href="http://www.gongmingqm10.net//blog/2014/09/25/androidzi-ding-yi-view/"/>
+    <updated>2014-09-25T23:22:11+08:00</updated>
+    <id>http://www.gongmingqm10.net//blog/2014/09/25/androidzi-ding-yi-view</id>
+    <content type="html"><![CDATA[<p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
+
+<p>===</p>
+
+<h2>View怎么出生的</h2>
+
+<p>===
+自定义控件从最基础的View开始，View有几个重要的函数：<code>onMeasure()</code>, <code>onLayout()</code>, <code>onDraw()</code>，与触摸动作相关的还有<code>onTouchEvent()</code>，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 <code>onMeasure</code> <code>onLayout</code> <code>onDraw()</code> 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与<code>Override</code>，我们可以创造出一些特殊的View。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>  public class CustomView extends View {
+</span><span class='line'>
+</span><span class='line'>    private static final String TAG = "gongmingqm10";
+</span><span class='line'>
+</span><span class='line'>    public CustomView(Context context) {
+</span><span class='line'>        super(context);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public CustomView(Context context, AttributeSet attrs) {
+</span><span class='line'>        super(context, attrs);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
+</span><span class='line'>        super(context, attrs, defStyleAttr);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onDraw(Canvas canvas) {
+</span><span class='line'>        super.onDraw(canvas);
+</span><span class='line'>        Log.i(TAG, "--onDraw--");
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+</span><span class='line'>        super.onLayout(changed, left, top, right, bottom);
+</span><span class='line'>        Log.i(TAG, "--onLayout--" + left + " - " + top + " - " + right + " - " + bottom);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+</span><span class='line'>        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+</span><span class='line'>        Log.i(TAG, "--onMeasure--" + widthMeasureSpec + " - " + heightMeasureSpec);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    public boolean onTouchEvent(MotionEvent event) {
+</span><span class='line'>        Log.i(TAG, "--onTouchEvent--" + event.getX() + " - " + event.getY());
+</span><span class='line'>        return super.onTouchEvent(event);
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在布局文件<code>main.xml</code>文件中这样使用自定义的<code>CustomView</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>  &lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>  &lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>      android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>          android:layout_height="match_parent"&gt;
+</span><span class='line'>      &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>          android:layout_width="match_parent"
+</span><span class='line'>          android:layout_height="600px"
+</span><span class='line'>          android:background="#333666"
+</span><span class='line'>          /&gt;
+</span><span class='line'>  &lt;/FrameLayout&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Logcat输出结果为</p>
+
+<pre><code>09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onMeasure--1073742904    - 1073742424
+09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onMeasure--1073742904 - 1073742424
+09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onLayout--0 - 0 - 1080 - 600
+09  -25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onDraw--
+</code></pre>
+
+<p>通过上面的Logcat，我们可以看到在View的创建过程中， <code>onMeasure</code>被连续两次调用，调用完成之后紧接着<code>onLayout()</code>，最后进行<code>onDraw()</code>，于是一个View完成了从声明到创建的全过程。那么<code>onMeasure()</code> <code>onLayout()</code> <code>onDraw()</code>这几个方法究竟在绘制View的过程中起到了怎样的作用呢？</p>
+
+<h3>1. <code>onMeasure(int widthMeasureSpec, int heightMeasureSpec)</code></h3>
+
+<p>从Log打印出来的信息来看，参数 widthMeasureSpec和heightMeasureSpec的值看起来没有特别实际的意义，但是Android本身提供了<code>MeasureSpec.getMode(measureSpec)</code>和<code>MeasudeSpec.getSize(measureSpec)</code>方法，这两个方法能够分别拿到int类型的 <code>mode</code> 和 <code>size</code>。<code>mode</code> 和 <code>size</code>主要描述了当前控件在父控件中的占位方式，以及根据占位方法计算出来的大小。我们可以根据 <code>mode</code> <code>size</code> 的值对控件的实际大小进行自定义控制。如果我们不使用<code>super.onMeasure(widthMeasureSpec, heightMeasureSpec)</code>，我们必须调用<code>setMeasureDimense(width, height)</code>来使这些设置生效。<code>width, height</code>分别表示当前这个控件真实的大小。</p>
+
+<p>通过对<code>onMeasure()</code>函数的理解，我们基本知道<code>onMeasure()</code>的功能是告诉Android当前View的大小，并且此大小也是根据布局中父容器的约束生成的。当前我们也可以根据这些大小进行自定义设置当前View的大小。引用 <a href="http://stackoverflow.com/questions/12266899/onmeasure-custom-view-explanation">stackoverflow</a>上的回答：</p>
+
+<blockquote><p>onMeasure() is your opportunity to tell Android how big you want your custom view to be dependent the layout constraints provided by the parent; it is also your custom view&rsquo;s opportunity to learn what those layout constraints are (in case you want to behave differently in a match_parent situation than a wrap_content situation). These constraints are packaged up into the MeasureSpec values that are passed into the method.</p></blockquote>
+
+<p>对于MeasureSpec的<code>mode</code>主要有<code>EXACTLY, AT_MOST, UNSPECIFIED</code>三种值:</p>
+
+<h5><code>EXACTLY</code></h5>
+
+<p>====
+字面意义是准确的，也就是我们的View是的宽度和高度是固定准确的，<code>mode</code>为这种值时，通常是我们设置了<code>layout_width</code>或者<code>layout_height</code>的值为一个给定的值，或者我们设置View的宽度或高度为<code>match_parent</code>，而父容器的宽度或高度固定。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="match_parent"
+</span><span class='line'>        android:background="#333666"
+</span><span class='line'>        /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/FrameLayout&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里的CustomView宽度和高度都是 <code>match_parent</code>，而parent也是充满整个view页面，因此parent的大小是固定的，所以CustomView的大小也是固定的，这里取到的<code>mode</code>值就为<code>EXACTLY</code>；</p>
+
+<p>如果把FrameLayout的宽度高度都设置成<code>wrap_content</code>，此时得到的<code>mode</code>同样都是<code>EXACTLY</code>，因为FrameLayout宽高收到屏幕大小的约束，其本身的大小是收到子view的影响，此时子View通过<code>match_parent</code>获得最大的空间，于是FrameLayout的宽高被撑到了最大值的水平。</p>
+
+<h5><code>AT_MOST</code></h5>
+
+<p>====</p>
+
+<p>通过名词本身的描述，这种状态下意味着View存在一个最大值的约束，最大值约束一般来自父View，父View经过层层依赖，又会受到设备屏幕大小的约束。通过下面的例子看什么时侯View会呈现出<code>AT_MOST</code>状态：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="wrap_content"
+</span><span class='line'>        android:background="#333666"
+</span><span class='line'>        /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/FrameLayout&gt;
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种情况下CustomView的高度是<code>wrap_content</code>，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是<code>AT_MOST</code>.</p>
+
+<p>如果把FrameLayout的<code>layout_height</code>设置为<code>wrap_content</code>，由于父容器自身的高度有个<code>AT_MOST</code>属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是<code>AT_MOST</code>。</p>
+
+<p>综合来看，只要View的当前宽度或者高度不是固定的，但是会存在一个最大值界限，则View 的Mode为<code>AT_MOST</code>。</p>
+
+<h5><code>UNSPECIFIED</code></h5>
+
+<p>====</p>
+
+<p><code>UNSPECIFIED</code>意味着高度或者宽度值是不明确不具体的，即Android系统本身都很难决定元素的宽度或者高度值，也没有对其宽度高度的约束值。一个典型情况是ScrollView，由于ScrollView的可以自滑动，因此其滑动方向上可以进行无限的伸缩，于是View在绘制时就很难确定其具体约束。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="match_parent"
+</span><span class='line'>        android:background="#333666"
+</span><span class='line'>        /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/ScrollView&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>ScrollView</code>默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用<code>match_parent</code>，还是<code>wrap_content</code>，高度值都是不能确定的。高度的Mode为<code>UNSPECIFIED</code></p>
+
+<p>===</p>
+
+<p>除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。</p>
+
+<h3>2. <code>onLayout(boolean changed, int left, int top, int right, int bottom)</code></h3>
+
+<p><code>onLayout()</code>的参数中我们能够直接拿到当前view的位置，(left, top)描述了左上顶点的位置，而(right, bottom)确定了右下角的位置，在自定义View的时侯，可以根据父容器的位置，调用子View的layout()函数直接指定子view的位置。我们的LinearLayout, RelativeLayout等就是继承ViewGroup，然后根据子View设置的相关属性，从而确定子View应该被放在哪里，我们在app中也就看到了期望的界面。</p>
+
+<h3>3. <code>onDraw(Canvas canvas)</code></h3>
+
+<p>Canvas是View的画布，有了canvasView才会真正的显示出来，才有我们看到的背景，图像，边框等元素。通过复写onDraw()，我们能够利用canvas做一些自定义的行为。比如我们通常看到的显示圆形ImageView头像等。</p>
+
+<h2>自定义View的实现</h2>
+
+<p>===</p>
+
+<p>//TODO
+应用例子： 自动换行容器BreakLineLayout， 自定义长宽比例Layout。</p>
+
+<p>//TODO
+应用例子，自定义实现图片随意拜访布局。或者瀑布流图片布局。自定义实现ViewGroup</p>
+
+<p>//TODO
+换行进行的多彩View的实现，在View上面进行一些自定义的绘制</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Travel to ThoughtWorks]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/09/22/travel-to-thoughtworks/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/09/22/travel-to-thoughtworks/"/>
     <updated>2014-09-22T10:39:01+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/09/22/travel-to-thoughtworks</id>
+    <id>http://www.gongmingqm10.net//blog/2014/09/22/travel-to-thoughtworks</id>
     <content type="html"><![CDATA[<blockquote><p>Life is a journey, not a destination.</p></blockquote>
 
 <p>人生就是在时光的隧道中不同的奔跑，在不同的环境中遇到不同的人，然后开始相同的挣扎，最后不断优秀的过程。加入ThoughtWorks一月有余，期间经历了一些事情，趁着On beach的时光对其进行一些沉淀，若干年后作为记忆的时光进行回忆品味。</p>
 
 <h3>面试</h3>
 
-<p>===
-转眼已是金秋时节，又是一年校招季。距离上次面试也已经快一年的距离了，时间总是走得如此之快。想起去年奔走在各个公司的面试宣讲会上。然后在人山人海中投着一遍遍的简历，然后在有幸的面试中都会被无情的刷掉。这种落差也许只有自己知道，这种期望与失望的矛盾混杂在现实的残酷与理想的丰满中。最后却冷不丁的进了ThoughtWorks的终面，经历了Quiz Test， Code Homework，Tech Interview， HR Interview，最后进到了Group Discussion。于是我用着不太顺畅的普通话讲述着 &ldquo;Why ThoughtWorks should Hire Me&#8221;，我不太会演讲，这种public speech对于我来说更是显得有点困难，但是坚持就意味着胜利。然后意外的进入了ThoughtWorks Graduate的阵营。毕业生都是将要离开学校，而第一份工作也总会决定他们一生的状态。于是凭借着自己的感觉放弃了上海那个温暖的团队，决定在这个Geek闻名的公司里面开启新的学习生涯。毕业季的日子终究是平淡的，于是也就选择了来实习。</p>
+<p>转眼已是金秋时节，又是一年校招季。距离上次面试也已经快一年的距离了，时间总是走得如此之快。想起去年奔走在各个公司的面试宣讲会上。然后在人山人海中投着一遍遍的简历，然后在有幸的面试中都会被无情的刷掉。这种落差也许只有自己知道，这种期望与失望的矛盾混杂在现实的残酷与理想的丰满中。最后却冷不丁的进了ThoughtWorks的终面，经历了Quiz Test， Code Homework，Tech Interview， HR Interview，最后进到了Group Discussion。于是我用着不太顺畅的普通话讲述着 &ldquo;Why ThoughtWorks should Hire Me&#8221;，我不太会演讲，这种public speech对于我来说更是显得有点困难，但是坚持就意味着胜利。然后意外的进入了ThoughtWorks Graduate的阵营。毕业生都是将要离开学校，而第一份工作也总会决定他们一生的状态。于是凭借着自己的感觉放弃了上海那个温暖的团队，决定在这个Geek闻名的公司里面开启新的学习生涯。毕业季的日子终究是平淡的，于是也就选择了来实习。</p>
 
 <h3>实习</h3>
 
@@ -61,9 +353,9 @@
   
   <entry>
     <title type="html"><![CDATA[Android best practice]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/09/16/android-best-practice/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/09/16/android-best-practice/"/>
     <updated>2014-09-16T10:41:25+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/09/16/android-best-practice</id>
+    <id>http://www.gongmingqm10.net//blog/2014/09/16/android-best-practice</id>
     <content type="html"><![CDATA[<h1>Android 最佳实践</h1>
 
 <p>从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。</p>
@@ -124,9 +416,9 @@
   
   <entry>
     <title type="html"><![CDATA[mybait migration session]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/08/17/mybait-migration-session/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/08/17/mybait-migration-session/"/>
     <updated>2014-08-17T20:50:41+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/08/17/mybait-migration-session</id>
+    <id>http://www.gongmingqm10.net//blog/2014/08/17/mybait-migration-session</id>
     <content type="html"><![CDATA[<h2>Mybatis Migration 初探</h2>
 
 <p>持续交付项目中，项目会不断的迭代上线，这是会出现数据库的改动问题。在一个还未上线的项目中，我更改数据库可以使用简单的直接对sql进行更改，但是面对一个已投入使用的系统而言，每次部署都对数据库进行init显得有点不太可能。于是便有了数据库Migration的诞生。</p>
@@ -481,9 +773,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[Fontello 使用心得]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de/"/>
     <updated>2014-03-19T08:19:49+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/03/19/fontello-shi-yong-xin-de</id>
+    <id>http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de</id>
     <content type="html"><![CDATA[<h2>Overview</h2>
 
 <p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
@@ -555,9 +847,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[订餐网之死]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/03/08/ding-can-wang-zhi-si/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/03/08/ding-can-wang-zhi-si/"/>
     <updated>2014-03-08T18:37:11+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/03/08/ding-can-wang-zhi-si</id>
+    <id>http://www.gongmingqm10.net//blog/2014/03/08/ding-can-wang-zhi-si</id>
     <content type="html"><![CDATA[<h3>起源</h3>
 
 <p>订餐网真名不详，只是为了表意故意称之为<strong>订餐网</strong>。都说文以表意，于是订餐网的本身就是为了订餐外卖做准备，这还是我刚在TW实习为了学习组内的技术栈也为了实现一点小想法进行的一次尝试。尝试的初衷很简单，为了学习。动力很简单，学好一门技术，做个web站点出来。而终点就是能够使之成为我的毕设，也作为自己对<em>创业</em>的一点尝试。在buddy的鼓励下，我真的开始在做的&hellip;也真的想把这个产品做好了。</p>
@@ -583,9 +875,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[在rails集成mongodb开发应用]]></title>
-    <link href="http://gongmingqm10.github.io/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/"/>
+    <link href="http://www.gongmingqm10.net//blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/"/>
     <updated>2014-01-18T16:04:48+08:00</updated>
-    <id>http://gongmingqm10.github.io/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
+    <id>http://www.gongmingqm10.net//blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
     <content type="html"><![CDATA[<p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
 
