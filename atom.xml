@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net//atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-09-27T00:16:25+08:00</updated>
+  <updated>2014-09-27T00:18:26+08:00</updated>
   <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -20,12 +20,9 @@
     <id>http://www.gongmingqm10.net//blog/2014/09/25/androidzi-ding-yi-view</id>
     <content type="html"><![CDATA[<p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
 
-<p>===</p>
-
 <h2>View怎么出生的</h2>
 
-<p>===
-自定义控件从最基础的View开始，View有几个重要的函数：<code>onMeasure()</code>, <code>onLayout()</code>, <code>onDraw()</code>，与触摸动作相关的还有<code>onTouchEvent()</code>，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 <code>onMeasure</code> <code>onLayout</code> <code>onDraw()</code> 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与<code>Override</code>，我们可以创造出一些特殊的View。</p>
+<p>自定义控件从最基础的View开始，View有几个重要的函数：<code>onMeasure()</code>, <code>onLayout()</code>, <code>onDraw()</code>，与触摸动作相关的还有<code>onTouchEvent()</code>，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 <code>onMeasure</code> <code>onLayout</code> <code>onDraw()</code> 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与<code>Override</code>，我们可以创造出一些特殊的View。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -163,8 +160,7 @@
 
 <h5><code>EXACTLY</code></h5>
 
-<p>====
-字面意义是准确的，也就是我们的View是的宽度和高度是固定准确的，<code>mode</code>为这种值时，通常是我们设置了<code>layout_width</code>或者<code>layout_height</code>的值为一个给定的值，或者我们设置View的宽度或高度为<code>match_parent</code>，而父容器的宽度或高度固定。</p>
+<p>字面意义是准确的，也就是我们的View是的宽度和高度是固定准确的，<code>mode</code>为这种值时，通常是我们设置了<code>layout_width</code>或者<code>layout_height</code>的值为一个给定的值，或者我们设置View的宽度或高度为<code>match_parent</code>，而父容器的宽度或高度固定。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -200,8 +196,6 @@
 <p>如果把FrameLayout的宽度高度都设置成<code>wrap_content</code>，此时得到的<code>mode</code>同样都是<code>EXACTLY</code>，因为FrameLayout宽高收到屏幕大小的约束，其本身的大小是收到子view的影响，此时子View通过<code>match_parent</code>获得最大的空间，于是FrameLayout的宽高被撑到了最大值的水平。</p>
 
 <h5><code>AT_MOST</code></h5>
-
-<p>====</p>
 
 <p>通过名词本身的描述，这种状态下意味着View存在一个最大值的约束，最大值约束一般来自父View，父View经过层层依赖，又会受到设备屏幕大小的约束。通过下面的例子看什么时侯View会呈现出<code>AT_MOST</code>状态：</p>
 
@@ -244,8 +238,6 @@
 
 <h5><code>UNSPECIFIED</code></h5>
 
-<p>====</p>
-
 <p><code>UNSPECIFIED</code>意味着高度或者宽度值是不明确不具体的，即Android系统本身都很难决定元素的宽度或者高度值，也没有对其宽度高度的约束值。一个典型情况是ScrollView，由于ScrollView的可以自滑动，因此其滑动方向上可以进行无限的伸缩，于是View在绘制时就很难确定其具体约束。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -279,8 +271,6 @@
 
 <p><code>ScrollView</code>默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用<code>match_parent</code>，还是<code>wrap_content</code>，高度值都是不能确定的。高度的Mode为<code>UNSPECIFIED</code></p>
 
-<p>===</p>
-
 <p>除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。</p>
 
 <h3>2. <code>onLayout(boolean changed, int left, int top, int right, int bottom)</code></h3>
@@ -292,8 +282,6 @@
 <p>Canvas是View的画布，有了canvasView才会真正的显示出来，才有我们看到的背景，图像，边框等元素。通过复写onDraw()，我们能够利用canvas做一些自定义的行为。比如我们通常看到的显示圆形ImageView头像等。</p>
 
 <h2>自定义View的实现</h2>
-
-<p>===</p>
 
 <p>//TODO
 应用例子： 自动换行容器BreakLineLayout， 自定义长宽比例Layout。</p>
