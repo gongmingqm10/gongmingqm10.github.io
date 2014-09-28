@@ -9,7 +9,7 @@ categories: android
 Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。
 
 
-## View怎么出生的
+## View的绘制流程
 
 自定义控件从最基础的View开始，View有几个重要的函数：`onMeasure()`, `onLayout()`, `onDraw()`，与触摸动作相关的还有`onTouchEvent()`，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 `onMeasure` `onLayout` `onDraw()` 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与`Override`，我们可以创造出一些特殊的View。
 
@@ -85,7 +85,7 @@ Logcat输出结果为
 
 通过上面的Logcat，我们可以看到在View的创建过程中， `onMeasure`被连续两次调用，调用完成之后紧接着`onLayout()`，最后进行`onDraw()`，于是一个View完成了从声明到创建的全过程。那么`onMeasure()` `onLayout()` `onDraw()`这几个方法究竟在绘制View的过程中起到了怎样的作用呢？
 
-### 1. `onMeasure(int widthMeasureSpec, int heightMeasureSpec)`
+### 1. onMeasure(int widthMeasureSpec, int heightMeasureSpec)
 
 从Log打印出来的信息来看，参数 widthMeasureSpec和heightMeasureSpec的值看起来没有特别实际的意义，但是Android本身提供了`MeasureSpec.getMode(measureSpec)`和`MeasudeSpec.getSize(measureSpec)`方法，这两个方法能够分别拿到int类型的 `mode` 和 `size`。`mode` 和 `size`主要描述了当前控件在父控件中的占位方式，以及根据占位方法计算出来的大小。我们可以根据 `mode` `size` 的值对控件的实际大小进行自定义控制。如果我们不使用`super.onMeasure(widthMeasureSpec, heightMeasureSpec)`，我们必须调用`setMeasureDimense(width, height)`来使这些设置生效。`width, height`分别表示当前这个控件真实的大小。
 
@@ -173,21 +173,176 @@ Logcat输出结果为
 除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。
 
 
-### 2. `onLayout(boolean changed, int left, int top, int right, int bottom)`
+### 2. onLayout(boolean changed, int left, int top, int right, int bottom)
 
 
 `onLayout()`的参数中我们能够直接拿到当前view的位置，(left, top)描述了左上顶点的位置，而(right, bottom)确定了右下角的位置，在自定义View的时侯，可以根据父容器的位置，调用子View的layout()函数直接指定子view的位置。我们的LinearLayout, RelativeLayout等就是继承ViewGroup，然后根据子View设置的相关属性，从而确定子View应该被放在哪里，我们在app中也就看到了期望的界面。
 
 
-### 3. `onDraw(Canvas canvas)`
+### 3. onDraw(Canvas canvas)
 
 Canvas是View的画布，有了canvasView才会真正的显示出来，才有我们看到的背景，图像，边框等元素。通过复写onDraw()，我们能够利用canvas做一些自定义的行为。比如我们通常看到的显示圆形ImageView头像等。
 
 
 ## 自定义View的实现
 
-//TODO
-应用例子： 自动换行容器BreakLineLayout， 自定义长宽比例Layout。
+####自动换行控件——FlowLayout
+这个Demo中主要通过继承ViewGroup实现自动换行控件，这种通常被用来放置TextView，对文字长度和数量位置的TextView来说，自动换行控件能够实现很好的布局效果，我们只需要将TextView加载到FlowLayout中，便可实现TextView组的自动换行。我们也可以批量给TextView增加自定义事件，进而实现我们想做的事情。
+
+自定义ViewGroup主要参考Google的[ViewGroup](http://developer.android.com/reference/android/view/ViewGroup.html)，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。
+
+首先看具体效果：
+
+{% img left /images/flow_layout_1.png FlowLayout %}
+
+
+代码实现如下FlowLayout.java
+
+```
+package org.gongming.common;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+
+public class FlowLayout extends ViewGroup {
+
+    private static final int leftMargin = 6;
+    private static final int rightMargin = 6;
+    private static final int topMargin = 10;
+    private static final int bottomMargin = 10;
+
+
+    public FlowLayout(Context context) {
+        super(context);
+    }
+
+    public FlowLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int maxWidth = 0;
+        int maxHeight = 0;
+        int childState = 0;
+        int calcHeight = 0;
+
+        int totalWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int count = getChildCount();
+
+        for (int index = 0; index < count; index++) {
+            final View child = getChildAt(index);
+            if (child.getVisibility() != GONE) {
+                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+                int calcWidth = child.getMeasuredWidth() + leftMargin + rightMargin;
+                calcHeight = Math.max(calcHeight, child.getMeasuredHeight() + topMargin + bottomMargin);
+                if (maxWidth + calcWidth > totalWidth) {
+                    maxWidth = totalWidth;
+                    maxHeight += calcHeight;
+                } else {
+                    maxWidth += calcWidth;
+                }
+                childState = combineMeasuredStates(childState, child.getMeasuredState());
+            }
+        }
+        maxHeight += calcHeight;
+        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+        maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
+        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
+                resolveSizeAndState(maxHeight, heightMeasureSpec,
+                        childState << MEASURED_HEIGHT_STATE_SHIFT));
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int totalWidth = getMeasuredWidth();
+        int count = getChildCount();
+        int width = 0;
+        int height = 0;
+
+        for (int index = 0; index < count; index++) {
+            View view = getChildAt(index);
+            int calcHeight = view.getMeasuredHeight() + topMargin + bottomMargin;
+            int calcWidth = view.getMeasuredWidth() + leftMargin + rightMargin;
+            if (width + calcWidth > totalWidth) {
+                height += calcHeight;
+                width = calcWidth;
+            } else {
+                width += calcWidth;
+                height = Math.max(calcHeight, height);
+            }
+            view.layout(width - calcWidth + leftMargin, height - calcHeight + topMargin, width - rightMargin, height - bottomMargin);
+        }
+    }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        for (int index = 0; index < getChildCount(); index++) {
+            View child = getChildAt(index);
+            child.setOnClickListener(listener);
+        }
+    }
+}
+
+```
+
+看看我们在xml中如果使用当前定义的View，主要通过包名访问：
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Root Swipe Layout"
+        android:layout_gravity="center"
+        />
+    <org.gongming.common.FlowLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/flowLayout"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hahahah"
+            android:background="#7E7EFF"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is a amazing layout"
+            android:background="#7E7EFF"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Where is this layout"
+            android:background="#7E7EFF"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oh, God. Please save me. I'm the cool layout"
+            android:background="#7E7EFF"
+            />
+    </org.gongming.common.FlowLayout>
+</LinearLayout>
+
+
+```
+
+在java代码里还可以定义item的单击事件，`flowLayout.setOnItemClickListener(OnClickListener listener)`， 这样就能对用户的单击行为进行响应。
 
 //TODO 
 应用例子，自定义实现图片随意拜访布局。或者瀑布流图片布局。自定义实现ViewGroup
