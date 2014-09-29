@@ -8,14 +8,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Fontello 使用心得 - gongmingqm10</title>
+    <title>云服务器使用记录 - gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="Fontello 使用心得 Mar 19th, 2014 Design Overview Fontello icon generator http://fontello.com/，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式， &hellip;">
+    <meta name="description" content="云服务器使用记录 Sep 29th, 2014 我的第一个云服务器ECS 云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的， &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de">
+    <link rel="canonical" href="http://www.gongmingqm10.net//blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
@@ -58,7 +58,7 @@
           <article class="post">
   <header>
   
-  <h1 class="title indent">Fontello 使用心得</h1>
+  <h1 class="title indent">云服务器使用记录</h1>
   
 
   
@@ -75,20 +75,11 @@
   
 
 
-<time class="pull-left" datetime="2014-03-19T08:19:49+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 19<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-09-29T15:01:31+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 29<span>th</span>, 2014</time>
     
 
 
 
-  
-  <div class="pull-left">
-    <i class="icon-tags"></i>
-    <ul class="tags unstyled">
-    
-      <li><a href="/blog/categories/Design/">Design</a></li>
-    
-    </ul>
-  </div>
   
 
     
@@ -99,38 +90,79 @@
 
 
 
-  <h2>Overview</h2>
+  <h3>我的第一个云服务器ECS</h3>
 
-<p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
+<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。</p>
 
-<hr />
+<p>使用teminal，用SSH登录进去</p>
 
-<p>最近尝试在构建一个rails应用，于是自然而然就想到用之前项目中的fontello图标，对于Developer来说，有了fontello和rails我开始不需要担心街面上图标或者按钮的样式问题了。</p>
-
-<!-- more -->
-
-
-<p>在fontello中选择所需的图标后点击下载即可进行下载一个zip压缩包，解压缩之后里面就会包含我们所需的几个文件。将这几个文件放置到我们project的assets下面，即可直接使用。</p>
-
-<h2>用法</h2>
-
-<hr />
-
-<ol>
-<li>Download: 选择图标后直接选择下载；</li>
-<li>Move: 将font文件夹中的所有文件和config.json移到vendor/assets/fonts文件夹中，将fontello.css移动到app/assets/stylesheets/fontello.css, 并在需要使用的相关页面中import此css文件；</li>
-<li>Usage: 在html页面中直接使用 <span class="icon icon-plus"></span>即可使用到名为icon-plus的图标；</li>
-<li>Update: 对于图标的下载我们一般在需要图标时才会下载，于是我们非首次下载时就需要update，在fontello网站上先import选择config.json，然后再搜索我们想要的图标，再次进行下载，将下载好的新文件覆盖之前的文件，update操作便完成了；</li>
-</ol>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>minggong:octopress minggong$ ssh root@XXX.XX.XXX.XX
+</span><span class='line'>root@root@XXX.XX.XXX.XX's password: 
+</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Don&rsquo;t repeat yourself</h2>
+<p><code>XXX.XX.XXX.XX</code>是我主机的IP地址，然后根据提示输入密码，然后就顺利的登录进去，刚进去的系统是很干净的。由于系统是centerOS的（试了半天的apt-get都无效），那就使用yum来安装软件吧。</p>
+
+<h3>yum安装java</h3>
+
+<p><code>BUG1</code>: 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.
+<code>SOLVE1</code>: 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问题解决.</p>
+
+<p><code>BUG2</code>: 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.
+<code>SOLVE2</code>: 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
 
 <hr />
 
-<p>对于fontello这种update图标然后覆盖的模式，我曾经极度讨厌，甚至认为还不如使用font awesome进行一次性的下载好，然后直接使用就可以了，后来发现fontello的强大之处在于它集合了许多种图标资源，所以上面的图标库更丰富，如果一次性下载估计也是件挺浪费资源的事情，因为我们只会用到少量的图标。所以我们不得不需要什么图标就去下载然后覆盖更新～～</p>
+<p>a.通过rpm命令查看有哪些yum包，然后进行卸载</p>
 
-<p>但是作为一名开发人员，这种重复的工作如果让我们自己做，就有点太浪费了。所以决定把这些琐碎重复的事情交给计算机做。也就是每次我下载下来，我只要运行脚本，这些文件就会自动复制到我所需的工程中。于是使用shell命令解决这个问题：</p>
+<p><code>rpm -qa|grep yum</code></p>
+
+<p>yum-3.2.22-20.el5</p>
+
+<p>yum-metadata-parser-1.1.2-3.el5</p>
+
+<p><code>rpm -e --nodeps yum-3.2.22-20.el5rpm -e --nodeps yum-metadata-parser-1.1.2-3.el5</code></p>
+
+<hr />
+
+<p>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-3.2.22-40.el5.centos.noarch.rpm
+</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-metadata-parser-1.1.2-4.el5.x86_64.rpm
+</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下载完成后使用 <code>rpm -ivh yum*</code>，这几个文件需要同时安装，所以用一行命令来安装。</p>
+
+<hr />
+
+<p>c.更新CentOS-Base.repo源</p>
+
+<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：</p>
+
+<p><code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
+
+<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：</p>
+
+<p><code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
+
+<hr />
+
+<p>d.生成缓存文件到/var/cache/yum目录</p>
+
+<p><code>yum makecache</code></p>
+
+<hr />
+
+<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。</p>
+
+<p>解决了YUM的安装问题，我们步入正题安装java：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -146,25 +178,41 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
-</span><span class='line'>unzip -u $1
-</span><span class='line'>if [ ! -d $2/vendor/assets/fonts ]; then
-</span><span class='line'>  mkdir $2/vendor/assets/fonts
-</span><span class='line'>fi 
-</span><span class='line'>cp -r $1/font/fontello.eot $2/vendor/assets/fonts
-</span><span class='line'>cp -r $1/font/fontello.svg $2/vendor/assets/fonts
-</span><span class='line'>cp -r $1/font/fontello.ttf $2/vendor/assets/fonts
-</span><span class='line'>cp -r $1/font/fontello.woff $2/vendor/assets/fonts
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# yum search java | grep -i --color JDK
+</span><span class='line'>java-1.6.0-openjdk.x86_64 : OpenJDK Runtime Environment
+</span><span class='line'>java-1.6.0-openjdk-demo.x86_64 : OpenJDK Demos
+</span><span class='line'>java-1.6.0-openjdk-devel.x86_64 : OpenJDK Development Environment
+</span><span class='line'>java-1.6.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
+</span><span class='line'>java-1.6.0-openjdk-src.x86_64 : OpenJDK Source Bundle
+</span><span class='line'>java-1.7.0-openjdk.x86_64 : OpenJDK Runtime Environment
+</span><span class='line'>java-1.7.0-openjdk-demo.x86_64 : OpenJDK Demos
+</span><span class='line'>java-1.7.0-openjdk-devel.x86_64 : OpenJDK Development Environment
+</span><span class='line'>java-1.7.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
+</span><span class='line'>java-1.7.0-openjdk-src.x86_64 : OpenJDK Source Bundle
+</span><span class='line'>ldapjdk.x86_64 : The Mozilla LDAP Java SDK
+</span><span class='line'>ldapjdk-javadoc.x86_64 : Javadoc for ldapjdk
+</span><span class='line'>[root@iZ23572i0rtZ home]# yum install java-1.7.0-openjdk.x86_64
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后按照步骤，一步步确认，最后就安装成功，查看 <code>java -version</code> 验证是否正确安装：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# java -version
+</span><span class='line'>java version "1.7.0_65"
+</span><span class='line'>OpenJDK Runtime Environment (rhel-2.5.1.2.el5_10-x86_64 u65-b17)
+</span><span class='line'>OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
+</span><span class='line'>[root@iZ23572i0rtZ home]# 
 </span><span class='line'>
-</span><span class='line'>cp -f $1/config.json $2/vendor/assets/fonts/config.json
-</span><span class='line'>
-</span><span class='line'>cp -f $1/css/fontello.css $2/app/assets/stylesheets/fontello.less
-</span><span class='line'>echo 'copy fontello successfully'</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>文件名为fontello.sh， 首先为其添加可执行权限 <code>chmod +x fontello.sh</code>， 如果下载下来的新的包名为fontello-1234.zip，那么只要执行命令<code>./fontello.sh fontello-1234 ~/project/helloworld</code></p>
 
-<p>永远不要你自己做重复的事情，如果真有这些事情请让计算机自行实现一切会轻松很多！</p>
 
 
 </article>

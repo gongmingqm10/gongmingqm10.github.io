@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net//atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-09-28T15:37:51+08:00</updated>
+  <updated>2014-09-29T18:04:55+08:00</updated>
   <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,137 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[云服务器使用记录]]></title>
+    <link href="http://www.gongmingqm10.net//blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/"/>
+    <updated>2014-09-29T15:01:31+08:00</updated>
+    <id>http://www.gongmingqm10.net//blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu</id>
+    <content type="html"><![CDATA[<h3>我的第一个云服务器ECS</h3>
+
+<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。</p>
+
+<p>使用teminal，用SSH登录进去</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>minggong:octopress minggong$ ssh root@XXX.XX.XXX.XX
+</span><span class='line'>root@root@XXX.XX.XXX.XX's password: 
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>XXX.XX.XXX.XX</code>是我主机的IP地址，然后根据提示输入密码，然后就顺利的登录进去，刚进去的系统是很干净的。由于系统是centerOS的（试了半天的apt-get都无效），那就使用yum来安装软件吧。</p>
+
+<h3>yum安装java</h3>
+
+<p><code>BUG1</code>: 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.
+<code>SOLVE1</code>: 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问题解决.</p>
+
+<p><code>BUG2</code>: 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.
+<code>SOLVE2</code>: 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
+
+<hr />
+
+<p>a.通过rpm命令查看有哪些yum包，然后进行卸载</p>
+
+<p><code>rpm -qa|grep yum</code></p>
+
+<p>yum-3.2.22-20.el5</p>
+
+<p>yum-metadata-parser-1.1.2-3.el5</p>
+
+<p><code>rpm -e --nodeps yum-3.2.22-20.el5rpm -e --nodeps yum-metadata-parser-1.1.2-3.el5</code></p>
+
+<hr />
+
+<p>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-3.2.22-40.el5.centos.noarch.rpm
+</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-metadata-parser-1.1.2-4.el5.x86_64.rpm
+</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下载完成后使用 <code>rpm -ivh yum*</code>，这几个文件需要同时安装，所以用一行命令来安装。</p>
+
+<hr />
+
+<p>c.更新CentOS-Base.repo源</p>
+
+<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：</p>
+
+<p><code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
+
+<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：</p>
+
+<p><code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
+
+<hr />
+
+<p>d.生成缓存文件到/var/cache/yum目录</p>
+
+<p><code>yum makecache</code></p>
+
+<hr />
+
+<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。</p>
+
+<p>解决了YUM的安装问题，我们步入正题安装java：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# yum search java | grep -i --color JDK
+</span><span class='line'>java-1.6.0-openjdk.x86_64 : OpenJDK Runtime Environment
+</span><span class='line'>java-1.6.0-openjdk-demo.x86_64 : OpenJDK Demos
+</span><span class='line'>java-1.6.0-openjdk-devel.x86_64 : OpenJDK Development Environment
+</span><span class='line'>java-1.6.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
+</span><span class='line'>java-1.6.0-openjdk-src.x86_64 : OpenJDK Source Bundle
+</span><span class='line'>java-1.7.0-openjdk.x86_64 : OpenJDK Runtime Environment
+</span><span class='line'>java-1.7.0-openjdk-demo.x86_64 : OpenJDK Demos
+</span><span class='line'>java-1.7.0-openjdk-devel.x86_64 : OpenJDK Development Environment
+</span><span class='line'>java-1.7.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
+</span><span class='line'>java-1.7.0-openjdk-src.x86_64 : OpenJDK Source Bundle
+</span><span class='line'>ldapjdk.x86_64 : The Mozilla LDAP Java SDK
+</span><span class='line'>ldapjdk-javadoc.x86_64 : Javadoc for ldapjdk
+</span><span class='line'>[root@iZ23572i0rtZ home]# yum install java-1.7.0-openjdk.x86_64
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后按照步骤，一步步确认，最后就安装成功，查看 <code>java -version</code> 验证是否正确安装：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# java -version
+</span><span class='line'>java version "1.7.0_65"
+</span><span class='line'>OpenJDK Runtime Environment (rhel-2.5.1.2.el5_10-x86_64 u65-b17)
+</span><span class='line'>OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
+</span><span class='line'>[root@iZ23572i0rtZ home]# 
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android自定义View]]></title>
