@@ -6,11 +6,8 @@ comments: true
 categories: android
 
 ---
-Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。
-
-
-## View的绘制流程
-
+Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。  
+## View的绘制流程  
 自定义控件从最基础的View开始，View有几个重要的函数：`onMeasure()`, `onLayout()`, `onDraw()`，与触摸动作相关的还有`onTouchEvent()`，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 `onMeasure` `onLayout` `onDraw()` 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与`Override`，我们可以创造出一些特殊的View。
 
 ```
@@ -138,13 +135,10 @@ Logcat输出结果为
         />
 
 </FrameLayout>
-
-
 ```
-这种情况下CustomView的高度是`wrap_content`，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是`AT_MOST`.
 
-如果把FrameLayout的`layout_height`设置为`wrap_content`，由于父容器自身的高度有个`AT_MOST`属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是`AT_MOST`。
-
+这种情况下CustomView的高度是`wrap_content`，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是`AT_MOST`.  
+如果把FrameLayout的`layout_height`设置为`wrap_content`，由于父容器自身的高度有个`AT_MOST`属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是`AT_MOST`。  
 综合来看，只要View的当前宽度或者高度不是固定的，但是会存在一个最大值界限，则View 的Mode为`AT_MOST`。
 
 
@@ -168,8 +162,7 @@ Logcat输出结果为
 </ScrollView>
 
 ```
-`ScrollView`默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用`match_parent`，还是`wrap_content`，高度值都是不能确定的。高度的Mode为`UNSPECIFIED`
-
+`ScrollView`默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用`match_parent`，还是`wrap_content`，高度值都是不能确定的。高度的Mode为`UNSPECIFIED`  
 除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。
 
 
@@ -186,14 +179,13 @@ Canvas是View的画布，有了canvasView才会真正的显示出来，才有我
 
 ## 自定义View的实现
 
-####自动换行控件——FlowLayout
+####自动换行控件-FlowLayout
 这个Demo中主要通过继承ViewGroup实现自动换行控件，这种通常被用来放置TextView，对文字长度和数量位置的TextView来说，自动换行控件能够实现很好的布局效果，我们只需要将TextView加载到FlowLayout中，便可实现TextView组的自动换行。我们也可以批量给TextView增加自定义事件，进而实现我们想做的事情。
 
 自定义ViewGroup主要参考Google的[ViewGroup](http://developer.android.com/reference/android/view/ViewGroup.html)，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。
 
-首先看具体效果：
-
-{% img left /images/flow_layout_1.png FlowLayout %}
+首先看具体效果：  
+![FlowLayout](/images/flow_layout_1.png 100x200)
 
 
 代码实现如下FlowLayout.java
@@ -344,11 +336,103 @@ public class FlowLayout extends ViewGroup {
 
 在java代码里还可以定义item的单击事件，`flowLayout.setOnItemClickListener(OnClickListener listener)`， 这样就能对用户的单击行为进行响应。
 
-//TODO 
-应用例子，自定义实现图片随意拜访布局。或者瀑布流图片布局。自定义实现ViewGroup
+####定比例长宽RelativeLayout-RatioRelativeLayout
+Android设备的多样性使得我们要尽量做出适应多设备的可伸缩布局。在最佳实践中，我们谈到要尽量使用RelativeLayout相对布局。同样，我们在这里自定义了一种固定长宽比例的元素。通过自己指定的高度／宽度的比例值，最终确定View应该绘制的宽度和高度。定义如下，主要增加了一个ratio属性，以及重写了onMeasure()方法。  
+res/values/attrs.xml
 
-//TODO
-换行进行的多彩View的实现，在View上面进行一些自定义的绘制 
+```
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="RatioLayout">
+        <!--The ratio defines the value of height / width -->
+        <attr name="ratio" format="float" />
+    </declare-styleable>
+
+</resources>
+
+```
+
+RatioRelativeLayout.java
+
+```
+package org.gongming.common;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import android.widget.RelativeLayout;
+
+public class RatioRelativeLayout extends RelativeLayout {
+
+    private float ratio = 0f;
+
+    public RatioRelativeLayout(Context context) {
+        super(context);
+    }
+
+    public RatioRelativeLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(attrs);
+    }
+
+    public RatioRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    private void init(AttributeSet attrs) {
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RatioLayout);
+        ratio = typedArray.getFloat(R.styleable.RatioLayout_ratio, 0f);
+        typedArray.recycle();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        if (widthMode == MeasureSpec.EXACTLY && ratio != 0f) {
+            measureHeight = (int) (measureWidth * ratio);
+        } else if (heightMode == MeasureSpec.EXACTLY && ratio != 0f) {
+            measureWidth = (int) (measureHeight / ratio);
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+        setMeasuredDimension(measureWidth, measureHeight);
+    }
+}
+
+```
+
+在xml使用时使用该控件并给ratio设置值即可：
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <org.gongming.common.RatioRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        app:ratio="0.5"
+        >
+
+    </org.gongming.common.RatioRelativeLayout>
+
+</FrameLayout>
+
+```
+最后在界面上我们便可以看到一个高度是宽度一半的自定义View
 
 
 
