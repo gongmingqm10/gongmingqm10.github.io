@@ -33,7 +33,6 @@ categories: android
 #####3. onResume()与onPause()
 通过字面意思理解为Activity的恢复和停止，一个典型的例子是APP运行过程中突然有电话或者闹铃，以至于当前的Activity被其他的Activity覆盖，这种情况下会触发onResume()和onPause()事件，当然如果APP经历onStart()和onStop()事件，也必然会先经过onResume()和onPause()事件。生命周期的流程图如上图所示，其形成的是一个完成的闭路。
 
- ===
 通过应用程序的一套完整的Lifecycle，Android保证了APP在手机上进行良好的运行，并且运行过程互不干扰。Android生命周期的存在也表明在APP开发中，应该使Activity功能彼此对应，在onStart()中注册了某些事件，在onStop()中就应该进行反注册，例如地图开发中的GPS定位，就需要在onStart中进行注册，而在onStop()中进行反注册。还有一些网络访问回调也存在类似的情形，都需要我们在APP开发中注意，确保APP以最佳的状态运行。
 
 
@@ -49,7 +48,6 @@ Android由于设备众多，分辨率众多，不同厂家定制的SDK也增加�
 ### MVC最佳实践
 和Web开发中的MVC框架类似，我们同样可以对APP进行MVC化。具体而言，Activity是我们的Controller控制器，而对数据的读取与查询等具体语句则应该通过DataManager进行处理，类似于我们通常所说的Service，Service不直接和界面进行交互。用户的交互都是与Activity发生的，Service会提供一些数据读取相关的方法，以供Activity调用。
 
-===
 本文抛砖引玉，参考别人的文章，结合自己的实践经历总结了一些实践性的经验。个中不足，烦请大家不吝赐教，当然更欢迎大家一起交流。
 
 文章参考：http://clayallsopp.com/posts/android-best-practices-tips/

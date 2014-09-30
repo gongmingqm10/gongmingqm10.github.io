@@ -185,7 +185,7 @@ Canvas是View的画布，有了canvasView才会真正的显示出来，才有我
 自定义ViewGroup主要参考Google的[ViewGroup](http://developer.android.com/reference/android/view/ViewGroup.html)，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。
 
 首先看具体效果：  
-![FlowLayout](/images/flow_layout_1.png 100x200)
+<img src="/images/flow_layout_1.png" alt="FlowLayout" style="width: 250px;"/>
 
 
 代码实现如下FlowLayout.java
