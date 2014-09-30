@@ -293,7 +293,6 @@
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-<span class='line-number'>14</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -306,16 +305,12 @@
 </span><span class='line'>        android:background="#333666"
 </span><span class='line'>        /&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;/FrameLayout&gt;
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>&lt;/FrameLayout&gt;</span></code></pre></td></tr></table></div></figure>
 
 
-<p>这种情况下CustomView的高度是<code>wrap_content</code>，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是<code>AT_MOST</code>.</p>
-
-<p>如果把FrameLayout的<code>layout_height</code>设置为<code>wrap_content</code>，由于父容器自身的高度有个<code>AT_MOST</code>属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是<code>AT_MOST</code>。</p>
-
-<p>综合来看，只要View的当前宽度或者高度不是固定的，但是会存在一个最大值界限，则View 的Mode为<code>AT_MOST</code>。</p>
+<p>这种情况下CustomView的高度是<code>wrap_content</code>，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是<code>AT_MOST</code>.<br/>
+如果把FrameLayout的<code>layout_height</code>设置为<code>wrap_content</code>，由于父容器自身的高度有个<code>AT_MOST</code>属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是<code>AT_MOST</code>。<br/>
+综合来看，只要View的当前宽度或者高度不是固定的，但是会存在一个最大值界限，则View 的Mode为<code>AT_MOST</code>。</p>
 
 <h5><code>UNSPECIFIED</code></h5>
 
@@ -350,9 +345,8 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>ScrollView</code>默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用<code>match_parent</code>，还是<code>wrap_content</code>，高度值都是不能确定的。高度的Mode为<code>UNSPECIFIED</code></p>
-
-<p>除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。</p>
+<p><code>ScrollView</code>默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用<code>match_parent</code>，还是<code>wrap_content</code>，高度值都是不能确定的。高度的Mode为<code>UNSPECIFIED</code><br/>
+除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。</p>
 
 <h3>2. onLayout(boolean changed, int left, int top, int right, int bottom)</h3>
 
@@ -364,15 +358,14 @@
 
 <h2>自定义View的实现</h2>
 
-<h4>自动换行控件——FlowLayout</h4>
+<h4>自动换行控件-FlowLayout</h4>
 
 <p>这个Demo中主要通过继承ViewGroup实现自动换行控件，这种通常被用来放置TextView，对文字长度和数量位置的TextView来说，自动换行控件能够实现很好的布局效果，我们只需要将TextView加载到FlowLayout中，便可实现TextView组的自动换行。我们也可以批量给TextView增加自定义事件，进而实现我们想做的事情。</p>
 
 <p>自定义ViewGroup主要参考Google的<a href="http://developer.android.com/reference/android/view/ViewGroup.html">ViewGroup</a>，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。</p>
 
-<p>首先看具体效果：</p>
-
-<p><img class="left" src="/images/flow_layout_1.png" title="FlowLayout" ></p>
+<p>首先看具体效果：<br/>
+<img src="/images/flow_layout_1.png%20100x200" alt="FlowLayout" /></p>
 
 <p>代码实现如下FlowLayout.java</p>
 
@@ -654,11 +647,179 @@
 
 <p>在java代码里还可以定义item的单击事件，<code>flowLayout.setOnItemClickListener(OnClickListener listener)</code>， 这样就能对用户的单击行为进行响应。</p>
 
-<p>//TODO
-应用例子，自定义实现图片随意拜访布局。或者瀑布流图片布局。自定义实现ViewGroup</p>
+<h4>定比例长宽RelativeLayout-RatioRelativeLayout</h4>
 
-<p>//TODO
-换行进行的多彩View的实现，在View上面进行一些自定义的绘制</p>
+<p>Android设备的多样性使得我们要尽量做出适应多设备的可伸缩布局。在最佳实践中，我们谈到要尽量使用RelativeLayout相对布局。同样，我们在这里自定义了一种固定长宽比例的元素。通过自己指定的高度／宽度的比例值，最终确定View应该绘制的宽度和高度。定义如下，主要增加了一个ratio属性，以及重写了onMeasure()方法。<br/>
+res/values/attrs.xml</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>&lt;resources&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;declare-styleable name="RatioLayout"&gt;
+</span><span class='line'>        &lt;!--The ratio defines the value of height / width --&gt;
+</span><span class='line'>        &lt;attr name="ratio" format="float" /&gt;
+</span><span class='line'>    &lt;/declare-styleable&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/resources&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>RatioRelativeLayout.java</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>package org.gongming.common;
+</span><span class='line'>
+</span><span class='line'>import android.content.Context;
+</span><span class='line'>import android.content.res.TypedArray;
+</span><span class='line'>import android.util.AttributeSet;
+</span><span class='line'>import android.widget.RelativeLayout;
+</span><span class='line'>
+</span><span class='line'>public class RatioRelativeLayout extends RelativeLayout {
+</span><span class='line'>
+</span><span class='line'>    private float ratio = 0f;
+</span><span class='line'>
+</span><span class='line'>    public RatioRelativeLayout(Context context) {
+</span><span class='line'>        super(context);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public RatioRelativeLayout(Context context, AttributeSet attrs) {
+</span><span class='line'>        super(context, attrs);
+</span><span class='line'>        init(attrs);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public RatioRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
+</span><span class='line'>        super(context, attrs, defStyle);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    private void init(AttributeSet attrs) {
+</span><span class='line'>        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RatioLayout);
+</span><span class='line'>        ratio = typedArray.getFloat(R.styleable.RatioLayout_ratio, 0f);
+</span><span class='line'>        typedArray.recycle();
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+</span><span class='line'>        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+</span><span class='line'>        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
+</span><span class='line'>
+</span><span class='line'>        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+</span><span class='line'>        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+</span><span class='line'>
+</span><span class='line'>        if (widthMode == MeasureSpec.EXACTLY && ratio != 0f) {
+</span><span class='line'>            measureHeight = (int) (measureWidth * ratio);
+</span><span class='line'>        } else if (heightMode == MeasureSpec.EXACTLY && ratio != 0f) {
+</span><span class='line'>            measureWidth = (int) (measureHeight / ratio);
+</span><span class='line'>        } else {
+</span><span class='line'>            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+</span><span class='line'>        }
+</span><span class='line'>        setMeasuredDimension(measureWidth, measureHeight);
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在xml使用时使用该控件并给ratio设置值即可：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;FrameLayout
+</span><span class='line'>    xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    xmlns:app="http://schemas.android.com/apk/res-auto"
+</span><span class='line'>    android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"
+</span><span class='line'>
+</span><span class='line'>    &gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.RatioRelativeLayout
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="wrap_content"
+</span><span class='line'>        android:background="@android:color/darker_gray"
+</span><span class='line'>        app:ratio="0.5"
+</span><span class='line'>        &gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;/org.gongming.common.RatioRelativeLayout&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/FrameLayout&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后在界面上我们便可以看到一个高度是宽度一半的自定义View</p>
 
 
 </article>

@@ -92,9 +92,8 @@
 
   <h3>我的第一个云服务器ECS</h3>
 
-<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。</p>
-
-<p>使用teminal，用SSH登录进去</p>
+<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。<br/>
+使用teminal，用SSH登录进去</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -107,27 +106,22 @@
 
 <h3>yum安装java</h3>
 
-<p><code>BUG1</code>: 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.
-<code>SOLVE1</code>: 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问题解决.</p>
+<p><strong>BUG1:</strong> 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.<br/>
+<strong>SOLVE1:</strong> 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问
+题解决.</p>
 
-<p><code>BUG2</code>: 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.
-<code>SOLVE2</code>: 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
+<p><strong>BUG2:</strong> 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.<br/>
+<strong>SOLVE2:</strong> 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
 
-<hr />
+<p><strong>a.通过rpm命令查看有哪些yum包，然后进行卸载</strong><br/>
+<code>rpm -qa|grep yum</code></p>
 
-<p>a.通过rpm命令查看有哪些yum包，然后进行卸载</p>
-
-<p><code>rpm -qa|grep yum</code></p>
-
-<p>yum-3.2.22-20.el5</p>
-
-<p>yum-metadata-parser-1.1.2-3.el5</p>
+<p>yum-3.2.22-20.el5<br/>
+yum-metadata-parser-1.1.2-3.el5</p>
 
 <p><code>rpm -e --nodeps yum-3.2.22-20.el5rpm -e --nodeps yum-metadata-parser-1.1.2-3.el5</code></p>
 
-<hr />
-
-<p>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</p>
+<p><strong>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</strong></p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -140,29 +134,21 @@
 
 <p>下载完成后使用 <code>rpm -ivh yum*</code>，这几个文件需要同时安装，所以用一行命令来安装。</p>
 
-<hr />
-
 <p>c.更新CentOS-Base.repo源</p>
 
-<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：</p>
+<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：<br/>
+<code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
 
-<p><code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
+<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：<br/>
+<code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
 
-<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：</p>
-
-<p><code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
-
-<hr />
-
-<p>d.生成缓存文件到/var/cache/yum目录</p>
-
-<p><code>yum makecache</code></p>
+<p>d.生成缓存文件到/var/cache/yum目录<br/>
+<code>yum makecache</code></p>
 
 <hr />
 
-<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。</p>
-
-<p>解决了YUM的安装问题，我们步入正题安装java：</p>
+<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。<br/>
+解决了YUM的安装问题，我们步入正题安装java：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
