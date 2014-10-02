@@ -432,7 +432,7 @@ public class RatioRelativeLayout extends RelativeLayout {
 </FrameLayout>
 
 ```
-最后在界面上我们便可以看到一个高度是宽度一半的自定义View
+最后在界面上我们便可以看到一个高度是宽度一半的自定义View。
 
 
 
