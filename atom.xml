@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net//atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-10-12T15:06:08+08:00</updated>
+  <updated>2014-10-12T15:07:57+08:00</updated>
   <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -14,11 +14,153 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Deploy App To Remote Server]]></title>
+    <title type="html"><![CDATA[Deploy app to remote server —— 网站部署篇]]></title>
     <link href="http://www.gongmingqm10.net//blog/2014/10/12/deploy-app-to-remote-server/"/>
-    <updated>2014-10-12T00:00:00+08:00</updated>
+    <updated>2014-10-12T11:14:37+08:00</updated>
     <id>http://www.gongmingqm10.net//blog/2014/10/12/deploy-app-to-remote-server</id>
-    <content type="html"><![CDATA[<p>此博客主要用于自己学习的记录过程，小弟才疏学浅，如有纰漏的地方请各位看官多多指正，共同进步。</p>
+    <content type="html"><![CDATA[<p>网站开发完毕之后，下一步的任务就是部署了。我们从最简单的入手，如何将本地开发的webapp部署到远程服务器上（这里我们用的是阿里的ECS）。部署是一件很有意思的事情，因为我们可以让本地开发的网站被外界所访问，所以还是很多成就感的。这里的工程采用的是Spring MVC 框架。</p>
+
+<h3>1. Requirement</h3>
+
+<ul>
+<li>一个能够在本地运行的Web程序</li>
+<li>一个远程服务器主机</li>
+<li>Mac或者Linux系统的机器</li>
+</ul>
+
+
+<h3>2. 打包Webapp为war文件</h3>
+
+<p>不同的工程可以使用不同的工具进行打包，我们项目工程采用gradle + jetty构建的，因此在打包时还是使用gradle自带的方式进行打包。本项目build.gradle配置如下:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apply plugin: 'idea'
+</span><span class='line'>apply plugin: 'war'
+</span><span class='line'>apply plugin: 'jetty'
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>tasks.withType(Compile) {
+</span><span class='line'>    options.encoding = "UTF-8"
+</span><span class='line'>}
+</span><span class='line'>repositories {
+</span><span class='line'>    mavenCentral()
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>dependencies {
+</span><span class='line'>    providedCompile 'javax.servlet:servlet-api:2.5'
+</span><span class='line'>
+</span><span class='line'>    def springFrameworkVersion = '3.2.2.RELEASE'
+</span><span class='line'>
+</span><span class='line'>    compile "org.springframework:spring-web:${springFrameworkVersion}",
+</span><span class='line'>            "org.springframework:spring-webmvc:${springFrameworkVersion}",
+</span><span class='line'>            "org.springframework:spring-beans:${springFrameworkVersion}",
+</span><span class='line'>            "org.springframework:spring-context:${springFrameworkVersion}",
+</span><span class='line'>            "org.springframework:spring-jdbc:${springFrameworkVersion}"
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    compile "aopalliance:aopalliance:1.0"
+</span><span class='line'>    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.+"
+</span><span class='line'>    compile "org.mybatis:mybatis:3.2.3"
+</span><span class='line'>    compile 'org.apache.commons:commons-lang3:3.1'
+</span><span class='line'>    compile 'commons-fileupload:commons-fileupload:1.2.2'
+</span><span class='line'>    compile 'commons-io:commons-io:1.3.2'
+</span><span class='line'>
+</span><span class='line'>    runtime "commons-pool:commons-pool:1.3",
+</span><span class='line'>            "commons-dbcp:commons-dbcp:1.2.2",
+</span><span class='line'>            "commons-collections:commons-collections:3.2",
+</span><span class='line'>            'javax.servlet:jstl:1.2',
+</span><span class='line'>            "org.slf4j:slf4j-log4j12:1.6.0",
+</span><span class='line'>            "mysql:mysql-connector-java:5.1.5",
+</span><span class='line'>            'log4j:log4j:1.2.16'
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>根目录下直接使用 <code>gradle war</code>就可以快速打包完成。打包完成后我们在 <code>build/libs/</code> 目录下可以看到工程的war包, demo.war</p>
+
+<h3>3. 服务器上安装java7, mysql, tomcat7</h3>
+
+<p>服务器中要安装的环境主要根据我们项目中所需的环境。安装好环境之后，我们的webapp才可能服务器中正常运行。java7和mysql我们前面已经介绍过，所有这些安装问题其实都可以google找到解答。下面主要介绍tomcat7的安装过程：  <br/>
+首先通过<code>ssh root@121.40.97.118</code>连接到ECS上：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /tmp  
+</span><span class='line'>wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.56/bin/apache-tomcat-7.0.56.tar.gz
+</span><span class='line'>tar xzf apache-tomcat-7.0.56.tar.gz
+</span><span class='line'>mv apache-tomcat-7.0.57 /usr/local/tomcat7
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完成后，通过 <code>cd /usr/lcoal/tomcat7</code>进入到tomcat根目录下，<code>./bin/startup.sh</code>运行tomcat服务器，本机浏览器中访问 <code>121.40.97.118:8080</code>，如果成功出现tomcat的配置页面，则tomcat7安装完成。当然我们业可以通过 <code>/usr/local/tomcat7/conf/tomcat-users.xml</code>来配置tomcat的管理员角色，具体请参考apache tomcat 官网。</p>
+
+<h3>4. 复制war文件到tomcat7/webapps目录中</h3>
+
+<p>我们需要将第2步生成的demo.war复制到服务器的webapp目录中，直接在terminal中使用<code>scp</code>命令：<br/>
+<code>scp demo.war root@121.40.97.118:/usr/local/tomcat7/webapps/demo.war</code>，复制过程完成后，文件开始存在于服务器的webapps文件夹下面，war包能够被tomcat自动解析。访问<code>121.40.97.118:8080/demo</code>，我们可以看到自己的app终于可以访问了。</p>
+
+<h3>5. More</h3>
+
+<p>到第4步，其实基本完成了部署过程。<br/>
+我们自己访问时必须加上8080端口号看的也是略不爽。此时可以通过<code>/usr/local/tomcat7/conf/server.xml</code>对里面默认的8080端口进行修改，改为80端口。这次我们直接访问<code>121.40.97.118/demo</code>，发现可以访问成功了。  <br/>
+再看看，我们地址后面还需要加上demo，看起来业有点不爽。我想让这台主机默认直接访问demo工程。通过观察webapps看到里面有个ROOT目录，先备份ROOT目录，然后把我们的demo.war改称ROOT.war再看看效果:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mv ROOT root.backup  
+</span><span class='line'>mv demo.war ROOT.war
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再次访问<code>121.40.97.118</code>，这时候我们可以直接看到我们的web应用了。</p>
+
+<p>如果你还嫌不够酷的话，可以增加一个域名来转到这个网站。我在自己的域名管理中增加了一个二级域名<code>demo.gongmingqm10.net</code>映射到<code>121.40.97.118</code>，再次访问<code>demo.gongmingqm10.net</code>，但是事情没有预料的那么好，显示网站没有备案，好吧。其实下一步我可以去备案了～～</p>
+
+<hr />
+
+<p>此博客主要用于自己学习的记录过程，小弟才疏学浅，如有纰漏的地方请各位看官多多指正，共同进步。</p>
 ]]></content>
   </entry>
   
