@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net//atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-10-10T00:20:34+08:00</updated>
+  <updated>2014-10-12T15:06:08+08:00</updated>
   <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy App To Remote Server]]></title>
+    <link href="http://www.gongmingqm10.net//blog/2014/10/12/deploy-app-to-remote-server/"/>
+    <updated>2014-10-12T00:00:00+08:00</updated>
+    <id>http://www.gongmingqm10.net//blog/2014/10/12/deploy-app-to-remote-server</id>
+    <content type="html"><![CDATA[<p>此博客主要用于自己学习的记录过程，小弟才疏学浅，如有纰漏的地方请各位看官多多指正，共同进步。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android onTouch() 初探]]></title>
@@ -339,6 +348,15 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
 <p>了解了touch事件的机制以及流程，我们能够更加灵活的自定义与手势操作结合起来的控件。在这个例子中，我们自定义SwipeLayout，实现竖直翻动效果。</p>
 
 <p>代码源地址为：<a href="https://github.com/gongmingqm10/AndroidUikit/blob/master/library/src/main/java/org/gongming/common/SwipeLayout.java">SwipeLayout源码</a></p>
+
+<h3>Reference</h3>
+
+<ol>
+<li><a href="http://stackoverflow.com/questions/9586032/android-difference-between-onintercepttouchevent-and-dispatchtouchevent">Android: Difference between onInterceptTouchEvent and dispatchTouchEvent?</a></li>
+<li><a href="http://developer.android.com/training/gestures/viewgroup.html">Managing Touch Events in a ViewGroup</a></li>
+<li><a href="http://www.youtube.com/watch?v=EZAoJU-nUyI">How Android Handles Touches</a></li>
+</ol>
+
 ]]></content>
   </entry>
   
