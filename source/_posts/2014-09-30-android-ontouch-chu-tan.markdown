@@ -201,6 +201,11 @@ dispatchTouchEvent()是View类中的方法，用于将当前View接收到的触�
 
 代码源地址为：[SwipeLayout源码](https://github.com/gongmingqm10/AndroidUikit/blob/master/library/src/main/java/org/gongming/common/SwipeLayout.java)
 
+###Reference
+1. [Android: Difference between onInterceptTouchEvent and dispatchTouchEvent?](http://stackoverflow.com/questions/9586032/android-difference-between-onintercepttouchevent-and-dispatchtouchevent)
+2. [Managing Touch Events in a ViewGroup](http://developer.android.com/training/gestures/viewgroup.html)
+3. [How Android Handles Touches](http://www.youtube.com/watch?v=EZAoJU-nUyI)
+
 
 
 
