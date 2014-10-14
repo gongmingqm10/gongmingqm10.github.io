@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: git | gongmingqm10]]></title>
+  <link href="http://www.gongmingqm10.net//blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net//"/>
+  <updated>2014-10-14T11:02:48+08:00</updated>
+  <id>http://www.gongmingqm10.net//</id>
+  <author>
+    <name><![CDATA[Gong Ming]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Git daemon 建立本地Git服务器]]></title>
+    <link href="http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
+    <updated>2014-10-14T10:51:41+08:00</updated>
+    <id>http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
+    <content type="html"><![CDATA[<p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
+
+<p><strong>前提</strong></p>
+
+<p>代码是通过Git托管的，如果使用SVN的话，多增加一个Git repo也是可以的。</p>
+
+<p><strong>Step by Step</strong></p>
+
+<ol>
+<li><p>进入到自己工程所在的目录下，以Users/mingong/project/Sheldon为例：<code>cd  project/Sheldon</code></p></li>
+<li><p>在Git项目根目录下开启Daemon服务器  <code>git daemon --base-path=. --export-all --reuseaddr --informative-errors  —verbose</code></p></li>
+<li><p>使用ifconfig查看本机电脑内网IP地址：<code>ifconfig</code>，以我的电脑为例，查看到的IP地址为 <code>10.113.241.150</code></p></li>
+<li><p><code>clone/pull</code>代码到另外一台电脑（两台电脑需在同一个内网下即可），为模拟需要，直接到我的Downloads目录下面模拟进行后续步骤。<br/>
+首先我需要在Doanloads文件夹中<code>clone project: git clone git://10.113.241.150/sheldon</code> ，
+ls可以看到我的Downloads中已经成功clone了sheldon工程，clone了工程的下一步就是pull, 当A电脑上的代码变动之后，我需要直接更新代码，首先进入sheldon根目录中：<code>git pull git://10.113.241.150/</code></p></li>
+<li><p>增加push权限<br/>
+在B电脑上clone代码后，B电脑上的伙伴修改完代码会需要将代码push回A电脑的工程中，
+在第2步中开启的git daemon给可访问的客户端read权限，在需要开启write权限时，我们需要给git daemon增加 <code>—enable=receive-pack</code>，执行命令如下，  <br/>
+<code>git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors  —verbose</code><br/>
+There is one quirk: client can’t push into your active git branch. Before pushing, user on the server should change the branch, if client wants to push to this branch.<br/>
+客户端B不能直接提交master到当前活跃分支，所以可以在B新建一个分支，只要提交分支到A的repo中即可，由A决定是否进行分支merge.</p></li>
+</ol>
+
+
+<p>```
+$ git checkout -b sharing</p>
+
+<h1>made some changes &hellip;</h1>
+
+<p>$ git commit -am &ldquo;add sharing feature&rdquo;
+$ git push -u origin sharing
+&hellip;
+* [new branch]      sharing &ndash;> sharing
+&hellip;</p>
+
+<p>```</p>
+
+<p><strong>在服务器端merge分支</strong></p>
+
+<p>```
+$ git checkout master
+$ git merge sharing</p>
+
+<p>```</p>
+
+<p>至此，push工作也就基本完成了。Git 还是很强大的。</p>
+
+<p>参考网址： <a href="http://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/">taming-the-git-daemon-to-quickly-share-git-repository</a></p>
+]]></content>
+  </entry>
+  
+</feed>

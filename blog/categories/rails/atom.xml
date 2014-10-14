@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net//blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-10-12T15:53:52+08:00</updated>
+  <updated>2014-10-14T11:02:48+08:00</updated>
   <id>http://www.gongmingqm10.net//</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -21,109 +21,74 @@
     <content type="html"><![CDATA[<p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/application.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">rails</span><span class="o">/</span><span class="n">all</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>{% codeblock lang:ruby config/application.rb %}
+require &lsquo;rails/all&rsquo;
+{% endcodeblock %}
 替换为 =>
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/application.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">action_controller</span><span class="o">/</span><span class="n">railtie</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">action_mailer</span><span class="o">/</span><span class="n">railtie</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">sprockets</span><span class="o">/</span><span class="n">railtie</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">rails</span><span class="o">/</span><span class="n">test_unit</span><span class="o">/</span><span class="n">railtie</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock lang:ruby config/application.rb %}
+require &ldquo;action_controller/railtie&rdquo;
+require &ldquo;action_mailer/railtie&rdquo;
+require &ldquo;sprockets/railtie&rdquo;
+require &ldquo;rails/test_unit/railtie&rdquo;
+{% endcodeblock %}</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/environments/development.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="c1">#config.active_record.migration_error = :page_load</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby config/environments/development.rb %}
+ #config.active_record.migration_error = :page_load
+{% endcodeblock %}</p>
 
 <!-- more -->
 
 
 <p>上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rails new appname &mdash;skip-active-record</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock %}
+rails new appname &mdash;skip-active-record
+{% endcodeblock %}</p>
 
 <p>到这里我们的app中基本就算是干净的了。下面我们只需要在Gemfile中加入我们所需要的数据库依赖包就可以了，我这里直接加入mongoid
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">mongoid</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">~&gt;</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="n">alpha1</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="ss">github</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">mongoid</span><span class="o">/</span><span class="n">mongoid</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock lang:ruby %}
+gem &lsquo;mongoid&rsquo;, &lsquo;~> 4.0.0.alpha1&rsquo;, github: &lsquo;mongoid/mongoid&rsquo;
+{% endcodeblock %}</p>
 
 <p>修改Gemfile后，我们 bundle install 就会把相关包依赖下载下来，剩下的我们就可以直接使用mongo了。config目录下还有 database.yml 文件，查看内容应该是sqlite的数据库配置文件，我们remove之，然后新建一个属于我们自己的 mongoid.yml.
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/mongoid.yml </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sessions:&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;default</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_development</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;test</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sessions:&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;default</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_test</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;production</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sessions:&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;default</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_production</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock config/mongoid.yml %}
+development:
+  sessions:</p>
+
+<pre><code>default:
+  database: app_development
+  hosts:
+    - localhost:27017
+</code></pre>
+
+<p>test:
+  sessions:</p>
+
+<pre><code>default:
+  database: app_test
+  hosts:
+    - localhost:27017
+</code></pre>
+
+<p>production:
+  sessions:</p>
+
+<pre><code>default:
+  database: app_production
+  hosts:
+    - localhost:27017
+</code></pre>
+
+<p>{% endcodeblock %}</p>
 
 <p>文件新建完毕，下面我们就需要怎么使app加载这个文件。继续新建文件 config/initializers/mongoid.rb
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/initializers/mongoid.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Mongoid</span><span class="o">.</span><span class="n">load!</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">to_s</span><span class="o">+&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">mongoid</span><span class="o">.</span><span class="n">yml</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock lang:ruby config/initializers/mongoid.rb %}
+Mongoid.load!(Rails.root.to_s+&lsquo;/config/mongoid.yml&rsquo;)
+{% endcodeblock %}</p>
 
 <p>至此，数据库也基本配置完毕。到命令行中 rake 下面的task
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake db:mongoid:create_indexes</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock Terminal %}
+rake db:mongoid:create_indexes
+{% endcodeblock %}</p>
 
 <p>开始在model中新建model ～～ rails + mongo 模式开启！</p>
 ]]></content>
