@@ -8,14 +8,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>订餐网之死 - gongmingqm10</title>
+    <title>Git daemon 建立本地Git服务器 - gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="订餐网之死 Mar 8th, 2014 产品 创业 起源 订餐网真名不详，只是为了表意故意称之为订餐网。都说文以表意，于是订餐网的本身就是为了订餐外卖做准备，这还是我刚在TW实习为了学习组内的技术栈也为了实现一点小想法进行的一次尝试。尝试的初衷很简单，为了学习。动力很简单，学好一门技术， &hellip;">
+    <meta name="description" content="Git daemon 建立本地Git服务器 Oct 14th, 2014 git 平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器： 前提 &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://www.gongmingqm10.net//blog/2014/03/08/ding-can-wang-zhi-si">
+    <link rel="canonical" href="http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
@@ -58,7 +58,7 @@
           <article class="post">
   <header>
   
-  <h1 class="title indent">订餐网之死</h1>
+  <h1 class="title indent">Git daemon 建立本地Git服务器</h1>
   
 
   
@@ -75,7 +75,7 @@
   
 
 
-<time class="pull-left" datetime="2014-03-08T18:37:11+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 8<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-14T10:51:41+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 14<span>th</span>, 2014</time>
     
 
 
@@ -85,9 +85,7 @@
     <i class="icon-tags"></i>
     <ul class="tags unstyled">
     
-      <li><a href="/blog/categories/产品/">产品</a></li>
-    
-      <li><a href="/blog/categories/创业/">创业</a></li>
+      <li><a href="/blog/categories/git/">git</a></li>
     
     </ul>
   </div>
@@ -101,26 +99,61 @@
 
 
 
-  <h3>起源</h3>
+  <p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
 
-<p>订餐网真名不详，只是为了表意故意称之为<strong>订餐网</strong>。都说文以表意，于是订餐网的本身就是为了订餐外卖做准备，这还是我刚在TW实习为了学习组内的技术栈也为了实现一点小想法进行的一次尝试。尝试的初衷很简单，为了学习。动力很简单，学好一门技术，做个web站点出来。而终点就是能够使之成为我的毕设，也作为自己对<em>创业</em>的一点尝试。在buddy的鼓励下，我真的开始在做的&hellip;也真的想把这个产品做好了。</p>
+<p><strong>前提</strong></p>
 
-<!--more-->
+<p>代码是通过Git托管的，如果使用SVN的话，多增加一个Git repo也是可以的。</p>
+
+<p><strong>Step by Step</strong></p>
+
+<ol>
+<li><p>进入到自己工程所在的目录下，以Users/mingong/project/Sheldon为例：<code>cd  project/Sheldon</code></p></li>
+<li><p>在Git项目根目录下开启Daemon服务器  <code>git daemon --base-path=. --export-all --reuseaddr --informative-errors  —verbose</code></p></li>
+<li><p>使用ifconfig查看本机电脑内网IP地址：<code>ifconfig</code>，以我的电脑为例，查看到的IP地址为 <code>10.113.241.150</code></p></li>
+<li><p><code>clone/pull</code>代码到另外一台电脑（两台电脑需在同一个内网下即可），为模拟需要，直接到我的Downloads目录下面模拟进行后续步骤。<br/>
+首先我需要在Doanloads文件夹中<code>clone project: git clone git://10.113.241.150/sheldon</code> ，
+ls可以看到我的Downloads中已经成功clone了sheldon工程，clone了工程的下一步就是pull, 当A电脑上的代码变动之后，我需要直接更新代码，首先进入sheldon根目录中：<code>git pull git://10.113.241.150/</code></p></li>
+<li><p>增加push权限<br/>
+在B电脑上clone代码后，B电脑上的伙伴修改完代码会需要将代码push回A电脑的工程中，
+在第2步中开启的git daemon给可访问的客户端read权限，在需要开启write权限时，我们需要给git daemon增加 <code>—enable=receive-pack</code>，执行命令如下，  <br/>
+<code>git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors  —verbose</code><br/>
+There is one quirk: client can’t push into your active git branch. Before pushing, user on the server should change the branch, if client wants to push to this branch.<br/>
+客户端B不能直接提交master到当前活跃分支，所以可以在B新建一个分支，只要提交分支到A的repo中即可，由A决定是否进行分支merge.</p></li>
+</ol>
 
 
-<h3>愿景</h3>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git checkout -b sharing
+</span><span class='line'># made some changes ...
+</span><span class='line'>$ git commit -am "add sharing feature"
+</span><span class='line'>$ git push -u origin sharing
+</span><span class='line'>...
+</span><span class='line'>* [new branch]      sharing -&gt; sharing
+</span><span class='line'>...
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>暂时请允许我称之为产品，在当前这个时期，各类互联网产品充斥与web,特别是移动设备上，也催生了无数个前仆后继的创业公司，也有了所谓的天使投资，当然做得好的就能够在几轮融资之后建立稳定的公司，有着一个完整专业的团队来运营。而我目前做的这个东西我甚至连beta版都还没出来，我们就有过许多幻想。基于核心城市核心商圈和以大学为主的地理位置为中心，进行外卖订餐。甚至幻想着能够建立属于我们自己的物流配送团队，而配送员将由兼职的学生担任，建立配送中心，最终逐渐覆盖全国，进而产生相应的价值。</p>
 
-<h3>终结</h3>
+<p><strong>在服务器端merge分支</strong></p>
 
-<p>做这个项目的同时自己最担心的就是产品做好之后的推广，而做的过程中也发现自己不擅长的就是UX和UI，一些自以为很好的界面在内行人眼里看来却的确是极度的缺少交互性。于是更加坚定了之前的项目，代码不是全部，一坨稀烂的代码更是什么也不是。我只是在大师们搭建好的框架上写了几行毫无技术含量的代码，这就是事实。尽管有这样的事实，我还是认为凭我一人之力，可以handle所有的事情，于是有时也会心血来潮去学习PS上制作ICON&hellip;</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git checkout master
+</span><span class='line'>$ git merge sharing
+</span></code></pre></td></tr></table></div></figure>
 
-<p>也许我喜欢的不是这个产品的idea本身，而是想证明自己能够独立完成一个项目，当然也有一些把这个产品做成毕业论文的想法。可是事实终究是事实，当我们真的抛开这些时，如果我们丧失了对产品本身的热爱，那么产品也就立刻失去了应有的意义。这就是热情，失去了热情你就失去了做事情的最原始动力。</p>
 
-<p>下午网上搜索了一下，竟然发现这种产品已经有了一个“开吃吧”，自己体验了一下，发现别人做的还不错，再次产生了一种感觉，你能够想到的别人一定想到了，别人想到了你不一定想得到。于是顿时被自己打击了一番，于是对这个原本不太坚定的产品开始有了放弃的想法。是的，放弃。我似乎放弃了很多东西，因为我自己都不能说服自己了。看了一下几年前和这个送餐类似的“美食刻”，当时在校内小有名气，后来似乎这个产品慢慢淡出人们的视野，我不了解它现在是否还存在，只知道这个曾经的产品现在真的不在了。不定因素太多，还是束之高阁吧～我的为时两个月左右的订餐网也该休息了。</p>
+<p>至此，push工作也就基本完成了。Git 还是很强大的。</p>
 
-<p>毕业在即，论文的主题还有待确定，于是我找寻新的点子，期待new idea!</p>
+<p>参考网址： <a href="http://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/">taming-the-git-daemon-to-quickly-share-git-repository</a></p>
 
 
 </article>

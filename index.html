@@ -11,7 +11,7 @@
     <title>gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="Deploy app to remote server —— 网站部署篇 Oct 12th, 2014 web 网站开发完毕之后，下一步的任务就是部署了。我们从最简单的入手，如何将本地开发的webapp部署到远程服务器上（这里我们用的是阿里的ECS）。部署是一件很有意思的事情， &hellip;">
+    <meta name="description" content="Git daemon 建立本地Git服务器 Oct 14th, 2014 git 平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器： 前提 &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -57,6 +57,223 @@
 
           
 
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/">Git daemon 建立本地Git服务器</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2014-10-14T10:51:41+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 14<span>th</span>, 2014</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/git/">git</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
+
+<p><strong>前提</strong></p>
+
+<p>代码是通过Git托管的，如果使用SVN的话，多增加一个Git repo也是可以的。</p>
+
+<p><strong>Step by Step</strong></p>
+
+<ol>
+<li><p>进入到自己工程所在的目录下，以Users/mingong/project/Sheldon为例：<code>cd  project/Sheldon</code></p></li>
+<li><p>在Git项目根目录下开启Daemon服务器  <code>git daemon --base-path=. --export-all --reuseaddr --informative-errors  —verbose</code></p></li>
+<li><p>使用ifconfig查看本机电脑内网IP地址：<code>ifconfig</code>，以我的电脑为例，查看到的IP地址为 <code>10.113.241.150</code></p></li>
+<li><p><code>clone/pull</code>代码到另外一台电脑（两台电脑需在同一个内网下即可），为模拟需要，直接到我的Downloads目录下面模拟进行后续步骤。<br/>
+首先我需要在Doanloads文件夹中<code>clone project: git clone git://10.113.241.150/sheldon</code> ，
+ls可以看到我的Downloads中已经成功clone了sheldon工程，clone了工程的下一步就是pull, 当A电脑上的代码变动之后，我需要直接更新代码，首先进入sheldon根目录中：<code>git pull git://10.113.241.150/</code></p></li>
+<li><p>增加push权限<br/>
+在B电脑上clone代码后，B电脑上的伙伴修改完代码会需要将代码push回A电脑的工程中，
+在第2步中开启的git daemon给可访问的客户端read权限，在需要开启write权限时，我们需要给git daemon增加 <code>—enable=receive-pack</code>，执行命令如下，  <br/>
+<code>git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors  —verbose</code><br/>
+There is one quirk: client can’t push into your active git branch. Before pushing, user on the server should change the branch, if client wants to push to this branch.<br/>
+客户端B不能直接提交master到当前活跃分支，所以可以在B新建一个分支，只要提交分支到A的repo中即可，由A决定是否进行分支merge.</p></li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git checkout -b sharing
+</span><span class='line'># made some changes ...
+</span><span class='line'>$ git commit -am "add sharing feature"
+</span><span class='line'>$ git push -u origin sharing
+</span><span class='line'>...
+</span><span class='line'>* [new branch]      sharing -&gt; sharing
+</span><span class='line'>...
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>在服务器端merge分支</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git checkout master
+</span><span class='line'>$ git merge sharing
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>至此，push工作也就基本完成了。Git 还是很强大的。</p>
+
+<p>参考网址： <a href="http://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/">taming-the-git-daemon-to-quickly-share-git-repository</a></p>
+
+
+  </article>
+  <hr>
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2014/10/13/android-quiz-questions/">Android quiz questions</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2014-10-13T17:19:22+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 13<span>th</span>, 2014</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/android/">android</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
+
+<hr />
+
+<p><strong>Q: Android中Activity的生命周期？</strong></p>
+
+<p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
+
+<hr />
+
+<p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
+
+<p>A: 答案显然是Override不是必须的，没有onCreate()的Activity还是可以运行的，那么究竟会运行成什么样子呢。<br/>
+实例中试一试，从MainActivity中打开没有Override任何Method的Activity，发现界面上会出现一个白底界面的Activity，说明我们的Activity最终还是运行了的。只不过界面上没有任何元素，因为我们没有指定contentView。</p>
+
+<hr />
+
+<p><strong>Q: onStop()等在生命周期中是否一定会被调用?</strong></p>
+
+<p>A: onStart(), onResume(), onPause(), onStop()都可以不被调用。因为一旦在onCreate()中我们直接手动调用finish()，相当于告诉Activity结束，于是系统会直接调用onDestroy()来销毁当前的Activity。</p>
+
+<hr />
+
+<p><strong>Q: onCreate()中的参数savedInstanceState意义是什么，会在什么情况下用到？</strong></p>
+
+<p>A：按照官方的解释：</p>
+
+<blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
+ *     previously being shut down then this Bundle contains the data it most
+ *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
+ * 
+</code></pre></blockquote>
+
+<p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>
+
+<hr />
+
+<p><strong>Q: Activity与Fragment的区别</strong></p>
+
+<p>A: Activity相信大家都不陌生，其实可以简单的看着一个页面，跳转到另外一个页面一般就进入新的Activity。那么Android从API11开始使用Fragment的原因呢？其实主要是为了适配Android的多屏（特别是手机与平板）问题。一般情况下，如果按照普通的设计思路，我们会同时维护两份代码，并且UI上会有比较大的区别。对于快速升级的互联网产品而言，简直就是一个灾难。这时Google想了一个好的办法，在代码中引入Fragment，Fragment相当于一个module，我们所有的UI可以以模块的形式放到Fragment中。这时候的Fragment能够被多个Activity复用，我们的Activity此时做的事情就是组装这些Fragment。在平板中，我可以在ActivityA中放入FragmentA和FragmentB；在手机中，我则会在ActivityA中放入FragmentA，而在ActivityB中放入FragmentB。所以平板和手机的适配问题变成了简单的组装。从而我们的View不需要进行各种大的变动。这能够为开发者节省很多时间。<br/>
+具体参考：<a href="http://developer.android.com/guide/components/fragments.html">Android Fragment Component</a></p>
+
+<hr />
+
+<p><strong>Q: UI线程你知道多少？</strong></p>
+
+<p>A：UI线程就是我们常说的主线程，UI线程负责着与用户的交互操作，会处理用户的触摸滑动点击等事件，并把这些事件分发给相应的组件来处理。如果我们尝试在UI线程中进行一个耗时的操作，那么我们的APP会出现ANR（Application not responsing）异常。在UI线程中直接进行耗时操作就会造成主线程阻塞，阻塞到达一定时间则会产生ANR。<br/>
+为了防止这种UI错误，我们进行的处理是将耗时操作放到另外一个线程中处理，耗时操作完成后，我们不能在非UI线程中进行UI的操作，这样是不安全的。因为我们可以借助Handler把更新的消息发给主线程，然后在主线程中更新UI操作。下面是几种耗时操作后更新UI线程的方法：</p>
+
+<ul>
+<li>View.post(Runnable runnable)</li>
+<li>Activity.runOnUiThread(Runnable runnable)</li>
+<li>AsyncTask</li>
+<li>Hanlder + Thread</li>
+</ul>
+
+
+<p>事实上前面三种都是使用java封装好的其他线程中操作UI线程的方法，这些方法都是为了方便开发人员而进行的一些处理。具体用法，大家可以Google之。</p>
+
+
+  </article>
+  <hr>
 
   
   <article class="listing">
@@ -2399,6 +2616,14 @@ ID             Applied At          Description
   <ul class="divided">
     
       <li class="post">
+        <a href="/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/">Git daemon 建立本地Git服务器</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/13/android-quiz-questions/">Android quiz questions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/12/deploy-app-to-remote-server/">Deploy app to remote server —— 网站部署篇</a>
       </li>
     
@@ -2410,19 +2635,11 @@ ID             Applied At          Description
         <a href="/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/">云服务器使用记录</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/09/25/androidzi-ding-yi-view/">Android自定义View</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/22/travel-to-thoughtworks/">Travel to ThoughtWorks</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(3)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(4)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section id="about me" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">About Me</h1>
