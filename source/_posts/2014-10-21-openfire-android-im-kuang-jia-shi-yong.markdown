@@ -16,4 +16,72 @@ Openfire安装文档：[http://www.igniterealtime.org/builds/openfire/docs/lates
 
 ###1. 选择服务器
 对于实时通讯软件，除了我们的客户端，服务器端更是关键。因为服务器是连接两个会话的桥梁。根据安装文档中，Openfire提供了多个平台的安装版本。Windows, Linux/Unix。所以支持还是很丰富的。至于服务器的选择我们可以选择自己的ECS，本地PC，或者Linux虚拟机。选择本机安装的请略过此步骤。  
-为了更加符合真实的安装环境，我选择本地的Linux虚拟机作为服务器环境。方便我以后更好的把服务放在真实的云服务器上。
+为了更加符合真实的安装环境，我选择本地的Linux虚拟机作为服务器环境。方便以后部署到真实的服务器环境中。    
+在进行下一步之前请先在server上安装mysql和java。
+###2. Install openfire  
+从官网上下载对应的版本，我这里选择[Openfire_3.9.3 Linux版本](http://www.igniterealtime.org/downloads/index.jsp)，登陆服务器后直接使用wget下载
+
+```
+wget http://www.igniterealtime.org/downloadServlet?filename=openfire/openfire-3.9.3-1.i386.rpm
+
+//下载完成后使用rpm进行安装
+
+rpm -ivh openfire-3.9.3-1.i386.rpm
+
+```
+Openfire安装完成后会在/opt目录下生成openfire/目录。
+安装完成后就需要进行数据库的配置，按照官方文档：
+
+```
+Make sure that you are using MySQL 4.1.18 or later (5.x recommended) ¹.
+Create a database for the Openfire tables:
+mysqladmin create [databaseName]
+(note: "databaseName" can be something like 'openfire')
+Import the schema file from the resources/database directory of the installation folder:
+Unix/Linux: cat openfire_mysql.sql | mysql [databaseName]; 
+Windows: type openfire_mysql.sql | mysql [databaseName];
+Start the Openfire setup tool, and use the appropriate JDBC connection settings.
+
+```
+
+首先使用`mysqladmin create openfire`创建名为openfire的数据库, `cd /opt/openfire/resources/database`进入openfire的数据库资源目录，使用`cat openfire_mysql.sql | mysql openfire`导入openfire的schema数据库文件。
+
+###3. 启动Openfire服务
+使用rpm安装完成后的openfire会在/etc/init.d/中自动生成openfire 文件，可以直接在这里打开服务.
+
+```
+Usage /etc/init.d/openfire {start|stop|restart|status|condrestart|reload}
+
+```
+
+运行openfire服务：`/etc/init.d/openfire start`，运行`/etc/init.d/openfire status`显示没有成功运行。  
+查看log `cat /opt/openfire/logs`，显示`nohup: cannot run command /opt/openfire/jre/bin/java: No such file or directory`，看来openfire找不到java，所以不能成功启动，但是我们的系统的确已经安装了java，所以可以通过软链解决：  
+
+```
+cd /opt/openfire/jre/bin
+cp java java.bak
+rm java
+ln -s /usr/bin/java java
+service openfire start
+
+```
+
+软链完成之后，再次开启openfire服务：
+
+```
+[root@iZ23572i0rtZ bin]# /etc/init.d/openfire status
+openfire is not running
+[root@iZ23572i0rtZ bin]# /etc/init.d/openfire start
+Starting openfire:
+[root@iZ23572i0rtZ bin]# /etc/init.d/openfire status
+openfire is running
+
+```
+status显示openfire已经成功启动。通过虚拟机ip访问9090端口，这时会跳转到setup界面，只需要通过setup便可以完成相关配置。
+
+配置完成之后即可以登录自己的管理控制台。
+
+###4. Integrate to Android
+既然服务器安装完成，那我们可以着手我们的APP。与Openfire关联的客户端XMPP协议库是smack，smack是使用java写的，所以我们很容易通过gradle集成到我们的app中。`'jivesoftware:smack:3.1.0'`。  
+以实例为主，通过smack实现两个客户端之间的即时通信。  
+
