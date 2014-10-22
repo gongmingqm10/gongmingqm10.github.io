@@ -82,6 +82,15 @@ status显示openfire已经成功启动。通过虚拟机ip访问9090端口，这
 配置完成之后即可以登录自己的管理控制台。
 
 ###4. Integrate to Android
-既然服务器安装完成，那我们可以着手我们的APP。与Openfire关联的客户端XMPP协议库是smack，smack是使用java写的，所以我们很容易通过gradle集成到我们的app中。`'jivesoftware:smack:3.1.0'`。  
-以实例为主，通过smack实现两个客户端之间的即时通信。  
+既然服务器安装完成，那我们可以着手我们的APP。与Openfire关联的客户端XMPP协议库是smack。摸索一番之后发现，要在Android中使用Smack必须使用ASmack库。[ASmack下载地址](http://asmack.freakempire.de/)。  
+以实例为主，通过smack实现两个客户端之间的即时通信。[下载地址](https://github.com/gongmingqm10/SmackDemo)
+
+####Attention
+* 在AndroidManifest中必须添加Internet permission,否则连接失败。`<uses-permission android:name="android.permission.INTERNET"/>`.
+* 客户端对客户端创建聊天时，SID为 username@XXXX, XXXX表示的是服务器名字，我这里是ECS主机名。
+
+###5. Github Repository
+
+[https://github.com/gongmingqm10/SmackDemo](https://github.com/gongmingqm10/SmackDemo)
+
 
