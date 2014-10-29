@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2014-10-29T09:40:26+08:00</updated>
+  <updated>2014-10-29T11:28:21+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,96 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android电话监听]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting/"/>
+    <updated>2014-10-29T11:11:48+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting</id>
+    <content type="html"><![CDATA[<p>看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：<br/>
+我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
+在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
+
+<p>实现部分主要注册一个CallReceiver，并给我们的Receiver监听电话，发送短信，开机重启等权限。编译通过后便可以安装在手机上使用了。贴出主要代码：</p>
+
+<p>```
+package net.gongmingqm10.callwatcher;</p>
+
+<p>import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;</p>
+
+<p>public class CallReceiver extends BroadcastReceiver {</p>
+
+<pre><code>private final static String NUMBER = "Your Phone number"; //我的新手机号
+@Override
+public void onReceive(Context context, Intent intent) {
+    if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) return;
+    TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
+    SmsManager sms = SmsManager.getDefault();
+    Log.i("state", "state = " + tm.getCallState());
+    if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
+        String incomingNumber = intent.getStringExtra("incoming_number");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        sms.sendTextMessage(NUMBER, "", "主人，有人给你附属机打电话了：" + incomingNumber, null, null);
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>```
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+&lt;manifest xmlns:android=&ldquo;<a href="http://schemas.android.com/apk/res/android">http://schemas.android.com/apk/res/android</a>&rdquo;</p>
+
+<pre><code>package="net.gongmingqm10.callwatcher" &gt;
+
+&lt;uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/&gt;
+&lt;uses-permission android:name="android.permission.READ_PHONE_STATE"/&gt;
+&lt;uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/&gt;
+&lt;uses-permission android:name="android.permission.SEND_SMS"/&gt;
+
+&lt;application
+    android:allowBackup="true"
+    android:icon="@drawable/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme" &gt;
+    &lt;activity
+        android:name=".MainActivity"
+        android:label="@string/app_name" &gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name="android.intent.action.MAIN" /&gt;
+
+            &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+    &lt;receiver android:name=".CallReceiver"&gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name="android.intent.action.BOOT_COMPLETED"/&gt;
+            &lt;action android:name="android.intent.action.PHONE_STATE"/&gt;
+            &lt;action android:name="android.intent.action.NEW_OUTGOING_CALL"/&gt;
+        &lt;/intent-filter&gt;
+    &lt;/receiver&gt;
+&lt;/application&gt;
+</code></pre>
+
+<p></manifest></p>
+
+<p>```</p>
+
+<p>主界面几乎没任何交互。主要实现功能，想更多交互的话可以继续～</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android Data Cache]]></title>
@@ -214,72 +304,6 @@ android {</p>
 <p>项目代码下载：<a href="https://github.com/gongmingqm10/AndroidSIP">https://github.com/gongmingqm10/AndroidSIP</a></p>
 
 <p>任何问题，欢迎大家fork，发pull/request。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android quiz questions]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions/"/>
-    <updated>2014-10-13T17:19:22+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions</id>
-    <content type="html"><![CDATA[<p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
-
-<hr />
-
-<p><strong>Q: Android中Activity的生命周期？</strong></p>
-
-<p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
-
-<hr />
-
-<p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
-
-<p>A: 答案显然是Override不是必须的，没有onCreate()的Activity还是可以运行的，那么究竟会运行成什么样子呢。<br/>
-实例中试一试，从MainActivity中打开没有Override任何Method的Activity，发现界面上会出现一个白底界面的Activity，说明我们的Activity最终还是运行了的。只不过界面上没有任何元素，因为我们没有指定contentView。</p>
-
-<hr />
-
-<p><strong>Q: onStop()等在生命周期中是否一定会被调用?</strong></p>
-
-<p>A: onStart(), onResume(), onPause(), onStop()都可以不被调用。因为一旦在onCreate()中我们直接手动调用finish()，相当于告诉Activity结束，于是系统会直接调用onDestroy()来销毁当前的Activity。</p>
-
-<hr />
-
-<p><strong>Q: onCreate()中的参数savedInstanceState意义是什么，会在什么情况下用到？</strong></p>
-
-<p>A：按照官方的解释：</p>
-
-<blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
- *     previously being shut down then this Bundle contains the data it most
- *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
- * 
-</code></pre></blockquote>
-
-<p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>
-
-<hr />
-
-<p><strong>Q: Activity与Fragment的区别</strong></p>
-
-<p>A: Activity相信大家都不陌生，其实可以简单的看着一个页面，跳转到另外一个页面一般就进入新的Activity。那么Android从API11开始使用Fragment的原因呢？其实主要是为了适配Android的多屏（特别是手机与平板）问题。一般情况下，如果按照普通的设计思路，我们会同时维护两份代码，并且UI上会有比较大的区别。对于快速升级的互联网产品而言，简直就是一个灾难。这时Google想了一个好的办法，在代码中引入Fragment，Fragment相当于一个module，我们所有的UI可以以模块的形式放到Fragment中。这时候的Fragment能够被多个Activity复用，我们的Activity此时做的事情就是组装这些Fragment。在平板中，我可以在ActivityA中放入FragmentA和FragmentB；在手机中，我则会在ActivityA中放入FragmentA，而在ActivityB中放入FragmentB。所以平板和手机的适配问题变成了简单的组装。从而我们的View不需要进行各种大的变动。这能够为开发者节省很多时间。<br/>
-具体参考：<a href="http://developer.android.com/guide/components/fragments.html">Android Fragment Component</a></p>
-
-<hr />
-
-<p><strong>Q: UI线程你知道多少？</strong></p>
-
-<p>A：UI线程就是我们常说的主线程，UI线程负责着与用户的交互操作，会处理用户的触摸滑动点击等事件，并把这些事件分发给相应的组件来处理。如果我们尝试在UI线程中进行一个耗时的操作，那么我们的APP会出现ANR（Application not responsing）异常。在UI线程中直接进行耗时操作就会造成主线程阻塞，阻塞到达一定时间则会产生ANR。<br/>
-为了防止这种UI错误，我们进行的处理是将耗时操作放到另外一个线程中处理，耗时操作完成后，我们不能在非UI线程中进行UI的操作，这样是不安全的。因为我们可以借助Handler把更新的消息发给主线程，然后在主线程中更新UI操作。下面是几种耗时操作后更新UI线程的方法：</p>
-
-<ul>
-<li>View.post(Runnable runnable)</li>
-<li>Activity.runOnUiThread(Runnable runnable)</li>
-<li>AsyncTask</li>
-<li>Hanlder + Thread</li>
-</ul>
-
-
-<p>事实上前面三种都是使用java封装好的其他线程中操作UI线程的方法，这些方法都是为了方便开发人员而进行的一些处理。具体用法，大家可以Google之。</p>
 ]]></content>
   </entry>
   
