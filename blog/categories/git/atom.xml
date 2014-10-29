@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: git | gongmingqm10]]></title>
-  <link href="http://www.gongmingqm10.net//blog/categories/git/atom.xml" rel="self"/>
-  <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-10-22T16:46:12+08:00</updated>
-  <id>http://www.gongmingqm10.net//</id>
+  <link href="http://www.gongmingqm10.net/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net/"/>
+  <updated>2014-10-29T09:40:26+08:00</updated>
+  <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Git daemon 建立本地Git服务器]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
     <updated>2014-10-14T10:51:41+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
     <content type="html"><![CDATA[<p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
 
 <p><strong>前提</strong></p>

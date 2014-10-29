@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://www.gongmingqm10.net//sitemap.xml 
+Sitemap: http://www.gongmingqm10.net/sitemap.xml 

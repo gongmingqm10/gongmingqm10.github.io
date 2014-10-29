@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[gongmingqm10]]></title>
-  <link href="http://www.gongmingqm10.net//atom.xml" rel="self"/>
-  <link href="http://www.gongmingqm10.net//"/>
-  <updated>2014-10-22T16:46:12+08:00</updated>
-  <id>http://www.gongmingqm10.net//</id>
+  <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net/"/>
+  <updated>2014-10-29T09:40:26+08:00</updated>
+  <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
     
@@ -14,10 +14,42 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Android Data Cache]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache/"/>
+    <updated>2014-10-28T17:11:26+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache</id>
+    <content type="html"><![CDATA[<p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
+
+<h3>Usage</h3>
+
+<p>整个Cache模块的设计思想很简单，每个缓存数据都对应一个key，每个缓存数据又会被存到以此key命名的文件中，需要时直接读取。关键类分别为<code>CacheData</code>, <code>CacheManager</code>, <code>CacheUtils</code>。</p>
+
+<ul>
+<li>CacheData：数据封装类，所有欲缓存的数据都通过CacheData封装，CacheData中能够定义缓存有效期，并可以通过getData()直接获取真实的缓存数据。</li>
+<li>CacheManager: 缓存管理类，单例模式设计，负责缓存的存储和读取。</li>
+<li>CacheUtils: 缓存常用类，所有的缓存Key都应该在这个类中定义，此类还定义了一些时间常量，缓存有效期中可以使用。</li>
+</ul>
+
+
+<p>使用方法如下：</p>
+
+<ul>
+<li>step1: <code>CacheManager.init(Context context)</code>, 在APP加载时就应该对CacheManager初始化。</li>
+<li>step2: 自定义的Model需要实现序列化，使用CacheData进行包装，然后使用CacheManager进行存储和读取。</li>
+</ul>
+
+
+<h3>Code Download</h3>
+
+<p>项目代码托管在<a href="https://github.com/gongmingqm10/AndroidUikit/tree/master/library/src/main/java/org/gongming/common/cache">Github Repo</a>中，欢迎star和fork。</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Vagrant 搭建本地虚拟机]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/"/>
     <updated>2014-10-21T11:06:42+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji</id>
     <content type="html"><![CDATA[<p>多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。<br/>
 虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。<br/>
 安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
@@ -293,9 +325,9 @@
   
   <entry>
     <title type="html"><![CDATA[Openfire - Android IM 框架使用]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/"/>
     <updated>2014-10-21T10:02:58+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong</id>
     <content type="html"><![CDATA[<p>IM(Instant Messaging)在Android中可谓运用广泛。QQ，Wechat，陌陌等应用都可以看作IM实时通讯APP，实时通讯在社交类APP中运用范围较广，其功能看起来也是比较cool的。今天我们将研究一下android IM软件是如何实现的。像IM这种实施通讯软件，除非公司有比较大的实力和精力，才会自己去整这么一套框架。对于广大中小软件开发者来说，想到比较多的就是开源框架。Opensource对于开发者来说简直就是福音，对于整个软件行业也起到了不小的推动性的作用。<br/>
 Openfire在这种环境下应运而生，而且作为实时通讯类开源框架迅速走红，下面我们就一起来学习这样一款拯救宇宙的开源框架，文章的最后会运用Openfire做出一个可以实时通讯的AndroidAPP，如果结合上地理位置再多点UI和交互上的设计提升，这不就是陌陌吗？YY了一会，觉得挺有趣，那么 <code>Just do it</code>。</p>
 
@@ -417,9 +449,9 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
   
   <entry>
     <title type="html"><![CDATA[Android deploy your app]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/17/android-deploy-your-app/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app/"/>
     <updated>2014-10-17T12:56:13+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/17/android-deploy-your-app</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app</id>
     <content type="html"><![CDATA[<p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
 
 <h3>Proguard－代码混淆</h3>
@@ -473,9 +505,9 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
   <entry>
     <title type="html"><![CDATA[Android SIP 网络通话]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/17/android-sip-wang-luo-tong-hua/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/17/android-sip-wang-luo-tong-hua/"/>
     <updated>2014-10-17T09:49:35+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/17/android-sip-wang-luo-tong-hua</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/17/android-sip-wang-luo-tong-hua</id>
     <content type="html"><![CDATA[<p>突发奇想，想研究一下Android的网络通话怎么实现，于是从Google搜到了相关的资料。原来Android下集成了SIP（Session Initiation Protocol）。SIP的账号可以通过SIP提供商免费申请，申请后即可以通过用户名实现网络通话。于是也找了网上的一些资料，写了个AndroidSIP的小demo，demo实现后大家可以实现互拨，目前界面很简单，但是通话的功能应该是可以实现的。请各位看官试用之。<br/>
 整体效果看起来还是蛮酷的，这里我们申请了两个免费的账号，在设备上安装之后就可以进行Network Call了。</p>
 
@@ -491,9 +523,9 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
   <entry>
     <title type="html"><![CDATA[Git daemon 建立本地Git服务器]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
     <updated>2014-10-14T10:51:41+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
     <content type="html"><![CDATA[<p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
 
 <p><strong>前提</strong></p>
@@ -554,9 +586,9 @@ There is one quirk: client can’t push into your active git branch. Before push
   
   <entry>
     <title type="html"><![CDATA[Android quiz questions]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/13/android-quiz-questions/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions/"/>
     <updated>2014-10-13T17:19:22+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/13/android-quiz-questions</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions</id>
     <content type="html"><![CDATA[<p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
 
 <hr />
@@ -620,9 +652,9 @@ There is one quirk: client can’t push into your active git branch. Before push
   
   <entry>
     <title type="html"><![CDATA[Deploy app to remote server —— 网站部署篇]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/10/12/deploy-app-to-remote-server/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server/"/>
     <updated>2014-10-12T11:14:37+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/10/12/deploy-app-to-remote-server</id>
+    <id>http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server</id>
     <content type="html"><![CDATA[<p>网站开发完毕之后，下一步的任务就是部署了。我们从最简单的入手，如何将本地开发的webapp部署到远程服务器上（这里我们用的是阿里的ECS）。部署是一件很有意思的事情，因为我们可以让本地开发的网站被外界所访问，所以还是很多成就感的。这里的工程采用的是Spring MVC 框架。</p>
 
 <h3>1. Requirement</h3>
@@ -771,9 +803,9 @@ There is one quirk: client can’t push into your active git branch. Before push
   
   <entry>
     <title type="html"><![CDATA[Android onTouch() 初探]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/09/30/android-ontouch-chu-tan/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/30/android-ontouch-chu-tan/"/>
     <updated>2014-09-30T17:28:56+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/09/30/android-ontouch-chu-tan</id>
+    <id>http://www.gongmingqm10.net/blog/2014/09/30/android-ontouch-chu-tan</id>
     <content type="html"><![CDATA[<p>Android的touch对于我来说是个既熟悉又陌生的话题，熟悉之处在于onTouch太常用了，从系统的自定义的ListView的滑动到我们自定义的可以滑动的View，onTouch直接与用户进行相关的Interation，所以onTouch无处不再。想像下如果Android某一天不能相应我们的touch事件，那我们现在的触屏手机基本废了，那我们的手机还得还原到以前的字母键手机的状态。学习总是得自己逼迫自己，没有博客的驱动我是怎样也不会来从头开始研究onTouch的作用机制的，博客当作一个自我学习的过程，坚持再坚持。</p>
 
 <p>废话不说，步入正题，从用户开始，触屏事件被屏幕传感器截获，截获后会将该触摸数据传到我们的View上面，然后View再进行相应的处理。从用户触摸到数据被View感知都是有Android底层完成的，我们这里关心的只是Android的view会如何响应这些触摸行为呢？了解了触摸行为相关的原理才可以更好的利用这些特性从而实现我们自定义的各种交互生动的组件。</p>
@@ -811,10 +843,10 @@ There is one quirk: client can’t push into your active git branch. Before push
 
 
 <p>这是官方给出的定义，对于return返回值的意义，解释是<code>return True if the listener has consumed the event, false otherwise</code>，如果返回True，表示View消费了这次事件，否则的话，表示View并没有消费本次Touch事件。<br/>
-<img src="http://www.gongmingqm10.net//images/touch-simple.png" alt="main_activity_layout.xml"/><br/>
+<img src="http://www.gongmingqm10.net/images/touch-simple.png" alt="main_activity_layout.xml"/><br/>
 在XML中，我们声明了A，B，C 三个Layout，其中C包含B，而B包含A，对于ABC三个View，我们都为其指定相应的触摸事件，然后再观察触摸事件是如何被响应并传递的。<br/>
 MainActivty中定义如下：  <br/>
-<img src="http://www.gongmingqm10.net//images/touch-simple-main.png" alt="MainActivity.java"/>  <br/>
+<img src="http://www.gongmingqm10.net/images/touch-simple-main.png" alt="MainActivity.java"/>  <br/>
 在onTouch()方法中，我们<code>return false</code>，说明当前的View并没有消化触摸事件，它会将触摸事件继续<code>向上</code>传递，所谓<code>向上</code>指的是View会向它的父元素传递，父元素又会根据其定义的onTouch事件继续将事件传递。触摸A元素，产生的Log如下：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -1087,7 +1119,7 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
 <h3>More. SimpleOnGestureListener</h3>
 
 <p><code>onTouch是</code>View中所有触摸事件的入口，通过上面的了解我们可以看到MotionEvent中通过提供触摸的位置和触摸的类型方便我们进行各种判断，但是我们的真实需求往往比这复杂，我们有时需要自己处理双击事件，长按事件，滑动事件等等。如果这些由我们自己处理，那我们需要在onTouch()中进行一些逻辑判断，这无形中增加了我们的开发难度和代码量。好在Android通过GestureDetector提供了更好的支持。对于一些常规的事件，我们可以直接通过GestureDetector捕获，从而降低了我们的开发成本，开发人员可以把更多的时间放在业务上。通过<code>GestureDetector.SimpleOnGestureListener</code>的实现，我们能够复写一些基础的事件，从而完成我们的一些业务逻辑。 <br/>
-<img src="http://www.gongmingqm10.net//images/touch-gesture-1.png" alt="SimpleOnGestureListener"/> <br/>
+<img src="http://www.gongmingqm10.net/images/touch-gesture-1.png" alt="SimpleOnGestureListener"/> <br/>
 通过以上代码，我们主要可以看到在<code>View.setOnTouchListener</code>中将MotionEvent委托给GestureDetector来处理，而自身返回的true或者false将决定父容器能否响应触摸事件。</p>
 
 <h3>Sample. SwipeLayout</h3>
@@ -1109,9 +1141,9 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
   
   <entry>
     <title type="html"><![CDATA[云服务器使用记录]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/"/>
     <updated>2014-09-29T15:01:31+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu</id>
+    <id>http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu</id>
     <content type="html"><![CDATA[<h3>我的第一个云服务器ECS</h3>
 
 <p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。<br/>
@@ -1226,9 +1258,9 @@ yum-metadata-parser-1.1.2-3.el5</p>
   
   <entry>
     <title type="html"><![CDATA[Android自定义View]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/09/25/androidzi-ding-yi-view/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view/"/>
     <updated>2014-09-25T23:22:11+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/09/25/androidzi-ding-yi-view</id>
+    <id>http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view</id>
     <content type="html"><![CDATA[<p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
 
 <h2>View的绘制流程</h2>
@@ -1495,7 +1527,7 @@ yum-metadata-parser-1.1.2-3.el5</p>
 <p>自定义ViewGroup主要参考Google的<a href="http://developer.android.com/reference/android/view/ViewGroup.html">ViewGroup</a>，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。</p>
 
 <p>首先看具体效果：<br/>
-<img src="http://www.gongmingqm10.net//images/flow_layout_1.png" alt="FlowLayout" style="width: 250px;"/></p>
+<img src="http://www.gongmingqm10.net/images/flow_layout_1.png" alt="FlowLayout" style="width: 250px;"/></p>
 
 <p>代码实现如下FlowLayout.java</p>
 
@@ -1955,9 +1987,9 @@ res/values/attrs.xml</p>
   
   <entry>
     <title type="html"><![CDATA[Travel to ThoughtWorks]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/09/22/travel-to-thoughtworks/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/22/travel-to-thoughtworks/"/>
     <updated>2014-09-22T10:39:01+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/09/22/travel-to-thoughtworks</id>
+    <id>http://www.gongmingqm10.net/blog/2014/09/22/travel-to-thoughtworks</id>
     <content type="html"><![CDATA[<blockquote><p>Life is a journey, not a destination.</p></blockquote>
 
 <p>人生就是在时光的隧道中不同的奔跑，在不同的环境中遇到不同的人，然后开始相同的挣扎，最后不断优秀的过程。加入ThoughtWorks一月有余，期间经历了一些事情，趁着On beach的时光对其进行一些沉淀，若干年后作为记忆的时光进行回忆品味。</p>
@@ -2000,9 +2032,9 @@ res/values/attrs.xml</p>
   
   <entry>
     <title type="html"><![CDATA[Android best practice]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/09/16/android-best-practice/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/16/android-best-practice/"/>
     <updated>2014-09-16T10:41:25+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/09/16/android-best-practice</id>
+    <id>http://www.gongmingqm10.net/blog/2014/09/16/android-best-practice</id>
     <content type="html"><![CDATA[<h1>Android 最佳实践</h1>
 
 <p>从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。</p>
@@ -2061,9 +2093,9 @@ res/values/attrs.xml</p>
   
   <entry>
     <title type="html"><![CDATA[mybait migration session]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/08/17/mybait-migration-session/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/08/17/mybait-migration-session/"/>
     <updated>2014-08-17T20:50:41+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/08/17/mybait-migration-session</id>
+    <id>http://www.gongmingqm10.net/blog/2014/08/17/mybait-migration-session</id>
     <content type="html"><![CDATA[<h2>Mybatis Migration 初探</h2>
 
 <p>持续交付项目中，项目会不断的迭代上线，这是会出现数据库的改动问题。在一个还未上线的项目中，我更改数据库可以使用简单的直接对sql进行更改，但是面对一个已投入使用的系统而言，每次部署都对数据库进行init显得有点不太可能。于是便有了数据库Migration的诞生。</p>
@@ -2418,9 +2450,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[Fontello 使用心得]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
     <updated>2014-03-19T08:19:49+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/03/19/fontello-shi-yong-xin-de</id>
+    <id>http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de</id>
     <content type="html"><![CDATA[<h2>Overview</h2>
 
 <p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
@@ -2492,9 +2524,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[订餐网之死]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/03/08/ding-can-wang-zhi-si/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/03/08/ding-can-wang-zhi-si/"/>
     <updated>2014-03-08T18:37:11+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/03/08/ding-can-wang-zhi-si</id>
+    <id>http://www.gongmingqm10.net/blog/2014/03/08/ding-can-wang-zhi-si</id>
     <content type="html"><![CDATA[<h3>起源</h3>
 
 <p>订餐网真名不详，只是为了表意故意称之为<strong>订餐网</strong>。都说文以表意，于是订餐网的本身就是为了订餐外卖做准备，这还是我刚在TW实习为了学习组内的技术栈也为了实现一点小想法进行的一次尝试。尝试的初衷很简单，为了学习。动力很简单，学好一门技术，做个web站点出来。而终点就是能够使之成为我的毕设，也作为自己对<em>创业</em>的一点尝试。在buddy的鼓励下，我真的开始在做的&hellip;也真的想把这个产品做好了。</p>
@@ -2520,9 +2552,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[在rails集成mongodb开发应用]]></title>
-    <link href="http://www.gongmingqm10.net//blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/"/>
+    <link href="http://www.gongmingqm10.net/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/"/>
     <updated>2014-01-18T16:04:48+08:00</updated>
-    <id>http://www.gongmingqm10.net//blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
+    <id>http://www.gongmingqm10.net/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
     <content type="html"><![CDATA[<p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
 

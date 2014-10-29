@@ -11,11 +11,11 @@
     <title>gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="Vagrant 搭建本地虚拟机 Oct 21st, 2014 多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器， &hellip;">
+    <meta name="description" content="Android Data Cache Oct 28th, 2014 android Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力， &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://www.gongmingqm10.net/">
+    <link rel="canonical" href="http://www.gongmingqm10.net">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
@@ -57,6 +57,82 @@
 
           
 
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2014-10-28T17:11:26+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 28<span>th</span>, 2014</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/android/">android</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
+
+<h3>Usage</h3>
+
+<p>整个Cache模块的设计思想很简单，每个缓存数据都对应一个key，每个缓存数据又会被存到以此key命名的文件中，需要时直接读取。关键类分别为<code>CacheData</code>, <code>CacheManager</code>, <code>CacheUtils</code>。</p>
+
+<ul>
+<li>CacheData：数据封装类，所有欲缓存的数据都通过CacheData封装，CacheData中能够定义缓存有效期，并可以通过getData()直接获取真实的缓存数据。</li>
+<li>CacheManager: 缓存管理类，单例模式设计，负责缓存的存储和读取。</li>
+<li>CacheUtils: 缓存常用类，所有的缓存Key都应该在这个类中定义，此类还定义了一些时间常量，缓存有效期中可以使用。</li>
+</ul>
+
+
+<p>使用方法如下：</p>
+
+<ul>
+<li>step1: <code>CacheManager.init(Context context)</code>, 在APP加载时就应该对CacheManager初始化。</li>
+<li>step2: 自定义的Model需要实现序列化，使用CacheData进行包装，然后使用CacheManager进行存储和读取。</li>
+</ul>
+
+
+<h3>Code Download</h3>
+
+<p>项目代码托管在<a href="https://github.com/gongmingqm10/AndroidUikit/tree/master/library/src/main/java/org/gongming/common/cache">Github Repo</a>中，欢迎star和fork。</p>
+
+
+  </article>
+  <hr>
 
   
   <article class="listing">
@@ -3259,6 +3335,10 @@ ID             Applied At          Description
   <ul class="divided">
     
       <li class="post">
+        <a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/">Vagrant 搭建本地虚拟机</a>
       </li>
     
@@ -3274,15 +3354,11 @@ ID             Applied At          Description
         <a href="/blog/2014/10/17/android-sip-wang-luo-tong-hua/">Android SIP 网络通话</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/">Git daemon 建立本地Git服务器</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(7)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(8)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section id="about me" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">About Me</h1>
