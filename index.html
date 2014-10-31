@@ -11,8 +11,10 @@
     <title>gongmingqm10</title>
     <meta name="author" content="Gong Ming">
     
-    <meta name="description" content="Android电话监听 Oct 29th, 2014 android 看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：
-我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下， &hellip;">
+    <meta name="description" content="常用的Linux Cmd Oct 30th, 2014 ls：查看目录下所有可见文件
+ls -a ： 查看目录下所有文件，包括隐藏文件 ls -l : 查看目录下可见文件的详细信息
+ls -al 查看目录下所有文件的详细信息 cat file: 查看文件内容
+cat -n file: &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -58,6 +60,93 @@
 
           
 
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2014/10/30/chang-yong-de-linux-cmd/">常用的Linux Cmd</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2014-10-30T15:47:40+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 30<span>th</span>, 2014</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>ls：查看目录下所有可见文件<br/>
+ls -a ： 查看目录下所有文件，包括隐藏文件  <br/>
+ls -l : 查看目录下可见文件的详细信息<br/>
+ls -al 查看目录下所有文件的详细信息</p>
+
+<p>cat file: 查看文件内容<br/>
+cat -n file: 查看文件内容，并显示出行号<br/>
+cat file1 file2 >> file3：将file1, file2的文件内容以此加到file3中，如果file3存在，则会在file3后面继续追加，不会覆盖file3原来的内容，如果file3不存在，则会自动创建。若需要强行覆盖，使用一个  > 即可</p>
+
+<p>touch file: 新建文件，当文件存在时则会更新文件的时间戳</p>
+
+<p>pwd: 查看当前目录<br/>
+cd {path} : 进入目录</p>
+
+<p>mkdir {directory}: 新建目录，若某子目录不存在则可能新建失败<br/>
+mkdir -p {directory}: 新建目录，对于不存在的子目录可以一并创建</p>
+
+<p>tree: 查看当前目录的文件树结构</p>
+
+<p>cp file1 file1-copy: 复制file1到file1-copy<br/>
+cp -r dir1 dir2: 复制文件夹dir1到dir2</p>
+
+<p>mv: 移动文件，也可用来重命名文件，具体用法和cp一样</p>
+
+<p>rmdir directory1: 移除一个空的文件夹<br/>
+rm file: 移除文件<br/>
+rm -r directory1: 移除文件夹</p>
+
+<p>chmod：修改文件的权限
+u : user, g : Group, o : others    增加权限“＋”，删除权限“－”   r (Read), w (Write), x (Execute).<br/>
+chmod u+x file1, 给当前用户增加对file1的执行权限</p>
+
+<p>wc -l file1: 计算file1的行数<br/>
+wc -w file1: 计算file1单词的个数<br/>
+wc -c file1: 计算file1中字符的个数</p>
+
+<p>history: 查看历史命令纪录<br/>
+!-1 : 执行倒数第一条命令<br/>
+!345: 执行第345条命令</p>
+
+<p>cat file1 | grep A : 从file1中找到带有‘A’的行<br/>
+find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文件夹中的文件也可以被找出。</p>
+
+<p>更多命令，欢迎大家一起总结与补充</p>
+
+
+  </article>
+  <hr>
 
   
   <article class="listing">
@@ -3529,6 +3618,10 @@ ID             Applied At          Description
   <ul class="divided">
     
       <li class="post">
+        <a href="/blog/2014/10/30/chang-yong-de-linux-cmd/">常用的Linux Cmd</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/29/androiddian-hua-jian-ting/">Android电话监听</a>
       </li>
     
@@ -3542,10 +3635,6 @@ ID             Applied At          Description
     
       <li class="post">
         <a href="/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/">Openfire - Android IM 框架使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/17/android-deploy-your-app/">Android deploy your app</a>
       </li>
     
   </ul>
