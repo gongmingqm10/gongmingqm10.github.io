@@ -4,7 +4,7 @@ title: "Android onTouch() 初探"
 date: 2014-09-30 17:28:56 +0800
 comments: true
 categories: [android]
-
+description: Android touch 事件机制
 ---
 
 Android的touch对于我来说是个既熟悉又陌生的话题，熟悉之处在于onTouch太常用了，从系统的自定义的ListView的滑动到我们自定义的可以滑动的View，onTouch直接与用户进行相关的Interation，所以onTouch无处不再。想像下如果Android某一天不能相应我们的touch事件，那我们现在的触屏手机基本废了，那我们的手机还得还原到以前的字母键手机的状态。学习总是得自己逼迫自己，没有博客的驱动我是怎样也不会来从头开始研究onTouch的作用机制的，博客当作一个自我学习的过程，坚持再坚持。

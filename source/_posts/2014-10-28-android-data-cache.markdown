@@ -4,6 +4,7 @@ title: "Android Data Cache"
 date: 2014-10-28 17:11:26 +0800
 comments: true
 categories: android
+description: Android本地数据缓存实现方案
 
 ---
 

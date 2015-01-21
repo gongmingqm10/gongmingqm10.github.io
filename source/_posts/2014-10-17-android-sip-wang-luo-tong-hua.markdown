@@ -5,6 +5,7 @@ title: "Android SIP 网络通话"
 date: 2014-10-17 09:49:35 +0800
 comments: true
 categories: android
+description: Android网络通话方案 SIP
 
 ---
 

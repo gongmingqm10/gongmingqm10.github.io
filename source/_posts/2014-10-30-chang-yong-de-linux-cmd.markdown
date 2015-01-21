@@ -3,7 +3,8 @@ layout: post
 title: "常用的Linux Cmd"
 date: 2014-10-30 15:47:40 +0800
 comments: true
-categories: 
+categories:
+description: Linux常用命令
 
 ---
 

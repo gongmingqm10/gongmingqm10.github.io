@@ -3,6 +3,7 @@ layout: post
 title: "Fontello 使用心得"
 date: 2014-03-19 08:19:49 +0800
 comments: true
+description: Fontello使用教程 在Web中使用Fontello
 categories: [Design]
 ---
 ##Overview

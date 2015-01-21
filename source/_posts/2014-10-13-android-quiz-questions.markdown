@@ -4,6 +4,7 @@ title: "Android quiz questions"
 date: 2014-10-13 17:19:22 +0800
 comments: true
 categories: android
+description: Android面试题
 
 ---
 关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。

@@ -4,6 +4,7 @@ title: "Android电话监听"
 date: 2014-10-29 11:11:48 +0800
 comments: true
 categories: android
+description: Android电话监听
 
 ---
 看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：  

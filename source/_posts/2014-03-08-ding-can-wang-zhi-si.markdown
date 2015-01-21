@@ -3,6 +3,7 @@ layout: post
 title: "订餐网之死"
 date: 2014-03-08 18:37:11 +0800
 comments: true
+description: 订餐网 订餐网发展模式  订餐网创业
 categories: [产品, 创业]
 ---
 ###起源

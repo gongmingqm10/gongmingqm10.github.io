@@ -3,7 +3,8 @@ layout: post
 title: "云服务器使用记录"
 date: 2014-09-29 15:01:31 +0800
 comments: true
-categories: 
+categories:
+description: 阿里云服务器使用教程
 
 ---
 

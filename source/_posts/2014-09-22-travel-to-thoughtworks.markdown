@@ -4,6 +4,7 @@ title: "Travel to ThoughtWorks"
 date: 2014-09-22 10:39:01 +0800
 comments: true
 categories: Life
+description: ThoughtWorks之旅 ThoughtWorks工作 TWU感受
 
 ---
 > Life is a journey, not a destination. 

@@ -3,6 +3,7 @@ layout: post
 title: "mybait migration session"
 date: 2014-08-17 18:20:41 +0530
 comments: true
+description: Mybatis migration Mybatis数据迁移 Mysql数据库迁移
 categories: database
 
 ---

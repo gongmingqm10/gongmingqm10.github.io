@@ -4,6 +4,7 @@ title: "Git daemon 建立本地Git服务器"
 date: 2014-10-14 10:51:41 +0800
 comments: true
 categories: git
+description: Git daemon搭建本地Git服务器
 
 ---
 

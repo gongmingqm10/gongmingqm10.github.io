@@ -3,7 +3,8 @@ layout: post
 title: "Vagrant 搭建本地虚拟机"
 date: 2014-10-21 11:06:42 +0800
 comments: true
-categories: 
+categories:
+description: 本地虚拟机  vagrant
 
 ---
 

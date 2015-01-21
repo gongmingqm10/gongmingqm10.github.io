@@ -4,6 +4,7 @@ title: "在rails集成mongodb开发应用"
 date: 2014-01-18 16:04:48 +0800
 comments: true
 sharing: true
+description: Rails如何集成MongoDB
 footer: true
 categories: [rails]
 ---

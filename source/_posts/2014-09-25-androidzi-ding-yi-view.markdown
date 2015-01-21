@@ -4,6 +4,7 @@ title: "Android自定义View"
 date: 2014-09-25 23:22:11 +0800
 comments: true
 categories: android
+description: Android自定义View Android自定义控件
 
 ---
 Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。  

@@ -4,9 +4,9 @@ title: "Android best practice"
 date: 2014-09-16 10:41:25 +0800
 comments: true
 categories: android
+description: Android最佳实践
 
 ---
-# Android 最佳实践
 从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。
 
 ### Android Activity 的生命周期
