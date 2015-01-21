@@ -4,7 +4,7 @@
   <title><![CDATA[Category: work | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/work/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-01-22T01:26:03+08:00</updated>
+  <updated>2015-01-22T02:44:13+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -19,6 +19,46 @@
     <updated>2015-01-22T00:34:06+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review</id>
     <content type="html"><![CDATA[<p>2015年悄然来临，算上实习期，在TW待的日子也将近一年。在Annual Review这个环节我也开始梳理自己走过的2014年，关于项目，关于团队，关于成长的那点苦与甜。按照惯例，我将从以下几个方面一一道来：</p>
+
+<h2>Sponser Review</h2>
+
+<h4>过去一年做得好的地方 (What did I do well during the last year) ?</h4>
+
+<ul>
+<li>工作中态度积极，项目中有足够的commitment，能够对团队产生价值；</li>
+<li>能够主动参加郑大晔校为毕业生辅导，担任毕业生buddy，帮助毕业生成长；</li>
+<li>自我驱动力强，除了项目中的技术栈，自己业余还会去学习了解其他新的技术，使得未来能够更好适应项目需要；</li>
+</ul>
+
+
+<h4>过去一年做得不太好的地方 (What did I do less well during the last year) ?</h4>
+
+<ul>
+<li>与客户的直接沟通不是太多，没有过多的去影响客户；</li>
+<li>TDD，小步提交等敏捷实践技能还有待提升；</li>
+</ul>
+
+
+<h4>过去一年学到的东西 (What did I learn last year)?</h4>
+
+<ul>
+<li>技术方面的成长：重构能力，测试驱动开发，持续集成，ROR和Spring的熟练运用；</li>
+<li>团队协作及沟通能力的提升：在团队中学会了如何和同事一起共事，如何进行有效沟通及反馈；</li>
+<li>英文的提升：在TWU的学习，使得英文听说能力获得一定的提升；</li>
+</ul>
+
+
+<h4>预期/建议 (What will I do differently in the future)?</h4>
+
+<ul>
+<li>提升自己的英语表达，读写能力，能够与客户产生更多的沟通，影响客户；</li>
+<li>在项目组内部承担更多的ownership，积极主动跟进项目，保证项目更良好的发展；</li>
+<li>技术上，在mobile方面能够更深入一点，除了之前的android，能够学会ios开发；在移动测试方面有更多的实践；</li>
+<li>影响力方面，能够在办公室内部比如郑大晔校，技术session中都能够有所产出，承担起更大的责任；</li>
+</ul>
+
+
+<h2>Self Review</h2>
 
 <h3>Performance in role/roles</h3>
 
@@ -42,7 +82,7 @@
 
 <p>这个项目让我对自己有了更大的信心，我可以在团队中产生很大作用。同时我深刻体会到与客户沟通的重要性，以及如何明确scope，降低项目风险。</p>
 
-<h3>Custom Focus</h3>
+<h3>Customer Focus</h3>
 
 <p>项目中能够有足够高的积极性，在西山居项目周期紧并且兼职在两个项目上时会贡献自己的下班时间和周末时间，使得项目能够按时给客户交付。
 在UNICEF项目上，虽然没有直面客户，但是却勇于担起网站前端大部分工作，也经常为了项目贡献自己额外的休息时间。</p>
