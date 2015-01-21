@@ -110,7 +110,7 @@
         <entry file="file://$PROJECT_DIR$/source/_includes/custom/navigation.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.07826087" vertical-offset="0" max-vertical-offset="690">
-              <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+              <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -712,7 +712,7 @@
     <entry file="file://$PROJECT_DIR$/source/_includes/custom/navigation.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07826087" vertical-offset="0" max-vertical-offset="690">
-          <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
           <folding />
         </state>
       </provider>
