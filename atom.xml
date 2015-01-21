@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2014-10-31T22:52:27+08:00</updated>
+  <updated>2015-01-22T00:37:06+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2015 Annual Review]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review/"/>
+    <updated>2015-01-22T00:34:06+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review</id>
+    <content type="html"><![CDATA[<h1>Self Review 2015</h1>
+
+<p>2015年悄然来临，算上实习期，在TW待的日子也将近一年。在Annual Review这个环节我也开始梳理自己走过的2014年，关于项目，关于团队，关于成长的那点苦与甜。按照惯例，我将从以下几个方面一一道来：</p>
+
+<h2>Performance in role/roles</h2>
+
+<p>项目无疑是我工作的核心，也是过去一年我对公司产生的价值的体现。这一年待过三个项目：LiveText MVP，西山居APP，UNICEF MICS。</p>
+
+<h3>1. LiveText MVP</h3>
+
+<p>这是我在ThoughtWorks西安实习时接触的第一个项目，也是我接触的第一个Web项目。刚上项目就晕晕乎乎的进入到Billable的状态，陌生的技术栈，全新的英语环境，敏捷的做事方式等瞬间向我袭来。开始是痛苦的，但是结局却是令人满意的。一个月的适应环境之后，在大家的帮助以及个人主动学习的作用下我了解了ROR和Angular技术栈，对团队产生价值才更有做事情的动力。后面两个月我都是在较好的状态中和大家pair做story。</p>
+
+<p>过程中收获的不仅是技术，更是ThoughtWorks敏捷风格对我的熏陶。</p>
+
+<h3>2. 西山居 Game APP</h3>
+
+<p>这是Rebase武汉后的第一个项目，做这个项目的同时其实我已经在UNICEF MICS项目上。西山居项目周期短三周交付。Android端主要由我和谢威负责开发，难得在TW能够做回自己的老本行，高兴之余也希望能够实现自己的价值。通过自己安排一些part time的时间，我迅速整完了scope内的几块功能点，最后和谢威配合，还是很及时成功完成了项目的交付。</p>
+
+<p>国内项目的周期短以及客户“不靠谱”还是给我留下了深刻印象，那种情况下只能靠自己，以及如何跟客户进行有效沟通，规避项目交付风险。</p>
+
+<h3>3. UNICEF MICS</h3>
+
+<p>由于在LiveText上有过ROR背景，自然而然上了同样技术栈的UNICEF项目。项目中，我能够利用之前的一些经验为项目部署、测试、前端CSS等贡献自己的力量。项目时间紧迫时我会保证足够的commitment，为整个项目组“减压”。这个项目中，我将自己定位为“老员工”，多主动承担一些前端工作。</p>
+
+<p>这个项目让我对自己有了更大的信心，我可以在团队中产生很大作用。同时我深刻体会到与客户沟通的重要性，以及如何明确scope，降低项目风险。</p>
+
+<h2>Custom Focus</h2>
+
+<p>项目中能够有足够高的积极性，在西山居项目周期紧并且兼职在两个项目上时会贡献自己的下班时间和周末时间，使得项目能够按时给客户交付。
+在UNICEF项目上，虽然没有直面客户，但是却勇于担起网站前端大部分工作，也经常为了项目贡献自己额外的休息时间。</p>
+
+<h2>Impact</h2>
+
+<p>影响力方面主要还是集中在团队内部，在公司内部以及影响客户方面还有待加强。</p>
+
+<h2>Skill</h2>
+
+<ul>
+<li>Web方面，无论是ROR还是Java Spring相比于之前的零基础进步很大，但是还需要更多的项目经验才能更深入的提升相关开发技能；</li>
+<li>Android移动开发方面，由于Android开发做过一段时间，对这块开发比较熟悉，过去的项目经验使得现在能够比较轻松的驾驭一个Mobile项目；</li>
+<li>IOS开发，积极参加了一些基础的Workshop, 也通过自我学习开始了对Swift IOS 的入门，不过这块还需要更多的训练；</li>
+<li>CI: 在AWS上了解使用了Jenkins, 能够自己独立的搭建CI以及自动化QA部署环境；</li>
+<li>前端：主要了解并使用了AngularJS前端框架，在页面布局方面，能够熟练使用CSS进行页面布局；</li>
+</ul>
+
+
+<h2>Others</h2>
+
+<ul>
+<li>助力校招：积极参与到西安办公室秋招，在笔试现场担任监考官；</li>
+<li>郑大晔校：在武汉地区2015届郑大晔校中，参与到晔校课堂中为2015届新同学答疑，并积极担任毕业生Buddy；</li>
+<li>社招作业：在武汉办公室，积极协助HR团队，帮助评价候选人笔试作业；</li>
+</ul>
+
+
+<h2>Development Expectation</h2>
+
+<ul>
+<li>提升自己的英语表达，读写能力，能正常和客户沟通；</li>
+<li>在项目中能够与客户进行更多的沟通，在项目非技术问题上能够承担起更多的ownship，主动去做一些事情；</li>
+<li>技术上，在mobile方面能够更深入一点，除了之前的android，能够学会ios开发；</li>
+<li>影响力方面，在郑大晔校，技术session中都能够有所产出；</li>
+<li>项目安排上，希望能够尽可能多的参与Mobile项目；</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android布局封装控件]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/"/>
+    <updated>2014-11-13T16:10:37+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian</id>
+    <content type="html"><![CDATA[<p>近期时间略紧，许久没有更新博客了。今天做项目过程中，学习了Android关于封装控件的一些简单知识，特纪录下来并和大家交流。</p>
+
+<p><a href="http://trickyandroid.com/protip-inflating-layout-for-your-custom-view/">http://trickyandroid.com/protip-inflating-layout-for-your-custom-view/</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[常用的Linux Cmd]]></title>
@@ -2748,125 +2832,6 @@ ID             Applied At          Description
 <p>下午网上搜索了一下，竟然发现这种产品已经有了一个“开吃吧”，自己体验了一下，发现别人做的还不错，再次产生了一种感觉，你能够想到的别人一定想到了，别人想到了你不一定想得到。于是顿时被自己打击了一番，于是对这个原本不太坚定的产品开始有了放弃的想法。是的，放弃。我似乎放弃了很多东西，因为我自己都不能说服自己了。看了一下几年前和这个送餐类似的“美食刻”，当时在校内小有名气，后来似乎这个产品慢慢淡出人们的视野，我不了解它现在是否还存在，只知道这个曾经的产品现在真的不在了。不定因素太多，还是束之高阁吧～我的为时两个月左右的订餐网也该休息了。</p>
 
 <p>毕业在即，论文的主题还有待确定，于是我找寻新的点子，期待new idea!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在rails集成mongodb开发应用]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong/"/>
-    <updated>2014-01-18T16:04:48+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
-    <content type="html"><![CDATA[<p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
-如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
-
-<figure class='code'><figcaption><span>config/application.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rails/all&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>替换为 =></p>
-
-<figure class='code'><figcaption><span>config/application.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;action_controller/railtie&quot;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;action_mailer/railtie&quot;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;sprockets/railtie&quot;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;rails/test_unit/railtie&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>config/environments/development.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="c1">#config.active_record.migration_error = :page_load</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more -->
-
-
-<p>上面两个文件修改之后就基本把sqlite remove了。当然如果你还没有建立工程直接在命令行中：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rails new appname --skip-active-record</span></code></pre></td></tr></table></div></figure>
-
-
-<p>到这里我们的app中基本就算是干净的了。下面我们只需要在Gemfile中加入我们所需要的数据库依赖包就可以了，我这里直接加入mongoid</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;mongoid&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 4.0.0.alpha1&#39;</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;mongoid/mongoid&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改Gemfile后，我们 bundle install 就会把相关包依赖下载下来，剩下的我们就可以直接使用mongo了。config目录下还有 database.yml 文件，查看内容应该是sqlite的数据库配置文件，我们remove之，然后新建一个属于我们自己的 mongoid.yml.</p>
-
-<figure class='code'><figcaption><span>config/mongoid.yml </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sessions</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_development</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">test</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sessions</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_test</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">production</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sessions</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_production</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">localhost:27017</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>文件新建完毕，下面我们就需要怎么使app加载这个文件。继续新建文件 config/initializers/mongoid.rb</p>
-
-<figure class='code'><figcaption><span>config/initializers/mongoid.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Mongoid</span><span class="o">.</span><span class="n">load!</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">to_s</span><span class="o">+</span><span class="s1">&#39;/config/mongoid.yml&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>至此，数据库也基本配置完毕。到命令行中 rake 下面的task</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake db:mongoid:create_indexes</span></code></pre></td></tr></table></div></figure>
-
-
-<p>开始在model中新建model ～～ rails + mongo 模式开启！</p>
 ]]></content>
   </entry>
   
