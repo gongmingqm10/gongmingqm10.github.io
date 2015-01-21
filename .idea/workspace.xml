@@ -1,35 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="803a91c2-1dc3-4a3b-8e1b-f61a6dfc371e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-01-18-zai-railsji-cheng-mongodbkai-fa-ying-yong.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-01-18-zai-railsji-cheng-mongodbkai-fa-ying-yong.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-03-08-ding-can-wang-zhi-si.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-03-08-ding-can-wang-zhi-si.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-03-10-wo-men-de-zhou-nian-ji-nian.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-03-10-wo-men-de-zhou-nian-ji-nian.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-03-19-fontello-shi-yong-xin-de.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-03-19-fontello-shi-yong-xin-de.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-08-17-mybait-migration-session.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-08-17-mybait-migration-session.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-08-20-css-layout-tricks.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-08-20-css-layout-tricks.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-09-16-android-best-practice.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-09-16-android-best-practice.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-09-22-travel-to-thoughtworks.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-09-22-travel-to-thoughtworks.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-09-25-androidzi-ding-yi-view.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-09-25-androidzi-ding-yi-view.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-09-29-yun-fu-wu-qi-shi-yong-ji-lu.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-09-29-yun-fu-wu-qi-shi-yong-ji-lu.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-09-30-android-ontouch-chu-tan.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-09-30-android-ontouch-chu-tan.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-12-deploy-app-to-remote-server.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-12-deploy-app-to-remote-server.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-13-android-quiz-questions.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-13-android-quiz-questions.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-14-git-daemon-jian-li-ben-di-gitfu-wu-qi.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-14-git-daemon-jian-li-ben-di-gitfu-wu-qi.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-17-android-deploy-your-app.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-17-android-deploy-your-app.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-17-android-sip-wang-luo-tong-hua.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-17-android-sip-wang-luo-tong-hua.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-21-openfire-android-im-kuang-jia-shi-yong.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-21-openfire-android-im-kuang-jia-shi-yong.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-21-vagrant-da-jian-ben-di-xu-ni-ji.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-21-vagrant-da-jian-ben-di-xu-ni-ji.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-26-hack-jing-dong-lebook.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-26-hack-jing-dong-lebook.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-28-android-data-cache.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-28-android-data-cache.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-29-androiddian-hua-jian-ting.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-29-androiddian-hua-jian-ting.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-30-chang-yong-de-linux-cmd.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-30-chang-yong-de-linux-cmd.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-10-30-nodejs-learnyounode.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-10-30-nodejs-learnyounode.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2014-11-13-androidbu-ju-feng-zhuang-kong-jian.markdown" afterPath="$PROJECT_DIR$/source/_posts/2014-11-13-androidbu-ju-feng-zhuang-kong-jian.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_posts/2015-01-22-2015-annual-review.markdown" afterPath="$PROJECT_DIR$/source/_posts/2015-01-22-2015-annual-review.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Rakefile" afterPath="$PROJECT_DIR$/Rakefile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_config.yml" afterPath="$PROJECT_DIR$/_config.yml" />
-    </list>
+    <list default="true" id="803a91c2-1dc3-4a3b-8e1b-f61a6dfc371e" name="Default" comment="" />
     <ignored path="octopress.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -50,16 +22,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="2014-10-17-android-sip-wang-luo-tong-hua.markdown" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_posts/2014-10-17-android-sip-wang-luo-tong-hua.markdown">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="504">
-              <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="2014-10-21-openfire-android-im-kuang-jia-shi-yong.markdown" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/2014-10-21-openfire-android-im-kuang-jia-shi-yong.markdown">
           <provider selected="true" editor-type-id="text-editor">
@@ -143,11 +105,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2015-01-22-2015-annual-review.markdown" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="2015-01-22-2015-annual-review.markdown" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/2015-01-22-2015-annual-review.markdown">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16513762" vertical-offset="0" max-vertical-offset="1296">
-              <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1296">
+              <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.markdown" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source/showcases/index.markdown">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5504587" vertical-offset="0" max-vertical-offset="654">
+              <caret line="20" column="63" selection-start-line="20" selection-start-column="63" selection-end-line="20" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -193,6 +165,7 @@
         <option value="$PROJECT_DIR$/source/_posts/2014-10-30-nodejs-learnyounode.markdown" />
         <option value="$PROJECT_DIR$/source/_posts/2014-11-13-androidbu-ju-feng-zhuang-kong-jian.markdown" />
         <option value="$PROJECT_DIR$/source/_posts/2015-01-22-2015-annual-review.markdown" />
+        <option value="$PROJECT_DIR$/source/showcases/index.markdown" />
       </list>
     </option>
   </component>
@@ -273,7 +246,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="_posts" />
+              <option name="myItemId" value="showcases" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -331,7 +304,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2213467" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2213467" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -618,8 +591,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/2015-01-22-2015-annual-review.markdown">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16513762" vertical-offset="0" max-vertical-offset="1296">
-          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1296">
+          <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/showcases/index.markdown">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5504587" vertical-offset="0" max-vertical-offset="654">
+          <caret line="20" column="63" selection-start-line="20" selection-start-column="63" selection-end-line="20" selection-end-column="63" />
           <folding />
         </state>
       </provider>
