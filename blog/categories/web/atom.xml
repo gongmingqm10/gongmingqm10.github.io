@@ -4,7 +4,7 @@
   <title><![CDATA[Category: web | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/web/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-01-22T02:44:13+08:00</updated>
+  <updated>2015-02-05T00:08:56+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Begin to use SpringBoot]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/01/22/begin-to-use-springboot/"/>
+    <updated>2015-01-22T18:00:09+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/01/22/begin-to-use-springboot</id>
+    <content type="html"><![CDATA[<p>The time since I worked as a web developer, I use spring 3.x for most of my personal project. Because java is mostly
+been used. Those who worked with me can easily be participant in the project. While the more I use it, the more I&rsquo;m suffered
+with the complex config of the spring project. Additionally it&rsquo;s not easy to create a scaffolding Spring project, especially
+when I&rsquo;m so accustomed to rails scaffold.</p>
+
+<p>It&rsquo;s time for us to trial a new development pattern to make our work be more graceful. Luckily spring4.x appeared, and I
+began to knew the <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> project.</p>
+
+<p>So, do not wait any more, just try it. I following the <a href="http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/">official guides</a></p>
+
+<h3>Say hello to Spring Boot</h3>
+
+<p>I worked in a Mac system. It&rsquo;s easy to install SpringBoot CLI by brew:</p>
+
+<p><code>
+$ brew tap pivotal/tap
+$ brew install springboot
+</code>
+Homebrew will install spring to <code>/usr/local/bin</code>, when I try to use spring to start a simple spring boot project. Some trick
+error stuck me until I realized the name <code>spring</code> is collided with the gem <code>spring</code>. But <code>/usr/local/bin/spring</code> exists in my mac,
+thus I use <code>/usr/local/bin/spring</code> to start the demo project. The following shows how to say hello to spring boot.</p>
+
+<ul>
+<li>Create the app.groovy first:</li>
+</ul>
+
+
+<p>```
+@RestController
+class ThisWillActuallyRun {</p>
+
+<pre><code>@RequestMapping("/")
+String home() {
+    "Hello World!"
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<ul>
+<li>Use spring to run it: <code>/usr/local/bin/spring run app.groovy</code></li>
+<li>Open <code>http://localhost:8080/</code> in your browser. You can see the <code>Hello World!</code> in the page.</li>
+</ul>
+
+
+<h3>Build a real project</h3>
+
+<p>After we finished the hello-world project, we can move to next step to build a real web project.
+I use gradle to manage my dependency in our project. This is my build.gradle file:</p>
+
+<p>```
+buildscript {</p>
+
+<pre><code>repositories { jcenter() }
+dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.BUILD-SNAPSHOT")
+}
+</code></pre>
+
+<p>}</p>
+
+<p>apply plugin: &lsquo;java&rsquo;
+apply plugin: &lsquo;spring-boot&rsquo;</p>
+
+<p>repositories { jcenter() }
+dependencies {</p>
+
+<pre><code>compile("org.springframework.boot:spring-boot-starter-web")
+testCompile("org.springframework.boot:spring-boot-starter-test")
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Deploy app to remote server —— 网站部署篇]]></title>
