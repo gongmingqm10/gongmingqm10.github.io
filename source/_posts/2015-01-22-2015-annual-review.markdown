@@ -72,7 +72,7 @@ description: Gong Ming Annual Review 2015 ThoughtWorks
 * Android移动开发方面，由于Android开发做过一段时间，对这块开发比较熟悉，过去的项目经验使得现在能够比较轻松的驾驭一个Mobile项目；
 * IOS开发，积极参加了一些基础的Workshop, 也通过自我学习开始了对Swift IOS 的入门，不过这块还需要更多的训练；
 * CI: 在AWS上了解使用了Jenkins, 能够自己独立的搭建CI以及自动化QA部署环境；
-* 前端：主要了解并使用了AngularJS前端框架，在页面布局方面，能够熟练使用CSS进行页面布局；
+* 前端：主要了解并使用了AngularJS前端框架，CSS方面运用熟练，能够承担团队绝大部分前端工作；
 
 ### Others
 
