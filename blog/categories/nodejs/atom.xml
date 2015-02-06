@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nodejs | gongmingqm10]]></title>
+  <link href="http://www.gongmingqm10.net/blog/categories/nodejs/atom.xml" rel="self"/>
+  <link href="http://www.gongmingqm10.net/"/>
+  <updated>2015-02-06T23:56:55+08:00</updated>
+  <id>http://www.gongmingqm10.net/</id>
+  <author>
+    <name><![CDATA[Gong Ming]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[nodejs learnyounode]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/30/nodejs-learnyounode/"/>
+    <updated>2014-10-30T14:44:23+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/30/nodejs-learnyounode</id>
+    <content type="html"><![CDATA[<p>Here are the following steps.</p>
+
+<ol>
+<li>console.log(&ldquo;HELLO WORLD&rdquo;)</li>
+<li></li>
+</ol>
+
+
+<p>```
+var sum = 0;
+for (var index = 2; index &lt; process.argv.length; index ++) {</p>
+
+<pre><code>sum += Number(process.argv[index]);
+</code></pre>
+
+<p>}
+console.log(sum);</p>
+
+<p>```</p>
+
+<ol>
+<li>Calculate the file line</li>
+</ol>
+
+
+<p>```
+var fs = require(&lsquo;fs&rsquo;);
+var str = fs.readFileSync(process.argv[2]).toString();
+console.log(str.split(&lsquo;\n&rsquo;).length &ndash; 1);</p>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>
