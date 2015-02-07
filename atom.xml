@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-02-07T00:57:09+08:00</updated>
+  <updated>2015-02-07T14:41:44+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,107 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Begin to use SpringBoot]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/01/22/begin-to-use-springboot/"/>
-    <updated>2015-01-22T18:00:09+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/01/22/begin-to-use-springboot</id>
-    <content type="html"><![CDATA[<p>The time since I worked as a web developer, I use spring 3.x for most of my personal project. Because java is mostly
-been used. Those who worked with me can easily be participant in the project. While the more I use it, the more I&rsquo;m suffered
-with the complex config of the spring project. Additionally it&rsquo;s not easy to create a scaffolding Spring project, especially
-when I&rsquo;m so accustomed to rails scaffold.</p>
-
-<p>It&rsquo;s time for us to trial a new development pattern to make our work be more graceful. Luckily spring4.x appeared, and I
-began to knew the <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> project.</p>
-
-<p>So, do not wait any more, just try it. I following the <a href="http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/">official guides</a></p>
-
-<h3>Say hello to Spring Boot</h3>
-
-<p>I worked in a Mac system. It&rsquo;s easy to install SpringBoot CLI by brew:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ brew tap pivotal/tap
-</span><span class='line'>$ brew install springboot</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Homebrew will install spring to <code>/usr/local/bin</code>, when I try to use spring to start a simple spring boot project. Some trick
-error stuck me until I realized the name <code>spring</code> is collided with the gem <code>spring</code>. But <code>/usr/local/bin/spring</code> exists in my mac,
-thus I use <code>/usr/local/bin/spring</code> to start the demo project. The following shows how to say hello to spring boot.</p>
-
-<ul>
-<li>Create the app.groovy first:</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>@RestController
-</span><span class='line'>class ThisWillActuallyRun {
-</span><span class='line'>
-</span><span class='line'>    @RequestMapping("/")
-</span><span class='line'>    String home() {
-</span><span class='line'>        "Hello World!"
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Use spring to run it: <code>/usr/local/bin/spring run app.groovy</code></li>
-<li>Open <code>http://localhost:8080/</code> in your browser. You can see the <code>Hello World!</code> in the page.</li>
-</ul>
-
-
-<h3>Build a real project</h3>
-
-<p>After we finished the hello-world project, we can move to next step to build a real web project.
-I use gradle to manage my dependency in our project. This is my build.gradle file:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
-</span><span class='line'>    repositories { jcenter() }
-</span><span class='line'>    dependencies {
-</span><span class='line'>        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.BUILD-SNAPSHOT")
-</span><span class='line'>    }
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>apply plugin: 'java'
-</span><span class='line'>apply plugin: 'spring-boot'
-</span><span class='line'>
-</span><span class='line'>repositories { jcenter() }
-</span><span class='line'>dependencies {
-</span><span class='line'>    compile("org.springframework.boot:spring-boot-starter-web")
-</span><span class='line'>    testCompile("org.springframework.boot:spring-boot-starter-test")
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[2015 Annual Review]]></title>
@@ -285,48 +184,6 @@ wc -c file1: 计算file1中字符的个数</p>
 find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文件夹中的文件也可以被找出。</p>
 
 <p>更多命令，欢迎大家一起总结与补充</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[nodejs learnyounode]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/30/nodejs-learnyounode/"/>
-    <updated>2014-10-30T14:44:23+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/30/nodejs-learnyounode</id>
-    <content type="html"><![CDATA[<p>Here are the following steps.</p>
-
-<ol>
-<li>console.log(&ldquo;HELLO WORLD&rdquo;)</li>
-<li></li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var sum = 0;
-</span><span class='line'>for (var index = 2; index &lt; process.argv.length; index ++) {
-</span><span class='line'>  sum += Number(process.argv[index]);
-</span><span class='line'>}
-</span><span class='line'>console.log(sum);
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>Calculate the file line</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var fs = require('fs');
-</span><span class='line'>var str = fs.readFileSync(process.argv[2]).toString();
-</span><span class='line'>console.log(str.split('\n').length - 1);
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
@@ -2568,6 +2425,437 @@ res/values/attrs.xml</p>
 <p>本文抛砖引玉，参考别人的文章，结合自己的实践经历总结了一些实践性的经验。个中不足，烦请大家不吝赐教，当然更欢迎大家一起交流。</p>
 
 <p>文章参考：<a href="http://clayallsopp.com/posts/android-best-practices-tips/">http://clayallsopp.com/posts/android-best-practices-tips/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mybait migration session]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/08/17/mybait-migration-session/"/>
+    <updated>2014-08-17T20:50:41+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/08/17/mybait-migration-session</id>
+    <content type="html"><![CDATA[<h2>Mybatis Migration 初探</h2>
+
+<p>持续交付项目中，项目会不断的迭代上线，这是会出现数据库的改动问题。在一个还未上线的项目中，我更改数据库可以使用简单的直接对sql进行更改，但是面对一个已投入使用的系统而言，每次部署都对数据库进行init显得有点不太可能。于是便有了数据库Migration的诞生。</p>
+
+<p>我所在的项目是SpringMVC配合Mybatis的开发框架。作为一个数据库集成框架，Mybatis在使用上还是比较方便的。言归正传，为了项目需要，于是便开始了Mybatis Migration的初探，文章中出现的不妥之处还请大家不吝赐教。</p>
+
+<h4>Mybatis Migration 安装</h4>
+
+<p>安装过程主要参照Mybatis的官网： <a href="http://mybatis.github.io/migrations/index.html">http://mybatis.github.io/migrations/index.html</a>，以及Mybatis源代码授权地址: <a href="https://github.com/mybatis/migrations">https://github.com/mybatis/migrations</a>，参照github上的README文件可以轻易的完成其安装过程。README文件中所有的Mybatis包可以直接在其Git repo的releases中找到，我选择了3.2.0进行下载安装。安装完成后就可以直接在terminal中运行migrate相关的命令了。</p>
+
+<h4>Mybatus Migration 初始化</h4>
+
+<pre><code>minggong:migration-test minggong$ migrate init
+------------------------------------------------------------------------
+-- MyBatis Migrations - init
+------------------------------------------------------------------------
+Initializing: .
+Creating: environments
+Creating: scripts
+Creating: drivers
+Creating: README
+Creating: development.properties
+Creating: bootstrap.sql
+Creating: 20140817132704_create_changelog.sql
+Creating: 20140817132705_first_migration.sql
+Done!
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 2s
+-- Finished at: Sun Aug 17 18:57:05 GMT+05:30 2014
+-- Final Memory: 3M/493M
+------------------------------------------------------------------------
+minggong:migration-test minggong$ ls
+README      drivers     environments    scripts
+</code></pre>
+
+<p>初始化之后的目录下面会自动生成一些和Migration相关的项目文件及目录 README, drivers, environments, scripts。drivers中放置连接数据库需要的jdbc，environments主要放置连接数据库的地址以及授权信息等，scripts目录下则放置数据库相关的sql，init的时候就已经生成了上述显示的create_changelog.sql和first_migration.sql文件。</p>
+
+<p>为了以实例说明问题，本次测试采用了mysql数据库，从mysql官网下载了<code>mysql-connector-java-5.1.32</code>，并对environment的数据库信息进行了简单的配置，配置如下：</p>
+
+<pre><code>## JDBC connection properties.
+driver=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/arctic
+username=root
+password=
+</code></pre>
+
+<p>这里的arctic是已经存在本地的一个mysql数据库。</p>
+
+<h4>Migrate bootstrap</h4>
+
+<pre><code>minggong:migration-test minggong$ migrate bootstrap
+------------------------------------------------------------------------
+-- MyBatis Migrations - bootstrap
+------------------------------------------------------------------------
+========== Applying: bootstrap.sql =============================================
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 19:43:29 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+</code></pre>
+
+<p>运行之后，scripts文件中将会生成另外一个bootstrap文件。主要可以进行一些数据库初始化工作。</p>
+
+<h4>Migrate new</h4>
+
+<p><code>new</code>命令能够创建新的sql脚本，我们只需要填充数据表结构信息，便可以方便的创建我们所需的数据表</p>
+
+<pre><code>minggong:migration-test minggong$ migrate new "create blog table"
+------------------------------------------------------------------------
+-- MyBatis Migrations - new
+------------------------------------------------------------------------
+Creating: 20140817142201_create_blog_table.sql
+Done!
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 1s
+-- Finished at: Sun Aug 17 19:52:01 GMT+05:30 2014
+-- Final Memory: 3M/493M
+------------------------------------------------------------------------
+</code></pre>
+
+<p>scripts文件夹中会创建带有时间戳的sql文件：<code>20140817142201_create_blog_table.sql</code>， 其内容如下：</p>
+
+<pre><code>-- // create blog table
+-- Migration SQL that makes the change goes here.
+
+-- //@UNDO
+-- SQL to undo the change goes here.
+</code></pre>
+
+<p>文件内容主要包含<code>create table</code>和<code>undo</code>，分别表示表的创建和删除命令：</p>
+
+<pre><code>-- // create blog table
+-- Migration SQL that makes the change goes here.
+CREATE TABLE BLOG (
+  ID INT,
+  NAME VARCHAR(255),
+  PRIMARY KEY(ID)
+);
+-- //@UNDO
+-- SQL to undo the change goes here.
+DROP TABLE BLOG;
+</code></pre>
+
+<p>已经将表结构写在了sql里面，那么怎样执行这个脚本，从而改变数据库中的表结构呢。首先我们需要了解当前数据库的状态。</p>
+
+<h4>Migrate status</h4>
+
+<pre><code>minggong:migration-test minggong$ migrate status
+------------------------------------------------------------------------
+-- MyBatis Migrations - status
+------------------------------------------------------------------------
+ID             Applied At          Description
+================================================================================
+20140817132704    ...pending...    create changelog
+20140817132705    ...pending...    first migration
+20140817142201    ...pending...    create blog table
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 20:21:06 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+</code></pre>
+
+<p>由于我们没有运行过migration, 所以所有migration脚本都处于<code>pending</code>状态，包括changelog table本身。当我们运行<code>migrate up</code>命令之后，脚本的状态便会发生相应的改变。</p>
+
+<h4>Migrate up, down</h4>
+
+<p>为了显示更多up, down以及后续的version操作，再次新建一个数据表<code>migrate new 'create table author'</code>此时的author和blog应该都处于pending状态。</p>
+
+<pre><code>minggong:migration-test minggong$ migrate status
+------------------------------------------------------------------------
+-- MyBatis Migrations - status
+------------------------------------------------------------------------
+ID             Applied At          Description
+================================================================================
+20140817132704    ...pending...    create changelog
+20140817132705    ...pending...    first migration
+20140817142201    ...pending...    create blog table
+20140817154537    ...pending...    create table author
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 21:21:49 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+minggong:migration-test minggong$ migrate up
+------------------------------------------------------------------------
+-- MyBatis Migrations - up
+------------------------------------------------------------------------
+========== Applying: 20140817132704_create_changelog.sql =======================
+--  Create Changelog
+-- Default DDL for changelog table that will keep
+-- a record of the migrations that have been run.
+-- You can modify this to suit your database before
+-- running your first migration.
+-- Be sure that ID and DESCRIPTION fields exist in
+-- BigInteger and String compatible fields respectively.
+CREATE TABLE CHANGELOG (
+ID NUMERIC(20,0) NOT NULL,
+APPLIED_AT VARCHAR(25) NOT NULL,
+DESCRIPTION VARCHAR(255) NOT NULL
+)
+
+ALTER TABLE CHANGELOG
+ADD CONSTRAINT PK_CHANGELOG
+PRIMARY KEY (id)
+
+
+========== Applying: 20140817132705_first_migration.sql ========================
+--  First migration.
+-- Migration SQL that makes the change goes here.
+
+========== Applying: 20140817142201_create_blog_table.sql ======================
+--  create blog table
+-- Migration SQL that makes the change goes here.
+
+========== Applying: 20140817154537_create_table_author.sql ====================
+--  create table author
+-- Migration SQL that makes the change goes here.
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 21:22:17 GMT+05:30 2014
+-- Final Memory: 13M/493M
+------------------------------------------------------------------------
+</code></pre>
+
+<p><code>migrate up</code>命令会将所有的sql进行up,所有处于pending状态的SQL脚本都会进行执行。对应的<code>migrate down</code>则是undo sql脚本的执行，也就是执行sql中用户自定义的UNDO部分。不同的是<code>migrate down</code>只能回退一步，所以回退到初始状态则需要运行多次的<code>migrate down</code>操作。当然也可以直接指定参数，本例中我们指定回退4步<code>migrate down 4</code>:</p>
+
+<pre><code>minggong:migration-test minggong$ migrate status
+------------------------------------------------------------------------
+-- MyBatis Migrations - status
+------------------------------------------------------------------------
+ID             Applied At          Description
+================================================================================
+20140817132704 2014-08-17 21:22:17 create changelog
+20140817132705 2014-08-17 21:22:17 first migration
+20140817142201 2014-08-17 21:22:17 create blog table
+20140817154537 2014-08-17 21:26:01 create table author
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 21:26:07 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+minggong:migration-test minggong$ migrate down 4
+------------------------------------------------------------------------
+-- MyBatis Migrations - down
+------------------------------------------------------------------------
+========== Undoing: 20140817154537_create_table_author.sql =====================
+-- @UNDO
+-- SQL to undo the change goes here.
+
+========== Undoing: 20140817142201_create_blog_table.sql =======================
+-- @UNDO
+-- SQL to undo the change goes here.
+
+========== Undoing: 20140817132705_first_migration.sql =========================
+-- @UNDO
+-- SQL to undo the change goes here.
+
+========== Undoing: 20140817132704_create_changelog.sql ========================
+-- @UNDO
+DROP TABLE CHANGELOG
+
+Changelog doesn't exist. No further migrations will be undone (normal for the last migration).
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 21:29:53 GMT+05:30 2014
+-- Final Memory: 14M/493M
+------------------------------------------------------------------------
+minggong:migration-test minggong$ migrate status
+------------------------------------------------------------------------
+-- MyBatis Migrations - status
+------------------------------------------------------------------------
+ID             Applied At          Description
+================================================================================
+20140817132704    ...pending...    create changelog
+20140817132705    ...pending...    first migration
+20140817142201    ...pending...    create blog table
+20140817154537    ...pending...    create table author
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 21:30:09 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+</code></pre>
+
+<h4>Migrate verison</h4>
+
+<p>回滚到指定的version状态，后面需要加上version的ID： <code>migrate verison 20140817132705</code></p>
+
+<pre><code>minggong:migration-test minggong$ migrate status
+------------------------------------------------------------------------
+-- MyBatis Migrations - status
+------------------------------------------------------------------------
+ID             Applied At          Description
+================================================================================
+20140817132704 2014-08-17 22:23:05 create changelog
+20140817132705 2014-08-17 22:23:25 first migration
+20140817142201 2014-08-17 22:23:25 create blog table
+20140817154537 2014-08-17 22:23:25 create table author
+20140817164341 2014-08-17 22:23:25 create table book
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 22:23:36 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+minggong:migration-test minggong$ migrate version 20140817142201
+------------------------------------------------------------------------
+-- MyBatis Migrations - version
+------------------------------------------------------------------------
+Downgrading to: 20140817142201
+========== Undoing: 20140817164341_create_table_book.sql =======================
+-- @UNDO
+-- SQL to undo the change goes here.
+
+========== Undoing: 20140817154537_create_table_author.sql =====================
+-- @UNDO
+-- SQL to undo the change goes here.
+
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 22:23:43 GMT+05:30 2014
+-- Final Memory: 13M/493M
+------------------------------------------------------------------------
+minggong:migration-test minggong$ migrate status
+------------------------------------------------------------------------
+-- MyBatis Migrations - status
+------------------------------------------------------------------------
+ID             Applied At          Description
+================================================================================
+20140817132704 2014-08-17 22:23:05 create changelog
+20140817132705 2014-08-17 22:23:25 first migration
+20140817142201 2014-08-17 22:23:25 create blog table
+20140817154537    ...pending...    create table author
+20140817164341    ...pending...    create table book
+
+------------------------------------------------------------------------
+-- MyBatis Migrations SUCCESS
+-- Total time: 0s
+-- Finished at: Sun Aug 17 22:23:47 GMT+05:30 2014
+-- Final Memory: 11M/493M
+------------------------------------------------------------------------
+</code></pre>
+
+<h4>Migrate pending</h4>
+
+<p><code>migrate up</code> 命令只能向上upgrade，而在多人合作中如果migration sql脚本先创建但是后提交，同步到一台服务器上就有可能出现中间某个文件处于<code>pending</code>状态，这时使用<code>migrate up</code>是不能使其执行的。</p>
+
+<p>这种情况如果这个sql基本和其他sql无依赖时，可以直接使用<code>migrate up</code>使处于pending状态的脚本被执行。官方解释这是不推荐的做法。另外一种做法是使用<code>migrate version [ID]</code>回到pending版本之前的状态，然后再次执行<code>migrate up</code>，从而完成整个执行操作，这种做法是推荐的比较安全的。</p>
+
+<h4>Migrate script</h4>
+
+<p>使用方法为<code>migrate script &lt;V1&gt; &lt;V2&gt; &gt; file.sql</code></p>
+
+<p><code>migrate 20140817142201 20140817164341 &gt; do.sql</code>这个do脚本的执行将会应用上述两个状态的执行author和book。</p>
+
+<p><code>migrate 20140817164341 20140817142201 &gt; undo.sql</code> 这个将undo脚本执行可以回滚V1和V2之间的即上述状态。</p>
+
+<p>如果要在首尾之间回滚，则可以用 0 代替原始版本ID</p>
+
+<p><code>migrate 0 20140817164341 &gt; do.sql</code></p>
+
+<p><code>migrate 20140817164341 0 &gt; undo.sql</code></p>
+
+<hr />
+
+<p>但是对于上述的script脚本直接使用 migrate do.sql执行却一直报错！官方也没有对单个的脚本执行有说明。后续弄清楚了再补充上来。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fontello 使用心得]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
+    <updated>2014-03-19T08:19:49+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de</id>
+    <content type="html"><![CDATA[<h2>Overview</h2>
+
+<p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
+
+<hr />
+
+<p>最近尝试在构建一个rails应用，于是自然而然就想到用之前项目中的fontello图标，对于Developer来说，有了fontello和rails我开始不需要担心街面上图标或者按钮的样式问题了。</p>
+
+<!-- more -->
+
+
+<p>在fontello中选择所需的图标后点击下载即可进行下载一个zip压缩包，解压缩之后里面就会包含我们所需的几个文件。将这几个文件放置到我们project的assets下面，即可直接使用。</p>
+
+<h2>用法</h2>
+
+<hr />
+
+<ol>
+<li>Download: 选择图标后直接选择下载；</li>
+<li>Move: 将font文件夹中的所有文件和config.json移到vendor/assets/fonts文件夹中，将fontello.css移动到app/assets/stylesheets/fontello.css, 并在需要使用的相关页面中import此css文件；</li>
+<li>Usage: 在html页面中直接使用 <span class="icon icon-plus"></span>即可使用到名为icon-plus的图标；</li>
+<li>Update: 对于图标的下载我们一般在需要图标时才会下载，于是我们非首次下载时就需要update，在fontello网站上先import选择config.json，然后再搜索我们想要的图标，再次进行下载，将下载好的新文件覆盖之前的文件，update操作便完成了；</li>
+</ol>
+
+
+<h2>Don&rsquo;t repeat yourself</h2>
+
+<hr />
+
+<p>对于fontello这种update图标然后覆盖的模式，我曾经极度讨厌，甚至认为还不如使用font awesome进行一次性的下载好，然后直接使用就可以了，后来发现fontello的强大之处在于它集合了许多种图标资源，所以上面的图标库更丰富，如果一次性下载估计也是件挺浪费资源的事情，因为我们只会用到少量的图标。所以我们不得不需要什么图标就去下载然后覆盖更新～～</p>
+
+<p>但是作为一名开发人员，这种重复的工作如果让我们自己做，就有点太浪费了。所以决定把这些琐碎重复的事情交给计算机做。也就是每次我下载下来，我只要运行脚本，这些文件就会自动复制到我所需的工程中。于是使用shell命令解决这个问题：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>unzip -u $1
+</span><span class='line'>if [ ! -d $2/vendor/assets/fonts ]; then
+</span><span class='line'>  mkdir $2/vendor/assets/fonts
+</span><span class='line'>fi 
+</span><span class='line'>cp -r $1/font/fontello.eot $2/vendor/assets/fonts
+</span><span class='line'>cp -r $1/font/fontello.svg $2/vendor/assets/fonts
+</span><span class='line'>cp -r $1/font/fontello.ttf $2/vendor/assets/fonts
+</span><span class='line'>cp -r $1/font/fontello.woff $2/vendor/assets/fonts
+</span><span class='line'>
+</span><span class='line'>cp -f $1/config.json $2/vendor/assets/fonts/config.json
+</span><span class='line'>
+</span><span class='line'>cp -f $1/css/fontello.css $2/app/assets/stylesheets/fontello.less
+</span><span class='line'>echo 'copy fontello successfully'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>文件名为fontello.sh， 首先为其添加可执行权限 <code>chmod +x fontello.sh</code>， 如果下载下来的新的包名为fontello-1234.zip，那么只要执行命令<code>./fontello.sh fontello-1234 ~/project/helloworld</code></p>
+
+<p>永远不要你自己做重复的事情，如果真有这些事情请让计算机自行实现一切会轻松很多！</p>
 ]]></content>
   </entry>
   

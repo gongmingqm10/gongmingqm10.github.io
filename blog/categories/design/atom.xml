@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: design | gongmingqm10]]></title>
+  <title><![CDATA[Category: Design | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/design/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-02-07T00:57:09+08:00</updated>
+  <updated>2015-02-07T14:41:44+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -14,17 +14,67 @@
 
   
   <entry>
-    <title type="html"><![CDATA[css layout tricks]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/08/21/css-layout-tricks/"/>
-    <updated>2014-08-21T00:08:13+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/08/21/css-layout-tricks</id>
-    <content type="html"><![CDATA[<h1>CSS Layout</h1>
+    <title type="html"><![CDATA[Fontello 使用心得]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
+    <updated>2014-03-19T08:19:49+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de</id>
+    <content type="html"><![CDATA[<h2>Overview</h2>
 
-<p>CSS布局，一个让人既爱又恨的东西。CSS能够让网页瞬间漂亮，但是CSS的使用却也让我一度迷茫。抛开IE, Firefox, Saferi, Chrome的兼容性不说，调试网页的时候还是会遇到布局方面的N多问题。抽空对CSS的一些用法参考一些前辈的资料进行一些总结：</p>
+<p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
 
-<h3>Position属性</h3>
+<hr />
 
-<p>position属性主要是为处理子元素在父元素的相对或者绝对位置而生的。position属性有四种值，<code>absolute</code>, <code>relative</code>, <code>fixed</code>, <code>static</code>(default)。</p>
+<p>最近尝试在构建一个rails应用，于是自然而然就想到用之前项目中的fontello图标，对于Developer来说，有了fontello和rails我开始不需要担心街面上图标或者按钮的样式问题了。</p>
+
+<!-- more -->
+
+
+<p>在fontello中选择所需的图标后点击下载即可进行下载一个zip压缩包，解压缩之后里面就会包含我们所需的几个文件。将这几个文件放置到我们project的assets下面，即可直接使用。</p>
+
+<h2>用法</h2>
+
+<hr />
+
+<ol>
+<li>Download: 选择图标后直接选择下载；</li>
+<li>Move: 将font文件夹中的所有文件和config.json移到vendor/assets/fonts文件夹中，将fontello.css移动到app/assets/stylesheets/fontello.css, 并在需要使用的相关页面中import此css文件；</li>
+<li>Usage: 在html页面中直接使用 <span class="icon icon-plus"></span>即可使用到名为icon-plus的图标；</li>
+<li>Update: 对于图标的下载我们一般在需要图标时才会下载，于是我们非首次下载时就需要update，在fontello网站上先import选择config.json，然后再搜索我们想要的图标，再次进行下载，将下载好的新文件覆盖之前的文件，update操作便完成了；</li>
+</ol>
+
+
+<h2>Don&rsquo;t repeat yourself</h2>
+
+<hr />
+
+<p>对于fontello这种update图标然后覆盖的模式，我曾经极度讨厌，甚至认为还不如使用font awesome进行一次性的下载好，然后直接使用就可以了，后来发现fontello的强大之处在于它集合了许多种图标资源，所以上面的图标库更丰富，如果一次性下载估计也是件挺浪费资源的事情，因为我们只会用到少量的图标。所以我们不得不需要什么图标就去下载然后覆盖更新～～</p>
+
+<p>但是作为一名开发人员，这种重复的工作如果让我们自己做，就有点太浪费了。所以决定把这些琐碎重复的事情交给计算机做。也就是每次我下载下来，我只要运行脚本，这些文件就会自动复制到我所需的工程中。于是使用shell命令解决这个问题：</p>
+
+<p>```</p>
+
+<h1>!/bin/sh</h1>
+
+<p>unzip -u $1
+if [ ! -d $2/vendor/assets/fonts ]; then</p>
+
+<pre><code>mkdir $2/vendor/assets/fonts
+</code></pre>
+
+<p>fi
+cp -r $1/font/fontello.eot $2/vendor/assets/fonts
+cp -r $1/font/fontello.svg $2/vendor/assets/fonts
+cp -r $1/font/fontello.ttf $2/vendor/assets/fonts
+cp -r $1/font/fontello.woff $2/vendor/assets/fonts</p>
+
+<p>cp -f $1/config.json $2/vendor/assets/fonts/config.json</p>
+
+<p>cp -f $1/css/fontello.css $2/app/assets/stylesheets/fontello.less
+echo &lsquo;copy fontello successfully&rsquo;
+<code>``
+文件名为fontello.sh， 首先为其添加可执行权限</code>chmod +x fontello.sh<code>， 如果下载下来的新的包名为fontello-1234.zip，那么只要执行命令</code>./fontello.sh fontello-1234 ~/project/helloworld`</p>
+
+<p>永远不要你自己做重复的事情，如果真有这些事情请让计算机自行实现一切会轻松很多！</p>
 ]]></content>
   </entry>
   
