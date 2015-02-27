@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-02-07T14:41:44+08:00</updated>
+  <updated>2015-02-27T13:24:58-06:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Android布局封装控件]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/"/>
-    <updated>2014-11-13T16:10:37+08:00</updated>
+    <updated>2014-11-13T02:10:37-06:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian</id>
     <content type="html"><![CDATA[<p>近期时间略紧，许久没有更新博客了。今天做项目过程中，学习了Android关于封装控件的一些简单知识，特纪录下来并和大家交流。</p>
 
@@ -26,9 +26,9 @@
   
   <entry>
     <title type="html"><![CDATA[Android电话监听]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting/"/>
-    <updated>2014-10-29T11:11:48+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/28/androiddian-hua-jian-ting/"/>
+    <updated>2014-10-28T22:11:48-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/28/androiddian-hua-jian-ting</id>
     <content type="html"><![CDATA[<p>看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：<br/>
 我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
 在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
@@ -117,7 +117,7 @@ public void onReceive(Context context, Intent intent) {
   <entry>
     <title type="html"><![CDATA[Android Data Cache]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache/"/>
-    <updated>2014-10-28T17:11:26+08:00</updated>
+    <updated>2014-10-28T04:11:26-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache</id>
     <content type="html"><![CDATA[<p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
 
@@ -149,7 +149,7 @@ public void onReceive(Context context, Intent intent) {
   <entry>
     <title type="html"><![CDATA[Hack 京东Lebook]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/26/hack-jing-dong-lebook/"/>
-    <updated>2014-10-26T22:46:18+08:00</updated>
+    <updated>2014-10-26T09:46:18-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/26/hack-jing-dong-lebook</id>
     <content type="html"><![CDATA[<p>adb devices : 列出所有的设备</p>
 
@@ -164,9 +164,9 @@ public void onReceive(Context context, Intent intent) {
   
   <entry>
     <title type="html"><![CDATA[Openfire - Android IM 框架使用]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/"/>
-    <updated>2014-10-21T10:02:58+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong/"/>
+    <updated>2014-10-20T21:02:58-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong</id>
     <content type="html"><![CDATA[<p>IM(Instant Messaging)在Android中可谓运用广泛。QQ，Wechat，陌陌等应用都可以看作IM实时通讯APP，实时通讯在社交类APP中运用范围较广，其功能看起来也是比较cool的。今天我们将研究一下android IM软件是如何实现的。像IM这种实施通讯软件，除非公司有比较大的实力和精力，才会自己去整这么一套框架。对于广大中小软件开发者来说，想到比较多的就是开源框架。Opensource对于开发者来说简直就是福音，对于整个软件行业也起到了不小的推动性的作用。<br/>
 Openfire在这种环境下应运而生，而且作为实时通讯类开源框架迅速走红，下面我们就一起来学习这样一款拯救宇宙的开源框架，文章的最后会运用Openfire做出一个可以实时通讯的AndroidAPP，如果结合上地理位置再多点UI和交互上的设计提升，这不就是陌陌吗？YY了一会，觉得挺有趣，那么 <code>Just do it</code>。</p>
 

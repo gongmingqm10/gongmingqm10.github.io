@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-02-07T14:41:44+08:00</updated>
+  <updated>2015-02-27T13:24:58-06:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[2015 Annual Review]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review/"/>
-    <updated>2015-01-22T00:34:06+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/01/21/2015-annual-review/"/>
+    <updated>2015-01-21T10:34:06-06:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/01/21/2015-annual-review</id>
     <content type="html"><![CDATA[<p>2015年悄然来临，算上实习期，在TW待的日子也将近一年。在Annual Review这个环节我也开始梳理自己走过的2014年，关于项目，关于团队，关于成长的那点苦与甜。按照惯例，我将从以下几个方面一一道来：</p>
 
 <h2>Sponser Review</h2>
@@ -127,7 +127,7 @@
   <entry>
     <title type="html"><![CDATA[Android布局封装控件]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/"/>
-    <updated>2014-11-13T16:10:37+08:00</updated>
+    <updated>2014-11-13T02:10:37-06:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian</id>
     <content type="html"><![CDATA[<p>近期时间略紧，许久没有更新博客了。今天做项目过程中，学习了Android关于封装控件的一些简单知识，特纪录下来并和大家交流。</p>
 
@@ -138,7 +138,7 @@
   <entry>
     <title type="html"><![CDATA[常用的Linux Cmd]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/30/chang-yong-de-linux-cmd/"/>
-    <updated>2014-10-30T15:47:40+08:00</updated>
+    <updated>2014-10-30T02:47:40-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/30/chang-yong-de-linux-cmd</id>
     <content type="html"><![CDATA[<p>ls：查看目录下所有可见文件<br/>
 ls -a ： 查看目录下所有文件，包括隐藏文件  <br/>
@@ -189,9 +189,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
   <entry>
     <title type="html"><![CDATA[Android电话监听]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting/"/>
-    <updated>2014-10-29T11:11:48+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/28/androiddian-hua-jian-ting/"/>
+    <updated>2014-10-28T22:11:48-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/28/androiddian-hua-jian-ting</id>
     <content type="html"><![CDATA[<p>看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：<br/>
 我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
 在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
@@ -339,7 +339,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   <entry>
     <title type="html"><![CDATA[Android Data Cache]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache/"/>
-    <updated>2014-10-28T17:11:26+08:00</updated>
+    <updated>2014-10-28T04:11:26-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache</id>
     <content type="html"><![CDATA[<p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
 
@@ -371,7 +371,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   <entry>
     <title type="html"><![CDATA[Hack 京东Lebook]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/26/hack-jing-dong-lebook/"/>
-    <updated>2014-10-26T22:46:18+08:00</updated>
+    <updated>2014-10-26T09:46:18-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/26/hack-jing-dong-lebook</id>
     <content type="html"><![CDATA[<p>adb devices : 列出所有的设备</p>
 
@@ -386,9 +386,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
   <entry>
     <title type="html"><![CDATA[Vagrant 搭建本地虚拟机]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/"/>
-    <updated>2014-10-21T11:06:42+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/20/vagrant-da-jian-ben-di-xu-ni-ji/"/>
+    <updated>2014-10-20T22:06:42-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/20/vagrant-da-jian-ben-di-xu-ni-ji</id>
     <content type="html"><![CDATA[<p>多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。<br/>
 虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。<br/>
 安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
@@ -664,9 +664,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
   <entry>
     <title type="html"><![CDATA[Openfire - Android IM 框架使用]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/"/>
-    <updated>2014-10-21T10:02:58+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong/"/>
+    <updated>2014-10-20T21:02:58-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong</id>
     <content type="html"><![CDATA[<p>IM(Instant Messaging)在Android中可谓运用广泛。QQ，Wechat，陌陌等应用都可以看作IM实时通讯APP，实时通讯在社交类APP中运用范围较广，其功能看起来也是比较cool的。今天我们将研究一下android IM软件是如何实现的。像IM这种实施通讯软件，除非公司有比较大的实力和精力，才会自己去整这么一套框架。对于广大中小软件开发者来说，想到比较多的就是开源框架。Opensource对于开发者来说简直就是福音，对于整个软件行业也起到了不小的推动性的作用。<br/>
 Openfire在这种环境下应运而生，而且作为实时通讯类开源框架迅速走红，下面我们就一起来学习这样一款拯救宇宙的开源框架，文章的最后会运用Openfire做出一个可以实时通讯的AndroidAPP，如果结合上地理位置再多点UI和交互上的设计提升，这不就是陌陌吗？YY了一会，觉得挺有趣，那么 <code>Just do it</code>。</p>
 
@@ -788,9 +788,9 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
   
   <entry>
     <title type="html"><![CDATA[Android deploy your app]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app/"/>
-    <updated>2014-10-17T12:56:13+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/16/android-deploy-your-app/"/>
+    <updated>2014-10-16T23:56:13-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/16/android-deploy-your-app</id>
     <content type="html"><![CDATA[<p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
 
 <h3>Proguard－代码混淆</h3>
@@ -844,9 +844,9 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
   <entry>
     <title type="html"><![CDATA[Android SIP 网络通话]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/17/android-sip-wang-luo-tong-hua/"/>
-    <updated>2014-10-17T09:49:35+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/17/android-sip-wang-luo-tong-hua</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/16/android-sip-wang-luo-tong-hua/"/>
+    <updated>2014-10-16T20:49:35-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/16/android-sip-wang-luo-tong-hua</id>
     <content type="html"><![CDATA[<p>突发奇想，想研究一下Android的网络通话怎么实现，于是从Google搜到了相关的资料。原来Android下集成了SIP（Session Initiation Protocol）。SIP的账号可以通过SIP提供商免费申请，申请后即可以通过用户名实现网络通话。于是也找了网上的一些资料，写了个AndroidSIP的小demo，demo实现后大家可以实现互拨，目前界面很简单，但是通话的功能应该是可以实现的。请各位看官试用之。<br/>
 整体效果看起来还是蛮酷的，这里我们申请了两个免费的账号，在设备上安装之后就可以进行Network Call了。</p>
 
@@ -862,9 +862,9 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
   <entry>
     <title type="html"><![CDATA[Git daemon 建立本地Git服务器]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
-    <updated>2014-10-14T10:51:41+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/13/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
+    <updated>2014-10-13T21:51:41-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/13/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
     <content type="html"><![CDATA[<p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
 
 <p><strong>前提</strong></p>
@@ -926,7 +926,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   <entry>
     <title type="html"><![CDATA[Android quiz questions]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions/"/>
-    <updated>2014-10-13T17:19:22+08:00</updated>
+    <updated>2014-10-13T04:19:22-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions</id>
     <content type="html"><![CDATA[<p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
 
@@ -991,9 +991,9 @@ There is one quirk: client can’t push into your active git branch. Before push
   
   <entry>
     <title type="html"><![CDATA[Deploy app to remote server —— 网站部署篇]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server/"/>
-    <updated>2014-10-12T11:14:37+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/11/deploy-app-to-remote-server/"/>
+    <updated>2014-10-11T22:14:37-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/11/deploy-app-to-remote-server</id>
     <content type="html"><![CDATA[<p>网站开发完毕之后，下一步的任务就是部署了。我们从最简单的入手，如何将本地开发的webapp部署到远程服务器上（这里我们用的是阿里的ECS）。部署是一件很有意思的事情，因为我们可以让本地开发的网站被外界所访问，所以还是很多成就感的。这里的工程采用的是Spring MVC 框架。</p>
 
 <h3>1. Requirement</h3>
@@ -1143,7 +1143,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   <entry>
     <title type="html"><![CDATA[Android onTouch() 初探]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/09/30/android-ontouch-chu-tan/"/>
-    <updated>2014-09-30T17:28:56+08:00</updated>
+    <updated>2014-09-30T04:28:56-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/09/30/android-ontouch-chu-tan</id>
     <content type="html"><![CDATA[<p>Android的touch对于我来说是个既熟悉又陌生的话题，熟悉之处在于onTouch太常用了，从系统的自定义的ListView的滑动到我们自定义的可以滑动的View，onTouch直接与用户进行相关的Interation，所以onTouch无处不再。想像下如果Android某一天不能相应我们的touch事件，那我们现在的触屏手机基本废了，那我们的手机还得还原到以前的字母键手机的状态。学习总是得自己逼迫自己，没有博客的驱动我是怎样也不会来从头开始研究onTouch的作用机制的，博客当作一个自我学习的过程，坚持再坚持。</p>
 
@@ -1481,7 +1481,7 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
   <entry>
     <title type="html"><![CDATA[云服务器使用记录]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/"/>
-    <updated>2014-09-29T15:01:31+08:00</updated>
+    <updated>2014-09-29T02:01:31-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu</id>
     <content type="html"><![CDATA[<h3>我的第一个云服务器ECS</h3>
 
@@ -1598,7 +1598,7 @@ yum-metadata-parser-1.1.2-3.el5</p>
   <entry>
     <title type="html"><![CDATA[Android自定义View]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view/"/>
-    <updated>2014-09-25T23:22:11+08:00</updated>
+    <updated>2014-09-25T10:22:11-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view</id>
     <content type="html"><![CDATA[<p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
 
@@ -2326,9 +2326,9 @@ res/values/attrs.xml</p>
   
   <entry>
     <title type="html"><![CDATA[Travel to ThoughtWorks]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/09/22/travel-to-thoughtworks/"/>
-    <updated>2014-09-22T10:39:01+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/09/22/travel-to-thoughtworks</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/21/travel-to-thoughtworks/"/>
+    <updated>2014-09-21T21:39:01-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/09/21/travel-to-thoughtworks</id>
     <content type="html"><![CDATA[<blockquote><p>Life is a journey, not a destination.</p></blockquote>
 
 <p>人生就是在时光的隧道中不同的奔跑，在不同的环境中遇到不同的人，然后开始相同的挣扎，最后不断优秀的过程。加入ThoughtWorks一月有余，期间经历了一些事情，趁着On beach的时光对其进行一些沉淀，若干年后作为记忆的时光进行回忆品味。</p>
@@ -2371,9 +2371,9 @@ res/values/attrs.xml</p>
   
   <entry>
     <title type="html"><![CDATA[Android best practice]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/09/16/android-best-practice/"/>
-    <updated>2014-09-16T10:41:25+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/09/16/android-best-practice</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/15/android-best-practice/"/>
+    <updated>2014-09-15T21:41:25-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/09/15/android-best-practice</id>
     <content type="html"><![CDATA[<p>从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。</p>
 
 <h3>Android Activity 的生命周期</h3>
@@ -2431,7 +2431,7 @@ res/values/attrs.xml</p>
   <entry>
     <title type="html"><![CDATA[mybait migration session]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/08/17/mybait-migration-session/"/>
-    <updated>2014-08-17T20:50:41+08:00</updated>
+    <updated>2014-08-17T07:50:41-05:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/08/17/mybait-migration-session</id>
     <content type="html"><![CDATA[<h2>Mybatis Migration 初探</h2>
 
@@ -2787,9 +2787,9 @@ ID             Applied At          Description
   
   <entry>
     <title type="html"><![CDATA[Fontello 使用心得]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de/"/>
-    <updated>2014-03-19T08:19:49+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/03/19/fontello-shi-yong-xin-de</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/03/18/fontello-shi-yong-xin-de/"/>
+    <updated>2014-03-18T19:19:49-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/03/18/fontello-shi-yong-xin-de</id>
     <content type="html"><![CDATA[<h2>Overview</h2>
 
 <p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>

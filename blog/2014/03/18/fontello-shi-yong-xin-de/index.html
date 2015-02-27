@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Fontello 使用心得 - gongmingqm10</title>
+  <meta name="author" content="Gong Ming">
+
+  
+  <meta name="description" content="Fontello使用教程 在Web中使用Fontello">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2014/03/18/fontello-shi-yong-xin-de/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48787063-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText">sihugh</div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">gongmingqm10</a></h1>
+  
+    <h2>Life is a journey, not a destination</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="gongmingqm10@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.gongmingqm10.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Fontello 使用心得</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-18T19:19:49-05:00" pubdate data-updated="true">Mar 18<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Overview</h2>
+
+<p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
+
+<hr />
+
+<p>最近尝试在构建一个rails应用，于是自然而然就想到用之前项目中的fontello图标，对于Developer来说，有了fontello和rails我开始不需要担心街面上图标或者按钮的样式问题了。</p>
+
+<!-- more -->
+
+
+<p>在fontello中选择所需的图标后点击下载即可进行下载一个zip压缩包，解压缩之后里面就会包含我们所需的几个文件。将这几个文件放置到我们project的assets下面，即可直接使用。</p>
+
+<h2>用法</h2>
+
+<hr />
+
+<ol>
+<li>Download: 选择图标后直接选择下载；</li>
+<li>Move: 将font文件夹中的所有文件和config.json移到vendor/assets/fonts文件夹中，将fontello.css移动到app/assets/stylesheets/fontello.css, 并在需要使用的相关页面中import此css文件；</li>
+<li>Usage: 在html页面中直接使用 <span class="icon icon-plus"></span>即可使用到名为icon-plus的图标；</li>
+<li>Update: 对于图标的下载我们一般在需要图标时才会下载，于是我们非首次下载时就需要update，在fontello网站上先import选择config.json，然后再搜索我们想要的图标，再次进行下载，将下载好的新文件覆盖之前的文件，update操作便完成了；</li>
+</ol>
+
+
+<h2>Don&rsquo;t repeat yourself</h2>
+
+<hr />
+
+<p>对于fontello这种update图标然后覆盖的模式，我曾经极度讨厌，甚至认为还不如使用font awesome进行一次性的下载好，然后直接使用就可以了，后来发现fontello的强大之处在于它集合了许多种图标资源，所以上面的图标库更丰富，如果一次性下载估计也是件挺浪费资源的事情，因为我们只会用到少量的图标。所以我们不得不需要什么图标就去下载然后覆盖更新～～</p>
+
+<p>但是作为一名开发人员，这种重复的工作如果让我们自己做，就有点太浪费了。所以决定把这些琐碎重复的事情交给计算机做。也就是每次我下载下来，我只要运行脚本，这些文件就会自动复制到我所需的工程中。于是使用shell命令解决这个问题：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>unzip -u $1
+</span><span class='line'>if [ ! -d $2/vendor/assets/fonts ]; then
+</span><span class='line'>  mkdir $2/vendor/assets/fonts
+</span><span class='line'>fi 
+</span><span class='line'>cp -r $1/font/fontello.eot $2/vendor/assets/fonts
+</span><span class='line'>cp -r $1/font/fontello.svg $2/vendor/assets/fonts
+</span><span class='line'>cp -r $1/font/fontello.ttf $2/vendor/assets/fonts
+</span><span class='line'>cp -r $1/font/fontello.woff $2/vendor/assets/fonts
+</span><span class='line'>
+</span><span class='line'>cp -f $1/config.json $2/vendor/assets/fonts/config.json
+</span><span class='line'>
+</span><span class='line'>cp -f $1/css/fontello.css $2/app/assets/stylesheets/fontello.less
+</span><span class='line'>echo 'copy fontello successfully'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>文件名为fontello.sh， 首先为其添加可执行权限 <code>chmod +x fontello.sh</code>， 如果下载下来的新的包名为fontello-1234.zip，那么只要执行命令<code>./fontello.sh fontello-1234 ~/project/helloworld</code></p>
+
+<p>永远不要你自己做重复的事情，如果真有这些事情请让计算机自行实现一切会轻松很多！</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-18T19:19:49-05:00" pubdate data-updated="true">Mar 18<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design/'>Design</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/blog/2014/03/08/ding-can-wang-zhi-si/" title="Previous Post: 订餐网之死">&laquo; 订餐网之死</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/blog/2014/08/17/mybait-migration-session/" title="Next Post: mybait migration session">mybait migration session &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/21/2015-annual-review/">2015 Annual Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/">Android布局封装控件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/30/chang-yong-de-linux-cmd/">常用的Linux Cmd</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/28/androiddian-hua-jian-ting/">Android电话监听</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(11)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+</section>
+<section>
+A little something about me.
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Gong Ming -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: web | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/web/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-02-07T14:41:44+08:00</updated>
+  <updated>2015-02-27T13:24:58-06:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Deploy app to remote server —— 网站部署篇]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server/"/>
-    <updated>2014-10-12T11:14:37+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/11/deploy-app-to-remote-server/"/>
+    <updated>2014-10-11T22:14:37-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/11/deploy-app-to-remote-server</id>
     <content type="html"><![CDATA[<p>网站开发完毕之后，下一步的任务就是部署了。我们从最简单的入手，如何将本地开发的webapp部署到远程服务器上（这里我们用的是阿里的ECS）。部署是一件很有意思的事情，因为我们可以让本地开发的网站被外界所访问，所以还是很多成就感的。这里的工程采用的是Spring MVC 框架。</p>
 
 <h3>1. Requirement</h3>
