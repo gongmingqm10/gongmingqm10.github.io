@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="突发奇想，想研究一下Android的网络通话怎么实现，于是从Google搜到了相关的资料。原来Android下集成了SIP（Session Initiation Protocol）。SIP的账号可以通过SIP提供商免费申请，申请后即可以通过用户名实现网络通话。于是也找了网上的一些资料， &hellip;">
+  <meta name="description" content="平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器： 前提 代码是通过Git托管的，如果使用SVN的话，多增加一个Git repo也是可以的。 Step &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,51 +79,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/16/android-sip-wang-luo-tong-hua/">Android SIP 网络通话</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-16T20:49:35-05:00" pubdate data-updated="true">Oct 16<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>突发奇想，想研究一下Android的网络通话怎么实现，于是从Google搜到了相关的资料。原来Android下集成了SIP（Session Initiation Protocol）。SIP的账号可以通过SIP提供商免费申请，申请后即可以通过用户名实现网络通话。于是也找了网上的一些资料，写了个AndroidSIP的小demo，demo实现后大家可以实现互拨，目前界面很简单，但是通话的功能应该是可以实现的。请各位看官试用之。<br/>
-整体效果看起来还是蛮酷的，这里我们申请了两个免费的账号，在设备上安装之后就可以进行Network Call了。</p>
-
-<p>免费SIP账号申请：<a href="http://www.linphone.org/free-sip-service.html">http://www.linphone.org/free-sip-service.html</a></p>
-
-<p>官方参考文档：<a href="http://developer.android.com/guide/topics/connectivity/sip.html">http://developer.android.com/guide/topics/connectivity/sip.html</a></p>
-
-<p>项目代码下载：<a href="https://github.com/gongmingqm10/AndroidSIP">https://github.com/gongmingqm10/AndroidSIP</a></p>
-
-<p>任何问题，欢迎大家fork，发pull/request。</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -2293,6 +2248,53 @@ ID             Applied At          Description
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/18/fontello-shi-yong-xin-de/">Fontello 使用心得</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-18T19:19:49-05:00" pubdate data-updated="true">Mar 18<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Overview</h2>
+
+<p>Fontello icon generator <a href="http://fontello.com/">http://fontello.com/</a>，fontello上可以选择各种各样的常见的icon，所有的icon都是字体格式，所以对于icon的大小和颜色你都可以像使用字体一样方便的使用他们。</p>
+
+<hr />
+
+<p>最近尝试在构建一个rails应用，于是自然而然就想到用之前项目中的fontello图标，对于Developer来说，有了fontello和rails我开始不需要担心街面上图标或者按钮的样式问题了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/03/18/fontello-shi-yong-xin-de/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -2310,15 +2312,11 @@ ID             Applied At          Description
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/01/22/begin-to-use-springboot/">Begin to Use SpringBoot</a>
+        <a href="/blog/2015/02/28/travel-to-dallas-life/">Travel to Dallas - Life</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/01/21/2015-annual-review/">2015 Annual Review</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/">Android布局封装控件</a>
       </li>
     
       <li class="post">
@@ -2329,11 +2327,15 @@ ID             Applied At          Description
         <a href="/blog/2014/10/28/androiddian-hua-jian-ting/">Android电话监听</a>
       </li>
     
+      <li class="post">
+        <a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a>
+      </li>
+    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(11)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(10)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(1)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
   <h1>About Me</h1>

@@ -9,8 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="The time since I worked as a web developer, I use spring 3.x for most of my personal project. Because java is mostly
-been used. Those who worked with &hellip;">
+  <meta name="description" content="来达拉斯已过半月，从去年的十二月份开始规划，到二月中旬过来，再到过完这边最难熬的两个星期。生活工作渐入正轨，是时候来总结下这个特别的二月。 出差 “去美国出差”，第一次知道这条消息还是YueYue发我微信上的。看完这条消息的时候内心很激动，因为终于可以去大美利坚了。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,7 +85,7 @@ been used. Those who worked with &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/01/22/begin-to-use-springboot/">Begin to Use SpringBoot</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/02/28/travel-to-dallas-life/">Travel to Dallas - Life</a></h1>
     
     
       <p class="meta">
@@ -102,106 +101,109 @@ been used. Those who worked with &hellip;">
   
 
 
-<time datetime="2015-01-22T04:00:09-06:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2015</time>
+<time datetime="2015-02-28T21:44:57-06:00" pubdate data-updated="true">Feb 28<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>The time since I worked as a web developer, I use spring 3.x for most of my personal project. Because java is mostly
-been used. Those who worked with me can easily be participant in the project. While the more I use it, the more I&rsquo;m suffered
-with the complex config of the spring project. Additionally it&rsquo;s not easy to create a scaffolding Spring project, especially
-when I&rsquo;m so accustomed to rails scaffold.</p>
+  <div class="entry-content"><p>来达拉斯已过半月，从去年的十二月份开始规划，到二月中旬过来，再到过完这边最难熬的两个星期。生活工作渐入正轨，是时候来总结下这个特别的二月。</p>
 
-<p>It&rsquo;s time for us to trial a new development pattern to make our work be more graceful. Luckily spring4.x appeared, and I
-began to knew the <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> project.</p>
+<h3>出差</h3>
 
-<p>So, do not wait any more, just try it. I following the <a href="http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/">official guides</a></p>
+<p>“去美国出差”，第一次知道这条消息还是YueYue发我微信上的。看完这条消息的时候内心很激动，因为终于可以去大美利坚了。记得毕业的时候就特羡慕能够来美国念书的同学，心里想着以后有机会也去美国看一看，看一看外面的世界，见识下外面的风土人情。如今这个选择摆在我的面前，我不想像周星驰那句台词里说的那样，“曾经有一段很好的&hellip;摆在我面前，但是&hellip;”。</p>
 
-<h3>Say hello to Spring Boot</h3>
-
-<p>I worked in a Mac system. It&rsquo;s easy to install SpringBoot CLI by brew:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ brew tap pivotal/tap
-</span><span class='line'>$ brew install springboot</span></code></pre></td></tr></table></div></figure>
+<!-- Read more -->
 
 
-<p>Homebrew will install spring to <code>/usr/local/bin</code>, when I try to use spring to start a simple spring boot project. Some trick
-error stuck me until I realized the name <code>spring</code> is collided with the gem <code>spring</code>. But <code>/usr/local/bin/spring</code> exists in my mac,
-thus I use <code>/usr/local/bin/spring</code> to start the demo project. The following shows how to say hello to spring boot.</p>
+<p></p>
 
-<ul>
-<li>Create the app.groovy first:</li>
-</ul>
+<p>我要去美国，就是这种想法瞬间在自己的脑海中扎根。冷静之余，我开始想到生活，想过没办法回家过年，和女友又得继续分别数月，在武汉的生活好不容易走上正轨，又得开始去陌生的地方，与陌生的人共事。这种惶恐让人感觉到迷茫。坚定决心，开始和女朋友沟通，于是沟通了几个小时，两人差点闹得分手了。最终我还是说服了在电话那头涕不成声的女友，和父母的沟通稍微顺畅一点，父母支持我自己的决定，但是后来听姐姐说妈妈挂完电话后眼泪也流下来了&hellip;</p>
 
+<p>这有点让我想起一些黑帮片里面的情形，走江湖的都基本无情无爱，了无牵挂，才能走得更远。当然现实生活中，事情远不是0和1的选择，很多事情可以协调的，终于把去美国出差的意向确定了。内心还是十分开心的。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>@RestController
-</span><span class='line'>class ThisWillActuallyRun {
-</span><span class='line'>
-</span><span class='line'>    @RequestMapping("/")
-</span><span class='line'>    String home() {
-</span><span class='line'>        "Hello World!"
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+<blockquote><p>对某个城市有个情感的牵绊之后，无论出差到哪里，都只是在漂泊</p></blockquote>
 
+<h3>签证顺利</h3>
 
-<ul>
-<li>Use spring to run it: <code>/usr/local/bin/spring run app.groovy</code></li>
-<li>Open <code>http://localhost:8080/</code> in your browser. You can see the <code>Hello World!</code> in the page.</li>
-</ul>
+<p>由于一直有公司出面，赴美签证，办得相当顺利。前提公司督促我提交各种材料，到2月初终于开始去美国使馆进行面前。除了之前转机在机场停留后，这其实是我第一次到北京，去的那边北京的天空还是挺蓝的。首都给我的印象挺好的，首都国际机场有直达市区的轻轨，这一点比其他二线城市方便多了。到北京后下午立即赶到北京，在Kun的指导下温习了一下次日使馆面试官可能会问我的问题。这种状态颇有大考来临之前老师教我们临阵磨枪的味道。晚上在宾馆停留一晚，第二天赶早去大使馆。</p>
 
+<p>第二天一大早及其兴奋的到了大使馆，结果八点半的美国使馆门口已经是站满了人，几经周折，寄存了手机，抛弃了耳机之后终于来到了大厅。一位和善的面试官接待了我，不知道是太久没听英文了还是什么原因，我竟然基本听不懂面试官在说什么，面试官也估计很奇怪，英文这么差还去出差。但是面试官看我满脸疑惑的时候竟然给我充当了翻译。还好最后面试官对我说了&#8221;Have a good trip&#8221;，我赶紧的各种Thank you奉上。面试完之后，继续上楼缴费了500美元，看来我数月前办的全币信用卡瞬间奏效，出差或者旅游频繁还是要办一张可以刷外币的卡比较安全。</p>
 
-<h3>Build a real project</h3>
+<p>面签顺利通过，签证三日左右就可以拿到。于是我赶紧收拾收拾，返回武汉。</p>
 
-<p>After we finished the hello-world project, we can move to next step to build a real web project.
-I use gradle to manage my dependency in our project. This is my build.gradle file:</p>
+<blockquote><p>面签顺利结束，北京之行太过匆匆</p></blockquote>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
-</span><span class='line'>    repositories { jcenter() }
-</span><span class='line'>    dependencies {
-</span><span class='line'>        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.BUILD-SNAPSHOT")
-</span><span class='line'>    }
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>apply plugin: 'java'
-</span><span class='line'>apply plugin: 'spring-boot'
-</span><span class='line'>
-</span><span class='line'>repositories { jcenter() }
-</span><span class='line'>dependencies {
-</span><span class='line'>    compile("org.springframework.boot:spring-boot-starter-web")
-</span><span class='line'>    testCompile("org.springframework.boot:spring-boot-starter-test")
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+<h3>踏上旅途</h3>
 
+<p>出发之前，必然少不了超市淘一批货带到美国。考虑到刚到的时候说不一定能够摸清周围超市状况，我自备牙膏牙刷等洗漱用品。饮食方面，带了我最爱的老干妈以及盐、鸡精等厨房调味品。中国菜不是哪里都有的。当然出发之前还特地买了几件稍微正式点的衣服，唯恐穿着方面给国人丢脸(事实证明想多了)。</p>
 
+<p>临别晚上彻夜未眠，突然要匆匆离别时才觉得平平淡淡的生活竟是如此的宝贵。周围熟悉的一切竟是如此的让人留恋。早上五点半便踏上了去机场的旅程，天还是黑黑的，没有惊动室友。因为大家都是不舍离别的人。</p>
 
+<p>紧接着便是武汉转香港，香港飞达拉斯的旅途。总共二十多个小时的旅途坐得跟以前的硬座火车感觉差不多。几乎昏睡的状态到达了达拉斯。第一感觉就是空旷，没有高耸如云的建筑物，天很蓝，空气真好。</p>
+
+<p>匆忙的安排中没有找到接机的人，于是自己在机场拿起笔记本，找到了自己的地址。还好出口处便直接找到了Yellow cab（出租车），给师傅看了看地址，师傅娴熟的用Google地图来导航，四十余分钟，终于来到了自己的公寓。各种波折，最后终于跨进了自己的房间，放下行李。终于可以说一声：</p>
+
+<blockquote><p>美国，我来了</p></blockquote>
+
+<h3>如何生存</h3>
+
+<p>陌生的环境中最重要的就是吃饭问题，正好趁上周末开始网上搜索附近的超市。最终找到了一家最近的超市，可以买到蔬菜水果和各种吃的。后来还探访到附近的Target专门卖生活用品的，以及Walmart会有更有的其他选择。赶紧的凑齐各种食材，终于在自己的努力下吃了自己在美帝国的第一顿饭，炒的菜有点水土不服，但是电饭煲蒸出来的饭全世界的味道都差不多。再加上周围的各种餐厅，吃饭的问题总算不用愁了。</p>
+
+<p>出行，最初的设想是周末几天出去探访下这边的公共交通，后来发现这边的交通实在是少的可怜，并且在手机没网没发进行户外GPS导航的情况下，公共交通出行着实过于复杂，很容易弄丢。为了不耽误别人，我还是选择近距离在附近转悠。于是自己的活动半径基本就限制在公寓和超市之间。达拉斯在美国应该只能算是二线城市，所以没有这么多的公共交通，这边的人基本上都有自己的车，他们也确实用不上公交车。还好公司考虑到我这种情况，在热心同事的帮助下，总算是能够搭便车了。</p>
+
+<p>刚来的这几天天气真是超好，整个一达拉斯的春天的感觉。再后来发现开始降雪。还好室友有保暖措施，所以室内温度总是很宜人。不过如果长时间待在外面，还是带件稍微厚点的衣服会比较靠谱一点。</p>
+
+<p>医院，来这边没多久，眼睛麦粒肿就把我折腾到了要去看医生的境地。那么问题来了，医院在哪，怎么看医生？几番打探之后，发现附近走路一刻钟就可以找到一家CityDoc Urgent Care, 就诊时带上自己的护照就可以了。然后就是各种资料，填完后就开始等着医生喊我的名字，诊断之后就是去药房Pharmacy拿药。稍微看下医生就花了100多刀，美国的看病还真是不便宜。还好自己终于知道如何看病了。至少不会像以前那么的不安与紧张。</p>
+
+<blockquote><p>衣食住行，生活的根本</p></blockquote>
+
+<h3>SSN申请</h3>
+
+<p>入境美国后，并且如果要长期待的话，SSN社会安全卡的申请自然少不了。公司负责人员会给我发一堆表格，填完之后我得自己去当地的社会安全组织办公室申请，在deadline去申请真不是一件明智的事情。首先，我没考虑到工到Social Security Administration的工作时间，导致差点错过这一天的申请。</p>
+
+<p>申请的这边这天竟然也下着雪，出租车似乎都不怎么停。后来才知道我应该通过App或者电话预约才能够叫到出租车。还好我通过传统的招手的方式找到了出租车。详细描述了地址之后，出租车师傅终于把我带到了社会安全办公室。另外这边的出租车也应该给小费，但凡服务行业都应该给小费10%-20%。</p>
+
+<p>申请通过之后，工作人员会给我一个单子，告诉我社会安全卡会在十个工作日之内寄过来。于是这次申请就完成了。</p>
+
+<h3>结语</h3>
+
+<p>来到TW后，生活发生了翻天覆地的变化，从前一个人在学校里面想去外面走走，现在发现在外面走走之后竟然想回去了。上次参加TWU的时候还有小伙伴陪着一起，这次竟然也就一个人踏上了这段旅途。一个人的旅途充满了各种挑战，一个人扛着一大包东西从超市往回提，一个人在国外度过春节，一个人冒着大雪在这个陌生的地方拦出租，却也一个人周末待在家里连续三天不出门。</p>
+
+<p>我深信这是种经历，经历了异国的生活才能够更好的认识之前的生活。看到这边超市里各种人性化的设计，看到这边红绿灯路口的设计，遇见这边随时都会向你问好并且“Excuse me”的友善。这些都让我对我所生活的这个世界有了更清晰的认识。</p>
+
+<p>美国的生活才过去半月，剩下的两个半月我希望能够认识更多，见识更多，增长更多。无论从工作还是生活，希望一切顺顺利利。</p>
+
+<blockquote><p>Life is a journey, not a destination</p></blockquote>
+
+<p><img src="/images/dallas-redlight.jpg" title="红绿灯路口" ></p>
+
+<p>行人通过红绿灯路口需要按下按钮，估计这边车多行人少的缘故</p>
+
+<p><img src="/images/dallas-target.jpg" title="Target百货店" ></p>
+
+<p>这是Target百货店，我在这里找到了自己要买的电饭煲</p>
+
+<p><img src="/images/dallas-dfl.jpg" title="耸动的云" ></p>
+
+<p>纯净的天空下那股耸动的云，如末日来临一样宏大的场面</p>
+
+<p><img src="/images/dallas-travis-street.jpg" title="Travis Street" ></p>
+
+<p>自己生活的Travis Street, 天气晴好时外面还是很值得去的。视野一下子清新了不少</p>
+
+<p><img src="/images/dallas-snow.jpg" title="Dallas雪景" ></p>
+
+<p>Dallas也是会下雪的，或者说是冻雨。路面全部结冰，上班出行困难。温度变化太快</p>
+
+<p><img src="/images/dallas-social-security-office.jpg" title="Dallas Social Security Office" ></p>
+
+<p>办社会安全卡的地方，这里很少见高高的大楼</p>
+
+<p><img src="/images/dallas-laoganma.jpg" title="神器老干妈" ></p>
+
+<p>老干妈，出行必备神器。美国亚马逊上直接购买</p>
 </div>
   
   
@@ -340,44 +342,6 @@ I use gradle to manage my dependency in our project. This is my build.gradle fil
 <li>项目安排上，希望能够尽可能多的参与Mobile项目；</li>
 </ul>
 
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/">Android布局封装控件</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-11-13T02:10:37-06:00" pubdate data-updated="true">Nov 13<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>近期时间略紧，许久没有更新博客了。今天做项目过程中，学习了Android关于封装控件的一些简单知识，特纪录下来并和大家交流。</p>
-
-<p><a href="http://trickyandroid.com/protip-inflating-layout-for-your-custom-view/">http://trickyandroid.com/protip-inflating-layout-for-your-custom-view/</a></p>
 </div>
   
   
@@ -1281,6 +1245,51 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/16/android-sip-wang-luo-tong-hua/">Android SIP 网络通话</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-16T20:49:35-05:00" pubdate data-updated="true">Oct 16<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>突发奇想，想研究一下Android的网络通话怎么实现，于是从Google搜到了相关的资料。原来Android下集成了SIP（Session Initiation Protocol）。SIP的账号可以通过SIP提供商免费申请，申请后即可以通过用户名实现网络通话。于是也找了网上的一些资料，写了个AndroidSIP的小demo，demo实现后大家可以实现互拨，目前界面很简单，但是通话的功能应该是可以实现的。请各位看官试用之。<br/>
+整体效果看起来还是蛮酷的，这里我们申请了两个免费的账号，在设备上安装之后就可以进行Network Call了。</p>
+
+<p>免费SIP账号申请：<a href="http://www.linphone.org/free-sip-service.html">http://www.linphone.org/free-sip-service.html</a></p>
+
+<p>官方参考文档：<a href="http://developer.android.com/guide/topics/connectivity/sip.html">http://developer.android.com/guide/topics/connectivity/sip.html</a></p>
+
+<p>项目代码下载：<a href="https://github.com/gongmingqm10/AndroidSIP">https://github.com/gongmingqm10/AndroidSIP</a></p>
+
+<p>任何问题，欢迎大家fork，发pull/request。</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1296,15 +1305,11 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/01/22/begin-to-use-springboot/">Begin to Use SpringBoot</a>
+        <a href="/blog/2015/02/28/travel-to-dallas-life/">Travel to Dallas - Life</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/01/21/2015-annual-review/">2015 Annual Review</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/11/13/androidbu-ju-feng-zhuang-kong-jian/">Android布局封装控件</a>
       </li>
     
       <li class="post">
@@ -1315,11 +1320,15 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
         <a href="/blog/2014/10/28/androiddian-hua-jian-ting/">Android电话监听</a>
       </li>
     
+      <li class="post">
+        <a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a>
+      </li>
+    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(11)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(1)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(10)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(1)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
   <h1>About Me</h1>
