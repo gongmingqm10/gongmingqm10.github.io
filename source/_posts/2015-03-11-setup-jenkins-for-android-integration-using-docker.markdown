@@ -1,0 +1,304 @@
+---
+layout: post
+title: "Setup Jenkins for Android Integration using Docker"
+date: 2015-03-11 21:46:59 -0500
+description: Setup jenkins CI environment for Android using Docker, Jenkins config for Android
+comments: true
+categories: [android, jenkins]
+
+---
+
+## About Docker
+什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？
+
+这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性，降低其他不可知因素对代码的影响。而Docker和VM虚拟机相比又有其特点，比如启动速度快，可以单独将Docker保存为镜像，上传后能够让别人使用。甚至可以直接将自己的code放在Docker中，直接将环境和代码一起交付给客户。客户只需要安装这个Docker，运行后就可以直接使用这个application了。
+
+> Develop, Ship and Run Any Application, Anywhere
+
+Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.
+
+### Provision
+我的目标在于构建一个可以运行Android的CI服务器。出于省钱的目的，我使用本地的Vagrant启动Ubuntu虚拟机来代替真正的服务器。大致思路是：
+
+1. 启动Ubuntu虚拟机，在Ubuntu上安装Docker；
+2. 通过Docker安装Jenkins Docker官方镜像；
+3. 在这个实例Docker中配置Jenkins并安装Android运行环境；
+4. 在Jenkins上搭建Android CI，使得Android单元测试和集成测试能够顺利通过；
+5. 上传这个具有Android CI功能的Jenkins镜像；
+6. 本地启动B虚拟机，下载镜像，访问B虚拟机的地址，查看Android Jenkins；
+
+###1. 启动Ubuntu虚拟机并安装Docker Jenkins
+在安装Docker之前，首先得有一个Linux的机器能够进入，如果你已经有一台干净的Linux服务器，直接进入安装Docker步骤。
+
+Vagrant安装之前，你应该在电脑上安装VirtualBox虚拟机。VirtualBox安装完成之后请参考 [Vagrant Installation Guide](http://docs.vagrantup.com/v2/installation/index.html)。
+
+Vagrant成功安装后，`vagrant init ubuntu/trusty64` 能够帮你快速安装一台Ubuntu14.04的虚拟机，第一次安装的时候会稍微慢点，因为Vagrant会帮你生成Vagrantfile文件，并下载镜像。
+
+Vagrantfile生成之后不要立即启动，因为我们想通过localhost访问Vagrant，然后通过Vagrant访问其中的Docker。由于Jenkins默认会使用8080端口，所以如果Vagrant的8080端口可以转发到Docker Container中的Jenkins。localhost:8080能够转发到Vagrant Ubuntu的8080端口，然后Vagrant的8080端口继续转发到Docker的8080端口，于是可以通过`localhost:8080`访问Jenkins了。所以Vagrantfile部分配置如下，添加端口转发。因为我本机的8080端口被其他程序占用，所以我将本地的8088端口转发到虚拟机的8080端口：
+
+```
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  #config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 8080, host: 8088
+```
+
+如果你之前已经启动了vagrant up, 然后更改了Vagrantfile想让forward_port生效，需要先`vagrant suspend`暂停vagrant，然后使用`vagrant reload`重新加载Vagrantfile使配置生效。
+
+Vagrant Ubuntu 初始化完成之后，还是在这个有Vagrantfile的文件夹下，`vagrant up`能够直接启动这台Ubuntu服务器。
+
+顺利的话我们可以进入通过`vagrant ssh`进入Ubuntu，随后需要在这台干净的Ubuntu机器上[安装Docker](http://docs.docker.com/installation/ubuntulinux/)：
+
+```
+$ sudo apt-get update
+$ sudo apt-get install docker.io
+$ source /etc/bash_completion.d/docker.io
+
+// 上述方法安装的Docker版本为1.0.1，如果你想使用较高版本Docker1.3.3
+
+$ echo deb http://get.docker.com/ubuntu docker main > /etc/apt/sources.list.d/docker.list
+$ apt-key adv --keyserver pgp.mit.edu --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+$ apt-get update
+$ apt-get install -y lxc-docker-1.3.3
+
+
+```
+Note: `vagrant destroy`会关闭并重新格式化ubuntu机器，如果你只是想简单的停止机器，请使用`vagrant suspend`
+
+Docker成功安装后，直接启动Jenkins官方镜像：
+
+```
+docker run --name androidJenkins -p 8080:8080 -v /var/jenkins_home jenkins
+```
+
+安装完成后，访问 `http://localhost:8088/`，如果可以看到Jenkins界面，说明Jenkins已经安装成功。
+
+进入后发现没有登录或者注册入口，然后就看到了stackoverflow上的[解决方案](http://stackoverflow.com/questions/10825614/how-can-i-add-a-username-and-password-to-jenkins): 系统管理 - Configure Global Security - 启用安全 — Jenkins专有用户数据库，允许用户注册 - 任何用户可以做任何事情。注册常用用户名和邮箱，然后就可以直接登录Jenkins。
+
+###2. Jenkins Docker中安装Android 运行环境
+
+既然我们的Jenkins已经搭建完成，这一步我们则需要基于Jenkins安装Android的运行环境，如何在Ubuntu系统中通过命令行安装Android运行环境呢，主要参考[这篇文章](https://www.digitalocean.com/community/tutorials/how-to-build-android-apps-with-jenkins)。
+
+安装Android运行环境主要的流程为：
+
+1. 下载Android SDK安装包 并设置环境变量.
+2. 下载platform-tools, Android SDK API, Android Build Tools.
+
+我这里安装Android SDK API版本为21，Build Tools版本号为21.1.2。
+
+为了使Jenkins Android 环境能够在下次使用，我们通过新建 Dockerfile 的方式基于Jenkins来创建一个新的镜像，具体步骤如下：
+
+1. [Docker Hub](https://registry.hub.docker.com/)注册账号，用于存放自己的Repository。
+2. 新建Dockerfile文件，并添加配置信息。
+3. 运行Dockerfile，此时会执行Dockerfile中所配置的一系列命令。
+4. 提交Dockerfile生成的jenkins-android镜像。
+
+####配置Dockerfile
+
+```
+FROM jenkins
+MAINTAINER Ming Gong, gongmingqm10@gmail.com
+USER root
+RUN apt-get update && apt-get -y install libstdc++6 lib32z1 lib32stdc++6 expect
+
+RUN wget --progress=dot:giga http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz
+RUN mv android-sdk_r24.1.2-linux.tgz /opt/
+RUN cd /opt && tar xzvf ./android-sdk_r24.1.2-linux.tgz
+ENV ANDROID_HOME /opt/android-sdk-linux/
+ENV PATH $ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+RUN echo $PATH
+RUN echo "y" | android update sdk -u --filter platform-tools,android-21
+RUN echo "y" | android update sdk -u --all --filter 5
+RUN chmod -R 755 $ANDROID_HOME
+
+RUN apt-get install -y git-core
+RUN android update sdk --no-ui
+
+```
+
+其中 `android update sdk -u --all --filter 5` 主要用来更新build-tools。在有android环境的机器上运行'android list sdk --all'可以查看所有的SDK信息，找到最新版本的build-tools，然后通过提供的最新版本号即可。
+
+Dockerfile配置成功后，我们首先在Vagrant虚拟机里面，`mkdir /var/jenkins_home`，并给予所有权限 `chmod 777 /var/jenkins_home`。/var/jenkins_home 能够映射到Docker中的jenkins_home目录，方便我们直接备份jenkins数据。
+
+####Build Dockerfile
+
+准备工作完成之后，build Dockerfile，首先切换到Dockerfile所在的当前目录下，
+
+```
+vagrant@ubuntu-14: sudo docker build -t gongmingqm10/jenkins-android:latest .
+
+...
+
+Successfully built 184c7dad595a
+
+```
+
+#### Push Image
+
+最后输出的信息就是我们通过Dockerfile生成的新的镜像ID。构建完成之后我们需要commit并push这个镜像到docker hub的repository上。
+
+```
+vagrant@ubuntu-14:~/test$ sudo docker images
+REPOSITORY                     TAG                   IMAGE ID            CREATED             VIRTUAL SIZE
+gongmingqm10/jenkins-android       latest                184c7dad595a        11 minutes ago      188.3 MB
+
+```
+通过 docker images能够看到最新的镜像已经生成，这一步我们需要首先启动这个镜像，然后得到container ID，然后再PUSH 这个container。
+
+首先启动镜像：
+
+```
+vagrant@ubuntu-14:~/test$ sudo docker run -t -i -d gongmingqm10/jenkins-android:latest
+...
+
+vagrant@ubuntu-14:~/test$ sudo docker ps
+CONTAINER ID        IMAGE                              COMMAND                CREATED             STATUS              PORTS                               NAMES
+43fcce2388fc        gongmingqm10/jenkins-adnroid:latest    /bin/bash              17 seconds ago      Up 16 seconds                                           determined_lumiere
+vagrant@ubuntu-14:~/test$ sudo docker commit -m "Add Android Config" -a "Ming Gong" 43fcce2388fc gongmingqm10/jenkins-android:latest
+75f1b93aedc4b57426b75c96ce69170016b3c0b0b6283cda5562f8464bbfd2f4
+vagrant@ubuntu-14:~/test$ sudo docker push gongmingqm10/jenkins-android
+
+```
+首次push，可能会提示你输入自己的Docker Hub的用户名和密码。
+
+#### 运行 jenkins-android
+
+```
+sudo docker run --name jenkinsAndroid -p 8080:8080 -v /var/jenkins_home:/var/jenkins_home gongmingqm10/jenkins-android
+
+```
+
+我们使用jenkinsAndroid作为container的名字，注意这个名字也不能与已用的container 名字重复。运行一次之后，如果被自己停了，发现没有启动的话，可以使用 `sudo docker ps -a` 查看所有的container，然后找到 jenkinsAndroid这个名字的container对应的ID。启动之：
+
+```
+sudo docker start f6b88bdad68f
+
+```
+
+#### 访问 Jenkins
+
+在第一部分，我们直接使用Jenkins官方的Repository启动了Jenkins进行访问，经过这部分我们自己构建Dockerfile，添加了一些Android的运行环境，目的是给Android Test提供必要的运行环境。访问 `localhost:8088`可以访问这个具有Android环境的Jenkins。注册用户并登录，这一部分就完成了。
+
+###4. Jenkins中配置Android Build
+
+通过访问`localhost:8088`，我们可以进入Jenkins控制台。为了使得Jenkins可以运行Android的单元测试和功能测试，主要安装如下插件：
+
+`git plugin`： 从 git repo 中 clone 代码
+
+`android emulator plugin`：Android运行功能测试时，能够帮助我们生成或者启动Android虚拟机
+
+`build monitor view`：全屏显示当前Build情况，适合投影到大屏幕上，方便所有人实时了解build情况
+
+构建Functional test过程中，我希望通过android emulator pligin直接启动在container中已经新建的AVD。运行过程中却始终出错:
+
+```
+$ /opt/android-sdk-linux/tools/emulator -no-boot-anim -ports 9731,9732 -avd Nexus_5_API_21 -no-snapshot-load -no-snapshot-save -no-window
+emulator: ERROR: Could not load OpenGLES emulation library: libX11.so.6: cannot open shared object file: No such file or directory
+emulator: WARNING: Could not initialize OpenglES emulation, using software renderer.
+emulator: warning: opening audio output failed
+
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+connected to localhost:9732
+[android] Waiting for emulator to finish booting...
+$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+error: device offline
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+error: device offline
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+error: device offline
+$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+error: device offline
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+error: device offline
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+error: device offline
+$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
+$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+[android] Emulator was shut down before it finished booting
+$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
+[android] Stopping Android emulator
+$ /opt/android-sdk-linux/platform-tools/adb kill-server
+Finished: NOT_BUILT
+
+```
+网上查了一下，主要是64位机器下运行32位emulator导致的一些问题。如果可以在一台都图形界面的机器上手动启动虚拟机，运行functional test的时候就应该不存在这个问题。此处先略过这个问题，后面会有专门的文章来研究这个问题。
+
+在Jenkins中，建立的Build主要为 Android Unit Test - Android Functional Test - Android Deploy Hocky App.
+
+通过Android的单元测试和功能测试基本可以保证App的功能处于正常状态；而Deploy到Hockey App则是为了持续集成的需要，我们要确保我们的App能够被实时生成，这样我们的产品就可以随时被测试并展示给客户，或者直接发布Hockey App 上某一个稳定的版本。
+
+要想Jenkins能够直接将应用上传到HockeyApp上，我们只需要在Jenkins中安装`Hockey App Plugin`，然后通过注册Hockey App提供相应的API Token并进行简单配置，即可以直接通过Jenkins来上传发布我们的App。
+
+###5. Android Flavor
+
+Android Flavor是为了Android在构建时使用不同的资源，类似于Ruby运行时可以设置不同的环境。
+
+在app/build.gradle做如下配置：
+
+```
+android {
+
+	defaultConfig{...}
+	
+    productFlavors {
+        dev {
+            applicationId "com.tarcle.moment.dev"
+        }
+        qa {
+            applicationId "com.tarcle.moment.qa"
+        }
+        production {
+            applicationId "com.tarcle.moment"
+        }
+
+    }
+    
+    signingConfigs {
+    	release {...}
+    }
+    
+    buildTypes {
+    	release {...}
+    }
+    
+    packageOptions {...}
+}
+
+```
+
+通过上面的配置，我们给APP添加了三种环境变量，于是可以直接在app目录下面新建`dev, qa, production`等文件夹。通过IDE中选择不同的Build variables，便可以在当前工程中使用什么环境的配置。
+
+通过`./gradlew clean build 任务`， 能够在 `app/build/outputs/apk`等目录下生成不同环境下的Debug和Release包。而这里面的Release包则可以用来Jenkins中上传到Hockey App中。
+
+配置Jenkins Build和Hockey App可能用到如下插件。对于不同的Flavor，我们可以在Deploy HockeyApp 的配置中添加Build Parameters，构建时我们可以自己选择不同类型的包。从而发布不同环境下的版本。
+
+`Copy Artifact Plugin` 从其他的Build中直接拷贝已经生成的APK文件包。
+
+`Android Lint Plugin` 构建后发布Lint Report。
+
+###Other
+
+关于如何直接在虚拟机中，不使用Docker构建Android Build, 将会在另一篇博文中阐述。
+
+如下是我们可能用到的关于Docker 和 Android的常用命令：
+
+`android list avd` 查看所有当前设备。
+
+`android create avd -f -a -s 1080x1920 -n Nexus_5_API_21 -t android-21` 创建API-21名为Nexus_5_API_21的emulator。
+
+`emulator -avd Nexus_5_API_21` 运行已创建的名为 Nexus_5_API_21的emulator，注意运行时命令行会一直处于阻塞中，所以可以在末尾加上 `&` 让其进入后台运行。
+
+`adb devices` List of devices attached。
+
+`sudo docker exec -i -t a45953b9f2fe bash` 进入运行中的container的控制台
+
+
+`echo 'y' | apt-get install libgl1-mesa-dev`
+
