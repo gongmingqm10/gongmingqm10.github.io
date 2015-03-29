@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="时光匆匆，算上实习期来ThoughtWorks工作已近一年。如果技术方面来看，我提升的主要是广度。但是从敏捷实践角度来看，我正在也将继续朝深度上提升。 敏捷这个词，大学期间或多或少听过，大体的印象是软件工程学的一些术语，之后在项目中才开始慢慢实践。我前后经历过三四个项目，虽然每个项目待的时间不长， &hellip;">
+  <meta name="description" content="About Docker 什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？ 这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,451 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-11T21:46:59-05:00" pubdate data-updated="true">Mar 11<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>About Docker</h2>
+
+<p>什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？</p>
+
+<p>这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性，降低其他不可知因素对代码的影响。而Docker和VM虚拟机相比又有其特点，比如启动速度快，可以单独将Docker保存为镜像，上传后能够让别人使用。甚至可以直接将自己的code放在Docker中，直接将环境和代码一起交付给客户。客户只需要安装这个Docker，运行后就可以直接使用这个application了。</p>
+
+<blockquote><p>Develop, Ship and Run Any Application, Anywhere</p></blockquote>
+
+<p>Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.</p>
+
+<h3>Provision</h3>
+
+<p>我的目标在于构建一个可以运行Android的CI服务器。出于省钱的目的，我使用本地的Vagrant启动Ubuntu虚拟机来代替真正的服务器。大致思路是：</p>
+
+<ol>
+<li>启动Ubuntu虚拟机，在Ubuntu上安装Docker；</li>
+<li>通过Docker安装Jenkins Docker官方镜像；</li>
+<li>在这个实例Docker中配置Jenkins并安装Android运行环境；</li>
+<li>在Jenkins上搭建Android CI，使得Android单元测试和集成测试能够顺利通过；</li>
+<li>上传这个具有Android CI功能的Jenkins镜像；</li>
+<li>本地启动B虚拟机，下载镜像，访问B虚拟机的地址，查看Android Jenkins；</li>
+</ol>
+
+
+<h3>1. 启动Ubuntu虚拟机并安装Docker Jenkins</h3>
+
+<p>在安装Docker之前，首先得有一个Linux的机器能够进入，如果你已经有一台干净的Linux服务器，直接进入安装Docker步骤。</p>
+
+<p>Vagrant安装之前，你应该在电脑上安装VirtualBox虚拟机。VirtualBox安装完成之后请参考 <a href="http://docs.vagrantup.com/v2/installation/index.html">Vagrant Installation Guide</a>。</p>
+
+<p>Vagrant成功安装后，<code>vagrant init ubuntu/trusty64</code> 能够帮你快速安装一台Ubuntu14.04的虚拟机，第一次安装的时候会稍微慢点，因为Vagrant会帮你生成Vagrantfile文件，并下载镜像。</p>
+
+<p>Vagrantfile生成之后不要立即启动，因为我们想通过localhost访问Vagrant，然后通过Vagrant访问其中的Docker。由于Jenkins默认会使用8080端口，所以如果Vagrant的8080端口可以转发到Docker Container中的Jenkins。localhost:8080能够转发到Vagrant Ubuntu的8080端口，然后Vagrant的8080端口继续转发到Docker的8080端口，于是可以通过<code>localhost:8080</code>访问Jenkins了。所以Vagrantfile部分配置如下，添加端口转发。因为我本机的8080端口被其他程序占用，所以我将本地的8088端口转发到虚拟机的8080端口：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  # Create a forwarded port mapping which allows access to a specific port
+</span><span class='line'>  # within the machine from a port on the host machine. In the example below,
+</span><span class='line'>  # accessing "localhost:8080" will access port 80 on the guest machine.
+</span><span class='line'>  #config.vm.network :forwarded_port, guest: 80, host: 8080
+</span><span class='line'>  config.vm.network :forwarded_port, guest: 8080, host: 8088</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你之前已经启动了vagrant up, 然后更改了Vagrantfile想让forward_port生效，需要先<code>vagrant suspend</code>暂停vagrant，然后使用<code>vagrant reload</code>重新加载Vagrantfile使配置生效。</p>
+
+<p>Vagrant Ubuntu 初始化完成之后，还是在这个有Vagrantfile的文件夹下，<code>vagrant up</code>能够直接启动这台Ubuntu服务器。</p>
+
+<p>顺利的话我们可以进入通过<code>vagrant ssh</code>进入Ubuntu，随后需要在这台干净的Ubuntu机器上<a href="http://docs.docker.com/installation/ubuntulinux/">安装Docker</a>：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo apt-get update
+</span><span class='line'>$ sudo apt-get install docker.io
+</span><span class='line'>$ source /etc/bash_completion.d/docker.io
+</span><span class='line'>
+</span><span class='line'>// 上述方法安装的Docker版本为1.0.1，如果你想使用较高版本Docker1.3.3
+</span><span class='line'>
+</span><span class='line'>$ echo deb http://get.docker.com/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list
+</span><span class='line'>$ apt-key adv --keyserver pgp.mit.edu --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+</span><span class='line'>$ apt-get update
+</span><span class='line'>$ apt-get install -y lxc-docker-1.3.3
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note: <code>vagrant destroy</code>会关闭并重新格式化ubuntu机器，如果你只是想简单的停止机器，请使用<code>vagrant suspend</code></p>
+
+<p>Docker成功安装后，直接启动Jenkins官方镜像：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run --name androidJenkins -p 8080:8080 -v /var/jenkins_home jenkins</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完成后，访问 <code>http://localhost:8088/</code>，如果可以看到Jenkins界面，说明Jenkins已经安装成功。</p>
+
+<p>进入后发现没有登录或者注册入口，然后就看到了stackoverflow上的<a href="http://stackoverflow.com/questions/10825614/how-can-i-add-a-username-and-password-to-jenkins">解决方案</a>: 系统管理 &ndash; Configure Global Security &ndash; 启用安全 — Jenkins专有用户数据库，允许用户注册 &ndash; 任何用户可以做任何事情。注册常用用户名和邮箱，然后就可以直接登录Jenkins。</p>
+
+<h3>2. Jenkins Docker中安装Android 运行环境</h3>
+
+<p>既然我们的Jenkins已经搭建完成，这一步我们则需要基于Jenkins安装Android的运行环境，如何在Ubuntu系统中通过命令行安装Android运行环境呢，主要参考<a href="https://www.digitalocean.com/community/tutorials/how-to-build-android-apps-with-jenkins">这篇文章</a>。</p>
+
+<p>安装Android运行环境主要的流程为：</p>
+
+<ol>
+<li>下载Android SDK安装包 并设置环境变量.</li>
+<li>下载platform-tools, Android SDK API, Android Build Tools.</li>
+</ol>
+
+
+<p>我这里安装Android SDK API版本为21，Build Tools版本号为21.1.2。</p>
+
+<p>为了使Jenkins Android 环境能够在下次使用，我们通过新建 Dockerfile 的方式基于Jenkins来创建一个新的镜像，具体步骤如下：</p>
+
+<ol>
+<li><a href="https://registry.hub.docker.com/">Docker Hub</a>注册账号，用于存放自己的Repository。</li>
+<li>新建Dockerfile文件，并添加配置信息。</li>
+<li>运行Dockerfile，此时会执行Dockerfile中所配置的一系列命令。</li>
+<li>提交Dockerfile生成的jenkins-android镜像。</li>
+</ol>
+
+
+<h4>配置Dockerfile</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>FROM jenkins
+</span><span class='line'>MAINTAINER Ming Gong, gongmingqm10@gmail.com
+</span><span class='line'>USER root
+</span><span class='line'>RUN apt-get update && apt-get -y install libstdc++6 lib32z1 lib32stdc++6 expect
+</span><span class='line'>
+</span><span class='line'>RUN wget --progress=dot:giga http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz
+</span><span class='line'>RUN mv android-sdk_r24.1.2-linux.tgz /opt/
+</span><span class='line'>RUN cd /opt && tar xzvf ./android-sdk_r24.1.2-linux.tgz
+</span><span class='line'>ENV ANDROID_HOME /opt/android-sdk-linux/
+</span><span class='line'>ENV PATH $ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+</span><span class='line'>RUN echo $PATH
+</span><span class='line'>RUN echo "y" | android update sdk -u --filter platform-tools,android-21
+</span><span class='line'>RUN echo "y" | android update sdk -u --all --filter 5
+</span><span class='line'>RUN chmod -R 755 $ANDROID_HOME
+</span><span class='line'>
+</span><span class='line'>RUN apt-get install -y git-core
+</span><span class='line'>RUN android update sdk --no-ui
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中 <code>android update sdk -u --all --filter 5</code> 主要用来更新build-tools。在有android环境的机器上运行&#8217;android list sdk &mdash;all&#8217;可以查看所有的SDK信息，找到最新版本的build-tools，然后通过提供的最新版本号即可。</p>
+
+<p>Dockerfile配置成功后，我们首先在Vagrant虚拟机里面，<code>mkdir /var/jenkins_home</code>，并给予所有权限 <code>chmod 777 /var/jenkins_home</code>。/var/jenkins_home 能够映射到Docker中的jenkins_home目录，方便我们直接备份jenkins数据。</p>
+
+<h4>Build Dockerfile</h4>
+
+<p>准备工作完成之后，build Dockerfile，首先切换到Dockerfile所在的当前目录下，</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@ubuntu-14: sudo docker build -t gongmingqm10/jenkins-android:latest .
+</span><span class='line'>
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>Successfully built 184c7dad595a
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Push Image</h4>
+
+<p>最后输出的信息就是我们通过Dockerfile生成的新的镜像ID。构建完成之后我们需要commit并push这个镜像到docker hub的repository上。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@ubuntu-14:~/test$ sudo docker images
+</span><span class='line'>REPOSITORY                     TAG                   IMAGE ID            CREATED             VIRTUAL SIZE
+</span><span class='line'>gongmingqm10/jenkins-android       latest                184c7dad595a        11 minutes ago      188.3 MB
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过 docker images能够看到最新的镜像已经生成，这一步我们需要首先启动这个镜像，然后得到container ID，然后再PUSH 这个container。</p>
+
+<p>首先启动镜像：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@ubuntu-14:~/test$ sudo docker run -t -i -d gongmingqm10/jenkins-android:latest
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>vagrant@ubuntu-14:~/test$ sudo docker ps
+</span><span class='line'>CONTAINER ID        IMAGE                              COMMAND                CREATED             STATUS              PORTS                               NAMES
+</span><span class='line'>43fcce2388fc        gongmingqm10/jenkins-adnroid:latest    /bin/bash              17 seconds ago      Up 16 seconds                                           determined_lumiere
+</span><span class='line'>vagrant@ubuntu-14:~/test$ sudo docker commit -m "Add Android Config" -a "Ming Gong" 43fcce2388fc gongmingqm10/jenkins-android:latest
+</span><span class='line'>75f1b93aedc4b57426b75c96ce69170016b3c0b0b6283cda5562f8464bbfd2f4
+</span><span class='line'>vagrant@ubuntu-14:~/test$ sudo docker push gongmingqm10/jenkins-android
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>首次push，可能会提示你输入自己的Docker Hub的用户名和密码。</p>
+
+<h4>运行 jenkins-android</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker run --name jenkinsAndroid -p 8080:8080 -v /var/jenkins_home:/var/jenkins_home gongmingqm10/jenkins-android
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们使用jenkinsAndroid作为container的名字，注意这个名字也不能与已用的container 名字重复。运行一次之后，如果被自己停了，发现没有启动的话，可以使用 <code>sudo docker ps -a</code> 查看所有的container，然后找到 jenkinsAndroid这个名字的container对应的ID。启动之：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker start f6b88bdad68f
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>访问 Jenkins</h4>
+
+<p>在第一部分，我们直接使用Jenkins官方的Repository启动了Jenkins进行访问，经过这部分我们自己构建Dockerfile，添加了一些Android的运行环境，目的是给Android Test提供必要的运行环境。访问 <code>localhost:8088</code>可以访问这个具有Android环境的Jenkins。注册用户并登录，这一部分就完成了。</p>
+
+<h3>4. Jenkins中配置Android Build</h3>
+
+<p>通过访问<code>localhost:8088</code>，我们可以进入Jenkins控制台。为了使得Jenkins可以运行Android的单元测试和功能测试，主要安装如下插件：</p>
+
+<p><code>git plugin</code>： 从 git repo 中 clone 代码</p>
+
+<p><code>android emulator plugin</code>：Android运行功能测试时，能够帮助我们生成或者启动Android虚拟机</p>
+
+<p><code>build monitor view</code>：全屏显示当前Build情况，适合投影到大屏幕上，方便所有人实时了解build情况</p>
+
+<p>构建Functional test过程中，我希望通过android emulator pligin直接启动在container中已经新建的AVD。运行过程中却始终出错:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ /opt/android-sdk-linux/tools/emulator -no-boot-anim -ports 9731,9732 -avd Nexus_5_API_21 -no-snapshot-load -no-snapshot-save -no-window
+</span><span class='line'>emulator: ERROR: Could not load OpenGLES emulation library: libX11.so.6: cannot open shared object file: No such file or directory
+</span><span class='line'>emulator: WARNING: Could not initialize OpenglES emulation, using software renderer.
+</span><span class='line'>emulator: warning: opening audio output failed
+</span><span class='line'>
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>connected to localhost:9732
+</span><span class='line'>[android] Waiting for emulator to finish booting...
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+</span><span class='line'>error: device offline
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+</span><span class='line'>error: device offline
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+</span><span class='line'>error: device offline
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+</span><span class='line'>error: device offline
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+</span><span class='line'>error: device offline
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
+</span><span class='line'>error: device offline
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
+</span><span class='line'>[android] Emulator was shut down before it finished booting
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
+</span><span class='line'>[android] Stopping Android emulator
+</span><span class='line'>$ /opt/android-sdk-linux/platform-tools/adb kill-server
+</span><span class='line'>Finished: NOT_BUILT
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上查了一下，主要是64位机器下运行32位emulator导致的一些问题。如果可以在一台都图形界面的机器上手动启动虚拟机，运行functional test的时候就应该不存在这个问题。此处先略过这个问题，后面会有专门的文章来研究这个问题。</p>
+
+<p>在Jenkins中，建立的Build主要为 Android Unit Test &ndash; Android Functional Test &ndash; Android Deploy Hocky App.</p>
+
+<p>通过Android的单元测试和功能测试基本可以保证App的功能处于正常状态；而Deploy到Hockey App则是为了持续集成的需要，我们要确保我们的App能够被实时生成，这样我们的产品就可以随时被测试并展示给客户，或者直接发布Hockey App 上某一个稳定的版本。</p>
+
+<p>要想Jenkins能够直接将应用上传到HockeyApp上，我们只需要在Jenkins中安装<code>Hockey App Plugin</code>，然后通过注册Hockey App提供相应的API Token并进行简单配置，即可以直接通过Jenkins来上传发布我们的App。</p>
+
+<h3>5. Android Flavor</h3>
+
+<p>Android Flavor是为了Android在构建时使用不同的资源，类似于Ruby运行时可以设置不同的环境。</p>
+
+<p>在app/build.gradle做如下配置：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android {
+</span><span class='line'>
+</span><span class='line'>  defaultConfig{...}
+</span><span class='line'>  
+</span><span class='line'>    productFlavors {
+</span><span class='line'>        dev {
+</span><span class='line'>            applicationId "com.tarcle.moment.dev"
+</span><span class='line'>        }
+</span><span class='line'>        qa {
+</span><span class='line'>            applicationId "com.tarcle.moment.qa"
+</span><span class='line'>        }
+</span><span class='line'>        production {
+</span><span class='line'>            applicationId "com.tarcle.moment"
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    signingConfigs {
+</span><span class='line'>      release {...}
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    buildTypes {
+</span><span class='line'>      release {...}
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    packageOptions {...}
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过上面的配置，我们给APP添加了三种环境变量，于是可以直接在app目录下面新建<code>dev, qa, production</code>等文件夹。通过IDE中选择不同的Build variables，便可以在当前工程中使用什么环境的配置。</p>
+
+<p>通过<code>./gradlew clean build 任务</code>， 能够在 <code>app/build/outputs/apk</code>等目录下生成不同环境下的Debug和Release包。而这里面的Release包则可以用来Jenkins中上传到Hockey App中。</p>
+
+<p>配置Jenkins Build和Hockey App可能用到如下插件。对于不同的Flavor，我们可以在Deploy HockeyApp 的配置中添加Build Parameters，构建时我们可以自己选择不同类型的包。从而发布不同环境下的版本。</p>
+
+<p><code>Copy Artifact Plugin</code> 从其他的Build中直接拷贝已经生成的APK文件包。</p>
+
+<p><code>Android Lint Plugin</code> 构建后发布Lint Report。</p>
+
+<h3>Other</h3>
+
+<p>关于如何直接在虚拟机中，不使用Docker构建Android Build, 将会在另一篇博文中阐述。</p>
+
+<p>如下是我们可能用到的关于Docker 和 Android的常用命令：</p>
+
+<p><code>android list avd</code> 查看所有当前设备。</p>
+
+<p><code>android create avd -f -a -s 1080x1920 -n Nexus_5_API_21 -t android-21</code> 创建API-21名为Nexus_5_API_21的emulator。</p>
+
+<p><code>emulator -avd Nexus_5_API_21</code> 运行已创建的名为 Nexus_5_API_21的emulator，注意运行时命令行会一直处于阻塞中，所以可以在末尾加上 <code>&amp;</code> 让其进入后台运行。</p>
+
+<p><code>adb devices</code> List of devices attached。</p>
+
+<p><code>sudo docker exec -i -t a45953b9f2fe bash</code> 进入运行中的container的控制台</p>
+
+<p><code>echo 'y' | apt-get install libgl1-mesa-dev</code></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1276,89 +1721,6 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/16/android-deploy-your-app/">Android Deploy Your App</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-16T23:56:13-05:00" pubdate data-updated="true">Oct 16<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
-
-<h3>Proguard－代码混淆</h3>
-
-<p>我们经常在js库中看到各种代码混淆，代码混淆主要是对你的代码的类名，方法名以及字段名进行命名，并删除一些无用的换行空格等。让你的代码变得难以读懂，这样能够防止别人反编译你的代码后窃取你的内容。<br/>
-android中代码混淆主要使用IDE自动生成的文件，并通过一些简单的配置就可以实现。中间的混淆步骤则不需要我们关系，android编译过程中自身会处理这些内部的逻辑。我们只需要配置文件就可以。<br/>
-通过官网提供的资料，<a href="http://developer.android.com/tools/help/proguard.html">http://developer.android.com/tools/help/proguard.html</a>，以及网上的大部分资料都是过时的，目前的AndroidStudio0.89中生成project时候只会生成proguard.cfg文件，要想启用proguard代码混淆，我们只需要在app的build.gradle中添加下述配置：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>android {
-</span><span class='line'>    buildTypes {
-</span><span class='line'>        release {
-</span><span class='line'>            runProguard true
-</span><span class='line'>            proguardFile getDefaultProguardFile('proguard-android.txt')
-</span><span class='line'>        }
-</span><span class='line'>    }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>而这个proguard-android.txt则在<code>{sdk.dir}/tools/proguard/proguard-android.txt</code>中，这时proguard混淆时默认的文件，不过我们的sdk目录下却没有。Google君终于帮我们找到了：<a href="https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt">https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt</a>。于是简单粗暴的在tools/目录下新建proguard/proguard-android.txt文件。这时候android就可以使用默认文件进行混淆啦。</p>
-
-<h3>Signing your application</h3>
-
-<p>Android需要所有的应用在安装之前被数字签名，Android通过签名凭证识别应用的作者信息等。在App的Debug模式活着Release模式中都可以进行应用签名，在调试模式中一般是android自动生成凭证给App签名，而在Release发布模式中则需要开发者自己生成凭证来给用户签名。<br/>
-我们主要关注在Release中怎么给自己的应用签名，签名之后的应用才可以发布到各市场中，在Release时给App签名：</p>
-
-<ol>
-<li>Create a keystore. Keystore是一个包含一些private key的二进制文件，你必须把这个文件放在一个安全独立的地方。</li>
-<li>Create a private key. Private key 代表App作者的信息，例如一个开发者或者公司。</li>
-<li>Build a project. 编译你的工程，这时会生成一个未签名的APP。</li>
-<li>Sign your app. 用你的private key来生成你签名版本的APK。</li>
-</ol>
-
-
-<p>这样的APK就能够发布到市场中供用户更新下载。</p>
-
-<p>签名既可以通过IDE直接操作，也可以通过android提供的工具在命令行中进行签名。在IDE中能够简单的生成一个keystore（需要说明的是不同的IDE生成的keystore文件格式是不一样的，主要有.jks, .keystore, 无后缀）。这些keystore在首次创建后下次就可以直接使用了。keystore包含的是一些软件作者的一些信息，也是你更新软件等的重要凭据。通过IDE签名的APK文件都经过了<code>jarsigner, zipalign</code>等操作，所以我们也不需要做额外的事情。<br/>
-如果通过命令行来进行签名，这样的好处是使用命令来自动部署，开发者可以把所有的步骤写在一个shell文件中，部署时只要简单的run这个命令就可以实现了，如果需要编译很多个针对不同市场的版本，通过命令的模式就能够大大节约发布APP的时间。</p>
-
-<p>更多详细信息请参考<a href="http://developer.android.com/tools/publishing/app-signing.html">http://developer.android.com/tools/publishing/app-signing.html</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1372,6 +1734,10 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/03/01/work-in-dallas/">Work in Dallas</a>
@@ -1389,15 +1755,11 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
         <a href="/blog/2014/10/30/chang-yong-de-linux-cmd/">常用的Linux Cmd</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/28/androiddian-hua-jian-ting/">Android电话监听</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(10)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(11)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/jenkins' style='font-size: 100%'>jenkins(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>About Me</h1>
