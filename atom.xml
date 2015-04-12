@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-03-29T00:48:17-05:00</updated>
+  <updated>2015-04-12T00:09:35-05:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -428,6 +428,392 @@
 <p><code>sudo docker exec -i -t a45953b9f2fe bash</code> 进入运行中的container的控制台</p>
 
 <p><code>echo 'y' | apt-get install libgl1-mesa-dev</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android Continuous Integration]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/03/08/android-continuous-integration/"/>
+    <updated>2015-03-08T23:39:35-05:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/03/08/android-continuous-integration</id>
+    <content type="html"><![CDATA[<p>随着Android平台的逐渐成熟，伴随着一系列针对Android测试框架的推出，开发人员终于可以如愿以偿的在移动端的开发上进行单元测试，集成测试以及功能测试。在敏捷流程中从开发，到测试，到验收最终成为面向用户的Release版本，经历的是Story一个完整的生命周期。CI(Continuous Integration, 持续交付)在敏捷实践中也因此扮演了非常重要的角色。</p>
+
+<p>如果说Web的持续集成，以及各类测试框架有一定的历史积淀了。那么Android的持续集成可以说是新鲜事物，大部分IT公司知道如何对服务器端或者Web端进行一系列自动化测试，保证其功能的正确性。而对于移动端的产品比较多的则是由测试人员组成的人肉测试。移动端的这种人工测试，无论是对测试人员，还是要经常打包并且来修复各种Bug的开发人员来说，其代价是巨大的。</p>
+
+<p>从Android 2.3.3 版本就开始，我就成为了Android的开发者。从开发者的角度见证了Android的步步升级，也从普通用户的角度见证了Android在中低端市场上的统治权。虽然我对Apple的产品也很满意，但是我对Android的感情却也是无法割舍的。我庆幸自己终于能够在Android上也见证测试驱动开发的实践，也庆幸自己有机会去亲身实践，从零开始学习并了解Android的持续集成。</p>
+
+<h3>前言</h3>
+
+<p>本文主要是从零开始，以学习者的角色来探索如何构建可用的Android CI环境。最后的目标是，在Jenkins上从build单元测试，到功能测试的运行，最后通过一键部署编译出可供QA测试的QA版本，可供Release的Release版本，并借助HockeyApp，生成可下载的链接。</p>
+
+<ol>
+<li>构建出一个含有单元测试和集成测试简单的App原型。</li>
+<li>通过vagrant在本地运行Ubuntu虚拟机，并安装Jenkins服务器，在Ubuntu上安装配置Android运行环境。</li>
+<li>在Jenkins中创建Android Pipeline, Android Build &ndash;> Android Functional Test &ndash;> Android Deploy Hockey App。</li>
+<li>在Android工程中创建不同的环境变量，使得构建时能够选择不同的构建变量，编译生成QA和Release等不同环境下的App。</li>
+</ol>
+
+
+<h3>1. 构建Android基础工程，本地运行测试</h3>
+
+<p>这里的基础工程主要指的是能够运行测试的基础功能，我选择使用Robolectric做单元测试，使用espresso做继承测试（后面的文章也会探讨使用）。基础工程主要参考了<a href="https://github.com/robolectric/deckard-gradle">robolectric/decard-gradle</a>, 通过一些gradlew的配置，使我们的工程能够直接运行单元测试和集成测试。</p>
+
+<p>运行单元测试:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./gradlew test
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行espresso测试：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./gradlew connectedAndroidTest</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一旦你这个实例运行成功，说明这一步其实已经完成。后面我们只需要通过jenkins来跑这几条命令，然后展示结果即可。</p>
+
+<h3>2. 在虚拟机中安装Jenkins和Android环境</h3>
+
+<p>为了从零开始，我选择了一台干净的Ubuntu/trusty机器，为了使构建从零开始，可以更好的模拟我们在EC2机器真实的情
+形。从测试的角度来说，我选择使用<a href="https://www.vagrantup.com/">Vagrant</a>来启动虚拟机。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>XiaoMing:ci minggong$ vagrant init ubuntu/trusty64
+</span><span class='line'>A `Vagrantfile` has been placed in this directory. You are now
+</span><span class='line'>ready to `vagrant up` your first virtual environment! Please read
+</span><span class='line'>the comments in the Vagrantfile as well as documentation on
+</span><span class='line'>`vagrantup.com` for more information on using Vagrant.
+</span><span class='line'>XiaoMing:ci minggong$ vagrant up
+</span><span class='line'>Bringing machine 'default' up with 'virtualbox' provider...
+</span><span class='line'>[default] Importing base box 'ubuntu/trusty64'...
+</span><span class='line'>[default] Matching MAC address for NAT networking...
+</span><span class='line'>[default] Setting the name of the VM...
+</span><span class='line'>[default] Clearing any previously set forwarded ports...
+</span><span class='line'>[default] Fixed port collision for 22 =&gt; 2222. Now on port 2200.
+</span><span class='line'>[default] Creating shared folders metadata...
+</span><span class='line'>[default] Clearing any previously set network interfaces...
+</span><span class='line'>[default] Preparing network interfaces based on configuration...
+</span><span class='line'>[default] Forwarding ports...
+</span><span class='line'>[default] -- 22 =&gt; 2200 (adapter 1)
+</span><span class='line'>[default] Booting VM...
+</span><span class='line'>[default] Waiting for machine to boot. This may take a few minutes...
+</span><span class='line'>[default] Machine booted and ready!
+</span><span class='line'>[default] Mounting shared folders...
+</span><span class='line'>[default] -- /vagrant
+</span><span class='line'>XiaoMing:ci minggong$ vagrant ssh
+</span><span class='line'>Welcome to Ubuntu 14.04 LTS (GNU/Linux 3.13.0-24-generic x86_64)
+</span><span class='line'>
+</span><span class='line'> * Documentation:  https://help.ubuntu.com/
+</span><span class='line'>Last login: Tue Apr 22 19:47:09 2014 from 10.0.2.2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果在Vagrantfile中已经设置了静态IP，则可以直接通过IP登陆。vagrant默认用户名为 <code>vagrant</code>, 密码为<code>vagrant</code>。</p>
+
+<p>使用 <code>vagrant ssh</code> 登录虚拟机之后，则开始安装各种环境：</p>
+
+<ul>
+<li>Java</li>
+<li>Jenkins</li>
+<li>Android Environment</li>
+</ul>
+
+
+<h4>2.1 安装Java</h4>
+
+<p>apt-get直接安装jdk1.7:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@ubuntu-14:~$ sudo apt-get update
+</span><span class='line'>vagrant@ubuntu-14:~$ sudo apt-get install openjdk-7-jdk -y
+</span><span class='line'>vagrant@ubuntu-14:~$ java -version
+</span><span class='line'>java version "1.7.0_75"
+</span><span class='line'>OpenJDK Runtime Environment (IcedTea 2.5.4) (7u75-2.5.4-1~trusty1)
+</span><span class='line'>OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.2 安装Jenkins</h4>
+
+<p>参考<a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu">Jenkins官方教程</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+</span><span class='line'>sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ &gt; /etc/apt/sources.list.d/jenkins.list'
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install jenkins -y
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完Jenkins后，首先验证下Jenkins是否安装完毕, <code>curl http://localhost:8080</code>, 如果发现能够输出一堆HTML标签，那么证明Jenkins已经安装成功并已经启动了。Jenkins常见的使用命令如下，默认启动在8080端口：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@ubuntu-14:~$ sudo /etc/init.d/jenkins -help
+</span><span class='line'>Usage: /etc/init.d/jenkins {start|stop|status|restart|force-reload}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Jenkins默认de配置文件为<code>/etc/default/jenkins</code>, 可以看到Jenkins_home定义的路径：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> #jenkins home location
+</span><span class='line'> JENKINS_HOME=/var/lib/jenkins</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果需要更改默认的Jenkins home 路径，需要更改 <code>/etc/default/jenkins</code>地址，然后重新启动jenkins即可生效。</p>
+
+<h4>2.3 安装Android运行环境</h4>
+
+<p>最后一步我们需要安装Android运行环境，这样我们的Jenkins才能够运行Android的相关测试。主要参考文章 <a href="https://www.digitalocean.com/community/tutorials/how-to-build-android-apps-with-jenkins">How to Build Apps with Jenkins</a></p>
+
+<ul>
+<li><a href="http://developer.android.com/sdk/index.html">Android SDK官网</a>找到最新的SDK安装包地址：<a href="http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz,">http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz,</a> 下载并解压：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ cd /opt
+</span><span class='line'>$ sudo wget http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz
+</span><span class='line'>$ sudo tar zxvf android-sdk_r24.1.2-linux.tgz
+</span><span class='line'>$ sudo rm android-sdk_r24.1.2-linux.tgz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>设置Android环境变量：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vi /etc/profile.d/android.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following to android.sh file</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export ANDROID_HOME="/opt/android-sdk-linux"
+</span><span class='line'>export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH"
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后 <code>source /etc/profile</code>， 使文件生效。</p>
+
+<ul>
+<li>配置 Android SDK</li>
+</ul>
+
+
+<p>最简单粗暴的方法是下载所有的SDK及相关的一系列工具，当然也可以挨个下载，具体参考上面提到的这篇文章。我采用直接更新全部的方法：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android update sdk --no-ui
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>经过漫长的等待，下载完毕之后这部分的工作也基本完成。(这一步一般留在半夜自行下载)</p>
+
+<h4>2.4 安装Git</h4>
+
+<p>为了使Jenkins能够直接从Git Repository上下载代码，需要在Ubuntu中安装Git:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install git -y
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.5 配置Jenkins</h4>
+
+<p>Jenkins启动后，首先注册登录用户，然后创建新的Build Project。构建就基本完成了。当然你也可以在前一篇博客 <a href="http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Set up Jenkins for Android integration using Docker</a>中找到一些插件，通过这些插件能够更好的实现Android的持续集成，包括通过Hockey App 持续的发布新的版本。</p>
+
+<p>具体安装细节，可以参考<a href="http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Setup Android CI using Docker</a></p>
+
+<p>粗略说来，安装插件: <code>Git plugin, Android emulator plugin, Copy artifact plugin, Android lint plugin, Hockey app plugin, Build monitor plugin</code></p>
+
+<p>运行时发现jenkins用户对jenkins-home目录没有操作权限，需要通过chmod增加权限。在当前vagrant用户下，<code>su jenkins</code> 能够切换到jenkins目录下，但是需要提供密码。所以可以自行修改密码：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@ubuntu-14:/var/lib/jenkins$ sudo passwd jenkins
+</span><span class='line'>Enter new UNIX password:
+</span><span class='line'>Retype new UNIX password:
+</span><span class='line'>passwd: password updated successfully
+</span><span class='line'>vagrant@ubuntu-14:/var/lib/jenkins$ su jenkins
+</span><span class='line'>Password:
+</span><span class='line'>jenkins@ubuntu-14:~$</span></code></pre></td></tr></table></div></figure>
+
+
+<p>权限设置成功后，再次运行测试，提示Android Build Tools没有安装成功：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ ./gradlew clean build
+</span><span class='line'>
+</span><span class='line'>FAILURE: Build failed with an exception.
+</span><span class='line'>
+</span><span class='line'>* What went wrong:
+</span><span class='line'>A problem occurred configuring project ':app'.
+</span><span class='line'>&gt; failed to find Build Tools revision 21.1.2
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Android Build Tools的版本号是我们在app/build.gradle中指定的21.1.2。通过 <code>android list sdk --all</code>能够查看所有可以下载的sdk列表。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Packages available for installation or update: 138
+</span><span class='line'>   1- Android SDK Tools, revision 24.1.2
+</span><span class='line'>   2- Android SDK Platform-tools, revision 22
+</span><span class='line'>   3- Android SDK Build-tools, revision 22.0.1
+</span><span class='line'>   4- Android SDK Build-tools, revision 22 (Obsolete)
+</span><span class='line'>   5- Android SDK Build-tools, revision 21.1.2
+</span><span class='line'>   6- Android SDK Build-tools, revision 21.1.1 (Obsolete)
+</span><span class='line'>   7- Android SDK Build-tools, revision 21.1 (Obsolete)
+</span><span class='line'>   8- Android SDK Build-tools, revision 21.0.2 (Obsolete)
+</span><span class='line'>   9- Android SDK Build-tools, revision 21.0.1 (Obsolete)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以看到21.1.2的索引值是5，所以可以使用 <code>android update sdk -u --all --filter &lt;number&gt;</code>更新，发现出现权限问题。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Installing Archives:
+</span><span class='line'>  Preparing to install archives
+</span><span class='line'>  Downloading Android SDK Build-tools, revision 21.1.2
+</span><span class='line'>  URL not found: /opt/android-sdk-linux/temp/build-tools_r21.1.2-linux.zip (Permission denied)
+</span><span class='line'>  Done. Nothing was installed.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以直接在当前用户下给/opt/android-sdk-linux以及其子文件夹增加777权限。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo chmod -R 777 /opt/android-sdk-linux</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后安装Android build tools 21.1.2, <code>android update sdk -u --all --filter 5</code>。安装完成后还可能会出现错误:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:app:mergeDevDebugResources FAILED
+</span><span class='line'>
+</span><span class='line'>FAILURE: Build failed with an exception.
+</span><span class='line'>
+</span><span class='line'>* What went wrong:
+</span><span class='line'>Execution failed for task ':app:mergeDevDebugResources'.
+</span><span class='line'>&gt; Error: org.gradle.process.internal.ExecException: A problem occurred starting process 'command '/opt/android-sdk-linux/build-tools/22.0.1/aapt''</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Google了一番，才发现是Android在64为Linux机器上运行而产生的问题，需要安装<code>ia32-libs</code>, 但是通过apt安装确被告知ia32-libs不存在，无法安装。<a href="http://stackoverflow.com/questions/23182765/how-to-install-ia32-libs-in-ubuntu-14-04-lts-trusty-tahr">stackoverflow</a>解决办法如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -i
+</span><span class='line'>cd /etc/apt/sources.list.d
+</span><span class='line'>echo "deb http://old-releases.ubuntu.com/ubuntu/ raring main restricted universe multiverse" &gt;ia32-libs-raring.list
+</span><span class='line'>apt-get update
+</span><span class='line'>apt-get install ia32-libs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装成功后，Android 单元测试即可成功运行。</p>
+
+<p>单元测试之后，我们往往需要运行功能测试，功能测试的时候则需要打开模拟器。也就是 headless android emulator。首先在虚拟机中创建 avd, 然后启动运行模拟器。</p>
+
+<p>运行之前需要先安装 API-21对应的 armeabi-v7a， 才能够创建虚拟机。通过查看<code>android list sdk --all</code>得知其对应的序列号是68，所以可以通过android update安装：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android update sdk -u --all --filter 68</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完成后创建API-21虚拟机：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android create avd -f -a -s 1080x1920 -n Nexus-21 -t android-21 --abi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>虚拟机创建成功后需要打开虚拟机：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>emulator -avd Nexus-21 -no-skin -no-audio -no-window</span></code></pre></td></tr></table></div></figure>
+
+
+<p>顺利的话，到这里功能测试应该也能够运行了。但是在我的虚拟机里面却没办法启动android emulator。看来想构建真正的android功能测试，还是用一台配有显示器的Mac mini来运行比较的靠谱。</p>
+
+<h3>3.Other</h3>
+
+<p>如何在Android中配置不同的Flavor，如何上传构建好的App到HockeyApp中。欢迎查看我的<a href="http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">博客</a>。</p>
 ]]></content>
   </entry>
   
@@ -2964,65 +3350,6 @@ res/values/attrs.xml</p>
 <p>回公司一周有余，回首过去一周基本处于游离状态，尚未真正加入项目组，更别谈能够和团队有所融合。发现对之前实习的项目组倒是有很多的怀念，人总是怀旧的。也希望我能够快速的加入加入到现在的项目组中，真正找到归宿感。</p>
 
 <p>BTW, 挺怀念去印度的九个小伙伴以及和大家度过的岁月</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android Best Practice]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/09/15/android-best-practice/"/>
-    <updated>2014-09-15T21:41:25-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/09/15/android-best-practice</id>
-    <content type="html"><![CDATA[<p>从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。</p>
-
-<h3>Android Activity 的生命周期</h3>
-
-<p>生命周期（Lifecycle）描述的是Android一个页面从开始创建到消亡的整个过程。伴随着一系列对象的创建及消失，涵盖着整个页面所包含的业务逻辑。以及与用户之间的交互，接受用户的输入并返回输出信息给用户。</p>
-
-<p><img src="http://i.imgur.com/rPrTr.png" alt="Android Lifecycle" /></p>
-
-<p>从其生命流程图中，我们可以看到Android单个Activity的生命周期主要为 onCreate &ndash;> onStart &ndash;> onResume &ndash;> Activity Running &ndash;> onPause &ndash;> onStop &ndash;> onDestroy. 通常单个App是由诸多的Activity组成的，一般情况我们肉眼所见的一个页面就是一个Activity，我们也经常再APP中点击Button或者Back，于是我们实现了Activity之间的切换。</p>
-
-<h5>1. onCreate()与onDestroy()</h5>
-
-<p>如何理解onCreate()呢？首先通过来自Google的官方解释来看onCreate()方法的作用：</p>
-
-<blockquote><p>onCreate(Bundle) is where you initialize your activity. Most importantly, here you will usually call setContentView(int) with a layout resource defining your UI, and using findViewById(int) to retrieve the widgets in that UI that you need to interact with programmatically</p></blockquote>
-
-<p>所以onCreate方法主要用于初始化我们的Activity。在onCreate()方法中，我们通过setContentView(int)来为当前的Activity指定对应的View， 然后通过findViewById(int)通过id检索当前View中的组件。至此，onCreate()的一些基本的初始化工作完成, Activity全局的初始化工作应该都在onCreate()中完成，这些初始化状态一直会被保存直到onDestroy()被调用，也就意味着Activity消亡。</p>
-
-<p>细心观察发现，Activity的onCreate(Bundle)函数会有一个Bundle类型的参数savedInstanceState，通过这个meaningful的名字可以看到此参数主要用于使用之前保存的数据。</p>
-
-<p>与onCreate()对应的方法是onDestroy(), 后者主要是Activity被销毁时会被执行的方法，当我们调用this.finish()手动结束当前的Activity, 此时onDestroy()会被回调，我们可以在这里面做一些程序被销毁前的保存性操作。</p>
-
-<h5>2. onStart()与onStop()</h5>
-
-<p>这两种状态一般出现在，当用户从Activity A 跳转到Activity B 中，此时Activity A 的 onStop函数会被回调，此时Activity A 被压入到堆栈中，并处于不可见状态。一旦用户结束Activity B, 再次进入Activity A 中，系统会重新调用onRestart()和onStart()函数，于是这个Activity重新被唤醒。</p>
-
-<h5>3. onResume()与onPause()</h5>
-
-<p>通过字面意思理解为Activity的恢复和停止，一个典型的例子是APP运行过程中突然有电话或者闹铃，以至于当前的Activity被其他的Activity覆盖，这种情况下会触发onResume()和onPause()事件，当然如果APP经历onStart()和onStop()事件，也必然会先经过onResume()和onPause()事件。生命周期的流程图如上图所示，其形成的是一个完成的闭路。</p>
-
-<p>通过应用程序的一套完整的Lifecycle，Android保证了APP在手机上进行良好的运行，并且运行过程互不干扰。Android生命周期的存在也表明在APP开发中，应该使Activity功能彼此对应，在onStart()中注册了某些事件，在onStop()中就应该进行反注册，例如地图开发中的GPS定位，就需要在onStart中进行注册，而在onStop()中进行反注册。还有一些网络访问回调也存在类似的情形，都需要我们在APP开发中注意，确保APP以最佳的状态运行。</p>
-
-<h3>Activity的职能－避免Activity类承载太多职能</h3>
-
-<p>Activity作为Android的Controller，直接负载着与用户的交互过程。开发中Activitiy很容易由于大量的动画，布局等操作而变得臃肿，特别使业务逻辑渐渐复杂时，Activity过大的代码量增加了维护成本，甚至开发者自己都很难读懂这个Activity真正的含义。为了避免这种情况，我们要尽量将纯UI布局和动画逻辑分离到第三方类中，在Activity与用户交互过程中，一旦需要某些UI操作和动画表现等，直接对其相关的UI布局等进行调用即可。我们的Activity只作为真正的Controller，控制着接收用户输入以及反馈输出，至于中间的逻辑则完全可以交给“Presenter”调用。</p>
-
-<h3>Android布局多屏适配</h3>
-
-<p>Android由于设备众多，分辨率众多，不同厂家定制的SDK也增加了适配成本。所以我们开发过程，就不应该使用太过绝对的布局，而应该尽量使用相对布局。过于绝对的布局可能在当前设备上表现良好，一旦在其他机器上运行则可能会出现布局错乱的问题。布局时也要避免View之间的深嵌套，根据你的设计图选择合适的布局方式，过重的布局会拖慢页面的渲染速度，进而影响整个APP的性能表现。</p>
-
-<h3>用Fragment代替Activity</h3>
-
-<p>自Android4.0之后，Android开始使用Fragment，并保持不断更新中。简言之，Fragment也是可以直接代替Activity的Controller，Fragment主要是为了适配手机和平板而生的，Fragment在手机上和Activity的表现无异，但是在平板上却可以以类似于组件的形式表现出来，这种形式更适合平板的大屏显示方式。Fragment让我们不用去同时维护手机和平板上的两套代码，方便了开发过程。</p>
-
-<h3>MVC最佳实践</h3>
-
-<p>和Web开发中的MVC框架类似，我们同样可以对APP进行MVC化。具体而言，Activity是我们的Controller控制器，而对数据的读取与查询等具体语句则应该通过DataManager进行处理，类似于我们通常所说的Service，Service不直接和界面进行交互。用户的交互都是与Activity发生的，Service会提供一些数据读取相关的方法，以供Activity调用。</p>
-
-<p>本文抛砖引玉，参考别人的文章，结合自己的实践经历总结了一些实践性的经验。个中不足，烦请大家不吝赐教，当然更欢迎大家一起交流。</p>
-
-<p>文章参考：<a href="http://clayallsopp.com/posts/android-best-practices-tips/">http://clayallsopp.com/posts/android-best-practices-tips/</a></p>
 ]]></content>
   </entry>
   
