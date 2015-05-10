@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-05-10T13:25:42+08:00</updated>
+  <updated>2015-05-10T13:29:22+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -134,180 +134,6 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
 <p>Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。</p>
 
 <p>另附上豆瓣关于这些单位更<a href="http://www.douban.com/note/155032221/">具体的阐释</a>。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Config Spring Mvc Web Project]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/04/13/config-spring-mvc-web-project/"/>
-    <updated>2015-04-13T12:33:50+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/04/13/config-spring-mvc-web-project</id>
-    <content type="html"><![CDATA[<p>到目前为止，接触过两到三个小型的Spring Web项目，前几日朋友问起怎么搭建Spring Web MVC项目，才想好要写一篇博客来记载如何从零开始搭建一个完整的Spring项目，这里使用的Spring主要还是3.x，关于4.x的我们会在其他文章中再详细叙述。</p>
-
-<h2>Spring Web Content with Spring MVC</h2>
-
-<p>既然从零开始，那我们就从空文件夹开始，首先还是习惯在Git上创建一个<a href="http://github.com/gongmingqm10/spring-mvc-sample">gongmingqm10/spring-mvc-sample</a>的项目。clone到本地之后就是一个空的文件夹。一般来说，官网上都有很多参考的资料，可以告诉我们怎么使用这个框架搭建完整的项目。来到<a href="http://spring.io/guides">Spring IO</a>，才发现资料真的多，于是就选择了[Spring Web Content with Spring MVC]作为Guide从零开始搭建。还是使用Gradle构建。</p>
-
-<h3>1. 创建文件夹结构</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p src/main/java/hello
-</span><span class='line'>
-</span><span class='line'>XiaoMing:spring-mvc-sample minggong$ tree .
-</span><span class='line'>.
-</span><span class='line'>├── README.md
-</span><span class='line'>└── src
-</span><span class='line'>    └── main
-</span><span class='line'>        └── java
-</span><span class='line'>            └── hello
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2. 创建build.gradle文件</h3>
-
-<p><code>build.gradle</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
-</span><span class='line'>    repositories {
-</span><span class='line'>        mavenCentral()
-</span><span class='line'>    }
-</span><span class='line'>    dependencies {
-</span><span class='line'>        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-</span><span class='line'>    }
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>apply plugin: 'java'
-</span><span class='line'>apply plugin: 'idea'
-</span><span class='line'>apply plugin: 'spring-boot'
-</span><span class='line'>
-</span><span class='line'>jar {
-</span><span class='line'>    baseName = 'gs-serving-web-content'
-</span><span class='line'>    version =  '0.1.0'
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>repositories {
-</span><span class='line'>    mavenCentral()
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>sourceCompatibility = 1.7
-</span><span class='line'>targetCompatibility = 1.7
-</span><span class='line'>
-</span><span class='line'>dependencies {
-</span><span class='line'>    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-</span><span class='line'>    testCompile("junit:junit")
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>task wrapper(type: Wrapper) {
-</span><span class='line'>    gradleVersion = '2.3'
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>3. 创建 Web Controller</h3>
-
-<p><code>src/main/java/hello/GreetingController.java</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>package hello;
-</span><span class='line'>
-</span><span class='line'>import org.springframework.stereotype.Controller;
-</span><span class='line'>import org.springframework.ui.Model;
-</span><span class='line'>import org.springframework.web.bind.annotation.RequestMapping;
-</span><span class='line'>import org.springframework.web.bind.annotation.RequestParam;
-</span><span class='line'>
-</span><span class='line'>@Controller
-</span><span class='line'>public class GreetingController {
-</span><span class='line'>    @RequestMapping("/greeting")
-</span><span class='line'>    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
-</span><span class='line'>        model.addAttribute("name", name);
-</span><span class='line'>        return "greeting";
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>4. 创建View文件</h3>
-
-<p><code>src/main/resources/templates/greeting.html</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE HTML&gt;
-</span><span class='line'>&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
-</span><span class='line'>&lt;head&gt;
-</span><span class='line'>    &lt;title&gt;Getting Started: Serving Web Content&lt;/title&gt;
-</span><span class='line'>    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-</span><span class='line'>&lt;/head&gt;
-</span><span class='line'>&lt;body&gt;
-</span><span class='line'>    &lt;p th:text="'Hello, ' + ${name} + '!'" /&gt;
-</span><span class='line'>&lt;/body&gt;
-</span><span class='line'>&lt;/html&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>5. 创建可运行的Application</h3>
 ]]></content>
   </entry>
   
@@ -2874,6 +2700,735 @@ yum-metadata-parser-1.1.2-3.el5</p>
 
 
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android自定义View]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view/"/>
+    <updated>2014-09-25T23:22:11+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view</id>
+    <content type="html"><![CDATA[<p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
+
+<h2>View的绘制流程</h2>
+
+<p>自定义控件从最基础的View开始，View有几个重要的函数：<code>onMeasure()</code>, <code>onLayout()</code>, <code>onDraw()</code>，与触摸动作相关的还有<code>onTouchEvent()</code>，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 <code>onMeasure</code> <code>onLayout</code> <code>onDraw()</code> 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与<code>Override</code>，我们可以创造出一些特殊的View。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>  public class CustomView extends View {
+</span><span class='line'>
+</span><span class='line'>    private static final String TAG = "gongmingqm10";
+</span><span class='line'>
+</span><span class='line'>    public CustomView(Context context) {
+</span><span class='line'>        super(context);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public CustomView(Context context, AttributeSet attrs) {
+</span><span class='line'>        super(context, attrs);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
+</span><span class='line'>        super(context, attrs, defStyleAttr);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onDraw(Canvas canvas) {
+</span><span class='line'>        super.onDraw(canvas);
+</span><span class='line'>        Log.i(TAG, "--onDraw--");
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+</span><span class='line'>        super.onLayout(changed, left, top, right, bottom);
+</span><span class='line'>        Log.i(TAG, "--onLayout--" + left + " - " + top + " - " + right + " - " + bottom);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+</span><span class='line'>        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+</span><span class='line'>        Log.i(TAG, "--onMeasure--" + widthMeasureSpec + " - " + heightMeasureSpec);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    public boolean onTouchEvent(MotionEvent event) {
+</span><span class='line'>        Log.i(TAG, "--onTouchEvent--" + event.getX() + " - " + event.getY());
+</span><span class='line'>        return super.onTouchEvent(event);
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在布局文件<code>main.xml</code>文件中这样使用自定义的<code>CustomView</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>  &lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>  &lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>      android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>          android:layout_height="match_parent"&gt;
+</span><span class='line'>      &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>          android:layout_width="match_parent"
+</span><span class='line'>          android:layout_height="600px"
+</span><span class='line'>          android:background="#333666"
+</span><span class='line'>          /&gt;
+</span><span class='line'>  &lt;/FrameLayout&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Logcat输出结果为</p>
+
+<pre><code>09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onMeasure--1073742904    - 1073742424
+09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onMeasure--1073742904 - 1073742424
+09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onLayout--0 - 0 - 1080 - 600
+09  -25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onDraw--
+</code></pre>
+
+<p>通过上面的Logcat，我们可以看到在View的创建过程中， <code>onMeasure</code>被连续两次调用，调用完成之后紧接着<code>onLayout()</code>，最后进行<code>onDraw()</code>，于是一个View完成了从声明到创建的全过程。那么<code>onMeasure()</code> <code>onLayout()</code> <code>onDraw()</code>这几个方法究竟在绘制View的过程中起到了怎样的作用呢？</p>
+
+<h3>1. onMeasure(int widthMeasureSpec, int heightMeasureSpec)</h3>
+
+<p>从Log打印出来的信息来看，参数 widthMeasureSpec和heightMeasureSpec的值看起来没有特别实际的意义，但是Android本身提供了<code>MeasureSpec.getMode(measureSpec)</code>和<code>MeasudeSpec.getSize(measureSpec)</code>方法，这两个方法能够分别拿到int类型的 <code>mode</code> 和 <code>size</code>。<code>mode</code> 和 <code>size</code>主要描述了当前控件在父控件中的占位方式，以及根据占位方法计算出来的大小。我们可以根据 <code>mode</code> <code>size</code> 的值对控件的实际大小进行自定义控制。如果我们不使用<code>super.onMeasure(widthMeasureSpec, heightMeasureSpec)</code>，我们必须调用<code>setMeasureDimense(width, height)</code>来使这些设置生效。<code>width, height</code>分别表示当前这个控件真实的大小。</p>
+
+<p>通过对<code>onMeasure()</code>函数的理解，我们基本知道<code>onMeasure()</code>的功能是告诉Android当前View的大小，并且此大小也是根据布局中父容器的约束生成的。当前我们也可以根据这些大小进行自定义设置当前View的大小。引用 <a href="http://stackoverflow.com/questions/12266899/onmeasure-custom-view-explanation">stackoverflow</a>上的回答：</p>
+
+<blockquote><p>onMeasure() is your opportunity to tell Android how big you want your custom view to be dependent the layout constraints provided by the parent; it is also your custom view&rsquo;s opportunity to learn what those layout constraints are (in case you want to behave differently in a match_parent situation than a wrap_content situation). These constraints are packaged up into the MeasureSpec values that are passed into the method.</p></blockquote>
+
+<p>对于MeasureSpec的<code>mode</code>主要有<code>EXACTLY, AT_MOST, UNSPECIFIED</code>三种值:</p>
+
+<h5><code>EXACTLY</code></h5>
+
+<p>字面意义是准确的，也就是我们的View是的宽度和高度是固定准确的，<code>mode</code>为这种值时，通常是我们设置了<code>layout_width</code>或者<code>layout_height</code>的值为一个给定的值，或者我们设置View的宽度或高度为<code>match_parent</code>，而父容器的宽度或高度固定。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="match_parent"
+</span><span class='line'>        android:background="#333666"
+</span><span class='line'>        /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/FrameLayout&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里的CustomView宽度和高度都是 <code>match_parent</code>，而parent也是充满整个view页面，因此parent的大小是固定的，所以CustomView的大小也是固定的，这里取到的<code>mode</code>值就为<code>EXACTLY</code>；</p>
+
+<p>如果把FrameLayout的宽度高度都设置成<code>wrap_content</code>，此时得到的<code>mode</code>同样都是<code>EXACTLY</code>，因为FrameLayout宽高收到屏幕大小的约束，其本身的大小是收到子view的影响，此时子View通过<code>match_parent</code>获得最大的空间，于是FrameLayout的宽高被撑到了最大值的水平。</p>
+
+<h5><code>AT_MOST</code></h5>
+
+<p>通过名词本身的描述，这种状态下意味着View存在一个最大值的约束，最大值约束一般来自父View，父View经过层层依赖，又会受到设备屏幕大小的约束。通过下面的例子看什么时侯View会呈现出<code>AT_MOST</code>状态：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="wrap_content"
+</span><span class='line'>        android:background="#333666"
+</span><span class='line'>        /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/FrameLayout&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种情况下CustomView的高度是<code>wrap_content</code>，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是<code>AT_MOST</code>.<br/>
+如果把FrameLayout的<code>layout_height</code>设置为<code>wrap_content</code>，由于父容器自身的高度有个<code>AT_MOST</code>属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是<code>AT_MOST</code>。<br/>
+综合来看，只要View的当前宽度或者高度不是固定的，但是会存在一个最大值界限，则View 的Mode为<code>AT_MOST</code>。</p>
+
+<h5><code>UNSPECIFIED</code></h5>
+
+<p><code>UNSPECIFIED</code>意味着高度或者宽度值是不明确不具体的，即Android系统本身都很难决定元素的宽度或者高度值，也没有对其宽度高度的约束值。一个典型情况是ScrollView，由于ScrollView的可以自滑动，因此其滑动方向上可以进行无限的伸缩，于是View在绘制时就很难确定其具体约束。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="match_parent"
+</span><span class='line'>        android:background="#333666"
+</span><span class='line'>        /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/ScrollView&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>ScrollView</code>默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用<code>match_parent</code>，还是<code>wrap_content</code>，高度值都是不能确定的。高度的Mode为<code>UNSPECIFIED</code><br/>
+除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。</p>
+
+<h3>2. onLayout(boolean changed, int left, int top, int right, int bottom)</h3>
+
+<p><code>onLayout()</code>的参数中我们能够直接拿到当前view的位置，(left, top)描述了左上顶点的位置，而(right, bottom)确定了右下角的位置，在自定义View的时侯，可以根据父容器的位置，调用子View的layout()函数直接指定子view的位置。我们的LinearLayout, RelativeLayout等就是继承ViewGroup，然后根据子View设置的相关属性，从而确定子View应该被放在哪里，我们在app中也就看到了期望的界面。</p>
+
+<h3>3. onDraw(Canvas canvas)</h3>
+
+<p>Canvas是View的画布，有了canvasView才会真正的显示出来，才有我们看到的背景，图像，边框等元素。通过复写onDraw()，我们能够利用canvas做一些自定义的行为。比如我们通常看到的显示圆形ImageView头像等。</p>
+
+<h2>自定义View的实现</h2>
+
+<h4>自动换行控件-FlowLayout</h4>
+
+<p>这个Demo中主要通过继承ViewGroup实现自动换行控件，这种通常被用来放置TextView，对文字长度和数量位置的TextView来说，自动换行控件能够实现很好的布局效果，我们只需要将TextView加载到FlowLayout中，便可实现TextView组的自动换行。我们也可以批量给TextView增加自定义事件，进而实现我们想做的事情。</p>
+
+<p>自定义ViewGroup主要参考Google的<a href="http://developer.android.com/reference/android/view/ViewGroup.html">ViewGroup</a>，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。</p>
+
+<p>首先看具体效果：<br/>
+<img src="http://www.gongmingqm10.net/images/flow_layout_1.png" alt="FlowLayout" style="width: 250px;"/></p>
+
+<p>代码实现如下FlowLayout.java</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>package org.gongming.common;
+</span><span class='line'>
+</span><span class='line'>import android.content.Context;
+</span><span class='line'>import android.util.AttributeSet;
+</span><span class='line'>import android.util.Log;
+</span><span class='line'>import android.view.View;
+</span><span class='line'>import android.view.ViewGroup;
+</span><span class='line'>
+</span><span class='line'>public class FlowLayout extends ViewGroup {
+</span><span class='line'>
+</span><span class='line'>    private static final int leftMargin = 6;
+</span><span class='line'>    private static final int rightMargin = 6;
+</span><span class='line'>    private static final int topMargin = 10;
+</span><span class='line'>    private static final int bottomMargin = 10;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    public FlowLayout(Context context) {
+</span><span class='line'>        super(context);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public FlowLayout(Context context, AttributeSet attrs) {
+</span><span class='line'>        super(context, attrs);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
+</span><span class='line'>        super(context, attrs, defStyle);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+</span><span class='line'>        int maxWidth = 0;
+</span><span class='line'>        int maxHeight = 0;
+</span><span class='line'>        int childState = 0;
+</span><span class='line'>        int calcHeight = 0;
+</span><span class='line'>
+</span><span class='line'>        int totalWidth = MeasureSpec.getSize(widthMeasureSpec);
+</span><span class='line'>        int count = getChildCount();
+</span><span class='line'>
+</span><span class='line'>        for (int index = 0; index &lt; count; index++) {
+</span><span class='line'>            final View child = getChildAt(index);
+</span><span class='line'>            if (child.getVisibility() != GONE) {
+</span><span class='line'>                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+</span><span class='line'>                int calcWidth = child.getMeasuredWidth() + leftMargin + rightMargin;
+</span><span class='line'>                calcHeight = Math.max(calcHeight, child.getMeasuredHeight() + topMargin + bottomMargin);
+</span><span class='line'>                if (maxWidth + calcWidth &gt; totalWidth) {
+</span><span class='line'>                    maxWidth = totalWidth;
+</span><span class='line'>                    maxHeight += calcHeight;
+</span><span class='line'>                } else {
+</span><span class='line'>                    maxWidth += calcWidth;
+</span><span class='line'>                }
+</span><span class='line'>                childState = combineMeasuredStates(childState, child.getMeasuredState());
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>        maxHeight += calcHeight;
+</span><span class='line'>        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+</span><span class='line'>        maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
+</span><span class='line'>        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
+</span><span class='line'>                resolveSizeAndState(maxHeight, heightMeasureSpec,
+</span><span class='line'>                        childState &lt;&lt; MEASURED_HEIGHT_STATE_SHIFT));
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+</span><span class='line'>        int totalWidth = getMeasuredWidth();
+</span><span class='line'>        int count = getChildCount();
+</span><span class='line'>        int width = 0;
+</span><span class='line'>        int height = 0;
+</span><span class='line'>
+</span><span class='line'>        for (int index = 0; index &lt; count; index++) {
+</span><span class='line'>            View view = getChildAt(index);
+</span><span class='line'>            int calcHeight = view.getMeasuredHeight() + topMargin + bottomMargin;
+</span><span class='line'>            int calcWidth = view.getMeasuredWidth() + leftMargin + rightMargin;
+</span><span class='line'>            if (width + calcWidth &gt; totalWidth) {
+</span><span class='line'>                height += calcHeight;
+</span><span class='line'>                width = calcWidth;
+</span><span class='line'>            } else {
+</span><span class='line'>                width += calcWidth;
+</span><span class='line'>                height = Math.max(calcHeight, height);
+</span><span class='line'>            }
+</span><span class='line'>            view.layout(width - calcWidth + leftMargin, height - calcHeight + topMargin, width - rightMargin, height - bottomMargin);
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public void setOnItemClickListener(OnClickListener listener) {
+</span><span class='line'>        for (int index = 0; index &lt; getChildCount(); index++) {
+</span><span class='line'>            View child = getChildAt(index);
+</span><span class='line'>            child.setOnClickListener(listener);
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>看看我们在xml中如果使用当前定义的View，主要通过包名访问：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"&gt;
+</span><span class='line'>    &lt;TextView
+</span><span class='line'>        android:layout_height="wrap_content"
+</span><span class='line'>        android:layout_width="wrap_content"
+</span><span class='line'>        android:text="Root Swipe Layout"
+</span><span class='line'>        android:layout_gravity="center"
+</span><span class='line'>        /&gt;
+</span><span class='line'>    &lt;org.gongming.common.FlowLayout
+</span><span class='line'>        android:layout_height="wrap_content"
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:id="@+id/flowLayout"
+</span><span class='line'>        &gt;
+</span><span class='line'>        &lt;TextView
+</span><span class='line'>            android:layout_width="wrap_content"
+</span><span class='line'>            android:layout_height="wrap_content"
+</span><span class='line'>            android:text="hahahah"
+</span><span class='line'>            android:background="#7E7EFF"
+</span><span class='line'>            /&gt;
+</span><span class='line'>        &lt;TextView
+</span><span class='line'>            android:layout_width="wrap_content"
+</span><span class='line'>            android:layout_height="wrap_content"
+</span><span class='line'>            android:text="This is a amazing layout"
+</span><span class='line'>            android:background="#7E7EFF"
+</span><span class='line'>            /&gt;
+</span><span class='line'>        &lt;TextView
+</span><span class='line'>            android:layout_width="wrap_content"
+</span><span class='line'>            android:layout_height="wrap_content"
+</span><span class='line'>            android:text="Where is this layout"
+</span><span class='line'>            android:background="#7E7EFF"
+</span><span class='line'>            /&gt;
+</span><span class='line'>        &lt;TextView
+</span><span class='line'>            android:layout_width="wrap_content"
+</span><span class='line'>            android:layout_height="wrap_content"
+</span><span class='line'>            android:text="Oh, God. Please save me. I'm the cool layout"
+</span><span class='line'>            android:background="#7E7EFF"
+</span><span class='line'>            /&gt;
+</span><span class='line'>    &lt;/org.gongming.common.FlowLayout&gt;
+</span><span class='line'>&lt;/LinearLayout&gt;
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在java代码里还可以定义item的单击事件，<code>flowLayout.setOnItemClickListener(OnClickListener listener)</code>， 这样就能对用户的单击行为进行响应。</p>
+
+<h4>定比例长宽RelativeLayout-RatioRelativeLayout</h4>
+
+<p>Android设备的多样性使得我们要尽量做出适应多设备的可伸缩布局。在最佳实践中，我们谈到要尽量使用RelativeLayout相对布局。同样，我们在这里自定义了一种固定长宽比例的元素。通过自己指定的高度／宽度的比例值，最终确定View应该绘制的宽度和高度。定义如下，主要增加了一个ratio属性，以及重写了onMeasure()方法。<br/>
+res/values/attrs.xml</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>&lt;resources&gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;declare-styleable name="RatioLayout"&gt;
+</span><span class='line'>        &lt;!--The ratio defines the value of height / width --&gt;
+</span><span class='line'>        &lt;attr name="ratio" format="float" /&gt;
+</span><span class='line'>    &lt;/declare-styleable&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/resources&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>RatioRelativeLayout.java</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>package org.gongming.common;
+</span><span class='line'>
+</span><span class='line'>import android.content.Context;
+</span><span class='line'>import android.content.res.TypedArray;
+</span><span class='line'>import android.util.AttributeSet;
+</span><span class='line'>import android.widget.RelativeLayout;
+</span><span class='line'>
+</span><span class='line'>public class RatioRelativeLayout extends RelativeLayout {
+</span><span class='line'>
+</span><span class='line'>    private float ratio = 0f;
+</span><span class='line'>
+</span><span class='line'>    public RatioRelativeLayout(Context context) {
+</span><span class='line'>        super(context);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public RatioRelativeLayout(Context context, AttributeSet attrs) {
+</span><span class='line'>        super(context, attrs);
+</span><span class='line'>        init(attrs);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public RatioRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
+</span><span class='line'>        super(context, attrs, defStyle);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    private void init(AttributeSet attrs) {
+</span><span class='line'>        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RatioLayout);
+</span><span class='line'>        ratio = typedArray.getFloat(R.styleable.RatioLayout_ratio, 0f);
+</span><span class='line'>        typedArray.recycle();
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    @Override
+</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+</span><span class='line'>        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+</span><span class='line'>        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
+</span><span class='line'>
+</span><span class='line'>        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+</span><span class='line'>        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+</span><span class='line'>
+</span><span class='line'>        if (widthMode == MeasureSpec.EXACTLY && ratio != 0f) {
+</span><span class='line'>            measureHeight = (int) (measureWidth * ratio);
+</span><span class='line'>        } else if (heightMode == MeasureSpec.EXACTLY && ratio != 0f) {
+</span><span class='line'>            measureWidth = (int) (measureHeight / ratio);
+</span><span class='line'>        } else {
+</span><span class='line'>            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+</span><span class='line'>        }
+</span><span class='line'>        setMeasuredDimension(measureWidth, measureHeight);
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在xml使用时使用该控件并给ratio设置值即可：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;FrameLayout
+</span><span class='line'>    xmlns:android="http://schemas.android.com/apk/res/android"
+</span><span class='line'>    xmlns:app="http://schemas.android.com/apk/res-auto"
+</span><span class='line'>    android:layout_width="match_parent"
+</span><span class='line'>    android:layout_height="match_parent"
+</span><span class='line'>
+</span><span class='line'>    &gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;org.gongming.common.RatioRelativeLayout
+</span><span class='line'>        android:layout_width="match_parent"
+</span><span class='line'>        android:layout_height="wrap_content"
+</span><span class='line'>        android:background="@android:color/darker_gray"
+</span><span class='line'>        app:ratio="0.5"
+</span><span class='line'>        &gt;
+</span><span class='line'>
+</span><span class='line'>    &lt;/org.gongming.common.RatioRelativeLayout&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;/FrameLayout&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后在界面上我们便可以看到一个高度是宽度一半的自定义View。</p>
 ]]></content>
   </entry>
   
