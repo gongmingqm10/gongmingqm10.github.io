@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="Setup Jenkins for Android Integration using Docker Mar 11th, 2015 android jenkins About Docker 什么Docker，为什么我们要折腾Docker， &hellip;">
+  <meta name="description" content="Android Design - Difference between px sp and dp May 9th, 2015 android Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,7 +85,7 @@
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration using Docker</a>
+    <a href="/blog/2015/05/09/android-design-difference-between-px/">Android Design - Difference between px sp and dp</a>
   </h1>
   
 
@@ -103,7 +103,393 @@
   
 
 
-<time class="pull-left" datetime="2015-03-11T21:46:59-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 11<span>th</span>, 2015</time>
+<time class="pull-left" datetime="2015-05-09T11:32:59+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> May 9<span>th</span>, 2015</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/android/">android</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。并且随着不同厂家定制化不同的ROM，Android设备的碎片化现象日益严重。这篇文章主要讲述如何设计中严格遵从设计图标准的Android页面。</p>
+
+<h2>1. px, dp, sp区别</h2>
+
+<h3>什么是px</h3>
+
+<p>px就是我们通常所说的像素的单位，在css里面，我们用px比较多。px主要指用户在屏幕上看到的事物的实际大小单位。</p>
+
+<h3>什么是dp</h3>
+
+<p>在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率</p>
+
+<p><img src="/images/retina_one_screen.jpg" title="Mac retina resolution" ></p>
+
+<p>上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。</p>
+
+<p>既然已经有了分辨率的概念，那么我们就可以了解 dpi(dot per inch)的概念了。dpi本意是每英寸点的数量，但是也经常和ppi(pixel per inch)混用。指每英寸的像素数量，也被我们称为屏幕密度，dpi越大，图像从视觉上看起来越清晰。</p>
+
+<p>Google官方对dp的解释如下：</p>
+
+<blockquote><p>A virtual pixel unit that you should use when defining UI layout, to express layout dimensions or position in a density-independent way.
+The density-independent pixel is equivalent to one physical pixel on a 160 dpi screen, which is the baseline density assumed by the system for a &ldquo;medium&rdquo; density screen. At runtime, the system transparently handles any scaling of the dp units, as necessary, based on the actual density of the screen in use. The conversion of dp units to screen pixels is simple: px = dp * (dpi / 160). For example, on a 240 dpi screen, 1 dp equals 1.5 physical pixels. You should always use dp units when defining your application&rsquo;s UI, to ensure proper display of your UI on screens with different densities.</p></blockquote>
+
+<p>有了密度的概念，我们可以更好的理解dp(density independent pixel)了。dp是Android中用来定义UI布局中表达元素尺寸或位置的一个虚拟的像素单位，dp的存在是为了页面元素位置不受屏幕密度所影响。以设计师设计一个APP页面为例，设计师希望用户视觉上看起来如此，也就是设计师设计时通常以px作为基础单位。而在其他不同屏幕密度的设备中，也希望能够进行一定的伸缩，类似于维持一个相对一致的百分比。所以开发者通常需要以dp为单位，以适应不同密度的屏幕。</p>
+
+<p>所以dp和px之间有一套换算标准：<code>px = dp * (dpi / 160)</code>。假设在dpi为320的屏幕上，1dp = 2px。</p>
+
+<h3>什么是sp</h3>
+
+<p>sp是Android中专业为字体而设置的单位。使用sp作为字体单位不仅能够使字体大小受屏幕密度影响，并且能够使字体受用户系统设置的影响。Android提供字体大小的设置选项。一旦使用sp作为字体，根据用户设置字体的不同，App中的字体大小也会显示不同。但是在正常字体设置下，1dp ＝ 1sp。</p>
+
+<h2>2. 设计师视角</h2>
+
+<p>Android的多屏适配存在这么多的尺寸，自然需要设计师和工程师之间找到沟通的桥梁，设计师如何规范设计才能够更加符合Android的设计标准呢。设计师与工程师对于页面的尺寸需要有一个共识性的标准，测试人员才可能进行更有效的测试，才不致于因为不同机型显示不同效果而引起不必要的工作量。</p>
+
+<p>首先我们需要选择一个相对通用的屏幕尺寸，可以参考现有的一些主流机型的尺寸。为了便于计算，我们选择Nexus 4作为设计图的原版标准。那么所有的页面都是基于Nexus4而产生的。Nexus4尺寸如下:</p>
+
+<p><code>主屏尺寸4.7，主屏分辨率：1280x768像素，屏幕像素密度320ppi。</code></p>
+
+<p>一般来说，我们选择市场上最常见的机型来设计，这里我们为了计算方便，选择320ppi的机型，设计图中尺寸将是标准图中的2倍。假设在设计图中，页面内边距为32px, 按钮的高度为96px, icon大小为48x48。</p>
+
+<p>通过<code>px＝dp*(dpi/160)</code>的标准，设计师给开发者标注图时可标注页边距为16dp，按钮高度为48dp，icon则分别出四套mdpi, hdpi, xhdpi, xxhdpi标准。</p>
+
+<h2>3. 开发者视角</h2>
+
+<h3>margin, padding, height, width</h3>
+
+<p>从开发者角度来看，对于控件的尺寸，高度等，只需要按照转化后的dp设置即可。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android:layout_padding="16dp"
+</span><span class='line'>
+</span><span class='line'>android:layout_height="48dp"
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以dp为单位能够保证不同分辨率屏幕上显示不同大小的字体。并且能够保持相对大小，这样也更符合设计的初衷。</p>
+
+<h3>图片资源</h3>
+
+<p>对于png制作出来的图片，一般大小固定，没办法像尺寸一样自动的伸缩。所以Android会存在至少4个资源文件夹。当App运行过程中，系统能够根据当前设备的屏幕密度，自动选择使用哪种尺寸的图片资源。</p>
+
+<table>
+<thead>
+<tr>
+<th>ldpi </th>
+<th> mdpi </th>
+<th> hdpi </th>
+<th> xhdpi </th>
+<th> xxhdpi </th>
+<th> xxxhdpi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.75 </td>
+<td> 1  </td>
+<td> 1.5 </td>
+<td> 2 </td>
+<td> 3 </td>
+<td> 4</td>
+</tr>
+<tr>
+<td>120 </td>
+<td> 160 </td>
+<td> 240 </td>
+<td> 320 </td>
+<td> 480 </td>
+<td> 640</td>
+</tr>
+<tr>
+<td>18x18 </td>
+<td> 24x24 </td>
+<td> 36x36 </td>
+<td> 48x48 </td>
+<td> 72x72 </td>
+<td> 96x96</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>4. 更多</h2>
+
+<p>附上Android主流机型：</p>
+
+<p>Android：主流机型主要为 480x800, 480x854, 540x960, 720x1280, 800x1280 这五种。
+（非主流机型还包括：240x320, 320x480, 640x960 这三种，其中两种都与 iPhone 一致。）
+iOS: 主流机型主要为 320x480, 640x960, 640x1136, 1024x768, 2048x1536, 这五种。
+WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
+
+<p>Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。</p>
+
+<p>另附上豆瓣关于这些单位更<a href="http://www.douban.com/note/155032221/">具体的阐释</a>。</p>
+
+
+  </article>
+  <hr>
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2015/04/13/config-spring-mvc-web-project/">Config spring mvc web project</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2015-04-13T12:33:50+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Apr 13<span>th</span>, 2015</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/web/">web</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>到目前为止，接触过两到三个小型的Spring Web项目，前几日朋友问起怎么搭建Spring Web MVC项目，才想好要写一篇博客来记载如何从零开始搭建一个完整的Spring项目，这里使用的Spring主要还是3.x，关于4.x的我们会在其他文章中再详细叙述。</p>
+
+<h2>Spring Web Content with Spring MVC</h2>
+
+<p>既然从零开始，那我们就从空文件夹开始，首先还是习惯在Git上创建一个<a href="http://github.com/gongmingqm10/spring-mvc-sample">gongmingqm10/spring-mvc-sample</a>的项目。clone到本地之后就是一个空的文件夹。一般来说，官网上都有很多参考的资料，可以告诉我们怎么使用这个框架搭建完整的项目。来到<a href="http://spring.io/guides">Spring IO</a>，才发现资料真的多，于是就选择了[Spring Web Content with Spring MVC]作为Guide从零开始搭建。还是使用Gradle构建。</p>
+
+<h3>1. 创建文件夹结构</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p src/main/java/hello
+</span><span class='line'>
+</span><span class='line'>XiaoMing:spring-mvc-sample minggong$ tree .
+</span><span class='line'>.
+</span><span class='line'>├── README.md
+</span><span class='line'>└── src
+</span><span class='line'>    └── main
+</span><span class='line'>        └── java
+</span><span class='line'>            └── hello
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. 创建build.gradle文件</h3>
+
+<p><code>build.gradle</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
+</span><span class='line'>    repositories {
+</span><span class='line'>        mavenCentral()
+</span><span class='line'>    }
+</span><span class='line'>    dependencies {
+</span><span class='line'>        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>apply plugin: 'java'
+</span><span class='line'>apply plugin: 'idea'
+</span><span class='line'>apply plugin: 'spring-boot'
+</span><span class='line'>
+</span><span class='line'>jar {
+</span><span class='line'>    baseName = 'gs-serving-web-content'
+</span><span class='line'>    version =  '0.1.0'
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>repositories {
+</span><span class='line'>    mavenCentral()
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>sourceCompatibility = 1.7
+</span><span class='line'>targetCompatibility = 1.7
+</span><span class='line'>
+</span><span class='line'>dependencies {
+</span><span class='line'>    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+</span><span class='line'>    testCompile("junit:junit")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>task wrapper(type: Wrapper) {
+</span><span class='line'>    gradleVersion = '2.3'
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3. 创建 Web Controller</h3>
+
+<p><code>src/main/java/hello/GreetingController.java</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>package hello;
+</span><span class='line'>
+</span><span class='line'>import org.springframework.stereotype.Controller;
+</span><span class='line'>import org.springframework.ui.Model;
+</span><span class='line'>import org.springframework.web.bind.annotation.RequestMapping;
+</span><span class='line'>import org.springframework.web.bind.annotation.RequestParam;
+</span><span class='line'>
+</span><span class='line'>@Controller
+</span><span class='line'>public class GreetingController {
+</span><span class='line'>    @RequestMapping("/greeting")
+</span><span class='line'>    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+</span><span class='line'>        model.addAttribute("name", name);
+</span><span class='line'>        return "greeting";
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 创建View文件</h3>
+
+<p><code>src/main/resources/templates/greeting.html</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE HTML&gt;
+</span><span class='line'>&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+</span><span class='line'>&lt;head&gt;
+</span><span class='line'>    &lt;title&gt;Getting Started: Serving Web Content&lt;/title&gt;
+</span><span class='line'>    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+</span><span class='line'>&lt;/head&gt;
+</span><span class='line'>&lt;body&gt;
+</span><span class='line'>    &lt;p th:text="'Hello, ' + ${name} + '!'" /&gt;
+</span><span class='line'>&lt;/body&gt;
+</span><span class='line'>&lt;/html&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5. 创建可运行的Application</h3>
+
+
+  </article>
+  <hr>
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration using Docker</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2015-03-12T10:46:59+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 12<span>th</span>, 2015</time>
     
 
 
@@ -549,7 +935,7 @@
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2015/03/08/android-continuous-integration/">Android Continuous Integration</a>
+    <a href="/blog/2015/03/09/android-continuous-integration/">Android Continuous Integration</a>
   </h1>
   
 
@@ -567,7 +953,7 @@
   
 
 
-<time class="pull-left" datetime="2015-03-08T23:39:35-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 8<span>th</span>, 2015</time>
+<time class="pull-left" datetime="2015-03-09T12:39:35+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 9<span>th</span>, 2015</time>
     
 
 
@@ -979,7 +1365,7 @@
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2015/03/01/work-in-dallas/">Work in Dallas</a>
+    <a href="/blog/2015/03/02/work-in-dallas/">Work in Dallas</a>
   </h1>
   
 
@@ -997,7 +1383,7 @@
   
 
 
-<time class="pull-left" datetime="2015-03-01T12:39:53-06:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 1<span>st</span>, 2015</time>
+<time class="pull-left" datetime="2015-03-02T02:39:53+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 2<span>nd</span>, 2015</time>
     
 
 
@@ -1112,7 +1498,7 @@
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2015/02/28/travel-to-dallas-life/">Travel to Dallas - Life</a>
+    <a href="/blog/2015/03/01/travel-to-dallas-life/">Travel to Dallas - Life</a>
   </h1>
   
 
@@ -1130,7 +1516,7 @@
   
 
 
-<time class="pull-left" datetime="2015-02-28T21:44:57-06:00" pubdate data-updated="true"><i class="icon-calendar"></i> Feb 28<span>th</span>, 2015</time>
+<time class="pull-left" datetime="2015-03-01T11:44:57+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 1<span>st</span>, 2015</time>
     
 
 
@@ -1262,7 +1648,7 @@
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2015/01/21/2015-annual-review/">2015 Annual Review</a>
+    <a href="/blog/2015/01/22/2015-annual-review/">2015 Annual Review</a>
   </h1>
   
 
@@ -1280,7 +1666,7 @@
   
 
 
-<time class="pull-left" datetime="2015-01-21T10:34:06-06:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jan 21<span>st</span>, 2015</time>
+<time class="pull-left" datetime="2015-01-22T00:34:06+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jan 22<span>nd</span>, 2015</time>
     
 
 
@@ -1435,7 +1821,7 @@
   
 
 
-<time class="pull-left" datetime="2014-10-30T02:47:40-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 30<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-30T15:47:40+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 30<span>th</span>, 2014</time>
     
 
 
@@ -1504,7 +1890,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/28/androiddian-hua-jian-ting/">Android电话监听</a>
+    <a href="/blog/2014/10/29/androiddian-hua-jian-ting/">Android电话监听</a>
   </h1>
   
 
@@ -1522,7 +1908,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time class="pull-left" datetime="2014-10-28T22:11:48-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 28<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-29T11:11:48+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 29<span>th</span>, 2014</time>
     
 
 
@@ -1715,7 +2101,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time class="pull-left" datetime="2014-10-28T04:11:26-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 28<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-28T17:11:26+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 28<span>th</span>, 2014</time>
     
 
 
@@ -1791,7 +2177,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time class="pull-left" datetime="2014-10-26T09:46:18-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 26<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-26T22:46:18+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 26<span>th</span>, 2014</time>
     
 
 
@@ -1833,7 +2219,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/20/vagrant-da-jian-ben-di-xu-ni-ji/">Vagrant 搭建本地虚拟机</a>
+    <a href="/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/">Vagrant 搭建本地虚拟机</a>
   </h1>
   
 
@@ -1851,7 +2237,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time class="pull-left" datetime="2014-10-20T22:06:42-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 20<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-21T11:06:42+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 21<span>st</span>, 2014</time>
     
 
 
@@ -2146,7 +2532,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong/">Openfire - Android IM 框架使用</a>
+    <a href="/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/">Openfire - Android IM 框架使用</a>
   </h1>
   
 
@@ -2164,7 +2550,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time class="pull-left" datetime="2014-10-20T21:02:58-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 20<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-21T10:02:58+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 21<span>st</span>, 2014</time>
     
 
 
@@ -2314,7 +2700,7 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/16/android-deploy-your-app/">Android deploy your app</a>
+    <a href="/blog/2014/10/17/android-deploy-your-app/">Android deploy your app</a>
   </h1>
   
 
@@ -2332,7 +2718,7 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
   
 
 
-<time class="pull-left" datetime="2014-10-16T23:56:13-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 16<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-17T12:56:13+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 17<span>th</span>, 2014</time>
     
 
 
@@ -2414,7 +2800,7 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/16/android-sip-wang-luo-tong-hua/">Android SIP 网络通话</a>
+    <a href="/blog/2014/10/17/android-sip-wang-luo-tong-hua/">Android SIP 网络通话</a>
   </h1>
   
 
@@ -2432,7 +2818,7 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
 
 
-<time class="pull-left" datetime="2014-10-16T20:49:35-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 16<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-17T09:49:35+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 17<span>th</span>, 2014</time>
     
 
 
@@ -2476,7 +2862,7 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/13/git-daemon-jian-li-ben-di-gitfu-wu-qi/">Git daemon 建立本地Git服务器</a>
+    <a href="/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/">Git daemon 建立本地Git服务器</a>
   </h1>
   
 
@@ -2494,7 +2880,7 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
 
 
-<time class="pull-left" datetime="2014-10-13T21:51:41-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 13<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-14T10:51:41+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 14<span>th</span>, 2014</time>
     
 
 
@@ -2601,7 +2987,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   
 
 
-<time class="pull-left" datetime="2014-10-13T04:19:22-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 13<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-13T17:19:22+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 13<span>th</span>, 2014</time>
     
 
 
@@ -2693,7 +3079,7 @@ There is one quirk: client can’t push into your active git branch. Before push
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/10/11/deploy-app-to-remote-server/">Deploy app to remote server —— 网站部署篇</a>
+    <a href="/blog/2014/10/12/deploy-app-to-remote-server/">Deploy app to remote server —— 网站部署篇</a>
   </h1>
   
 
@@ -2711,7 +3097,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   
 
 
-<time class="pull-left" datetime="2014-10-11T22:14:37-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 11<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-10-12T11:14:37+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 12<span>th</span>, 2014</time>
     
 
 
@@ -2906,7 +3292,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   
 
 
-<time class="pull-left" datetime="2014-09-30T04:28:56-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 30<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-09-30T17:28:56+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 30<span>th</span>, 2014</time>
     
 
 
@@ -3288,7 +3674,7 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
   
 
 
-<time class="pull-left" datetime="2014-09-29T02:01:31-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 29<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-09-29T15:01:31+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 29<span>th</span>, 2014</time>
     
 
 
@@ -3440,7 +3826,7 @@ yum-metadata-parser-1.1.2-3.el5</p>
   
 
 
-<time class="pull-left" datetime="2014-09-25T10:22:11-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 25<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-09-25T23:22:11+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 25<span>th</span>, 2014</time>
     
 
 
@@ -4195,7 +4581,7 @@ res/values/attrs.xml</p>
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/09/21/travel-to-thoughtworks/">Travel to ThoughtWorks</a>
+    <a href="/blog/2014/09/22/travel-to-thoughtworks/">Travel to ThoughtWorks</a>
   </h1>
   
 
@@ -4213,7 +4599,7 @@ res/values/attrs.xml</p>
   
 
 
-<time class="pull-left" datetime="2014-09-21T21:39:01-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 21<span>st</span>, 2014</time>
+<time class="pull-left" datetime="2014-09-22T10:39:01+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 22<span>nd</span>, 2014</time>
     
 
 
@@ -4284,7 +4670,7 @@ res/values/attrs.xml</p>
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/09/15/android-best-practice/">Android best practice</a>
+    <a href="/blog/2014/09/16/android-best-practice/">Android best practice</a>
   </h1>
   
 
@@ -4302,7 +4688,7 @@ res/values/attrs.xml</p>
   
 
 
-<time class="pull-left" datetime="2014-09-15T21:41:25-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 15<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-09-16T10:41:25+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 16<span>th</span>, 2014</time>
     
 
 
@@ -4405,7 +4791,7 @@ res/values/attrs.xml</p>
   
 
 
-<time class="pull-left" datetime="2014-08-17T07:50:41-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Aug 17<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-08-17T20:50:41+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Aug 17<span>th</span>, 2014</time>
     
 
 
@@ -4788,7 +5174,7 @@ ID             Applied At          Description
     <header>
   
   <h1 class="beta">
-    <a href="/blog/2014/03/18/fontello-shi-yong-xin-de/">Fontello 使用心得</a>
+    <a href="/blog/2014/03/19/fontello-shi-yong-xin-de/">Fontello 使用心得</a>
   </h1>
   
 
@@ -4806,7 +5192,7 @@ ID             Applied At          Description
   
 
 
-<time class="pull-left" datetime="2014-03-18T19:19:49-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 18<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-03-19T08:19:49+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 19<span>th</span>, 2014</time>
     
 
 
@@ -4840,7 +5226,7 @@ ID             Applied At          Description
 <p>最近尝试在构建一个rails应用，于是自然而然就想到用之前项目中的fontello图标，对于Developer来说，有了fontello和rails我开始不需要担心街面上图标或者按钮的样式问题了。</p>
 
 
-  <a class="btn pull-right" href="/blog/2014/03/18/fontello-shi-yong-xin-de/">Read on &rarr;</a>
+  <a class="btn pull-right" href="/blog/2014/03/19/fontello-shi-yong-xin-de/">Read on &rarr;</a>
 </div>
 
   </article>
@@ -4869,7 +5255,7 @@ ID             Applied At          Description
   
 
 
-<time class="pull-left" datetime="2014-03-08T04:37:11-06:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 8<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-03-08T18:37:11+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Mar 8<span>th</span>, 2014</time>
     
 
 
@@ -4930,7 +5316,7 @@ ID             Applied At          Description
   
 
 
-<time class="pull-left" datetime="2014-01-18T02:04:48-06:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jan 18<span>th</span>, 2014</time>
+<time class="pull-left" datetime="2014-01-18T16:04:48+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jan 18<span>th</span>, 2014</time>
     
 
 

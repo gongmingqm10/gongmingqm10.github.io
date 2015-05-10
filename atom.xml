@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-04-12T00:09:35-05:00</updated>
+  <updated>2015-05-10T13:25:42+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -14,10 +14,308 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Android Design - Difference Between Px Sp and Dp]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/05/09/android-design-difference-between-px/"/>
+    <updated>2015-05-09T11:32:59+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/05/09/android-design-difference-between-px</id>
+    <content type="html"><![CDATA[<p>Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。并且随着不同厂家定制化不同的ROM，Android设备的碎片化现象日益严重。这篇文章主要讲述如何设计中严格遵从设计图标准的Android页面。</p>
+
+<h2>1. px, dp, sp区别</h2>
+
+<h3>什么是px</h3>
+
+<p>px就是我们通常所说的像素的单位，在css里面，我们用px比较多。px主要指用户在屏幕上看到的事物的实际大小单位。</p>
+
+<h3>什么是dp</h3>
+
+<p>在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率</p>
+
+<p><img src="http://www.gongmingqm10.net/images/retina_one_screen.jpg" title="Mac retina resolution" ></p>
+
+<p>上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。</p>
+
+<p>既然已经有了分辨率的概念，那么我们就可以了解 dpi(dot per inch)的概念了。dpi本意是每英寸点的数量，但是也经常和ppi(pixel per inch)混用。指每英寸的像素数量，也被我们称为屏幕密度，dpi越大，图像从视觉上看起来越清晰。</p>
+
+<p>Google官方对dp的解释如下：</p>
+
+<blockquote><p>A virtual pixel unit that you should use when defining UI layout, to express layout dimensions or position in a density-independent way.
+The density-independent pixel is equivalent to one physical pixel on a 160 dpi screen, which is the baseline density assumed by the system for a &ldquo;medium&rdquo; density screen. At runtime, the system transparently handles any scaling of the dp units, as necessary, based on the actual density of the screen in use. The conversion of dp units to screen pixels is simple: px = dp * (dpi / 160). For example, on a 240 dpi screen, 1 dp equals 1.5 physical pixels. You should always use dp units when defining your application&rsquo;s UI, to ensure proper display of your UI on screens with different densities.</p></blockquote>
+
+<p>有了密度的概念，我们可以更好的理解dp(density independent pixel)了。dp是Android中用来定义UI布局中表达元素尺寸或位置的一个虚拟的像素单位，dp的存在是为了页面元素位置不受屏幕密度所影响。以设计师设计一个APP页面为例，设计师希望用户视觉上看起来如此，也就是设计师设计时通常以px作为基础单位。而在其他不同屏幕密度的设备中，也希望能够进行一定的伸缩，类似于维持一个相对一致的百分比。所以开发者通常需要以dp为单位，以适应不同密度的屏幕。</p>
+
+<p>所以dp和px之间有一套换算标准：<code>px = dp * (dpi / 160)</code>。假设在dpi为320的屏幕上，1dp = 2px。</p>
+
+<h3>什么是sp</h3>
+
+<p>sp是Android中专业为字体而设置的单位。使用sp作为字体单位不仅能够使字体大小受屏幕密度影响，并且能够使字体受用户系统设置的影响。Android提供字体大小的设置选项。一旦使用sp作为字体，根据用户设置字体的不同，App中的字体大小也会显示不同。但是在正常字体设置下，1dp ＝ 1sp。</p>
+
+<h2>2. 设计师视角</h2>
+
+<p>Android的多屏适配存在这么多的尺寸，自然需要设计师和工程师之间找到沟通的桥梁，设计师如何规范设计才能够更加符合Android的设计标准呢。设计师与工程师对于页面的尺寸需要有一个共识性的标准，测试人员才可能进行更有效的测试，才不致于因为不同机型显示不同效果而引起不必要的工作量。</p>
+
+<p>首先我们需要选择一个相对通用的屏幕尺寸，可以参考现有的一些主流机型的尺寸。为了便于计算，我们选择Nexus 4作为设计图的原版标准。那么所有的页面都是基于Nexus4而产生的。Nexus4尺寸如下:</p>
+
+<p><code>主屏尺寸4.7，主屏分辨率：1280x768像素，屏幕像素密度320ppi。</code></p>
+
+<p>一般来说，我们选择市场上最常见的机型来设计，这里我们为了计算方便，选择320ppi的机型，设计图中尺寸将是标准图中的2倍。假设在设计图中，页面内边距为32px, 按钮的高度为96px, icon大小为48x48。</p>
+
+<p>通过<code>px＝dp*(dpi/160)</code>的标准，设计师给开发者标注图时可标注页边距为16dp，按钮高度为48dp，icon则分别出四套mdpi, hdpi, xhdpi, xxhdpi标准。</p>
+
+<h2>3. 开发者视角</h2>
+
+<h3>margin, padding, height, width</h3>
+
+<p>从开发者角度来看，对于控件的尺寸，高度等，只需要按照转化后的dp设置即可。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android:layout_padding="16dp"
+</span><span class='line'>
+</span><span class='line'>android:layout_height="48dp"
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以dp为单位能够保证不同分辨率屏幕上显示不同大小的字体。并且能够保持相对大小，这样也更符合设计的初衷。</p>
+
+<h3>图片资源</h3>
+
+<p>对于png制作出来的图片，一般大小固定，没办法像尺寸一样自动的伸缩。所以Android会存在至少4个资源文件夹。当App运行过程中，系统能够根据当前设备的屏幕密度，自动选择使用哪种尺寸的图片资源。</p>
+
+<table>
+<thead>
+<tr>
+<th>ldpi </th>
+<th> mdpi </th>
+<th> hdpi </th>
+<th> xhdpi </th>
+<th> xxhdpi </th>
+<th> xxxhdpi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.75 </td>
+<td> 1  </td>
+<td> 1.5 </td>
+<td> 2 </td>
+<td> 3 </td>
+<td> 4</td>
+</tr>
+<tr>
+<td>120 </td>
+<td> 160 </td>
+<td> 240 </td>
+<td> 320 </td>
+<td> 480 </td>
+<td> 640</td>
+</tr>
+<tr>
+<td>18x18 </td>
+<td> 24x24 </td>
+<td> 36x36 </td>
+<td> 48x48 </td>
+<td> 72x72 </td>
+<td> 96x96</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>4. 更多</h2>
+
+<p>附上Android主流机型：</p>
+
+<p>Android：主流机型主要为 480x800, 480x854, 540x960, 720x1280, 800x1280 这五种。
+（非主流机型还包括：240x320, 320x480, 640x960 这三种，其中两种都与 iPhone 一致。）
+iOS: 主流机型主要为 320x480, 640x960, 640x1136, 1024x768, 2048x1536, 这五种。
+WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
+
+<p>Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。</p>
+
+<p>另附上豆瓣关于这些单位更<a href="http://www.douban.com/note/155032221/">具体的阐释</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Config Spring Mvc Web Project]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/04/13/config-spring-mvc-web-project/"/>
+    <updated>2015-04-13T12:33:50+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/04/13/config-spring-mvc-web-project</id>
+    <content type="html"><![CDATA[<p>到目前为止，接触过两到三个小型的Spring Web项目，前几日朋友问起怎么搭建Spring Web MVC项目，才想好要写一篇博客来记载如何从零开始搭建一个完整的Spring项目，这里使用的Spring主要还是3.x，关于4.x的我们会在其他文章中再详细叙述。</p>
+
+<h2>Spring Web Content with Spring MVC</h2>
+
+<p>既然从零开始，那我们就从空文件夹开始，首先还是习惯在Git上创建一个<a href="http://github.com/gongmingqm10/spring-mvc-sample">gongmingqm10/spring-mvc-sample</a>的项目。clone到本地之后就是一个空的文件夹。一般来说，官网上都有很多参考的资料，可以告诉我们怎么使用这个框架搭建完整的项目。来到<a href="http://spring.io/guides">Spring IO</a>，才发现资料真的多，于是就选择了[Spring Web Content with Spring MVC]作为Guide从零开始搭建。还是使用Gradle构建。</p>
+
+<h3>1. 创建文件夹结构</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p src/main/java/hello
+</span><span class='line'>
+</span><span class='line'>XiaoMing:spring-mvc-sample minggong$ tree .
+</span><span class='line'>.
+</span><span class='line'>├── README.md
+</span><span class='line'>└── src
+</span><span class='line'>    └── main
+</span><span class='line'>        └── java
+</span><span class='line'>            └── hello
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. 创建build.gradle文件</h3>
+
+<p><code>build.gradle</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
+</span><span class='line'>    repositories {
+</span><span class='line'>        mavenCentral()
+</span><span class='line'>    }
+</span><span class='line'>    dependencies {
+</span><span class='line'>        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>apply plugin: 'java'
+</span><span class='line'>apply plugin: 'idea'
+</span><span class='line'>apply plugin: 'spring-boot'
+</span><span class='line'>
+</span><span class='line'>jar {
+</span><span class='line'>    baseName = 'gs-serving-web-content'
+</span><span class='line'>    version =  '0.1.0'
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>repositories {
+</span><span class='line'>    mavenCentral()
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>sourceCompatibility = 1.7
+</span><span class='line'>targetCompatibility = 1.7
+</span><span class='line'>
+</span><span class='line'>dependencies {
+</span><span class='line'>    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+</span><span class='line'>    testCompile("junit:junit")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>task wrapper(type: Wrapper) {
+</span><span class='line'>    gradleVersion = '2.3'
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3. 创建 Web Controller</h3>
+
+<p><code>src/main/java/hello/GreetingController.java</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>package hello;
+</span><span class='line'>
+</span><span class='line'>import org.springframework.stereotype.Controller;
+</span><span class='line'>import org.springframework.ui.Model;
+</span><span class='line'>import org.springframework.web.bind.annotation.RequestMapping;
+</span><span class='line'>import org.springframework.web.bind.annotation.RequestParam;
+</span><span class='line'>
+</span><span class='line'>@Controller
+</span><span class='line'>public class GreetingController {
+</span><span class='line'>    @RequestMapping("/greeting")
+</span><span class='line'>    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+</span><span class='line'>        model.addAttribute("name", name);
+</span><span class='line'>        return "greeting";
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 创建View文件</h3>
+
+<p><code>src/main/resources/templates/greeting.html</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE HTML&gt;
+</span><span class='line'>&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+</span><span class='line'>&lt;head&gt;
+</span><span class='line'>    &lt;title&gt;Getting Started: Serving Web Content&lt;/title&gt;
+</span><span class='line'>    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+</span><span class='line'>&lt;/head&gt;
+</span><span class='line'>&lt;body&gt;
+</span><span class='line'>    &lt;p th:text="'Hello, ' + ${name} + '!'" /&gt;
+</span><span class='line'>&lt;/body&gt;
+</span><span class='line'>&lt;/html&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5. 创建可运行的Application</h3>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Setup Jenkins for Android Integration Using Docker]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/"/>
-    <updated>2015-03-11T21:46:59-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/"/>
+    <updated>2015-03-12T10:46:59+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker</id>
     <content type="html"><![CDATA[<h2>About Docker</h2>
 
 <p>什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？</p>
@@ -433,9 +731,9 @@
   
   <entry>
     <title type="html"><![CDATA[Android Continuous Integration]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/03/08/android-continuous-integration/"/>
-    <updated>2015-03-08T23:39:35-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/03/08/android-continuous-integration</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/03/09/android-continuous-integration/"/>
+    <updated>2015-03-09T12:39:35+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/03/09/android-continuous-integration</id>
     <content type="html"><![CDATA[<p>随着Android平台的逐渐成熟，伴随着一系列针对Android测试框架的推出，开发人员终于可以如愿以偿的在移动端的开发上进行单元测试，集成测试以及功能测试。在敏捷流程中从开发，到测试，到验收最终成为面向用户的Release版本，经历的是Story一个完整的生命周期。CI(Continuous Integration, 持续交付)在敏捷实践中也因此扮演了非常重要的角色。</p>
 
 <p>如果说Web的持续集成，以及各类测试框架有一定的历史积淀了。那么Android的持续集成可以说是新鲜事物，大部分IT公司知道如何对服务器端或者Web端进行一系列自动化测试，保证其功能的正确性。而对于移动端的产品比较多的则是由测试人员组成的人肉测试。移动端的这种人工测试，无论是对测试人员，还是要经常打包并且来修复各种Bug的开发人员来说，其代价是巨大的。</p>
@@ -819,9 +1117,9 @@
   
   <entry>
     <title type="html"><![CDATA[Work in Dallas]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/03/01/work-in-dallas/"/>
-    <updated>2015-03-01T12:39:53-06:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/03/01/work-in-dallas</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/03/02/work-in-dallas/"/>
+    <updated>2015-03-02T02:39:53+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/03/02/work-in-dallas</id>
     <content type="html"><![CDATA[<p>时光匆匆，算上实习期来ThoughtWorks工作已近一年。如果技术方面来看，我提升的主要是广度。但是从敏捷实践角度来看，我正在也将继续朝深度上提升。</p>
 
 <p>敏捷这个词，大学期间或多或少听过，大体的印象是软件工程学的一些术语，之后在项目中才开始慢慢实践。我前后经历过三四个项目，虽然每个项目待的时间不长，但是却又想能够和不同的团队，面对不同的客户，也有幸能够在不同的国家体会不同文化下的敏捷实践的标准。</p>
@@ -906,9 +1204,9 @@
   
   <entry>
     <title type="html"><![CDATA[Travel to Dallas - Life]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/02/28/travel-to-dallas-life/"/>
-    <updated>2015-02-28T21:44:57-06:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/02/28/travel-to-dallas-life</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/03/01/travel-to-dallas-life/"/>
+    <updated>2015-03-01T11:44:57+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/03/01/travel-to-dallas-life</id>
     <content type="html"><![CDATA[<p>来达拉斯已过半月，从去年的十二月份开始规划，到二月中旬过来，再到过完这边最难熬的两个星期。生活工作渐入正轨，是时候来总结下这个特别的二月。</p>
 
 <h3>出差</h3>
@@ -1010,9 +1308,9 @@
   
   <entry>
     <title type="html"><![CDATA[2015 Annual Review]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/01/21/2015-annual-review/"/>
-    <updated>2015-01-21T10:34:06-06:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/01/21/2015-annual-review</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review/"/>
+    <updated>2015-01-22T00:34:06+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review</id>
     <content type="html"><![CDATA[<p>2015年悄然来临，算上实习期，在TW待的日子也将近一年。在Annual Review这个环节我也开始梳理自己走过的2014年，关于项目，关于团队，关于成长的那点苦与甜。按照惯例，我将从以下几个方面一一道来：</p>
 
 <h2>Sponser Review</h2>
@@ -1122,7 +1420,7 @@
   <entry>
     <title type="html"><![CDATA[常用的Linux Cmd]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/30/chang-yong-de-linux-cmd/"/>
-    <updated>2014-10-30T02:47:40-05:00</updated>
+    <updated>2014-10-30T15:47:40+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/30/chang-yong-de-linux-cmd</id>
     <content type="html"><![CDATA[<p>ls：查看目录下所有可见文件<br/>
 ls -a ： 查看目录下所有文件，包括隐藏文件  <br/>
@@ -1173,9 +1471,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
   <entry>
     <title type="html"><![CDATA[Android电话监听]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/28/androiddian-hua-jian-ting/"/>
-    <updated>2014-10-28T22:11:48-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/28/androiddian-hua-jian-ting</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting/"/>
+    <updated>2014-10-29T11:11:48+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/29/androiddian-hua-jian-ting</id>
     <content type="html"><![CDATA[<p>看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：<br/>
 我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
 在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
@@ -1323,7 +1621,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   <entry>
     <title type="html"><![CDATA[Android Data Cache]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache/"/>
-    <updated>2014-10-28T04:11:26-05:00</updated>
+    <updated>2014-10-28T17:11:26+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache</id>
     <content type="html"><![CDATA[<p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
 
@@ -1355,7 +1653,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   <entry>
     <title type="html"><![CDATA[Hack 京东Lebook]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/26/hack-jing-dong-lebook/"/>
-    <updated>2014-10-26T09:46:18-05:00</updated>
+    <updated>2014-10-26T22:46:18+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/26/hack-jing-dong-lebook</id>
     <content type="html"><![CDATA[<p>adb devices : 列出所有的设备</p>
 
@@ -1370,9 +1668,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
   <entry>
     <title type="html"><![CDATA[Vagrant 搭建本地虚拟机]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/20/vagrant-da-jian-ben-di-xu-ni-ji/"/>
-    <updated>2014-10-20T22:06:42-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/20/vagrant-da-jian-ben-di-xu-ni-ji</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/"/>
+    <updated>2014-10-21T11:06:42+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji</id>
     <content type="html"><![CDATA[<p>多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。<br/>
 虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。<br/>
 安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
@@ -1648,9 +1946,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
   <entry>
     <title type="html"><![CDATA[Openfire - Android IM 框架使用]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong/"/>
-    <updated>2014-10-20T21:02:58-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/20/openfire-android-im-kuang-jia-shi-yong</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/"/>
+    <updated>2014-10-21T10:02:58+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong</id>
     <content type="html"><![CDATA[<p>IM(Instant Messaging)在Android中可谓运用广泛。QQ，Wechat，陌陌等应用都可以看作IM实时通讯APP，实时通讯在社交类APP中运用范围较广，其功能看起来也是比较cool的。今天我们将研究一下android IM软件是如何实现的。像IM这种实施通讯软件，除非公司有比较大的实力和精力，才会自己去整这么一套框架。对于广大中小软件开发者来说，想到比较多的就是开源框架。Opensource对于开发者来说简直就是福音，对于整个软件行业也起到了不小的推动性的作用。<br/>
 Openfire在这种环境下应运而生，而且作为实时通讯类开源框架迅速走红，下面我们就一起来学习这样一款拯救宇宙的开源框架，文章的最后会运用Openfire做出一个可以实时通讯的AndroidAPP，如果结合上地理位置再多点UI和交互上的设计提升，这不就是陌陌吗？YY了一会，觉得挺有趣，那么 <code>Just do it</code>。</p>
 
@@ -1772,9 +2070,9 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
   
   <entry>
     <title type="html"><![CDATA[Android Deploy Your App]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/16/android-deploy-your-app/"/>
-    <updated>2014-10-16T23:56:13-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/16/android-deploy-your-app</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app/"/>
+    <updated>2014-10-17T12:56:13+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app</id>
     <content type="html"><![CDATA[<p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
 
 <h3>Proguard－代码混淆</h3>
@@ -1828,9 +2126,9 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
   <entry>
     <title type="html"><![CDATA[Android SIP 网络通话]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/16/android-sip-wang-luo-tong-hua/"/>
-    <updated>2014-10-16T20:49:35-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/16/android-sip-wang-luo-tong-hua</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/17/android-sip-wang-luo-tong-hua/"/>
+    <updated>2014-10-17T09:49:35+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/17/android-sip-wang-luo-tong-hua</id>
     <content type="html"><![CDATA[<p>突发奇想，想研究一下Android的网络通话怎么实现，于是从Google搜到了相关的资料。原来Android下集成了SIP（Session Initiation Protocol）。SIP的账号可以通过SIP提供商免费申请，申请后即可以通过用户名实现网络通话。于是也找了网上的一些资料，写了个AndroidSIP的小demo，demo实现后大家可以实现互拨，目前界面很简单，但是通话的功能应该是可以实现的。请各位看官试用之。<br/>
 整体效果看起来还是蛮酷的，这里我们申请了两个免费的账号，在设备上安装之后就可以进行Network Call了。</p>
 
@@ -1846,9 +2144,9 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
   
   <entry>
     <title type="html"><![CDATA[Git Daemon 建立本地Git服务器]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/13/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
-    <updated>2014-10-13T21:51:41-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/13/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/"/>
+    <updated>2014-10-14T10:51:41+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi</id>
     <content type="html"><![CDATA[<p>平时项目中我们常遇到这样的需求，需要在自己电脑上clone台式机上的git代码，从而省略了向Github远程服务器上传代码的过程。免除了一些授权Access问题。幸好有Git Daemon神器：</p>
 
 <p><strong>前提</strong></p>
@@ -1910,7 +2208,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   <entry>
     <title type="html"><![CDATA[Android Quiz Questions]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions/"/>
-    <updated>2014-10-13T04:19:22-05:00</updated>
+    <updated>2014-10-13T17:19:22+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions</id>
     <content type="html"><![CDATA[<p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
 
@@ -1975,9 +2273,9 @@ There is one quirk: client can’t push into your active git branch. Before push
   
   <entry>
     <title type="html"><![CDATA[Deploy App to Remote Server —— 网站部署篇]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/11/deploy-app-to-remote-server/"/>
-    <updated>2014-10-11T22:14:37-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/11/deploy-app-to-remote-server</id>
+    <link href="http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server/"/>
+    <updated>2014-10-12T11:14:37+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2014/10/12/deploy-app-to-remote-server</id>
     <content type="html"><![CDATA[<p>网站开发完毕之后，下一步的任务就是部署了。我们从最简单的入手，如何将本地开发的webapp部署到远程服务器上（这里我们用的是阿里的ECS）。部署是一件很有意思的事情，因为我们可以让本地开发的网站被外界所访问，所以还是很多成就感的。这里的工程采用的是Spring MVC 框架。</p>
 
 <h3>1. Requirement</h3>
@@ -2127,7 +2425,7 @@ There is one quirk: client can’t push into your active git branch. Before push
   <entry>
     <title type="html"><![CDATA[Android onTouch() 初探]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/09/30/android-ontouch-chu-tan/"/>
-    <updated>2014-09-30T04:28:56-05:00</updated>
+    <updated>2014-09-30T17:28:56+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/09/30/android-ontouch-chu-tan</id>
     <content type="html"><![CDATA[<p>Android的touch对于我来说是个既熟悉又陌生的话题，熟悉之处在于onTouch太常用了，从系统的自定义的ListView的滑动到我们自定义的可以滑动的View，onTouch直接与用户进行相关的Interation，所以onTouch无处不再。想像下如果Android某一天不能相应我们的touch事件，那我们现在的触屏手机基本废了，那我们的手机还得还原到以前的字母键手机的状态。学习总是得自己逼迫自己，没有博客的驱动我是怎样也不会来从头开始研究onTouch的作用机制的，博客当作一个自我学习的过程，坚持再坚持。</p>
 
@@ -2465,7 +2763,7 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
   <entry>
     <title type="html"><![CDATA[云服务器使用记录]]></title>
     <link href="http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/"/>
-    <updated>2014-09-29T02:01:31-05:00</updated>
+    <updated>2014-09-29T15:01:31+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu</id>
     <content type="html"><![CDATA[<h3>我的第一个云服务器ECS</h3>
 
@@ -2576,780 +2874,6 @@ yum-metadata-parser-1.1.2-3.el5</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android自定义View]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view/"/>
-    <updated>2014-09-25T10:22:11-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/09/25/androidzi-ding-yi-view</id>
-    <content type="html"><![CDATA[<p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
-
-<h2>View的绘制流程</h2>
-
-<p>自定义控件从最基础的View开始，View有几个重要的函数：<code>onMeasure()</code>, <code>onLayout()</code>, <code>onDraw()</code>，与触摸动作相关的还有<code>onTouchEvent()</code>，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 <code>onMeasure</code> <code>onLayout</code> <code>onDraw()</code> 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与<code>Override</code>，我们可以创造出一些特殊的View。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>  public class CustomView extends View {
-</span><span class='line'>
-</span><span class='line'>    private static final String TAG = "gongmingqm10";
-</span><span class='line'>
-</span><span class='line'>    public CustomView(Context context) {
-</span><span class='line'>        super(context);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public CustomView(Context context, AttributeSet attrs) {
-</span><span class='line'>        super(context, attrs);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
-</span><span class='line'>        super(context, attrs, defStyleAttr);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    protected void onDraw(Canvas canvas) {
-</span><span class='line'>        super.onDraw(canvas);
-</span><span class='line'>        Log.i(TAG, "--onDraw--");
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-</span><span class='line'>        super.onLayout(changed, left, top, right, bottom);
-</span><span class='line'>        Log.i(TAG, "--onLayout--" + left + " - " + top + " - " + right + " - " + bottom);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-</span><span class='line'>        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-</span><span class='line'>        Log.i(TAG, "--onMeasure--" + widthMeasureSpec + " - " + heightMeasureSpec);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    public boolean onTouchEvent(MotionEvent event) {
-</span><span class='line'>        Log.i(TAG, "--onTouchEvent--" + event.getX() + " - " + event.getY());
-</span><span class='line'>        return super.onTouchEvent(event);
-</span><span class='line'>    }
-</span><span class='line'>  }
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在布局文件<code>main.xml</code>文件中这样使用自定义的<code>CustomView</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>  &lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>
-</span><span class='line'>  &lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>      android:orientation="vertical" android:layout_width="match_parent"
-</span><span class='line'>          android:layout_height="match_parent"&gt;
-</span><span class='line'>      &lt;org.gongming.common.swipelist.CustomView
-</span><span class='line'>          android:layout_width="match_parent"
-</span><span class='line'>          android:layout_height="600px"
-</span><span class='line'>          android:background="#333666"
-</span><span class='line'>          /&gt;
-</span><span class='line'>  &lt;/FrameLayout&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Logcat输出结果为</p>
-
-<pre><code>09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onMeasure--1073742904    - 1073742424
-09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onMeasure--1073742904 - 1073742424
-09-25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onLayout--0 - 0 - 1080 - 600
-09  -25 15:55:29.876    1535-1535/org.gongming.uikit I/gongmingqm10﹕ --onDraw--
-</code></pre>
-
-<p>通过上面的Logcat，我们可以看到在View的创建过程中， <code>onMeasure</code>被连续两次调用，调用完成之后紧接着<code>onLayout()</code>，最后进行<code>onDraw()</code>，于是一个View完成了从声明到创建的全过程。那么<code>onMeasure()</code> <code>onLayout()</code> <code>onDraw()</code>这几个方法究竟在绘制View的过程中起到了怎样的作用呢？</p>
-
-<h3>1. onMeasure(int widthMeasureSpec, int heightMeasureSpec)</h3>
-
-<p>从Log打印出来的信息来看，参数 widthMeasureSpec和heightMeasureSpec的值看起来没有特别实际的意义，但是Android本身提供了<code>MeasureSpec.getMode(measureSpec)</code>和<code>MeasudeSpec.getSize(measureSpec)</code>方法，这两个方法能够分别拿到int类型的 <code>mode</code> 和 <code>size</code>。<code>mode</code> 和 <code>size</code>主要描述了当前控件在父控件中的占位方式，以及根据占位方法计算出来的大小。我们可以根据 <code>mode</code> <code>size</code> 的值对控件的实际大小进行自定义控制。如果我们不使用<code>super.onMeasure(widthMeasureSpec, heightMeasureSpec)</code>，我们必须调用<code>setMeasureDimense(width, height)</code>来使这些设置生效。<code>width, height</code>分别表示当前这个控件真实的大小。</p>
-
-<p>通过对<code>onMeasure()</code>函数的理解，我们基本知道<code>onMeasure()</code>的功能是告诉Android当前View的大小，并且此大小也是根据布局中父容器的约束生成的。当前我们也可以根据这些大小进行自定义设置当前View的大小。引用 <a href="http://stackoverflow.com/questions/12266899/onmeasure-custom-view-explanation">stackoverflow</a>上的回答：</p>
-
-<blockquote><p>onMeasure() is your opportunity to tell Android how big you want your custom view to be dependent the layout constraints provided by the parent; it is also your custom view&rsquo;s opportunity to learn what those layout constraints are (in case you want to behave differently in a match_parent situation than a wrap_content situation). These constraints are packaged up into the MeasureSpec values that are passed into the method.</p></blockquote>
-
-<p>对于MeasureSpec的<code>mode</code>主要有<code>EXACTLY, AT_MOST, UNSPECIFIED</code>三种值:</p>
-
-<h5><code>EXACTLY</code></h5>
-
-<p>字面意义是准确的，也就是我们的View是的宽度和高度是固定准确的，<code>mode</code>为这种值时，通常是我们设置了<code>layout_width</code>或者<code>layout_height</code>的值为一个给定的值，或者我们设置View的宽度或高度为<code>match_parent</code>，而父容器的宽度或高度固定。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
-</span><span class='line'>    android:layout_height="match_parent"&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
-</span><span class='line'>        android:layout_width="match_parent"
-</span><span class='line'>        android:layout_height="match_parent"
-</span><span class='line'>        android:background="#333666"
-</span><span class='line'>        /&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;/FrameLayout&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这里的CustomView宽度和高度都是 <code>match_parent</code>，而parent也是充满整个view页面，因此parent的大小是固定的，所以CustomView的大小也是固定的，这里取到的<code>mode</code>值就为<code>EXACTLY</code>；</p>
-
-<p>如果把FrameLayout的宽度高度都设置成<code>wrap_content</code>，此时得到的<code>mode</code>同样都是<code>EXACTLY</code>，因为FrameLayout宽高收到屏幕大小的约束，其本身的大小是收到子view的影响，此时子View通过<code>match_parent</code>获得最大的空间，于是FrameLayout的宽高被撑到了最大值的水平。</p>
-
-<h5><code>AT_MOST</code></h5>
-
-<p>通过名词本身的描述，这种状态下意味着View存在一个最大值的约束，最大值约束一般来自父View，父View经过层层依赖，又会受到设备屏幕大小的约束。通过下面的例子看什么时侯View会呈现出<code>AT_MOST</code>状态：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
-</span><span class='line'>    android:layout_height="match_parent"&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
-</span><span class='line'>        android:layout_width="match_parent"
-</span><span class='line'>        android:layout_height="wrap_content"
-</span><span class='line'>        android:background="#333666"
-</span><span class='line'>        /&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;/FrameLayout&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这种情况下CustomView的高度是<code>wrap_content</code>，自适应内容，没有固定的值。但是由于父容器FrameLayout的宽度和高度是固定的，因此FrameLayout的宽高将会约束CustomView的宽高。CustomView的高度此时会有个最大值约束。这是 CustomView高度的Mode是<code>AT_MOST</code>.<br/>
-如果把FrameLayout的<code>layout_height</code>设置为<code>wrap_content</code>，由于父容器自身的高度有个<code>AT_MOST</code>属性，子元素CustomView的最大值也不会超过父元素的最大值约束。所以此时CustomView的高度Mode仍然是<code>AT_MOST</code>。<br/>
-综合来看，只要View的当前宽度或者高度不是固定的，但是会存在一个最大值界限，则View 的Mode为<code>AT_MOST</code>。</p>
-
-<h5><code>UNSPECIFIED</code></h5>
-
-<p><code>UNSPECIFIED</code>意味着高度或者宽度值是不明确不具体的，即Android系统本身都很难决定元素的宽度或者高度值，也没有对其宽度高度的约束值。一个典型情况是ScrollView，由于ScrollView的可以自滑动，因此其滑动方向上可以进行无限的伸缩，于是View在绘制时就很难确定其具体约束。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>    android:layout_width="match_parent"
-</span><span class='line'>    android:layout_height="match_parent"&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;org.gongming.common.swipelist.CustomView
-</span><span class='line'>        android:layout_width="match_parent"
-</span><span class='line'>        android:layout_height="match_parent"
-</span><span class='line'>        android:background="#333666"
-</span><span class='line'>        /&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;/ScrollView&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>ScrollView</code>默认是竖直滑动，因此其高度值是难以确定的，位于其里面的CustomView如果没有提供明确的竖直，那么无论使用<code>match_parent</code>，还是<code>wrap_content</code>，高度值都是不能确定的。高度的Mode为<code>UNSPECIFIED</code><br/>
-除了上述的MeasureSpec.getMode()外，在本函数中我们还可以通过MeasureSpec.getSize()得到View真实的值，这个真实值将会用来绘制当前View。我们自定义View的时侯也可以通过onMeasure进行恰当的重写，从而实现我们自己想要的功能。</p>
-
-<h3>2. onLayout(boolean changed, int left, int top, int right, int bottom)</h3>
-
-<p><code>onLayout()</code>的参数中我们能够直接拿到当前view的位置，(left, top)描述了左上顶点的位置，而(right, bottom)确定了右下角的位置，在自定义View的时侯，可以根据父容器的位置，调用子View的layout()函数直接指定子view的位置。我们的LinearLayout, RelativeLayout等就是继承ViewGroup，然后根据子View设置的相关属性，从而确定子View应该被放在哪里，我们在app中也就看到了期望的界面。</p>
-
-<h3>3. onDraw(Canvas canvas)</h3>
-
-<p>Canvas是View的画布，有了canvasView才会真正的显示出来，才有我们看到的背景，图像，边框等元素。通过复写onDraw()，我们能够利用canvas做一些自定义的行为。比如我们通常看到的显示圆形ImageView头像等。</p>
-
-<h2>自定义View的实现</h2>
-
-<h4>自动换行控件-FlowLayout</h4>
-
-<p>这个Demo中主要通过继承ViewGroup实现自动换行控件，这种通常被用来放置TextView，对文字长度和数量位置的TextView来说，自动换行控件能够实现很好的布局效果，我们只需要将TextView加载到FlowLayout中，便可实现TextView组的自动换行。我们也可以批量给TextView增加自定义事件，进而实现我们想做的事情。</p>
-
-<p>自定义ViewGroup主要参考Google的<a href="http://developer.android.com/reference/android/view/ViewGroup.html">ViewGroup</a>，参照自定义控件写法，主要是人工对onMeasure()和onLayout进行重写。onMeasure()决定了控件本身的宽度和高度，而onLayout()则用来确定子类的位置摆放。子类在父类中的位置摆放通过layout(l, t, r, b)，这几个值表示控件的左上坐标和右下坐标，坐标是相对于父容器的位置来确定的。</p>
-
-<p>首先看具体效果：<br/>
-<img src="http://www.gongmingqm10.net/images/flow_layout_1.png" alt="FlowLayout" style="width: 250px;"/></p>
-
-<p>代码实现如下FlowLayout.java</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>package org.gongming.common;
-</span><span class='line'>
-</span><span class='line'>import android.content.Context;
-</span><span class='line'>import android.util.AttributeSet;
-</span><span class='line'>import android.util.Log;
-</span><span class='line'>import android.view.View;
-</span><span class='line'>import android.view.ViewGroup;
-</span><span class='line'>
-</span><span class='line'>public class FlowLayout extends ViewGroup {
-</span><span class='line'>
-</span><span class='line'>    private static final int leftMargin = 6;
-</span><span class='line'>    private static final int rightMargin = 6;
-</span><span class='line'>    private static final int topMargin = 10;
-</span><span class='line'>    private static final int bottomMargin = 10;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    public FlowLayout(Context context) {
-</span><span class='line'>        super(context);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public FlowLayout(Context context, AttributeSet attrs) {
-</span><span class='line'>        super(context, attrs);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
-</span><span class='line'>        super(context, attrs, defStyle);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-</span><span class='line'>        int maxWidth = 0;
-</span><span class='line'>        int maxHeight = 0;
-</span><span class='line'>        int childState = 0;
-</span><span class='line'>        int calcHeight = 0;
-</span><span class='line'>
-</span><span class='line'>        int totalWidth = MeasureSpec.getSize(widthMeasureSpec);
-</span><span class='line'>        int count = getChildCount();
-</span><span class='line'>
-</span><span class='line'>        for (int index = 0; index &lt; count; index++) {
-</span><span class='line'>            final View child = getChildAt(index);
-</span><span class='line'>            if (child.getVisibility() != GONE) {
-</span><span class='line'>                measureChild(child, widthMeasureSpec, heightMeasureSpec);
-</span><span class='line'>                int calcWidth = child.getMeasuredWidth() + leftMargin + rightMargin;
-</span><span class='line'>                calcHeight = Math.max(calcHeight, child.getMeasuredHeight() + topMargin + bottomMargin);
-</span><span class='line'>                if (maxWidth + calcWidth &gt; totalWidth) {
-</span><span class='line'>                    maxWidth = totalWidth;
-</span><span class='line'>                    maxHeight += calcHeight;
-</span><span class='line'>                } else {
-</span><span class='line'>                    maxWidth += calcWidth;
-</span><span class='line'>                }
-</span><span class='line'>                childState = combineMeasuredStates(childState, child.getMeasuredState());
-</span><span class='line'>            }
-</span><span class='line'>        }
-</span><span class='line'>        maxHeight += calcHeight;
-</span><span class='line'>        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
-</span><span class='line'>        maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
-</span><span class='line'>        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
-</span><span class='line'>                resolveSizeAndState(maxHeight, heightMeasureSpec,
-</span><span class='line'>                        childState &lt;&lt; MEASURED_HEIGHT_STATE_SHIFT));
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-</span><span class='line'>        int totalWidth = getMeasuredWidth();
-</span><span class='line'>        int count = getChildCount();
-</span><span class='line'>        int width = 0;
-</span><span class='line'>        int height = 0;
-</span><span class='line'>
-</span><span class='line'>        for (int index = 0; index &lt; count; index++) {
-</span><span class='line'>            View view = getChildAt(index);
-</span><span class='line'>            int calcHeight = view.getMeasuredHeight() + topMargin + bottomMargin;
-</span><span class='line'>            int calcWidth = view.getMeasuredWidth() + leftMargin + rightMargin;
-</span><span class='line'>            if (width + calcWidth &gt; totalWidth) {
-</span><span class='line'>                height += calcHeight;
-</span><span class='line'>                width = calcWidth;
-</span><span class='line'>            } else {
-</span><span class='line'>                width += calcWidth;
-</span><span class='line'>                height = Math.max(calcHeight, height);
-</span><span class='line'>            }
-</span><span class='line'>            view.layout(width - calcWidth + leftMargin, height - calcHeight + topMargin, width - rightMargin, height - bottomMargin);
-</span><span class='line'>        }
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public void setOnItemClickListener(OnClickListener listener) {
-</span><span class='line'>        for (int index = 0; index &lt; getChildCount(); index++) {
-</span><span class='line'>            View child = getChildAt(index);
-</span><span class='line'>            child.setOnClickListener(listener);
-</span><span class='line'>        }
-</span><span class='line'>    }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>看看我们在xml中如果使用当前定义的View，主要通过包名访问：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>    android:orientation="vertical" android:layout_width="match_parent"
-</span><span class='line'>    android:layout_height="match_parent"&gt;
-</span><span class='line'>    &lt;TextView
-</span><span class='line'>        android:layout_height="wrap_content"
-</span><span class='line'>        android:layout_width="wrap_content"
-</span><span class='line'>        android:text="Root Swipe Layout"
-</span><span class='line'>        android:layout_gravity="center"
-</span><span class='line'>        /&gt;
-</span><span class='line'>    &lt;org.gongming.common.FlowLayout
-</span><span class='line'>        android:layout_height="wrap_content"
-</span><span class='line'>        android:layout_width="match_parent"
-</span><span class='line'>        android:id="@+id/flowLayout"
-</span><span class='line'>        &gt;
-</span><span class='line'>        &lt;TextView
-</span><span class='line'>            android:layout_width="wrap_content"
-</span><span class='line'>            android:layout_height="wrap_content"
-</span><span class='line'>            android:text="hahahah"
-</span><span class='line'>            android:background="#7E7EFF"
-</span><span class='line'>            /&gt;
-</span><span class='line'>        &lt;TextView
-</span><span class='line'>            android:layout_width="wrap_content"
-</span><span class='line'>            android:layout_height="wrap_content"
-</span><span class='line'>            android:text="This is a amazing layout"
-</span><span class='line'>            android:background="#7E7EFF"
-</span><span class='line'>            /&gt;
-</span><span class='line'>        &lt;TextView
-</span><span class='line'>            android:layout_width="wrap_content"
-</span><span class='line'>            android:layout_height="wrap_content"
-</span><span class='line'>            android:text="Where is this layout"
-</span><span class='line'>            android:background="#7E7EFF"
-</span><span class='line'>            /&gt;
-</span><span class='line'>        &lt;TextView
-</span><span class='line'>            android:layout_width="wrap_content"
-</span><span class='line'>            android:layout_height="wrap_content"
-</span><span class='line'>            android:text="Oh, God. Please save me. I'm the cool layout"
-</span><span class='line'>            android:background="#7E7EFF"
-</span><span class='line'>            /&gt;
-</span><span class='line'>    &lt;/org.gongming.common.FlowLayout&gt;
-</span><span class='line'>&lt;/LinearLayout&gt;
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在java代码里还可以定义item的单击事件，<code>flowLayout.setOnItemClickListener(OnClickListener listener)</code>， 这样就能对用户的单击行为进行响应。</p>
-
-<h4>定比例长宽RelativeLayout-RatioRelativeLayout</h4>
-
-<p>Android设备的多样性使得我们要尽量做出适应多设备的可伸缩布局。在最佳实践中，我们谈到要尽量使用RelativeLayout相对布局。同样，我们在这里自定义了一种固定长宽比例的元素。通过自己指定的高度／宽度的比例值，最终确定View应该绘制的宽度和高度。定义如下，主要增加了一个ratio属性，以及重写了onMeasure()方法。<br/>
-res/values/attrs.xml</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>&lt;resources&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;declare-styleable name="RatioLayout"&gt;
-</span><span class='line'>        &lt;!--The ratio defines the value of height / width --&gt;
-</span><span class='line'>        &lt;attr name="ratio" format="float" /&gt;
-</span><span class='line'>    &lt;/declare-styleable&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;/resources&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>RatioRelativeLayout.java</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>package org.gongming.common;
-</span><span class='line'>
-</span><span class='line'>import android.content.Context;
-</span><span class='line'>import android.content.res.TypedArray;
-</span><span class='line'>import android.util.AttributeSet;
-</span><span class='line'>import android.widget.RelativeLayout;
-</span><span class='line'>
-</span><span class='line'>public class RatioRelativeLayout extends RelativeLayout {
-</span><span class='line'>
-</span><span class='line'>    private float ratio = 0f;
-</span><span class='line'>
-</span><span class='line'>    public RatioRelativeLayout(Context context) {
-</span><span class='line'>        super(context);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public RatioRelativeLayout(Context context, AttributeSet attrs) {
-</span><span class='line'>        super(context, attrs);
-</span><span class='line'>        init(attrs);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    public RatioRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
-</span><span class='line'>        super(context, attrs, defStyle);
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    private void init(AttributeSet attrs) {
-</span><span class='line'>        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RatioLayout);
-</span><span class='line'>        ratio = typedArray.getFloat(R.styleable.RatioLayout_ratio, 0f);
-</span><span class='line'>        typedArray.recycle();
-</span><span class='line'>    }
-</span><span class='line'>
-</span><span class='line'>    @Override
-</span><span class='line'>    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-</span><span class='line'>        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
-</span><span class='line'>        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
-</span><span class='line'>
-</span><span class='line'>        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-</span><span class='line'>        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-</span><span class='line'>
-</span><span class='line'>        if (widthMode == MeasureSpec.EXACTLY && ratio != 0f) {
-</span><span class='line'>            measureHeight = (int) (measureWidth * ratio);
-</span><span class='line'>        } else if (heightMode == MeasureSpec.EXACTLY && ratio != 0f) {
-</span><span class='line'>            measureWidth = (int) (measureHeight / ratio);
-</span><span class='line'>        } else {
-</span><span class='line'>            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-</span><span class='line'>        }
-</span><span class='line'>        setMeasuredDimension(measureWidth, measureHeight);
-</span><span class='line'>    }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在xml使用时使用该控件并给ratio设置值即可：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;FrameLayout
-</span><span class='line'>    xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>    xmlns:app="http://schemas.android.com/apk/res-auto"
-</span><span class='line'>    android:layout_width="match_parent"
-</span><span class='line'>    android:layout_height="match_parent"
-</span><span class='line'>
-</span><span class='line'>    &gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;org.gongming.common.RatioRelativeLayout
-</span><span class='line'>        android:layout_width="match_parent"
-</span><span class='line'>        android:layout_height="wrap_content"
-</span><span class='line'>        android:background="@android:color/darker_gray"
-</span><span class='line'>        app:ratio="0.5"
-</span><span class='line'>        &gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;/org.gongming.common.RatioRelativeLayout&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;/FrameLayout&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最后在界面上我们便可以看到一个高度是宽度一半的自定义View。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Travel to ThoughtWorks]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/09/21/travel-to-thoughtworks/"/>
-    <updated>2014-09-21T21:39:01-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/09/21/travel-to-thoughtworks</id>
-    <content type="html"><![CDATA[<blockquote><p>Life is a journey, not a destination.</p></blockquote>
-
-<p>人生就是在时光的隧道中不同的奔跑，在不同的环境中遇到不同的人，然后开始相同的挣扎，最后不断优秀的过程。加入ThoughtWorks一月有余，期间经历了一些事情，趁着On beach的时光对其进行一些沉淀，若干年后作为记忆的时光进行回忆品味。</p>
-
-<h3>面试</h3>
-
-<p>转眼已是金秋时节，又是一年校招季。距离上次面试也已经快一年的距离了，时间总是走得如此之快。想起去年奔走在各个公司的面试宣讲会上。然后在人山人海中投着一遍遍的简历，然后在有幸的面试中都会被无情的刷掉。这种落差也许只有自己知道，这种期望与失望的矛盾混杂在现实的残酷与理想的丰满中。最后却冷不丁的进了ThoughtWorks的终面，经历了Quiz Test， Code Homework，Tech Interview， HR Interview，最后进到了Group Discussion。于是我用着不太顺畅的普通话讲述着 &ldquo;Why ThoughtWorks should Hire Me&#8221;，我不太会演讲，这种public speech对于我来说更是显得有点困难，但是坚持就意味着胜利。然后意外的进入了ThoughtWorks Graduate的阵营。毕业生都是将要离开学校，而第一份工作也总会决定他们一生的状态。于是凭借着自己的感觉放弃了上海那个温暖的团队，决定在这个Geek闻名的公司里面开启新的学习生涯。毕业季的日子终究是平淡的，于是也就选择了来实习。</p>
-
-<h3>实习</h3>
-
-<p>只身一人来到西安实习，这个第一次到来的城市总是能让我感到陌生，于是以最快的速度找好了租房，最后终于处于一个暂时安定的状态。实习之初的日子是难熬的，意味着你必须抛弃之前自己的所长来开始接受一些完全陌生的技术，接触一个完全陌生的团队，然后建立彼此之间的信任又要花费你很长时间。难熬的日子总会让你变得话很少，因为缺少了自信，自己甚至胆怯于说话。生活之余更是和大家缺少沟通。以至于大家甚至怀疑我能不能熬过这个实习阶段。我是个慢性子的人，慢慢的真实的我开始显现出来，除了一方面对技术的熟悉，另外一方面更是和大家的熟悉。这种融入集体的感觉是奇妙的，枯燥的工作开始变得乐趣横生。也许人生就是一个涅槃的过程，对于我而言尤其如此。每次到达一个新地方，我总得花上一个月得时间建立这种与人与物之间的情感。实习结束，自己开始接触Web，接触Ruby，接触AngularJS。总体而言还是很酷的。</p>
-
-<h3>TWU</h3>
-
-<p>TWU是我对于TW公司最期待的部分，人生就是一所大学，刚入职的我们也被送到印度进行为期五周的培训。都说印度是个开挂的城市，于是我们对印度也有了部分期待，期待之余也会有部分顾虑，对未知挑战的一种胆怯。终于在8月初出发了，我们备齐了传说种的老干妈和方便面，三拨人马分别从西安、成都、武汉奔赴北京，九人印度行就这样无声无息开始了。经历一系列的波折之后，我们终于在次日早上到达了Pune，印度这个城市没有我想像中的那么好，但是却是蛮有特色的。异国文化开始漫延开来，咖喱也沾上了我们的衣裳。</p>
-
-<p>虽然有前辈们的前车之鉴与印度攻略，但是到了印度还是极度不适应，尤其是对这边的食物，我不能理解这种糊状的蔬菜的美味之初，不能理解咖喱的味道。我们操持着一口老干妈味道的英语开始了第一周的生活。第一周的培训主要以小组讨论为主，在天朝活惯了的我们显然很难参与老外激烈的讨论当中，于是讨论成为了我最痛苦的经历。这种经历源于语言的差异，交流是个很重要的东西，我们暂时还没适应English。</p>
-
-<p>培训时的不积极表现是伴随着很深重的压力的，压力大部分源于我们自身。看着别人都交流甚欢，我们在一旁以疑惑的眼神看着眼前的一切，这样子真的不好。这是个Change yourself的过程，这种环境迫使我们去改变，迫使我们去融入。于是我们不得不尽量在可以发言的场合多发言，以弥补小组讨论中的不佳表现。第一周的大家都是沉闷的，大家都是有压力的。我们还是喜欢扎堆，但是对于Change却各有各自不同的看法。</p>
-
-<p>大家以不同的状态度过了第一周，这个噩梦般的第一周。周末也终于不是让我们闲着，各种活动都等着我们，晚上回去躺在床上就不知不觉睡着了。对于我们来说，真的有点辛苦。这段时间甚至产生一个疯狂的想法，逃离印度，赶紧回国。总觉得自己的国家才是最温暖的庇护。现在的我们像个游离的人在世界的某个角落中神伤。随着时间的流逝，各种不适应开始缓解，我们开始抛弃了老干妈，开始吃着这边有名的Paratha，也会在某个空闲的晚上跑到Phoenix mall大吃一顿，这里的一顿普通的中国式的面条都可以让我们快乐一晚上。</p>
-
-<p>除了每周的培训，我们还不得不和自己的Coach一起制定每周的Goal，Goal是我们一周最基本的任务，我们必须找时间完成。这成为了我们的一周的追求。Goal的设立从社交到社会公正到个人的学习，贯穿了公司Pillar 3 文化，这种文化是每个Twer必须接受和认同的。除了这些目标，我个人最大的两个挑战在于准备一次meaningful的LunchAndLearn，准备好一次Pecha Chucha。这种Pechu Chucha是对自己 public speech演讲能力的锻炼，演讲作为我的薄弱环节。从选择到PPT到准备演讲，花费可我不少时间和精力。好在最后在自己的努力下，这两项speech的效果都还不差。事后发现，通过这两次的锻炼，我开始不惧怕在公众场合说英语，更不会怯场了。感谢这个平台，这个挑战。</p>
-
-<p>培训及演讲之余，我们后期的大部分工作时间都是在项目中度过，和不同文化不同背景的同时Pair编程是个很快乐的事情，好在我们来之前对于项目的技术栈有过相关的了解，我们在做Story的时侯也不至于存在太大的问题。实现手段是一方面，收获最大的还是Story的生命周期，以及作业规范，怎样成为一名符合ThoughtWorks要求的规范的Dev，我们尚在不断的学习中。学习之余，我们仍有大部分时间来进行技术相关的Dojo，对重构等的学习更是让自己受益匪浅。更增加了自己相关的专业兴趣。也增加了对软件质量代码质量的认同。</p>
-
-<p>有人说我们来印度是来玩的，是的，除了公司带我们出去玩。我们在Yan的组织下还坐上了传说中有挂票的印度火车去孟买玩。车上也是人山人海，车上的环境也是各种味道。坐上火车穿山越岭去远方的感觉真好，我们穿过了印度的城市，穿过了印度的贫民窟，穿过了隧道，越过了山谷。我坐在火车门旁边，听着音乐，戴着耳机，任凭风吹过我的身体，任凭满眼的景色逝去，这是一种特殊的心境和状态。和大家在一起的感觉也真好，各种逗，各种笑话，各种经典，一段美好的时光永远记录在印度。</p>
-
-<p>结束的TWU，我们准备回国了。一方面有点对印度的不舍，对朝夕相处五周的同事的不舍，更有着对异国文化的不舍与眷念。最后我们踏上了旅途，回国之前我们不忘在免税店大淘一番，看着某些奢侈品才觉得钱花得挺快赚得挺难。也有点明白为什么中国大妈喜欢在国外大淘特淘了，大家总喜欢与国内得对比，总觉得国外得便宜，买了这些就等于赚了。我也不例外。</p>
-
-<p>回来了，感觉真好&hellip;</p>
-
-<h3>现在</h3>
-
-<p>回公司一周有余，回首过去一周基本处于游离状态，尚未真正加入项目组，更别谈能够和团队有所融合。发现对之前实习的项目组倒是有很多的怀念，人总是怀旧的。也希望我能够快速的加入加入到现在的项目组中，真正找到归宿感。</p>
-
-<p>BTW, 挺怀念去印度的九个小伙伴以及和大家度过的岁月</p>
 ]]></content>
   </entry>
   

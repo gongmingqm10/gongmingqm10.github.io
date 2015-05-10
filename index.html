@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="About Docker 什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？ 这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性， &hellip;">
+  <meta name="description" content="Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。并且随着不同厂家定制化不同的ROM，Android设备的碎片化现象日益严重。这篇文章主要讲述如何设计中严格遵从设计图标准的Android页面。 1. px, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,7 +85,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/05/09/android-design-difference-between-px/">Android Design - Difference Between Px Sp and Dp</a></h1>
     
     
       <p class="meta">
@@ -101,7 +101,359 @@
   
 
 
-<time datetime="2015-03-11T21:46:59-05:00" pubdate data-updated="true">Mar 11<span>th</span>, 2015</time>
+<time datetime="2015-05-09T11:32:59+08:00" pubdate data-updated="true">May 9<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。并且随着不同厂家定制化不同的ROM，Android设备的碎片化现象日益严重。这篇文章主要讲述如何设计中严格遵从设计图标准的Android页面。</p>
+
+<h2>1. px, dp, sp区别</h2>
+
+<h3>什么是px</h3>
+
+<p>px就是我们通常所说的像素的单位，在css里面，我们用px比较多。px主要指用户在屏幕上看到的事物的实际大小单位。</p>
+
+<h3>什么是dp</h3>
+
+<p>在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率</p>
+
+<p><img src="/images/retina_one_screen.jpg" title="Mac retina resolution" ></p>
+
+<p>上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。</p>
+
+<p>既然已经有了分辨率的概念，那么我们就可以了解 dpi(dot per inch)的概念了。dpi本意是每英寸点的数量，但是也经常和ppi(pixel per inch)混用。指每英寸的像素数量，也被我们称为屏幕密度，dpi越大，图像从视觉上看起来越清晰。</p>
+
+<p>Google官方对dp的解释如下：</p>
+
+<blockquote><p>A virtual pixel unit that you should use when defining UI layout, to express layout dimensions or position in a density-independent way.
+The density-independent pixel is equivalent to one physical pixel on a 160 dpi screen, which is the baseline density assumed by the system for a &ldquo;medium&rdquo; density screen. At runtime, the system transparently handles any scaling of the dp units, as necessary, based on the actual density of the screen in use. The conversion of dp units to screen pixels is simple: px = dp * (dpi / 160). For example, on a 240 dpi screen, 1 dp equals 1.5 physical pixels. You should always use dp units when defining your application&rsquo;s UI, to ensure proper display of your UI on screens with different densities.</p></blockquote>
+
+<p>有了密度的概念，我们可以更好的理解dp(density independent pixel)了。dp是Android中用来定义UI布局中表达元素尺寸或位置的一个虚拟的像素单位，dp的存在是为了页面元素位置不受屏幕密度所影响。以设计师设计一个APP页面为例，设计师希望用户视觉上看起来如此，也就是设计师设计时通常以px作为基础单位。而在其他不同屏幕密度的设备中，也希望能够进行一定的伸缩，类似于维持一个相对一致的百分比。所以开发者通常需要以dp为单位，以适应不同密度的屏幕。</p>
+
+<p>所以dp和px之间有一套换算标准：<code>px = dp * (dpi / 160)</code>。假设在dpi为320的屏幕上，1dp = 2px。</p>
+
+<h3>什么是sp</h3>
+
+<p>sp是Android中专业为字体而设置的单位。使用sp作为字体单位不仅能够使字体大小受屏幕密度影响，并且能够使字体受用户系统设置的影响。Android提供字体大小的设置选项。一旦使用sp作为字体，根据用户设置字体的不同，App中的字体大小也会显示不同。但是在正常字体设置下，1dp ＝ 1sp。</p>
+
+<h2>2. 设计师视角</h2>
+
+<p>Android的多屏适配存在这么多的尺寸，自然需要设计师和工程师之间找到沟通的桥梁，设计师如何规范设计才能够更加符合Android的设计标准呢。设计师与工程师对于页面的尺寸需要有一个共识性的标准，测试人员才可能进行更有效的测试，才不致于因为不同机型显示不同效果而引起不必要的工作量。</p>
+
+<p>首先我们需要选择一个相对通用的屏幕尺寸，可以参考现有的一些主流机型的尺寸。为了便于计算，我们选择Nexus 4作为设计图的原版标准。那么所有的页面都是基于Nexus4而产生的。Nexus4尺寸如下:</p>
+
+<p><code>主屏尺寸4.7，主屏分辨率：1280x768像素，屏幕像素密度320ppi。</code></p>
+
+<p>一般来说，我们选择市场上最常见的机型来设计，这里我们为了计算方便，选择320ppi的机型，设计图中尺寸将是标准图中的2倍。假设在设计图中，页面内边距为32px, 按钮的高度为96px, icon大小为48x48。</p>
+
+<p>通过<code>px＝dp*(dpi/160)</code>的标准，设计师给开发者标注图时可标注页边距为16dp，按钮高度为48dp，icon则分别出四套mdpi, hdpi, xhdpi, xxhdpi标准。</p>
+
+<h2>3. 开发者视角</h2>
+
+<h3>margin, padding, height, width</h3>
+
+<p>从开发者角度来看，对于控件的尺寸，高度等，只需要按照转化后的dp设置即可。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android:layout_padding="16dp"
+</span><span class='line'>
+</span><span class='line'>android:layout_height="48dp"
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以dp为单位能够保证不同分辨率屏幕上显示不同大小的字体。并且能够保持相对大小，这样也更符合设计的初衷。</p>
+
+<h3>图片资源</h3>
+
+<p>对于png制作出来的图片，一般大小固定，没办法像尺寸一样自动的伸缩。所以Android会存在至少4个资源文件夹。当App运行过程中，系统能够根据当前设备的屏幕密度，自动选择使用哪种尺寸的图片资源。</p>
+
+<table>
+<thead>
+<tr>
+<th>ldpi </th>
+<th> mdpi </th>
+<th> hdpi </th>
+<th> xhdpi </th>
+<th> xxhdpi </th>
+<th> xxxhdpi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.75 </td>
+<td> 1  </td>
+<td> 1.5 </td>
+<td> 2 </td>
+<td> 3 </td>
+<td> 4</td>
+</tr>
+<tr>
+<td>120 </td>
+<td> 160 </td>
+<td> 240 </td>
+<td> 320 </td>
+<td> 480 </td>
+<td> 640</td>
+</tr>
+<tr>
+<td>18x18 </td>
+<td> 24x24 </td>
+<td> 36x36 </td>
+<td> 48x48 </td>
+<td> 72x72 </td>
+<td> 96x96</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>4. 更多</h2>
+
+<p>附上Android主流机型：</p>
+
+<p>Android：主流机型主要为 480x800, 480x854, 540x960, 720x1280, 800x1280 这五种。
+（非主流机型还包括：240x320, 320x480, 640x960 这三种，其中两种都与 iPhone 一致。）
+iOS: 主流机型主要为 320x480, 640x960, 640x1136, 1024x768, 2048x1536, 这五种。
+WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
+
+<p>Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。</p>
+
+<p>另附上豆瓣关于这些单位更<a href="http://www.douban.com/note/155032221/">具体的阐释</a>。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/13/config-spring-mvc-web-project/">Config Spring Mvc Web Project</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-13T12:33:50+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>到目前为止，接触过两到三个小型的Spring Web项目，前几日朋友问起怎么搭建Spring Web MVC项目，才想好要写一篇博客来记载如何从零开始搭建一个完整的Spring项目，这里使用的Spring主要还是3.x，关于4.x的我们会在其他文章中再详细叙述。</p>
+
+<h2>Spring Web Content with Spring MVC</h2>
+
+<p>既然从零开始，那我们就从空文件夹开始，首先还是习惯在Git上创建一个<a href="http://github.com/gongmingqm10/spring-mvc-sample">gongmingqm10/spring-mvc-sample</a>的项目。clone到本地之后就是一个空的文件夹。一般来说，官网上都有很多参考的资料，可以告诉我们怎么使用这个框架搭建完整的项目。来到<a href="http://spring.io/guides">Spring IO</a>，才发现资料真的多，于是就选择了[Spring Web Content with Spring MVC]作为Guide从零开始搭建。还是使用Gradle构建。</p>
+
+<h3>1. 创建文件夹结构</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p src/main/java/hello
+</span><span class='line'>
+</span><span class='line'>XiaoMing:spring-mvc-sample minggong$ tree .
+</span><span class='line'>.
+</span><span class='line'>├── README.md
+</span><span class='line'>└── src
+</span><span class='line'>    └── main
+</span><span class='line'>        └── java
+</span><span class='line'>            └── hello
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. 创建build.gradle文件</h3>
+
+<p><code>build.gradle</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
+</span><span class='line'>    repositories {
+</span><span class='line'>        mavenCentral()
+</span><span class='line'>    }
+</span><span class='line'>    dependencies {
+</span><span class='line'>        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>apply plugin: 'java'
+</span><span class='line'>apply plugin: 'idea'
+</span><span class='line'>apply plugin: 'spring-boot'
+</span><span class='line'>
+</span><span class='line'>jar {
+</span><span class='line'>    baseName = 'gs-serving-web-content'
+</span><span class='line'>    version =  '0.1.0'
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>repositories {
+</span><span class='line'>    mavenCentral()
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>sourceCompatibility = 1.7
+</span><span class='line'>targetCompatibility = 1.7
+</span><span class='line'>
+</span><span class='line'>dependencies {
+</span><span class='line'>    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+</span><span class='line'>    testCompile("junit:junit")
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>task wrapper(type: Wrapper) {
+</span><span class='line'>    gradleVersion = '2.3'
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3. 创建 Web Controller</h3>
+
+<p><code>src/main/java/hello/GreetingController.java</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>package hello;
+</span><span class='line'>
+</span><span class='line'>import org.springframework.stereotype.Controller;
+</span><span class='line'>import org.springframework.ui.Model;
+</span><span class='line'>import org.springframework.web.bind.annotation.RequestMapping;
+</span><span class='line'>import org.springframework.web.bind.annotation.RequestParam;
+</span><span class='line'>
+</span><span class='line'>@Controller
+</span><span class='line'>public class GreetingController {
+</span><span class='line'>    @RequestMapping("/greeting")
+</span><span class='line'>    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+</span><span class='line'>        model.addAttribute("name", name);
+</span><span class='line'>        return "greeting";
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 创建View文件</h3>
+
+<p><code>src/main/resources/templates/greeting.html</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE HTML&gt;
+</span><span class='line'>&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+</span><span class='line'>&lt;head&gt;
+</span><span class='line'>    &lt;title&gt;Getting Started: Serving Web Content&lt;/title&gt;
+</span><span class='line'>    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+</span><span class='line'>&lt;/head&gt;
+</span><span class='line'>&lt;body&gt;
+</span><span class='line'>    &lt;p th:text="'Hello, ' + ${name} + '!'" /&gt;
+</span><span class='line'>&lt;/body&gt;
+</span><span class='line'>&lt;/html&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5. 创建可运行的Application</h3>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-12T10:46:59+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
         
       </p>
     
@@ -530,7 +882,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/03/08/android-continuous-integration/">Android Continuous Integration</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/03/09/android-continuous-integration/">Android Continuous Integration</a></h1>
     
     
       <p class="meta">
@@ -546,7 +898,7 @@
   
 
 
-<time datetime="2015-03-08T23:39:35-05:00" pubdate data-updated="true">Mar 8<span>th</span>, 2015</time>
+<time datetime="2015-03-09T12:39:35+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2015</time>
         
       </p>
     
@@ -943,7 +1295,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/03/01/work-in-dallas/">Work in Dallas</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/03/02/work-in-dallas/">Work in Dallas</a></h1>
     
     
       <p class="meta">
@@ -959,7 +1311,7 @@
   
 
 
-<time datetime="2015-03-01T12:39:53-06:00" pubdate data-updated="true">Mar 1<span>st</span>, 2015</time>
+<time datetime="2015-03-02T02:39:53+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2015</time>
         
       </p>
     
@@ -1057,7 +1409,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/02/28/travel-to-dallas-life/">Travel to Dallas - Life</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/03/01/travel-to-dallas-life/">Travel to Dallas - Life</a></h1>
     
     
       <p class="meta">
@@ -1073,7 +1425,7 @@
   
 
 
-<time datetime="2015-02-28T21:44:57-06:00" pubdate data-updated="true">Feb 28<span>th</span>, 2015</time>
+<time datetime="2015-03-01T11:44:57+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2015</time>
         
       </p>
     
@@ -1188,7 +1540,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/01/21/2015-annual-review/">2015 Annual Review</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/01/22/2015-annual-review/">2015 Annual Review</a></h1>
     
     
       <p class="meta">
@@ -1204,7 +1556,7 @@
   
 
 
-<time datetime="2015-01-21T10:34:06-06:00" pubdate data-updated="true">Jan 21<span>st</span>, 2015</time>
+<time datetime="2015-01-22T00:34:06+08:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2015</time>
         
       </p>
     
@@ -1342,7 +1694,7 @@
   
 
 
-<time datetime="2014-10-30T02:47:40-05:00" pubdate data-updated="true">Oct 30<span>th</span>, 2014</time>
+<time datetime="2014-10-30T15:47:40+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2014</time>
         
       </p>
     
@@ -1405,7 +1757,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/10/28/androiddian-hua-jian-ting/">Android电话监听</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/10/29/androiddian-hua-jian-ting/">Android电话监听</a></h1>
     
     
       <p class="meta">
@@ -1421,7 +1773,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time datetime="2014-10-28T22:11:48-05:00" pubdate data-updated="true">Oct 28<span>th</span>, 2014</time>
+<time datetime="2014-10-29T11:11:48+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2014</time>
         
       </p>
     
@@ -1597,7 +1949,7 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   
 
 
-<time datetime="2014-10-28T04:11:26-05:00" pubdate data-updated="true">Oct 28<span>th</span>, 2014</time>
+<time datetime="2014-10-28T17:11:26+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2014</time>
         
       </p>
     
@@ -1635,354 +1987,6 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/26/hack-jing-dong-lebook/">Hack 京东Lebook</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-26T09:46:18-05:00" pubdate data-updated="true">Oct 26<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>adb devices : 列出所有的设备</p>
-
-<p>adb -s XXXX shell: 进入指定的shell</p>
-
-<p>adb shell: 进入唯一的shell</p>
-
-<p>在terminal中直接： adb pull /data/data/com.jingdong.app.reader/files/epub/3690098/534543.jeb <br/>
-~/Desktop/test.epub。可以直接拿到epub文件</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/20/vagrant-da-jian-ben-di-xu-ni-ji/">Vagrant 搭建本地虚拟机</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-20T22:06:42-05:00" pubdate data-updated="true">Oct 20<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。<br/>
-虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。<br/>
-安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
-
-<h3>1. vagrant init</h3>
-
-<p>安装完成后，Vagrant就可以直接在我们的命令行中使用。首先我们在选定的文件夹中执行<code>vagrant init</code>，这时我们可以看到此文件夹下自动生成了一个<code>Vagrantfile</code>文件:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># -*- mode: ruby -*-
-</span><span class='line'># vi: set ft=ruby :
-</span><span class='line'>
-</span><span class='line'>Vagrant.configure("2") do |config|
-</span><span class='line'>  # All Vagrant configuration is done here. The most common configuration
-</span><span class='line'>  # options are documented and commented below. For a complete reference,
-</span><span class='line'>  # please see the online documentation at vagrantup.com.
-</span><span class='line'>
-</span><span class='line'>  # Every Vagrant virtual environment requires a box to build off of.
-</span><span class='line'>  config.vm.box = "base"
-</span><span class='line'>
-</span><span class='line'>  # The url from where the 'config.vm.box' box will be fetched if it
-</span><span class='line'>  # doesn't already exist on the user's system.
-</span><span class='line'>  # config.vm.box_url = "http://domain.com/path/to/above.box"
-</span><span class='line'>
-</span><span class='line'>  # Create a forwarded port mapping which allows access to a specific port
-</span><span class='line'>  # within the machine from a port on the host machine. In the example below,
-</span><span class='line'>  # accessing "localhost:8080" will access port 80 on the guest machine.
-</span><span class='line'>  # config.vm.network :forwarded_port, guest: 80, host: 8080
-</span><span class='line'>
-</span><span class='line'>  # Create a private network, which allows host-only access to the machine
-</span><span class='line'>  # using a specific IP.
-</span><span class='line'>  # config.vm.network :private_network, ip: "192.168.33.10"
-</span><span class='line'>
-</span><span class='line'>  # Create a public network, which generally matched to bridged network.
-</span><span class='line'>  # Bridged networks make the machine appear as another physical device on
-</span><span class='line'>  # your network.
-</span><span class='line'>  # config.vm.network :public_network
-</span><span class='line'>
-</span><span class='line'>  # Share an additional folder to the guest VM. The first argument is
-</span><span class='line'>  # the path on the host to the actual folder. The second argument is
-</span><span class='line'>  # the path on the guest to mount the folder. And the optional third
-</span><span class='line'>  # argument is a set of non-required options.
-</span><span class='line'>  # config.vm.synced_folder "../data", "/vagrant_data"
-</span><span class='line'>
-</span><span class='line'>  # Provider-specific configuration so you can fine-tune various
-</span><span class='line'>  # backing providers for Vagrant. These expose provider-specific options.
-</span><span class='line'>  # Example for VirtualBox:
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provider :virtualbox do |vb|
-</span><span class='line'>  #   # Don't boot with headless mode
-</span><span class='line'>  #   vb.gui = true
-</span><span class='line'>  #
-</span><span class='line'>  #   # Use VBoxManage to customize the VM. For example to change memory:
-</span><span class='line'>  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-</span><span class='line'>  # end
-</span><span class='line'>  #
-</span><span class='line'>  # View the documentation for the provider you're using for more
-</span><span class='line'>  # information on available options.
-</span><span class='line'>
-</span><span class='line'>  # Enable provisioning with Puppet stand alone.  Puppet manifests
-</span><span class='line'>  # are contained in a directory path relative to this Vagrantfile.
-</span><span class='line'>  # You will need to create the manifests directory and a manifest in
-</span><span class='line'>  # the file base.pp in the manifests_path directory.
-</span><span class='line'>  #
-</span><span class='line'>  # An example Puppet manifest to provision the message of the day:
-</span><span class='line'>  #
-</span><span class='line'>  # # group { "puppet":
-</span><span class='line'>  # #   ensure =&gt; "present",
-</span><span class='line'>  # # }
-</span><span class='line'>  # #
-</span><span class='line'>  # # File { owner =&gt; 0, group =&gt; 0, mode =&gt; 0644 }
-</span><span class='line'>  # #
-</span><span class='line'>  # # file { '/etc/motd':
-</span><span class='line'>  # #   content =&gt; "Welcome to your Vagrant-built virtual machine!
-</span><span class='line'>  # #               Managed by Puppet.\n"
-</span><span class='line'>  # # }
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provision :puppet do |puppet|
-</span><span class='line'>  #   puppet.manifests_path = "manifests"
-</span><span class='line'>  #   puppet.manifest_file  = "init.pp"
-</span><span class='line'>  # end
-</span><span class='line'>
-</span><span class='line'>  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-</span><span class='line'>  # path, and data_bags path (all relative to this Vagrantfile), and adding
-</span><span class='line'>  # some recipes and/or roles.
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provision :chef_solo do |chef|
-</span><span class='line'>  #   chef.cookbooks_path = "../my-recipes/cookbooks"
-</span><span class='line'>  #   chef.roles_path = "../my-recipes/roles"
-</span><span class='line'>  #   chef.data_bags_path = "../my-recipes/data_bags"
-</span><span class='line'>  #   chef.add_recipe "mysql"
-</span><span class='line'>  #   chef.add_role "web"
-</span><span class='line'>  #
-</span><span class='line'>  #   # You may also specify custom JSON attributes:
-</span><span class='line'>  #   chef.json = { :mysql_password =&gt; "foo" }
-</span><span class='line'>  # end
-</span><span class='line'>
-</span><span class='line'>  # Enable provisioning with chef server, specifying the chef server URL,
-</span><span class='line'>  # and the path to the validation key (relative to this Vagrantfile).
-</span><span class='line'>  #
-</span><span class='line'>  # The Opscode Platform uses HTTPS. Substitute your organization for
-</span><span class='line'>  # ORGNAME in the URL and validation key.
-</span><span class='line'>  #
-</span><span class='line'>  # If you have your own Chef Server, use the appropriate URL, which may be
-</span><span class='line'>  # HTTP instead of HTTPS depending on your configuration. Also change the
-</span><span class='line'>  # validation key to validation.pem.
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provision :chef_client do |chef|
-</span><span class='line'>  #   chef.chef_server_url = "https://api.opscode.com/organizations/ORGNAME"
-</span><span class='line'>  #   chef.validation_key_path = "ORGNAME-validator.pem"
-</span><span class='line'>  # end
-</span><span class='line'>  #
-</span><span class='line'>  # If you're using the Opscode platform, your validator client is
-</span><span class='line'>  # ORGNAME-validator, replacing ORGNAME with your organization name.
-</span><span class='line'>  #
-</span><span class='line'>  # If you have your own Chef Server, the default validation client name is
-</span><span class='line'>  # chef-validator, unless you changed the configuration.
-</span><span class='line'>  #
-</span><span class='line'>  #   chef.validation_client_name = "ORGNAME-validator"
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面几乎有所有的配置说明，我们可以根据自己需要进行命令的配置，我根据自己的需要进行了如下配置：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>VAGRANTFILE_API_VERSION = "2"
-</span><span class='line'>
-</span><span class='line'>Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-</span><span class='line'>  config.vm.box = "base"
-</span><span class='line'>  config.vm.box = 'centos-6.4'
-</span><span class='line'>  config.vm.box_url = 'https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box'
-</span><span class='line'>  config.vm.network :private_network, ip:'192.168.3.10'
-</span><span class='line'>  config.vm.network :forwarded_port, guest: 27017, host: 8888
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>根据配置名字可以知道各项的具体作用，包括此系统的下载地址，系统的类型及版本号，虚拟机的内网IP，虚拟机的端口转发等。注意这里的host端口默认为27017，但是这个端口被我电脑中的mongodb占用，所以我修改成另外一个闲置的端口。<br/>
-配置完成后，我们的工作基本完成。</p>
-
-<h3>2. vagrant up</h3>
-
-<p><code>vagrant up</code>用于启动虚拟机。文件配置完成之后在此文件夹中运行<code>vagrant up</code>，将加载此文件夹中的Vagrantfile，首次加载时需要下载虚拟机系统，所以耗时会略长。下载完成之后你会看到成功的提示。</p>
-
-<h3>3. ssh connect virtual machine</h3>
-
-<p>虚拟机成功启动后，我们只需要在terminal中通过<code>ssh</code>就可以连接到虚拟机设备上。然后就想在远程服务器中来操作就可以了。vagrant启动的地址是我们配置文件中的<code>192.168.3.10</code>，其默认的用户名为root，初始密码为 vagrant。所以我们使用如下命令登陆：<code>ssh root@192.168.3.10</code>，提示密码时输入<code>vagrant</code>，最后我们可以成功登陆。</p>
-
-<p>登陆完成后，如果我们想停下虚拟机，可以使用<code>vagrant destroy</code>关闭虚拟机。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1998,30 +2002,30 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a>
+        <a href="/blog/2015/05/09/android-design-difference-between-px/">Android Design - Difference Between Px Sp and Dp</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/03/08/android-continuous-integration/">Android Continuous Integration</a>
+        <a href="/blog/2015/04/13/config-spring-mvc-web-project/">Config Spring Mvc Web Project</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/03/01/work-in-dallas/">Work in Dallas</a>
+        <a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/02/28/travel-to-dallas-life/">Travel to Dallas - Life</a>
+        <a href="/blog/2015/03/09/android-continuous-integration/">Android Continuous Integration</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/01/21/2015-annual-review/">2015 Annual Review</a>
+        <a href="/blog/2015/03/02/work-in-dallas/">Work in Dallas</a>
       </li>
     
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(12)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/jenkins' style='font-size: 100%'>jenkins(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(13)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/jenkins' style='font-size: 100%'>jenkins(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>About Me</h1>

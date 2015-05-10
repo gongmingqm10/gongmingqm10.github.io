@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jenkins | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/jenkins/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-04-12T00:09:35-05:00</updated>
+  <updated>2015-05-10T13:25:42+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Setup Jenkins for Android Integration Using Docker]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/"/>
-    <updated>2015-03-11T21:46:59-05:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker</id>
+    <link href="http://www.gongmingqm10.net/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/"/>
+    <updated>2015-03-12T10:46:59+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker</id>
     <content type="html"><![CDATA[<h2>About Docker</h2>
 
 <p>什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？</p>
@@ -119,7 +119,7 @@ docker run --name androidJenkins -p 8080:8080 -v /var/jenkins_home jenkins
 
 <p>```
 FROM jenkins
-MAINTAINER Ming Gong, <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x67;&#111;&#x6e;&#x67;&#x6d;&#105;&#110;&#x67;&#113;&#x6d;&#x31;&#x30;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#x67;&#x6f;&#110;&#103;&#x6d;&#105;&#x6e;&#103;&#x71;&#109;&#49;&#48;&#x40;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a>
+MAINTAINER Ming Gong, <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x67;&#111;&#110;&#x67;&#109;&#105;&#110;&#103;&#x71;&#109;&#x31;&#x30;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;">&#103;&#x6f;&#x6e;&#x67;&#x6d;&#105;&#x6e;&#103;&#x71;&#109;&#49;&#x30;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;</a>
 USER root
 RUN apt-get update &amp;&amp; apt-get -y install libstdc++6 lib32z1 lib32stdc++6 expect</p>
 

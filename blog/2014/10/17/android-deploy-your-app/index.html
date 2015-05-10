@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Android Deploy Your App - gongmingqm10</title>
+  <meta name="author" content="Gong Ming">
+
+  
+  <meta name="description" content="Android打包编译及发布">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48787063-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">gongmingqm10</a></h1>
+  
+    <h2>Life is a journey, not a destination</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="gongmingqm10@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.gongmingqm10.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Android Deploy Your App</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-17T12:56:13+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
+
+<h3>Proguard－代码混淆</h3>
+
+<p>我们经常在js库中看到各种代码混淆，代码混淆主要是对你的代码的类名，方法名以及字段名进行命名，并删除一些无用的换行空格等。让你的代码变得难以读懂，这样能够防止别人反编译你的代码后窃取你的内容。<br/>
+android中代码混淆主要使用IDE自动生成的文件，并通过一些简单的配置就可以实现。中间的混淆步骤则不需要我们关系，android编译过程中自身会处理这些内部的逻辑。我们只需要配置文件就可以。<br/>
+通过官网提供的资料，<a href="http://developer.android.com/tools/help/proguard.html">http://developer.android.com/tools/help/proguard.html</a>，以及网上的大部分资料都是过时的，目前的AndroidStudio0.89中生成project时候只会生成proguard.cfg文件，要想启用proguard代码混淆，我们只需要在app的build.gradle中添加下述配置：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>android {
+</span><span class='line'>    buildTypes {
+</span><span class='line'>        release {
+</span><span class='line'>            runProguard true
+</span><span class='line'>            proguardFile getDefaultProguardFile('proguard-android.txt')
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而这个proguard-android.txt则在<code>{sdk.dir}/tools/proguard/proguard-android.txt</code>中，这时proguard混淆时默认的文件，不过我们的sdk目录下却没有。Google君终于帮我们找到了：<a href="https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt">https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt</a>。于是简单粗暴的在tools/目录下新建proguard/proguard-android.txt文件。这时候android就可以使用默认文件进行混淆啦。</p>
+
+<h3>Signing your application</h3>
+
+<p>Android需要所有的应用在安装之前被数字签名，Android通过签名凭证识别应用的作者信息等。在App的Debug模式活着Release模式中都可以进行应用签名，在调试模式中一般是android自动生成凭证给App签名，而在Release发布模式中则需要开发者自己生成凭证来给用户签名。<br/>
+我们主要关注在Release中怎么给自己的应用签名，签名之后的应用才可以发布到各市场中，在Release时给App签名：</p>
+
+<ol>
+<li>Create a keystore. Keystore是一个包含一些private key的二进制文件，你必须把这个文件放在一个安全独立的地方。</li>
+<li>Create a private key. Private key 代表App作者的信息，例如一个开发者或者公司。</li>
+<li>Build a project. 编译你的工程，这时会生成一个未签名的APP。</li>
+<li>Sign your app. 用你的private key来生成你签名版本的APK。</li>
+</ol>
+
+
+<p>这样的APK就能够发布到市场中供用户更新下载。</p>
+
+<p>签名既可以通过IDE直接操作，也可以通过android提供的工具在命令行中进行签名。在IDE中能够简单的生成一个keystore（需要说明的是不同的IDE生成的keystore文件格式是不一样的，主要有.jks, .keystore, 无后缀）。这些keystore在首次创建后下次就可以直接使用了。keystore包含的是一些软件作者的一些信息，也是你更新软件等的重要凭据。通过IDE签名的APK文件都经过了<code>jarsigner, zipalign</code>等操作，所以我们也不需要做额外的事情。<br/>
+如果通过命令行来进行签名，这样的好处是使用命令来自动部署，开发者可以把所有的步骤写在一个shell文件中，部署时只要简单的run这个命令就可以实现了，如果需要编译很多个针对不同市场的版本，通过命令的模式就能够大大节约发布APP的时间。</p>
+
+<p>更多详细信息请参考<a href="http://developer.android.com/tools/publishing/app-signing.html">http://developer.android.com/tools/publishing/app-signing.html</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-17T12:56:13+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>android</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/10/17/android-sip-wang-luo-tong-hua/" title="Previous Post: Android SIP 网络通话">&laquo; Android SIP 网络通话</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/" title="Next Post: Openfire - Android IM 框架使用">Openfire - Android IM 框架使用 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/05/09/android-design-difference-between-px/">Android Design - Difference Between Px Sp and Dp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/13/config-spring-mvc-web-project/">Config Spring Mvc Web Project</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/09/android-continuous-integration/">Android Continuous Integration</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/02/work-in-dallas/">Work in Dallas</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(13)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/jenkins' style='font-size: 100%'>jenkins(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+</section>
+<section>
+    <h1>About Me</h1>
+    <p>
+        I am Gong Ming who works as a consultant in <a href="http://www.thoughtworks.com/">ThoughtWorks</a> China.
+        My role in ThoughtWorks is developer, mostly time I do stuff in Android, while it's also common to
+        see me worked in a Web project, such as Java web and Rails. Feel free to chat with me.
+    </p>
+    <p>Email me: <a href="mailto:gongmingqm10@gmail.com">gongmingqm10@gmail.com</a></p>
+    <p>Github: <a href="https://github.com/gongmingqm10">gongmingqm10</a></p>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Gong Ming -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
