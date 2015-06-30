@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="adb devices : 列出所有的设备 adb -s XXXX shell: 进入指定的shell adb shell: 进入唯一的shell 在terminal中直接： adb pull /data/data/com.jingdong.app.reader/files/epub/ &hellip;">
+  <meta name="description" content="Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-28T17:11:26+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
+
+<h3>Usage</h3>
+
+<p>整个Cache模块的设计思想很简单，每个缓存数据都对应一个key，每个缓存数据又会被存到以此key命名的文件中，需要时直接读取。关键类分别为<code>CacheData</code>, <code>CacheManager</code>, <code>CacheUtils</code>。</p>
+
+<ul>
+<li>CacheData：数据封装类，所有欲缓存的数据都通过CacheData封装，CacheData中能够定义缓存有效期，并可以通过getData()直接获取真实的缓存数据。</li>
+<li>CacheManager: 缓存管理类，单例模式设计，负责缓存的存储和读取。</li>
+<li>CacheUtils: 缓存常用类，所有的缓存Key都应该在这个类中定义，此类还定义了一些时间常量，缓存有效期中可以使用。</li>
+</ul>
+
+
+<p>使用方法如下：</p>
+
+<ul>
+<li>step1: <code>CacheManager.init(Context context)</code>, 在APP加载时就应该对CacheManager初始化。</li>
+<li>step2: 自定义的Model需要实现序列化，使用CacheData进行包装，然后使用CacheManager进行存储和读取。</li>
+</ul>
+
+
+<h3>Code Download</h3>
+
+<p>项目代码托管在<a href="https://github.com/gongmingqm10/AndroidUikit/tree/master/library/src/main/java/org/gongming/common/cache">Github Repo</a>中，欢迎star和fork。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1433,150 +1492,6 @@ MotionEvent除了提供触摸的坐标外，还通过<code>MotionEvent.getEventA
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/">云服务器使用记录</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-09-29T15:01:31+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>我的第一个云服务器ECS</h3>
-
-<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。<br/>
-使用teminal，用SSH登录进去</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>minggong:octopress minggong$ ssh root@XXX.XX.XXX.XX
-</span><span class='line'>root@root@XXX.XX.XXX.XX's password: 
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>XXX.XX.XXX.XX</code>是我主机的IP地址，然后根据提示输入密码，然后就顺利的登录进去，刚进去的系统是很干净的。由于系统是centerOS的（试了半天的apt-get都无效），那就使用yum来安装软件吧。</p>
-
-<h3>yum安装java</h3>
-
-<p><strong>BUG1:</strong> 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.<br/>
-<strong>SOLVE1:</strong> 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问
-题解决.</p>
-
-<p><strong>BUG2:</strong> 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.<br/>
-<strong>SOLVE2:</strong> 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
-
-<p><strong>a.通过rpm命令查看有哪些yum包，然后进行卸载</strong><br/>
-<code>rpm -qa|grep yum</code></p>
-
-<p>yum-3.2.22-20.el5<br/>
-yum-metadata-parser-1.1.2-3.el5</p>
-
-<p><code>rpm -e --nodeps yum-3.2.22-20.el5rpm -e --nodeps yum-metadata-parser-1.1.2-3.el5</code></p>
-
-<p><strong>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-3.2.22-40.el5.centos.noarch.rpm
-</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-metadata-parser-1.1.2-4.el5.x86_64.rpm
-</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>下载完成后使用 <code>rpm -ivh yum*</code>，这几个文件需要同时安装，所以用一行命令来安装。</p>
-
-<p>c.更新CentOS-Base.repo源</p>
-
-<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：<br/>
-<code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
-
-<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：<br/>
-<code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
-
-<p>d.生成缓存文件到/var/cache/yum目录<br/>
-<code>yum makecache</code></p>
-
-<hr />
-
-<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。<br/>
-解决了YUM的安装问题，我们步入正题安装java：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# yum search java | grep -i --color JDK
-</span><span class='line'>java-1.6.0-openjdk.x86_64 : OpenJDK Runtime Environment
-</span><span class='line'>java-1.6.0-openjdk-demo.x86_64 : OpenJDK Demos
-</span><span class='line'>java-1.6.0-openjdk-devel.x86_64 : OpenJDK Development Environment
-</span><span class='line'>java-1.6.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
-</span><span class='line'>java-1.6.0-openjdk-src.x86_64 : OpenJDK Source Bundle
-</span><span class='line'>java-1.7.0-openjdk.x86_64 : OpenJDK Runtime Environment
-</span><span class='line'>java-1.7.0-openjdk-demo.x86_64 : OpenJDK Demos
-</span><span class='line'>java-1.7.0-openjdk-devel.x86_64 : OpenJDK Development Environment
-</span><span class='line'>java-1.7.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
-</span><span class='line'>java-1.7.0-openjdk-src.x86_64 : OpenJDK Source Bundle
-</span><span class='line'>ldapjdk.x86_64 : The Mozilla LDAP Java SDK
-</span><span class='line'>ldapjdk-javadoc.x86_64 : Javadoc for ldapjdk
-</span><span class='line'>[root@iZ23572i0rtZ home]# yum install java-1.7.0-openjdk.x86_64
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后按照步骤，一步步确认，最后就安装成功，查看 <code>java -version</code> 验证是否正确安装：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# java -version
-</span><span class='line'>java version "1.7.0_65"
-</span><span class='line'>OpenJDK Runtime Environment (rhel-2.5.1.2.el5_10-x86_64 u65-b17)
-</span><span class='line'>OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
-</span><span class='line'>[root@iZ23572i0rtZ home]# 
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1594,6 +1509,10 @@ yum-metadata-parser-1.1.2-3.el5</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/29/android-testing-practice/">Android 应用的持续交付</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/25/material-design-your-android-app/">Material Design Your Android App</a>
       </li>
     
@@ -1609,15 +1528,11 @@ yum-metadata-parser-1.1.2-3.el5</p>
         <a href="/blog/2015/03/09/android-continuous-integration/">Android Continuous Integration</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/03/02/work-in-dallas/">Work in Dallas</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(14)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/jenkins' style='font-size: 100%'>jenkins(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>android(15)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/database' style='font-size: 100%'>database(1)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(1)</a> <a href='/blog/categories/git' style='font-size: 100%'>git(1)</a> <a href='/blog/categories/jenkins' style='font-size: 100%'>jenkins(1)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>rails(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>web(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>work(1)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>About Me</h1>
