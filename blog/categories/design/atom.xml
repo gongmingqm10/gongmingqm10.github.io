@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/design/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-09-14T18:11:07+08:00</updated>
+  <updated>2015-09-14T18:17:26+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,265 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Material Design Your Android App]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/06/25/material-design-your-android-app/"/>
+    <updated>2015-06-25T15:22:27+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/06/25/material-design-your-android-app</id>
+    <content type="html"><![CDATA[<p>14年6月26日的Google I/O大会上，Google推出了一门全新的设计语言Material Design。Material Design在随后的一年里被逐渐应用到Android, Web等平台中。Material Design的推出意味着Google对移动端和网页端设计的整合。固然没有引起轩然大波，但是Material Design却让Android开发者看到了一点福音。</p>
+
+<p>虽然Android系统广受诟病，越来越多的用户投奔苹果的iOS系统。然而这阻挡不了Android的不断改进。14年Google I/O, Google推出了Android的5.0版本，代号Lollipop。5.0版本在设计上采用全新的Material Design，虽然这次升级对ROM生产商来说是道“过不去的坎儿”，但是对开发者群体而言却是一次很不错的升级。因为开发者可以凭借有些的设计资源打造出更好看的App。</p>
+
+<!-- more -->
+
+
+<h2>关于Material Design</h2>
+
+<blockquote><p>Material design is a comprehensive guide for visual, motion, and interaction design across platforms and devices.</p></blockquote>
+
+<p>这是Google官方给的解释， Material Design 中文直译为 “物质的设计”。可以简单理解为画面中的所有元素都可以看作是真实的物质，物质存在于空间中，并且存在光、影、运动等特征。所以Material Design的众多原则都是基于Material这个概念而提出的。</p>
+
+<h3>Material Design基本原则</h3>
+
+<p>Material Design作为设计与交互的一部分，由设计师来阐述更为专业。以下只是抛砖引玉的介绍，也许身边的设计师朋友会更专业的见解。</p>
+
+<h4>Material is the metaphor</h4>
+
+<blockquote><p>A material metaphor is the unifying theory of a rationalized space and a system of motion</p></blockquote>
+
+<p>举例来说，在Android Lollipop系统中，当用户点击操作时，界面会反馈出水纹般的涟漪向周边散去，作为对用户点击操作的直接反馈。Material的设计都是基于现实，并在现实世界的基础上予以创新的。创新之处表现在元素之间整理运动的和谐。即使是在现实世界进行创新，最重要的是要Material Design不会破坏物理世界的规则。</p>
+
+<h4>Bold, graphic, intentional</h4>
+
+<blockquote><p>The foundational elements of print-based design—typography, grids, space, scale, color, and use of imagery—guide visual treatments.</p></blockquote>
+
+<p>设计中的基本元素网格，空间，比例，字体，颜色等的结合能够给用户带来更好的体验，从而产生更大的价值。Material Design给我们指定了一些常见的搭配组合，比如颜色的组合、App中不同部分字体大小，组件之间的边距等。</p>
+
+<h4>Motion provides meaning</h4>
+
+<blockquote><p>Motion respects and reinforces the user as the prime mover. Primary user actions are inflection points that initiate motion, transforming the whole design.</p></blockquote>
+
+<p>动画通常是App中最常见的交互，在Material Design出来之前，大部分App是很少有动画的。因为动画从设计到最后被用户使用，需要动画的设计以及开发，有时还会受限于平台。Material Design在动画方面有所加强，官方推出了许多默认的动作，页面各个元素之间的相互运动等。期望通过元素的运动向用户传达更为核心的价值和功能。</p>
+
+<h3>为什么我们需要Material Design</h3>
+
+<p>设计主要是为了提升用户体验，辅助产品功能，起到锦上添花的效果。Google推出Material Design也许希望对所有的Google产品进行设计上的统一化。</p>
+
+<p>从Android平台来看，以前的Google Apps很难说有什么风格，其他厂商开发的App也是风格各异。Google希望通过Lollipop对App统一风格，所以在5.0＋平台上的Gmail, Youtube, Calender等都进行了风格的统一化，借此引导更多的设计师和开发者开发出更“接地气”的App。</p>
+
+<p>Material Design强调跨平台设计，如果你遵从Material Design，你会发现将无论是宽屏平板设备、还是手机，你会发现你的应用可以很智能的进行展示。这将极大减轻适配平板带来的工作量。是不是有点类似于Web上的响应式设计呢？</p>
+
+<p>当然选择是自由的，如果你觉得你的App不需要Material Design，那么TA真的不需要。</p>
+
+<h2>如何Material Design App</h2>
+
+<p>据个人观察，目前国内市场上大部分的App没有Material Design的概念。原因不得而知。但是遵循Material Design的应用在国外却比较常见。比如我个人常用的雅虎天气。</p>
+
+<p>那么如何空手开发Material Design 应用呢？假定读到这里的你是个开发人员：</p>
+
+<h3>1.合适的SDK版本和相关兼容包</h3>
+
+<p>build.gradle</p>
+
+<p>```
+apply plugin: &lsquo;com.android.application&rsquo;</p>
+
+<p>android {</p>
+
+<pre><code>compileSdkVersion 22
+buildToolsVersion "22.0.1"
+
+defaultConfig {
+    applicationId "net.gongmingqm10.training"
+    minSdkVersion 16
+    targetSdkVersion 22
+    versionCode 1
+    versionName "1.0"
+}
+...
+</code></pre>
+
+<p>}</p>
+
+<p>dependencies {</p>
+
+<pre><code>compile fileTree(dir: 'libs', include: ['*.jar'])
+//required
+compile 'com.android.support:appcompat-v7:22.2.0'
+//optional for RecyclerView
+compile 'com.android.support:recyclerview-v7:22.2.0'
+//optional for GridLayout
+compile 'com.android.support:gridlayout-v7:22.2.0'
+//optional for CardView
+compile 'com.android.support:cardview-v7:22.2.0'
+//optional for some useful libraries
+compile 'com.android.support:design:22.2.0'
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<h3>2.使用 Material theme</h3>
+
+<p>values-v21/styles.xml</p>
+
+<p>```
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+<resources></p>
+
+<pre><code>&lt;style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"&gt;
+    &lt;!-- Main theme colors --&gt;
+    &lt;!--   your app branding color for the app bar --&gt;
+    &lt;item name="colorPrimary"&gt;@color/color_primary&lt;/item&gt;
+    &lt;!--   darker variant for the status bar and contextual app bars --&gt;
+    &lt;item name="colorPrimaryDark"&gt;@color/color_primary_dark&lt;/item&gt;
+    &lt;!--   theme UI controls like checkboxes and text fields --&gt;
+    &lt;item name="colorAccent"&gt;@color/color_accent&lt;/item&gt;
+
+&lt;/style&gt;
+</code></pre>
+
+<p></resources></p>
+
+<p>```</p>
+
+<p>values/styles.xml</p>
+
+<p>```
+<resources></p>
+
+<pre><code>&lt;!-- Base application theme. --&gt;
+&lt;style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"&gt;
+    &lt;!-- Customize your theme here. --&gt;
+    &lt;item name="android:actionBarStyle"&gt;@style/MyActionBar&lt;/item&gt;
+    &lt;!-- Support library compatibility --&gt;
+
+    &lt;item name="actionBarStyle"&gt;@style/MyActionBar&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="AppTheme.NoActionBar"&gt;
+    &lt;item name="windowActionBar"&gt;false&lt;/item&gt;
+    &lt;item name="windowNoTitle"&gt;true&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;!-- ActionBar styles --&gt;
+&lt;style name="MyActionBar"
+    parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"&gt;
+    &lt;item name="android:background"&gt;@color/color_primary&lt;/item&gt;
+    &lt;item name="android:titleTextStyle"&gt;@style/MyActionBarTitleText&lt;/item&gt;
+
+    &lt;!-- Support library compatibility --&gt;
+    &lt;item name="background"&gt;@color/color_primary&lt;/item&gt;
+    &lt;item name="titleTextStyle"&gt;@style/MyActionBarTitleText&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="MyActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title"&gt;
+    &lt;item name="android:textColor"&gt;@color/white&lt;/item&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p></resources></p>
+
+<p>```</p>
+
+<p>使用你定义的AppTheme</p>
+
+<p>```</p>
+
+<pre><code>&lt;application
+    android:name=".TrainingApp"
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme" &gt;
+    ...
+&lt;/application&gt;
+</code></pre>
+
+<p>```</p>
+
+<h3>3.使用专为Material Design打造的Android控件</h3>
+
+<p>你可以参考<a href="http://developer.android.com/training/material/index.html">Google Training Material Design</a>获取更多的Material Design组件的使用方法。</p>
+
+<h4>Lists and Cards</h4>
+
+<h5>RecyclerView</h5>
+
+<p>引入RecyclerView到工程中：</p>
+
+<p><code>
+compile 'com.android.support:recyclerview-v7:22.2.0'
+</code>
+RecyclerView控件是ListView的更高效更灵活的版本。可以看作是对ListView更好的封装：</p>
+
+<ul>
+<li>解决ListView多列显示的难题；</li>
+<li>不用担心开发人员没有复用View，因为它会强迫你这样做；</li>
+<li>更方便的动画支持，移除中间某一项时，可以设置后面几项动画移动;</li>
+</ul>
+
+
+<h5>CardView</h5>
+
+<p><code>
+compile 'com.android.support:cardview-v7:22.2.0'
+</code>
+卡片式布局，你的界面就是有导航和卡片组成的。卡片能够设置圆角和阴影。</p>
+
+<h4>Design support library</h4>
+
+<p>使用Design support包含的空间，需要引入Design support库：</p>
+
+<p><code>
+compile 'com.android.support:design:22.2.0'
+</code></p>
+
+<p>Design support提供了一些很常见很实用的控件。</p>
+
+<h5>Navigation View</h5>
+
+<p>Material Design推荐使用DrawerLayout抽屉式布局显示导航，所以Android一直没有为底部导航推出相应的控件。按照Google最新的设计，所有的导航都会被设置为抽屉显示，点击左上角菜单可以抽屉式弹出菜单项。</p>
+
+<p>NavigationView就是和DrawerLayout搭配使用的神器。使用NavigationView只需要提供icon和title就可以生成专业的侧边导航。</p>
+
+<h5>Floating Action Button</h5>
+
+<p>Material Design引入了z轴，这个控件可以轻松制作出有阴影的悬浮圆形按钮。</p>
+
+<h5>Snackbar</h5>
+
+<p>底部栏消息提示控件，显示显示不再只有Toast和AlertDialog，还有Snackbar。</p>
+
+<h5>Tabs</h5>
+
+<p>在TabLayout出来之前，开发者通常手写Tab控件，并且需要手动控制UI。并且设计出来的Tab效果很一般。Google在2014年的iosched工程中推出了<a href="https://github.com/google/iosched/blob/master/android/src/main/java/com/google/samples/apps/iosched/ui/widget/SlidingTabLayout.java">SlidingTabLayout</a>，这个组件后来也在众多项目中被开发者用到。但是开发者还是得添加额外的代码来控制UI。</p>
+
+<p>TabLayout帮助开发者创建符合界面风格的Tab，并且简单易用。</p>
+
+<h5>CoordinatorLayout &amp; Collapse Toolbar</h5>
+
+<p>更加优美的导航，导航可以相应页面滚动，也产生相应的滚动效果。可以参考Android 5.0版本默认的联系人应用。</p>
+
+<h2>结语</h2>
+
+<p>目前 Material Design 在国内潜伏了一年，也没引起太大的市场反馈。互联网泡沫下，决策者的心思都花在了如何推广如何吸引第一批用户上了，难以负担App重新设计带来的时间成本，更不行因为重设计造成现有用户的流失。</p>
+
+<p>当然，如果某一天所有的国内手机都可以升级为5.0系统，是不是会有许多软件开发者考虑对App做Material Design呢？Android系统深度定制化依然成为5.0难以在国产手机中推广的重要阻碍。</p>
+
+<p>Material Design作为Android App设计风格的趋势，尝试在你的App中使用新的风格，也许可以给你的产品带来不一样的体验。</p>
+
+<p><strong>参考</strong></p>
+
+<p><a href="https://www.google.com/design/spec/material-design/introduction.html">Google Materil Design</a></p>
+
+<p><a href="http://developer.android.com/training/material/index.html">Material Design for Developers</a></p>
+
+<p><a href="http://android-developers.blogspot.sg/2015/05/android-design-support-library.html">Android Design Support Library</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fontello 使用心得]]></title>
