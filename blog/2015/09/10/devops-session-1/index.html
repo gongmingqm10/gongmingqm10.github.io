@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Android Quiz Questions - gongmingqm10</title>
+  <title>DevOps Session 1 - gongmingqm10</title>
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="Android面试题">
+  <meta name="description" content="最近公司在组织DevOps培训，于是就有个这个系列的文章，作为培训笔记，作为以后参考。如果你还不知道DevOps概念，请参考Wikipedia。 DevOps（英文Development和Operations的组合）是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions">
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2015/09/10/devops-session-1">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
@@ -82,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">Android Quiz Questions</h1>
+      <h1 class="entry-title">DevOps Session 1</h1>
     
     
       <p class="meta">
@@ -98,71 +98,115 @@
   
 
 
-<time datetime="2014-10-13T17:19:22+08:00" pubdate data-updated="true">Oct 13<span>th</span>, 2014</time>
+<time datetime="2015-09-10T22:09:55+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
+<div class="entry-content"><p>最近公司在组织DevOps培训，于是就有个这个系列的文章，作为培训笔记，作为以后参考。如果你还不知道DevOps概念，请参考<a href="https://zh.wikipedia.org/wiki/DevOps">Wikipedia</a>。</p>
 
-<hr />
+<blockquote><p>DevOps（英文Development和Operations的组合）是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。</p></blockquote>
 
-<p><strong>Q: Android中Activity的生命周期？</strong></p>
+<h2>课前准备</h2>
 
-<p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
+<p>因为需要使用一台Linux机器来作为测试主机，我们使用VirtualBox安装<a href="http://releases.ubuntu.com/15.04/ubuntu-15.04-server-amd64.iso">Ubuntu Server</a>。安装完成之后，我们能够登录这台“服务器”。</p>
 
-<hr />
+<!-- more -->
 
-<p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
 
-<p>A: 答案显然是Override不是必须的，没有onCreate()的Activity还是可以运行的，那么究竟会运行成什么样子呢。<br/>
-实例中试一试，从MainActivity中打开没有Override任何Method的Activity，发现界面上会出现一个白底界面的Activity，说明我们的Activity最终还是运行了的。只不过界面上没有任何元素，因为我们没有指定contentView。</p>
+<h2>课堂内容</h2>
 
-<hr />
+<h3>磁盘管理</h3>
 
-<p><strong>Q: onStop()等在生命周期中是否一定会被调用?</strong></p>
+<p>主要学习磁盘相关的基础命令，能够查看磁盘使用情况，挂载新的磁盘等操作。参考文章：<a href="http://os.51cto.com/art/201012/240726_all.htm">Linux磁盘管理三板斧的使用心得</a>。</p>
 
-<p>A: onStart(), onResume(), onPause(), onStop()都可以不被调用。因为一旦在onCreate()中我们直接手动调用finish()，相当于告诉Activity结束，于是系统会直接调用onDestroy()来销毁当前的Activity。</p>
+<h4>df 命令</h4>
 
-<hr />
+<p><code>df -h</code> 显示磁盘使用情况</p>
 
-<p><strong>Q: onCreate()中的参数savedInstanceState意义是什么，会在什么情况下用到？</strong></p>
+<h4>fdisk 命令</h4>
 
-<p>A：按照官方的解释：</p>
+<p><code>sudo fdisk -l</code> 列出已知的分区类型</p>
 
-<blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
- *     previously being shut down then this Bundle contains the data it most
- *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
- * 
-</code></pre></blockquote>
+<p><code>sudo fdisk /dev/sda1</code> 对/dev/sda1进行磁盘分区</p>
 
-<p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>
+<h4>mkfs 命令</h4>
 
-<hr />
+<p>mkfs 命令用于在设备上（通常为磁盘）创建 Linux文件系统。mkfs 本身并不执行建立文件系统的工作，而是去调用相关的程序来执行。</p>
 
-<p><strong>Q: Activity与Fragment的区别</strong></p>
+<p><code>sudo mkfs -t ext4 /dev/sda1</code> 将 /dev/sda1 分区格式化为 ext4 格式</p>
 
-<p>A: Activity相信大家都不陌生，其实可以简单的看着一个页面，跳转到另外一个页面一般就进入新的Activity。那么Android从API11开始使用Fragment的原因呢？其实主要是为了适配Android的多屏（特别是手机与平板）问题。一般情况下，如果按照普通的设计思路，我们会同时维护两份代码，并且UI上会有比较大的区别。对于快速升级的互联网产品而言，简直就是一个灾难。这时Google想了一个好的办法，在代码中引入Fragment，Fragment相当于一个module，我们所有的UI可以以模块的形式放到Fragment中。这时候的Fragment能够被多个Activity复用，我们的Activity此时做的事情就是组装这些Fragment。在平板中，我可以在ActivityA中放入FragmentA和FragmentB；在手机中，我则会在ActivityA中放入FragmentA，而在ActivityB中放入FragmentB。所以平板和手机的适配问题变成了简单的组装。从而我们的View不需要进行各种大的变动。这能够为开发者节省很多时间。<br/>
-具体参考：<a href="http://developer.android.com/guide/components/fragments.html">Android Fragment Component</a></p>
+<h4>partprobe 命令</h4>
 
-<hr />
+<p>使用 partprobe 可以不用重启系统配合 fdisk 工具创建新的分区。</p>
 
-<p><strong>Q: UI线程你知道多少？</strong></p>
+<h4>mount 命令</h4>
 
-<p>A：UI线程就是我们常说的主线程，UI线程负责着与用户的交互操作，会处理用户的触摸滑动点击等事件，并把这些事件分发给相应的组件来处理。如果我们尝试在UI线程中进行一个耗时的操作，那么我们的APP会出现ANR（Application not responsing）异常。在UI线程中直接进行耗时操作就会造成主线程阻塞，阻塞到达一定时间则会产生ANR。<br/>
-为了防止这种UI错误，我们进行的处理是将耗时操作放到另外一个线程中处理，耗时操作完成后，我们不能在非UI线程中进行UI的操作，这样是不安全的。因为我们可以借助Handler把更新的消息发给主线程，然后在主线程中更新UI操作。下面是几种耗时操作后更新UI线程的方法：</p>
+<p>mount 命令用于挂载文件系统</p>
+
+<h3>常用目录操作</h3>
+
+<h4>特殊目录</h4>
 
 <ul>
-<li>View.post(Runnable runnable)</li>
-<li>Activity.runOnUiThread(Runnable runnable)</li>
-<li>AsyncTask</li>
-<li>Hanlder + Thread</li>
+<li><code>.</code> 当前目录</li>
+<li><code>..</code>父级目录</li>
+<li><code>~</code> 当前用户的home目录</li>
+<li><code>-</code> 前一个工作目录</li>
+<li><code>~account</code> account 用户的 home 目录</li>
+<li><code>.filename</code> 隐藏文件</li>
 </ul>
 
 
-<p>事实上前面三种都是使用java封装好的其他线程中操作UI线程的方法，这些方法都是为了方便开发人员而进行的一些处理。具体用法，大家可以Google之。</p>
+<h4>操作目录</h4>
+
+<ul>
+<li><code>cd</code> 进入某个目录</li>
+<li><code>ls</code> 列出某个目录的文件信息</li>
+<li><code>ls -l</code> 列表展现目录下所有文件信息，显示目录权限、创建者、时间、文件大小等</li>
+<li><code>ls －al</code> 列表展现目录下所有文件（包含隐藏文件）信息，显示目录权限、创建者、时间、文件大小等</li>
+<li><code>pwd</code> 显示当前目录</li>
+<li><code>mkdir</code> 创建目录</li>
+<li><code>rmdir</code> 删除空目录（如果需要删除非空目录，请使用 <code>rm -r</code>）</li>
+</ul>
+
+
+<h3>常用文件操作</h3>
+
+<ul>
+<li><code>cat</code> 显示文件所有内容</li>
+<li><code>tac</code> 从最后一行开始显示</li>
+<li><code>echo "hello world" &gt; log.txt</code> 向 log.txt 中写入内容 &ldquo;hello world&#8221;， 将覆盖原来的文件内容</li>
+<li><code>echo "hello world 1" &gt;&gt; log.txt</code> 向 log.txt 中附加内容 &ldquo;hello world1&#8221;，添加的内容会在文件最后一行。如果文件不存在，则会被创建。</li>
+<li><code>nl log.txt</code> 输入带行号的文件内容</li>
+<li><code>head log.txt</code> 只看文件前几行内容</li>
+<li><code>tail log.txt</code> 只看最后几行</li>
+<li><code>od</code> 以二进制方式显示档案内容</li>
+<li><code>cp</code> 复制</li>
+<li><code>mv</code> 移动</li>
+<li><code>rm</code> 删除</li>
+</ul>
+
+
+<h3>查找命令</h3>
+
+<h4>find 命令</h4>
+
+<p>find 命令主要用来查找文件。更多使用方法请 Google 之。</p>
+
+<p><code>find . -name "mysql*" -type f</code> 查找以“mysql”开头的所有文件(不是文件夹)</p>
+
+<h4>which 命令</h4>
+
+<p>在 PATH 变量指定的目录中，搜索某个系统命令的位置。同时也可以验证某个命令是否存在。</p>
+
+<p><code>which grep</code></p>
+
+<h2>总结</h2>
+
+<p>第一节课主要了解了 Linux 下面一些基础的命令使用方法。这些命令都是比较常用的，当然还是需要多实战，才能够更好的理解并运用TA。</p>
 </div>
 
 
@@ -185,12 +229,12 @@
   
 
 
-<time datetime="2014-10-13T17:19:22+08:00" pubdate data-updated="true">Oct 13<span>th</span>, 2014</time>
+<time datetime="2015-09-10T22:09:55+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/android/'>android</a>
+    <a class='category' href='/blog/categories/devops/'>DevOps</a>
   
 </span>
 
@@ -206,10 +250,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/10/12/deploy-app-to-remote-server/" title="Previous Post: Deploy app to remote server —— 网站部署篇">&laquo; Deploy app to remote server —— 网站部署篇</a>
+        <a class="basic-alignment left" href="/blog/2015/06/29/android-testing-practice/" title="Previous Post: Android 应用的持续交付">&laquo; Android 应用的持续交付</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/" title="Next Post: Git daemon 建立本地Git服务器">Git daemon 建立本地Git服务器 &raquo;</a>
       
     </p>
   </footer>
