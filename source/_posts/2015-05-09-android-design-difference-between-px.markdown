@@ -2,7 +2,7 @@
 layout: post
 title: "Android Design - Difference between px sp and dp"
 date: 2015-05-09 11:32:59 +0800
-description: Android dp, sp, px difference 
+description: Android dp, sp, px difference
 comments: true
 categories: android
 
@@ -20,6 +20,8 @@ px就是我们通常所说的像素的单位，在css里面，我们用px比较�
 
 在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率
 
+<!-- more -->
+
 {% img /images/retina_one_screen.jpg Mac retina resolution %}
 
 上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。
@@ -28,8 +30,8 @@ px就是我们通常所说的像素的单位，在css里面，我们用px比较�
 
 Google官方对dp的解释如下：
 
-> A virtual pixel unit that you should use when defining UI layout, to express layout dimensions or position in a density-independent way. 
-The density-independent pixel is equivalent to one physical pixel on a 160 dpi screen, which is the baseline density assumed by the system for a "medium" density screen. At runtime, the system transparently handles any scaling of the dp units, as necessary, based on the actual density of the screen in use. The conversion of dp units to screen pixels is simple: px = dp * (dpi / 160). For example, on a 240 dpi screen, 1 dp equals 1.5 physical pixels. You should always use dp units when defining your application's UI, to ensure proper display of your UI on screens with different densities. 
+> A virtual pixel unit that you should use when defining UI layout, to express layout dimensions or position in a density-independent way.
+The density-independent pixel is equivalent to one physical pixel on a 160 dpi screen, which is the baseline density assumed by the system for a "medium" density screen. At runtime, the system transparently handles any scaling of the dp units, as necessary, based on the actual density of the screen in use. The conversion of dp units to screen pixels is simple: px = dp * (dpi / 160). For example, on a 240 dpi screen, 1 dp equals 1.5 physical pixels. You should always use dp units when defining your application's UI, to ensure proper display of your UI on screens with different densities.
 
 有了密度的概念，我们可以更好的理解dp(density independent pixel)了。dp是Android中用来定义UI布局中表达元素尺寸或位置的一个虚拟的像素单位，dp的存在是为了页面元素位置不受屏幕密度所影响。以设计师设计一个APP页面为例，设计师希望用户视觉上看起来如此，也就是设计师设计时通常以px作为基础单位。而在其他不同屏幕密度的设备中，也希望能够进行一定的伸缩，类似于维持一个相对一致的百分比。所以开发者通常需要以dp为单位，以适应不同密度的屏幕。
 
@@ -89,11 +91,3 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种
 Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。
 
 另附上豆瓣关于这些单位更[具体的阐释](http://www.douban.com/note/155032221/)。
-
-
-
-
-
-
-
-

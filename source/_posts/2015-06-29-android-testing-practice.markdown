@@ -2,7 +2,7 @@
 layout: post
 title: "Android 应用的持续交付"
 date: 2015-06-29 11:40:16 +0800
-description: 
+description:
 comments: true
 categories: android
 
@@ -11,6 +11,8 @@ categories: android
 当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。
 
 在测试方面，Android早期即存在UIAtomator和Monkey之类的测试，但是用起来实在不方便。2013年，Google开源了针对An ndroid平台的移动测试框架 - Espresso。Espresso可以针对每个页面(Activity)进行测试。开发者可以根据ID获取到页面元素，然后进行点击、长按等操作。结合Junit和Mock等工具，使得移动端测试成为可能。移动端拥有了测试框架的辅助，借助CI平台，持续交付也成为可能。
+
+<!-- more -->
 
 ##Android测试的类别
 
@@ -165,7 +167,3 @@ CI(Continuous Integration)平台，选择Jenkins。因为Jenkins有各种丰富�
 ##结语
 
 移动端测试虽然发展时间不长，但是却不断在完善中。我们以前习惯用邮件或U盘发布新版供他人测试。我们以前习惯开发App时不写测试。那些时代应该过去了。运用Robolectric，我们可以很轻松的测试驱动开发Android App；运用Calabash或Appium，我们可以更好的控制App质量，保证App功能；运用Jenkins等CI平台，我们的App可以持续交付啦!
-
-
-
-

@@ -15,6 +15,8 @@ description: Android面试题
 
 A: onCreate() -> onStart() -> onResume() -> onPause() -> onStop() ->onDestroy().
 
+<!-- more -->
+
 ---
 
 **Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？**
@@ -37,7 +39,7 @@ A：按照官方的解释：
 >      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
      *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     * 
+     *
 
 savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用`onSaveInstanceState()`方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写`onSaveInstanceState()`方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。
 
@@ -61,11 +63,3 @@ A：UI线程就是我们常说的主线程，UI线程负责着与用户的交互
 * Hanlder + Thread
 
 事实上前面三种都是使用java封装好的其他线程中操作UI线程的方法，这些方法都是为了方便开发人员而进行的一些处理。具体用法，大家可以Google之。
-
-
-
-
-
-
-
-

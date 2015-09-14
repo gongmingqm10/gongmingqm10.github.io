@@ -2,7 +2,7 @@
 layout: post
 title: "DevOps Session 1"
 date: 2015-09-10 22:09:55 +0800
-description: 
+description:
 comments: true
 categories: DevOps
 
@@ -95,20 +95,9 @@ find 命令主要用来查找文件。更多使用方法请 Google 之。
 
 在 PATH 变量指定的目录中，搜索某个系统命令的位置。同时也可以验证某个命令是否存在。
 
-`which grep` 
+`which grep`
 
 
 ## 总结
 
 第一节课主要了解了 Linux 下面一些基础的命令使用方法。这些命令都是比较常用的，当然还是需要多实战，才能够更好的理解并运用TA。
-
-
-
-
-
-
-
-
-
-
-

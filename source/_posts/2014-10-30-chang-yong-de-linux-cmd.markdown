@@ -13,7 +13,7 @@ ls -a ： 查看目录下所有文件，包括隐藏文件
 ls -l : 查看目录下可见文件的详细信息  
 ls -al 查看目录下所有文件的详细信息
 
-
+<!-- more -->
 cat file: 查看文件内容  
 cat -n file: 查看文件内容，并显示出行号  
 cat file1 file2 >> file3：将file1, file2的文件内容以此加到file3中，如果file3存在，则会在file3后面继续追加，不会覆盖file3原来的内容，如果file3不存在，则会自动创建。若需要强行覆盖，使用一个  > 即可  
@@ -26,7 +26,7 @@ cd {path} : 进入目录
 
 mkdir {directory}: 新建目录，若某子目录不存在则可能新建失败  
 mkdir -p {directory}: 新建目录，对于不存在的子目录可以一并创建    
-  
+
 tree: 查看当前目录的文件树结构  
 
 cp file1 file1-copy: 复制file1到file1-copy  
@@ -54,7 +54,3 @@ cat file1 | grep A : 从file1中找到带有‘A’的行
 find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文件夹中的文件也可以被找出。  
 
 更多命令，欢迎大家一起总结与补充
-
-  
-
-

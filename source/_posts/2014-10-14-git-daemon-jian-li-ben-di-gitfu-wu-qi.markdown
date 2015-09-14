@@ -22,6 +22,8 @@ description: Git daemon搭建本地Git服务器
 
 3. 使用ifconfig查看本机电脑内网IP地址：`ifconfig`，以我的电脑为例，查看到的IP地址为 `10.113.241.150`
 
+<!-- more -->
+
 4. `clone/pull`代码到另外一台电脑（两台电脑需在同一个内网下即可），为模拟需要，直接到我的Downloads目录下面模拟进行后续步骤。  
 首先我需要在Doanloads文件夹中`clone project: git clone git://10.113.241.150/sheldon` ，
 ls可以看到我的Downloads中已经成功clone了sheldon工程，clone了工程的下一步就是pull, 当A电脑上的代码变动之后，我需要直接更新代码，首先进入sheldon根目录中：`git pull git://10.113.241.150/`

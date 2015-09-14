@@ -16,6 +16,8 @@ description: Java war远程部署 Tomcat
 * 一个远程服务器主机
 * Mac或者Linux系统的机器
 
+<!-- more -->
+
 ###2. 打包Webapp为war文件
 
 不同的工程可以使用不同的工具进行打包，我们项目工程采用gradle + jetty构建的，因此在打包时还是使用gradle自带的方式进行打包。本项目build.gradle配置如下:  

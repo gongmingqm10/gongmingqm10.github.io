@@ -2,7 +2,7 @@
 layout: post
 title: "Material Design Your Android App"
 date: 2015-06-25 15:22:27 +0800
-description: 
+description:
 comments: true
 categories: android
 
@@ -12,6 +12,7 @@ categories: android
 
 虽然Android系统广受诟病，越来越多的用户投奔苹果的iOS系统。然而这阻挡不了Android的不断改进。14年Google I/O, Google推出了Android的5.0版本，代号Lollipop。5.0版本在设计上采用全新的Material Design，虽然这次升级对ROM生产商来说是道“过不去的坎儿”，但是对开发者群体而言却是一次很不错的升级。因为开发者可以凭借有些的设计资源打造出更好看的App。
 
+<!-- more -->
 
 ##关于Material Design
 
@@ -242,7 +243,3 @@ Material Design作为Android App设计风格的趋势，尝试在你的App中使
 [Material Design for Developers](http://developer.android.com/training/material/index.html)
 
 [Android Design Support Library](http://android-developers.blogspot.sg/2015/05/android-design-support-library.html)
-
-
-
-

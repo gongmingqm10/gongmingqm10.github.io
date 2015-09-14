@@ -15,6 +15,8 @@ categories: [android, jenkins]
 
 > Develop, Ship and Run Any Application, Anywhere
 
+<!-- more -->
+
 Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.
 
 ### Provision
@@ -246,7 +248,7 @@ Android Flavor是为了Android在构建时使用不同的资源，类似于Ruby�
 android {
 
 	defaultConfig{...}
-	
+
     productFlavors {
         dev {
             applicationId "com.tarcle.moment.dev"
@@ -259,15 +261,15 @@ android {
         }
 
     }
-    
+
     signingConfigs {
     	release {...}
     }
-    
+
     buildTypes {
     	release {...}
     }
-    
+
     packageOptions {...}
 }
 
@@ -301,4 +303,3 @@ android {
 
 
 `echo 'y' | apt-get install libgl1-mesa-dev`
-

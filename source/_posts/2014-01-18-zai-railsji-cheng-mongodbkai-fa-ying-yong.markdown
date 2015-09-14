@@ -11,6 +11,8 @@ categories: [rails]
 最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb
 
+<!-- more -->
+
 {% codeblock lang:ruby config/application.rb %}
 require 'rails/all'
 {% endcodeblock %}
@@ -36,7 +38,7 @@ rails new appname --skip-active-record
 gem 'mongoid', '~> 4.0.0.alpha1', github: 'mongoid/mongoid'
 {% endcodeblock %}
 
-修改Gemfile后，我们 bundle install 就会把相关包依赖下载下来，剩下的我们就可以直接使用mongo了。config目录下还有 database.yml 文件，查看内容应该是sqlite的数据库配置文件，我们remove之，然后新建一个属于我们自己的 mongoid.yml. 
+修改Gemfile后，我们 bundle install 就会把相关包依赖下载下来，剩下的我们就可以直接使用mongo了。config目录下还有 database.yml 文件，查看内容应该是sqlite的数据库配置文件，我们remove之，然后新建一个属于我们自己的 mongoid.yml.
 {% codeblock config/mongoid.yml %}
 development:
   sessions:
@@ -71,4 +73,3 @@ rake db:mongoid:create_indexes
 {% endcodeblock %}
 
 开始在model中新建model ～～ rails + mongo 模式开启！
-  

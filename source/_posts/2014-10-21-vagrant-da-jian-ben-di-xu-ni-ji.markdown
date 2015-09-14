@@ -9,7 +9,10 @@ description: 本地虚拟机  vagrant
 ---
 
 多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。  
-虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做[Vagrant](https://www.vagrantup.com/)，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。  
+虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做[Vagrant](https://www.vagrantup.com/)，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。
+
+<!-- more -->
+ 
 安装过程见官方文档：[https://www.vagrantup.com/downloads.html](https://www.vagrantup.com/downloads.html)。
 ###1. vagrant init
 安装完成后，Vagrant就可以直接在我们的命令行中使用。首先我们在选定的文件夹中执行`vagrant init`，这时我们可以看到此文件夹下自动生成了一个`Vagrantfile`文件:  

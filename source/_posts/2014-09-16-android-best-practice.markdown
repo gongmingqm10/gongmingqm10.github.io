@@ -16,6 +16,8 @@ description: Android最佳实践
 
 从其生命流程图中，我们可以看到Android单个Activity的生命周期主要为 onCreate -> onStart -> onResume -> Activity Running -> onPause -> onStop -> onDestroy. 通常单个App是由诸多的Activity组成的，一般情况我们肉眼所见的一个页面就是一个Activity，我们也经常再APP中点击Button或者Back，于是我们实现了Activity之间的切换。
 
+<!-- more -->
+
 #####1. onCreate()与onDestroy()
 
 如何理解onCreate()呢？首先通过来自Google的官方解释来看onCreate()方法的作用：

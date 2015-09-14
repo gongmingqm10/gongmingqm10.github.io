@@ -11,6 +11,8 @@ Android开发中经常用到各种各样的View，有时需要自定义View来�
 ## View的绘制流程  
 自定义控件从最基础的View开始，View有几个重要的函数：`onMeasure()`, `onLayout()`, `onDraw()`，与触摸动作相关的还有`onTouchEvent()`，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 `onMeasure` `onLayout` `onDraw()` 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与`Override`，我们可以创造出一些特殊的View。
 
+<!-- more -->
+
 ```
 
 	public class CustomView extends View {
@@ -434,25 +436,3 @@ public class RatioRelativeLayout extends RelativeLayout {
 
 ```
 最后在界面上我们便可以看到一个高度是宽度一半的自定义View。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

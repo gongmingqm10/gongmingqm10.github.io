@@ -11,6 +11,8 @@ description: Gong Ming Annual Review 2015 ThoughtWorks
 
 2015年悄然来临，算上实习期，在TW待的日子也将近一年。在Annual Review这个环节我也开始梳理自己走过的2014年，关于项目，关于团队，关于成长的那点苦与甜。按照惯例，我将从以下几个方面一一道来：
 
+<!-- more -->
+
 ## Sponser Review
 #### 过去一年做得好的地方 (What did I do well during the last year) ?
 * 工作中态度积极，项目中有足够的commitment，能够对团队产生价值；
@@ -51,7 +53,7 @@ description: Gong Ming Annual Review 2015 ThoughtWorks
 
 国内项目的周期短以及客户“不靠谱”还是给我留下了深刻印象，那种情况下只能靠自己，以及如何跟客户进行有效沟通，规避项目交付风险。
 
-#### 3. UNICEF MICS 
+#### 3. UNICEF MICS
 
 由于在LiveText上有过ROR背景，自然而然上了同样技术栈的UNICEF项目。项目中，我能够利用之前的一些经验为项目部署、测试、前端CSS等贡献自己的力量。项目时间紧迫时我会保证足够的commitment，为整个项目组“减压”。这个项目中，我将自己定位为“老员工”，多主动承担一些前端工作。
 
@@ -87,4 +89,3 @@ description: Gong Ming Annual Review 2015 ThoughtWorks
 * 技术上，在mobile方面能够更深入一点，除了之前的android，能够学会ios开发；
 * 影响力方面，在郑大晔校，技术session中都能够有所产出；
 * 项目安排上，希望能够尽可能多的参与Mobile项目；
-

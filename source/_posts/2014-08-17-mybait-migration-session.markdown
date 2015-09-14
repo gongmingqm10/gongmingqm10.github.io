@@ -12,6 +12,8 @@ categories: database
 
 我所在的项目是SpringMVC配合Mybatis的开发框架。作为一个数据库集成框架，Mybatis在使用上还是比较方便的。言归正传，为了项目需要，于是便开始了Mybatis Migration的初探，文章中出现的不妥之处还请大家不吝赐教。
 
+<!-- more -->
+
 ####Mybatis Migration 安装
 安装过程主要参照Mybatis的官网： <http://mybatis.github.io/migrations/index.html>，以及Mybatis源代码授权地址: <https://github.com/mybatis/migrations>，参照github上的README文件可以轻易的完成其安装过程。README文件中所有的Mybatis包可以直接在其Git repo的releases中找到，我选择了3.2.0进行下载安装。安装完成后就可以直接在terminal中运行migrate相关的命令了。
 
@@ -30,7 +32,7 @@ categories: database
 	Creating: 20140817132704_create_changelog.sql
 	Creating: 20140817132705_first_migration.sql
 	Done!
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 2s
@@ -57,7 +59,7 @@ categories: database
 	-- MyBatis Migrations - bootstrap
 	------------------------------------------------------------------------
 	========== Applying: bootstrap.sql =============================================
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -65,7 +67,7 @@ categories: database
 	-- Final Memory: 11M/493M
 	------------------------------------------------------------------------
 运行之后，scripts文件中将会生成另外一个bootstrap文件。主要可以进行一些数据库初始化工作。
-####Migrate new 
+####Migrate new
 `new`命令能够创建新的sql脚本，我们只需要填充数据表结构信息，便可以方便的创建我们所需的数据表
 
 	minggong:migration-test minggong$ migrate new "create blog table"
@@ -112,7 +114,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	20140817132704    ...pending...    create changelog
 	20140817132705    ...pending...    first migration
 	20140817142201    ...pending...    create blog table
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -123,7 +125,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 由于我们没有运行过migration, 所以所有migration脚本都处于`pending`状态，包括changelog table本身。当我们运行`migrate up`命令之后，脚本的状态便会发生相应的改变。
 ####Migrate up, down
 为了显示更多up, down以及后续的version操作，再次新建一个数据表`migrate new 'create table author'`此时的author和blog应该都处于pending状态。
-	
+
 	minggong:migration-test minggong$ migrate status
 	------------------------------------------------------------------------
 	-- MyBatis Migrations - status
@@ -134,7 +136,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	20140817132705    ...pending...    first migration
 	20140817142201    ...pending...    create blog table
 	20140817154537    ...pending...    create table author
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -158,24 +160,24 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	APPLIED_AT VARCHAR(25) NOT NULL,
 	DESCRIPTION VARCHAR(255) NOT NULL
 	)
-	
+
 	ALTER TABLE CHANGELOG
 	ADD CONSTRAINT PK_CHANGELOG
 	PRIMARY KEY (id)
-	
-	
+
+
 	========== Applying: 20140817132705_first_migration.sql ========================
 	--  First migration.
 	-- Migration SQL that makes the change goes here.
-	
+
 	========== Applying: 20140817142201_create_blog_table.sql ======================
 	--  create blog table
 	-- Migration SQL that makes the change goes here.
-	
+
 	========== Applying: 20140817154537_create_table_author.sql ====================
 	--  create table author
 	-- Migration SQL that makes the change goes here.
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -193,7 +195,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	20140817132705 2014-08-17 21:22:17 first migration
 	20140817142201 2014-08-17 21:22:17 create blog table
 	20140817154537 2014-08-17 21:26:01 create table author
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -207,7 +209,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	========== Undoing: 20140817154537_create_table_author.sql =====================
 	-- @UNDO
 	-- SQL to undo the change goes here.
-	
+
 	========== Undoing: 20140817142201_create_blog_table.sql =======================
 	-- @UNDO
 	-- SQL to undo the change goes here.
@@ -215,13 +217,13 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	========== Undoing: 20140817132705_first_migration.sql =========================
 	-- @UNDO
 	-- SQL to undo the change goes here.
-	
+
 	========== Undoing: 20140817132704_create_changelog.sql ========================
 	-- @UNDO
 	DROP TABLE CHANGELOG
-	
+
 	Changelog doesn't exist. No further migrations will be undone (normal for the last migration).
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -238,7 +240,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	20140817132705    ...pending...    first migration
 	20140817142201    ...pending...    create blog table
 	20140817154537    ...pending...    create table author
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -259,7 +261,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	20140817142201 2014-08-17 22:23:25 create blog table
 	20140817154537 2014-08-17 22:23:25 create table author
 	20140817164341 2014-08-17 22:23:25 create table book
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -274,12 +276,12 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	========== Undoing: 20140817164341_create_table_book.sql =======================
 	-- @UNDO
 	-- SQL to undo the change goes here.
-	
+
 	========== Undoing: 20140817154537_create_table_author.sql =====================
 	-- @UNDO
 	-- SQL to undo the change goes here.
-	
-	
+
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s
@@ -297,7 +299,7 @@ scripts文件夹中会创建带有时间戳的sql文件：`20140817142201_create
 	20140817142201 2014-08-17 22:23:25 create blog table
 	20140817154537    ...pending...    create table author
 	20140817164341    ...pending...    create table book
-	
+
 	------------------------------------------------------------------------
 	-- MyBatis Migrations SUCCESS
 	-- Total time: 0s

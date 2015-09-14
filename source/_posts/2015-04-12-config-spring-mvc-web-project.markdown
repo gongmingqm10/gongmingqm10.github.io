@@ -2,7 +2,7 @@
 layout: post
 title: "Config spring mvc web project"
 date: 2015-04-12 23:33:50 -0500
-description: 
+description:
 published: false
 comments: true
 categories: web
@@ -14,6 +14,8 @@ categories: web
 ## Spring Web Content with Spring MVC
 
 既然从零开始，那我们就从空文件夹开始，首先还是习惯在Git上创建一个[gongmingqm10/spring-mvc-sample](http://github.com/gongmingqm10/spring-mvc-sample)的项目。clone到本地之后就是一个空的文件夹。一般来说，官网上都有很多参考的资料，可以告诉我们怎么使用这个框架搭建完整的项目。来到[Spring IO](http://spring.io/guides)，才发现资料真的多，于是就选择了[Spring Web Content with Spring MVC]作为Guide从零开始搭建。还是使用Gradle构建。
+
+<!-- more -->
 
 ###1. 创建文件夹结构
 ```
@@ -105,4 +107,3 @@ public class GreetingController {
 </html>
 ```
 ###5. 创建可运行的Application
-

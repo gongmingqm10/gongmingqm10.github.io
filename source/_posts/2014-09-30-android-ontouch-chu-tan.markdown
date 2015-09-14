@@ -9,6 +9,8 @@ description: Android touch 事件机制
 
 Android的touch对于我来说是个既熟悉又陌生的话题，熟悉之处在于onTouch太常用了，从系统的自定义的ListView的滑动到我们自定义的可以滑动的View，onTouch直接与用户进行相关的Interation，所以onTouch无处不再。想像下如果Android某一天不能相应我们的touch事件，那我们现在的触屏手机基本废了，那我们的手机还得还原到以前的字母键手机的状态。学习总是得自己逼迫自己，没有博客的驱动我是怎样也不会来从头开始研究onTouch的作用机制的，博客当作一个自我学习的过程，坚持再坚持。
 
+<!-- more -->
+
 废话不说，步入正题，从用户开始，触屏事件被屏幕传感器截获，截获后会将该触摸数据传到我们的View上面，然后View再进行相应的处理。从用户触摸到数据被View感知都是有Android底层完成的，我们这里关心的只是Android的view会如何响应这些触摸行为呢？了解了触摸行为相关的原理才可以更好的利用这些特性从而实现我们自定义的各种交互生动的组件。
 
 下面我们会循序渐进，逐步研究一些与Touch相关的特性，最后我们会通过几个小demo来展示怎么通过重写onTouch()自定义一些实用的组件。
@@ -36,7 +38,7 @@ Android的touch对于我来说是个既熟悉又陌生的话题，熟悉之处�
 MainActivty中定义如下：    
 <img src="/images/touch-simple-main.png" alt="MainActivity.java"/>    
 在onTouch()方法中，我们`return false`，说明当前的View并没有消化触摸事件，它会将触摸事件继续`向上`传递，所谓`向上`指的是View会向它的父元素传递，父元素又会根据其定义的onTouch事件继续将事件传递。触摸A元素，产生的Log如下：  
-  
+
 ```
 10-01 16:20:44.640    1471-1471/org.gongming.uikit I/gongmingqm10﹕ --onTouch()--son
 10-01 16:20:44.640    1471-1471/org.gongming.uikit I/gongmingqm10﹕ --onTouch()--parent
@@ -51,7 +53,7 @@ MainActivty中定义如下：
 ```
 这时的`return true`表示A自己消化了触摸事件，所以触摸事件不会向上传播。通过`onTouch`中的MotionEvent可以得到当前触摸的x和y坐标，借此实现一些复杂的功能。  
 MotionEvent除了提供触摸的坐标外，还通过`MotionEvent.getEventAction()`判断当前触摸的类型，主要分为`ACTION_POINTER_DOWN` `ACTION_POINTER_UP` `ACTION_DOWN` `ACTION_MOVE` `ACTION_UP` `ACTION-CANCEL`，以下是MotionEvent中对这些Action的定义说明：
-  
+
 ```
     /**
      * Constant for {@link #getActionMasked}: A pressed gesture has started, the
@@ -63,14 +65,14 @@ MotionEvent除了提供触摸的坐标外，还通过`MotionEvent.getEventAction
      * </p>
      */
     public static final int ACTION_DOWN             = 0;
-    
+
     /**
      * Constant for {@link #getActionMasked}: A pressed gesture has finished, the
      * motion contains the final release location as well as any intermediate
      * points since the last down or move event.
      */
     public static final int ACTION_UP               = 1;
-    
+
     /**
      * Constant for {@link #getActionMasked}: A change has happened during a
      * press gesture (between {@link #ACTION_DOWN} and {@link #ACTION_UP}).
@@ -78,14 +80,14 @@ MotionEvent除了提供触摸的坐标外，还通过`MotionEvent.getEventAction
      * points since the last down or move event.
      */
     public static final int ACTION_MOVE             = 2;
-    
+
     /**
      * Constant for {@link #getActionMasked}: The current gesture has been aborted.
      * You will not receive any more points in it.  You should treat this as
      * an up event, but not perform any action that you normally would.
      */
     public static final int ACTION_CANCEL           = 3;
-    
+
     /**
      * Constant for {@link #getActionMasked}: A movement has happened outside of the
      * normal bounds of the UI element.  This does not provide a full gesture,
@@ -103,7 +105,7 @@ MotionEvent除了提供触摸的坐标外，还通过`MotionEvent.getEventAction
      * </p>
      */
     public static final int ACTION_POINTER_DOWN     = 5;
-    
+
     /**
      * Constant for {@link #getActionMasked}: A non-primary pointer has gone up.
      * <p>
@@ -205,7 +207,3 @@ dispatchTouchEvent()是View类中的方法，用于将当前View接收到的触�
 1. [Android: Difference between onInterceptTouchEvent and dispatchTouchEvent?](http://stackoverflow.com/questions/9586032/android-difference-between-onintercepttouchevent-and-dispatchtouchevent)
 2. [Managing Touch Events in a ViewGroup](http://developer.android.com/training/gestures/viewgroup.html)
 3. [How Android Handles Touches](http://www.youtube.com/watch?v=EZAoJU-nUyI)
-
-
-
-

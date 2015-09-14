@@ -2,7 +2,7 @@
 layout: post
 title: "Android Continuous Integration"
 date: 2015-03-08 23:39:35 -0500
-description: Android CI, Android Testing, Android Jenkins, Android Robolectric, Android Calabash 
+description: Android CI, Android Testing, Android Jenkins, Android Robolectric, Android Calabash
 comments: true
 categories: android
 
@@ -11,6 +11,8 @@ categories: android
 随着Android平台的逐渐成熟，伴随着一系列针对Android测试框架的推出，开发人员终于可以如愿以偿的在移动端的开发上进行单元测试，集成测试以及功能测试。在敏捷流程中从开发，到测试，到验收最终成为面向用户的Release版本，经历的是Story一个完整的生命周期。CI(Continuous Integration, 持续交付)在敏捷实践中也因此扮演了非常重要的角色。
 
 如果说Web的持续集成，以及各类测试框架有一定的历史积淀了。那么Android的持续集成可以说是新鲜事物，大部分IT公司知道如何对服务器端或者Web端进行一系列自动化测试，保证其功能的正确性。而对于移动端的产品比较多的则是由测试人员组成的人肉测试。移动端的这种人工测试，无论是对测试人员，还是要经常打包并且来修复各种Bug的开发人员来说，其代价是巨大的。
+
+<!-- more -->
 
 从Android 2.3.3 版本就开始，我就成为了Android的开发者。从开发者的角度见证了Android的步步升级，也从普通用户的角度见证了Android在中低端市场上的统治权。虽然我对Apple的产品也很满意，但是我对Android的感情却也是无法割舍的。我庆幸自己终于能够在Android上也见证测试驱动开发的实践，也庆幸自己有机会去亲身实践，从零开始学习并了解Android的持续集成。
 
@@ -162,7 +164,7 @@ export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH"
 android update sdk --no-ui
 
 ```
-	
+
 经过漫长的等待，下载完毕之后这部分的工作也基本完成。(这一步一般留在半夜自行下载)
 
 #### 2.4 安装Git
@@ -282,5 +284,3 @@ emulator -avd Nexus-21 -no-skin -no-audio -no-window
 
 ### 3.Other
 如何在Android中配置不同的Flavor，如何上传构建好的App到HockeyApp中。欢迎查看我的[博客](http://www.gongmingqm10.net/blog/2015/03/11/setup-jenkins-for-android-integration-using-docker/)。
-
-

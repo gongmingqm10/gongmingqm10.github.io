@@ -12,9 +12,11 @@ description: 阿里云服务器使用教程
 云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。  
 使用teminal，用SSH登录进去  
 
+<!-- more -->
+
 ```
 minggong:octopress minggong$ ssh root@XXX.XX.XXX.XX
-root@root@XXX.XX.XXX.XX's password: 
+root@root@XXX.XX.XXX.XX's password:
 
 ```
 `XXX.XX.XXX.XX`是我主机的IP地址，然后根据提示输入密码，然后就顺利的登录进去，刚进去的系统是很干净的。由于系统是centerOS的（试了半天的apt-get都无效），那就使用yum来安装软件吧。
@@ -89,11 +91,7 @@ ldapjdk-javadoc.x86_64 : Javadoc for ldapjdk
 java version "1.7.0_65"
 OpenJDK Runtime Environment (rhel-2.5.1.2.el5_10-x86_64 u65-b17)
 OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
-[root@iZ23572i0rtZ home]# 
+[root@iZ23572i0rtZ home]#
 
 
 ```
-
-
-
-

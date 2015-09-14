@@ -25,6 +25,8 @@ Warning: Permanently added 'bandit.labs.overthewire.org,178.79.134.250' (RSA) to
 bandit0@bandit.labs.overthewire.org's password:
 
 ```
+
+<!-- more -->
 ###Level0 - Level1
 在当前用户目录中查找readme文件，读取起存储的密码，然后作为 bandit1的密码登录到主机中。
 
