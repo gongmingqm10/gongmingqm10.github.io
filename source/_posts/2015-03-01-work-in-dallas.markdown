@@ -14,7 +14,7 @@ categories: [Dallas, Work]
 
 由于敏捷包含的方面很多，作为Developer的我，也会主要从Developer的角度，结合自己的想法来谈自己在这一年对敏捷的认识。此文不是软文，只是自己闲时的一点纪录。不喜求轻喷。
 
-<!-- Read more -->
+<!-- more -->
 
 ### 开发驱动测试(DDT)
 
