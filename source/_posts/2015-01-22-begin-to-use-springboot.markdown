@@ -5,7 +5,7 @@ date: 2015-01-22 18:00:09 +0800
 description: How to use spring boot, config spring boot project
 comments: true
 published: false
-categories: web
+categories: Web
 
 ---
 
@@ -13,7 +13,7 @@ The time since I worked as a web developer, I use spring 3.x for most of my pers
 been used. Those who worked with me can easily be participant in the project. While the more I use it, the more I'm suffered
 with the complex config of the spring project. Additionally it's not easy to create a scaffolding Spring project, especially
 when I'm so accustomed to rails scaffold.
- 
+
 It's time for us to trial a new development pattern to make our work be more graceful. Luckily spring4.x appeared, and I
 began to knew the [Spring Boot](http://projects.spring.io/spring-boot/) project.
 
@@ -68,4 +68,3 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 ```
-

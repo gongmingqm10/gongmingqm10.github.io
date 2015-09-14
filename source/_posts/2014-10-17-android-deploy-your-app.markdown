@@ -3,7 +3,7 @@ layout: post
 title: "Android deploy your app"
 date: 2014-10-17 12:56:13 +0800
 comments: true
-categories: android
+categories: Android
 description: Android打包编译及发布
 
 ---

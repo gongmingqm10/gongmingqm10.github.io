@@ -3,7 +3,7 @@ layout: post
 title: "Android onTouch() 初探"
 date: 2014-09-30 17:28:56 +0800
 comments: true
-categories: [android]
+categories: [Android]
 description: Android touch 事件机制
 ---
 

@@ -4,7 +4,7 @@ title: "Android Design - Difference between px sp and dp"
 date: 2015-05-09 11:32:59 +0800
 description: Android dp, sp, px difference
 comments: true
-categories: android
+categories: Android
 
 ---
 

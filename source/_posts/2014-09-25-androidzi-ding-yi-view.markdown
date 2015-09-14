@@ -3,7 +3,7 @@ layout: post
 title: "Android自定义View"
 date: 2014-09-25 23:22:11 +0800
 comments: true
-categories: android
+categories: Android
 description: Android自定义View Android自定义控件
 
 ---

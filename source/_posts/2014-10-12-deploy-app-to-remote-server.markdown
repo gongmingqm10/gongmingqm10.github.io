@@ -3,7 +3,7 @@ layout: post
 title: "Deploy app to remote server —— 网站部署篇"
 date: 2014-10-12 11:14:37 +0800
 comments: true
-categories: web
+categories: Web
 description: Java war远程部署 Tomcat
 
 ---

@@ -4,7 +4,7 @@ title: "Setup Jenkins for Android Integration using Docker"
 date: 2015-03-11 21:46:59 -0500
 description: Setup jenkins CI environment for Android using Docker, Jenkins config for Android
 comments: true
-categories: [android, jenkins]
+categories: [Android, DevOps]
 
 ---
 

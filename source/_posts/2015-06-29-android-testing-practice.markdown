@@ -4,7 +4,7 @@ title: "Android 应用的持续交付"
 date: 2015-06-29 11:40:16 +0800
 description:
 comments: true
-categories: android
+categories: Android
 
 ---
 

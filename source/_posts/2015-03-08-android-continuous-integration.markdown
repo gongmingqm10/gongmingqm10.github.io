@@ -4,7 +4,7 @@ title: "Android Continuous Integration"
 date: 2015-03-08 23:39:35 -0500
 description: Android CI, Android Testing, Android Jenkins, Android Robolectric, Android Calabash
 comments: true
-categories: android
+categories: Android
 
 ---
 

@@ -4,7 +4,7 @@ title: "Material Design Your Android App"
 date: 2015-06-25 15:22:27 +0800
 description:
 comments: true
-categories: android
+categories: [Android, Design]
 
 ---
 

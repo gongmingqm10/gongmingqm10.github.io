@@ -3,7 +3,7 @@ layout: post
 title: "Android quiz questions"
 date: 2014-10-13 17:19:22 +0800
 comments: true
-categories: android
+categories: Android
 description: Android面试题
 
 ---

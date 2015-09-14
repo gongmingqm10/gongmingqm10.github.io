@@ -6,7 +6,7 @@ comments: true
 sharing: true
 description: Rails如何集成MongoDB
 footer: true
-categories: [rails]
+categories: [Rails]
 ---
 最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb

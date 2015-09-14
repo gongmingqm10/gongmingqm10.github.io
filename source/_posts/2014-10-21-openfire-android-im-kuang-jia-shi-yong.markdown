@@ -3,7 +3,7 @@ layout: post
 title: "Openfire - Android IM 框架使用"
 date: 2014-10-21 10:02:58 +0800
 comments: true
-categories: android
+categories: Android
 description: Android IM 实时通讯 Openfire使用纪录
 
 ---

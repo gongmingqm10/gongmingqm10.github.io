@@ -3,7 +3,7 @@ layout: post
 title: "Android best practice"
 date: 2014-09-16 10:41:25 +0800
 comments: true
-categories: android
+categories: Android
 description: Android最佳实践
 
 ---
