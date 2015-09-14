@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-09-14T17:50:46+08:00</updated>
+  <updated>2015-09-14T17:57:59+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -20,6 +20,9 @@
     <id>http://www.gongmingqm10.net/blog/2014/01/18/zai-railsji-cheng-mongodbkai-fa-ying-yong</id>
     <content type="html"><![CDATA[<p>最近尝试用rails集成mongodb开发我的第一个rails应用，用IDE直接创建project之后，发现工程默认会采用sqlite数据库。于是需要自己手工进行一些数据库配置：
 如果你的app已经使用IDE建立好了，需要修改的文件有 config/application.rb 和 config/environments/development.rb</p>
+
+<!-- more -->
+
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/application.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

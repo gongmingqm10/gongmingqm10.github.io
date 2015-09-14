@@ -113,6 +113,9 @@
 
 <p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
 
+<!-- more -->
+
+
 <hr />
 
 <p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
@@ -135,7 +138,7 @@
 <blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
  *     previously being shut down then this Bundle contains the data it most
  *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
- * 
+ *
 </code></pre></blockquote>
 
 <p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>

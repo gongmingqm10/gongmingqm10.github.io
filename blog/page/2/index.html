@@ -113,145 +113,12 @@
 我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
 在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
 
-<p>实现部分主要注册一个CallReceiver，并给我们的Receiver监听电话，发送短信，开机重启等权限。编译通过后便可以安装在手机上使用了。贴出主要代码：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>package net.gongmingqm10.callwatcher;
-</span><span class='line'>
-</span><span class='line'>import android.app.Service;
-</span><span class='line'>import android.content.BroadcastReceiver;
-</span><span class='line'>import android.content.Context;
-</span><span class='line'>import android.content.Intent;
-</span><span class='line'>import android.telephony.SmsManager;
-</span><span class='line'>import android.telephony.TelephonyManager;
-</span><span class='line'>import android.util.Log;
-</span><span class='line'>
-</span><span class='line'>public class CallReceiver extends BroadcastReceiver {
-</span><span class='line'>
-</span><span class='line'>    private final static String NUMBER = "Your Phone number"; //我的新手机号
-</span><span class='line'>    @Override
-</span><span class='line'>    public void onReceive(Context context, Intent intent) {
-</span><span class='line'>        if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) return;
-</span><span class='line'>        TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
-</span><span class='line'>        SmsManager sms = SmsManager.getDefault();
-</span><span class='line'>        Log.i("state", "state = " + tm.getCallState());
-</span><span class='line'>        if (tm.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
-</span><span class='line'>            String incomingNumber = intent.getStringExtra("incoming_number");
-</span><span class='line'>            try {
-</span><span class='line'>                Thread.sleep(5000);
-</span><span class='line'>            } catch (InterruptedException e) {
-</span><span class='line'>                e.printStackTrace();
-</span><span class='line'>            }
-</span><span class='line'>            sms.sendTextMessage(NUMBER, "", "主人，有人给你附属机打电话了：" + incomingNumber, null, null);
-</span><span class='line'>        }
-</span><span class='line'>    }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-</span><span class='line'>&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
-</span><span class='line'>    package="net.gongmingqm10.callwatcher" &gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/&gt;
-</span><span class='line'>    &lt;uses-permission android:name="android.permission.READ_PHONE_STATE"/&gt;
-</span><span class='line'>    &lt;uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/&gt;
-</span><span class='line'>    &lt;uses-permission android:name="android.permission.SEND_SMS"/&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;application
-</span><span class='line'>        android:allowBackup="true"
-</span><span class='line'>        android:icon="@drawable/ic_launcher"
-</span><span class='line'>        android:label="@string/app_name"
-</span><span class='line'>        android:theme="@style/AppTheme" &gt;
-</span><span class='line'>        &lt;activity
-</span><span class='line'>            android:name=".MainActivity"
-</span><span class='line'>            android:label="@string/app_name" &gt;
-</span><span class='line'>            &lt;intent-filter&gt;
-</span><span class='line'>                &lt;action android:name="android.intent.action.MAIN" /&gt;
-</span><span class='line'>
-</span><span class='line'>                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
-</span><span class='line'>            &lt;/intent-filter&gt;
-</span><span class='line'>        &lt;/activity&gt;
-</span><span class='line'>        &lt;receiver android:name=".CallReceiver"&gt;
-</span><span class='line'>            &lt;intent-filter&gt;
-</span><span class='line'>                &lt;action android:name="android.intent.action.BOOT_COMPLETED"/&gt;
-</span><span class='line'>                &lt;action android:name="android.intent.action.PHONE_STATE"/&gt;
-</span><span class='line'>                &lt;action android:name="android.intent.action.NEW_OUTGOING_CALL"/&gt;
-</span><span class='line'>            &lt;/intent-filter&gt;
-</span><span class='line'>        &lt;/receiver&gt;
-</span><span class='line'>    &lt;/application&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;/manifest&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>主界面几乎没任何交互。主要实现功能，想更多交互的话可以继续～</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/29/androiddian-hua-jian-ting/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -287,30 +154,12 @@
 
   <div class="entry-content"><p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
 
-<h3>Usage</h3>
-
-<p>整个Cache模块的设计思想很简单，每个缓存数据都对应一个key，每个缓存数据又会被存到以此key命名的文件中，需要时直接读取。关键类分别为<code>CacheData</code>, <code>CacheManager</code>, <code>CacheUtils</code>。</p>
-
-<ul>
-<li>CacheData：数据封装类，所有欲缓存的数据都通过CacheData封装，CacheData中能够定义缓存有效期，并可以通过getData()直接获取真实的缓存数据。</li>
-<li>CacheManager: 缓存管理类，单例模式设计，负责缓存的存储和读取。</li>
-<li>CacheUtils: 缓存常用类，所有的缓存Key都应该在这个类中定义，此类还定义了一些时间常量，缓存有效期中可以使用。</li>
-</ul>
-
-
-<p>使用方法如下：</p>
-
-<ul>
-<li>step1: <code>CacheManager.init(Context context)</code>, 在APP加载时就应该对CacheManager初始化。</li>
-<li>step2: 自定义的Model需要实现序列化，使用CacheData进行包装，然后使用CacheManager进行存储和读取。</li>
-</ul>
-
-
-<h3>Code Download</h3>
-
-<p>项目代码托管在<a href="https://github.com/gongmingqm10/AndroidUikit/tree/master/library/src/main/java/org/gongming/common/cache">Github Repo</a>中，欢迎star和fork。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/28/android-data-cache/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -388,277 +237,14 @@
 
 
   <div class="entry-content"><p>多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。<br/>
-虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。<br/>
-安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
+虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。</p>
 
-<h3>1. vagrant init</h3>
-
-<p>安装完成后，Vagrant就可以直接在我们的命令行中使用。首先我们在选定的文件夹中执行<code>vagrant init</code>，这时我们可以看到此文件夹下自动生成了一个<code>Vagrantfile</code>文件:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># -*- mode: ruby -*-
-</span><span class='line'># vi: set ft=ruby :
-</span><span class='line'>
-</span><span class='line'>Vagrant.configure("2") do |config|
-</span><span class='line'>  # All Vagrant configuration is done here. The most common configuration
-</span><span class='line'>  # options are documented and commented below. For a complete reference,
-</span><span class='line'>  # please see the online documentation at vagrantup.com.
-</span><span class='line'>
-</span><span class='line'>  # Every Vagrant virtual environment requires a box to build off of.
-</span><span class='line'>  config.vm.box = "base"
-</span><span class='line'>
-</span><span class='line'>  # The url from where the 'config.vm.box' box will be fetched if it
-</span><span class='line'>  # doesn't already exist on the user's system.
-</span><span class='line'>  # config.vm.box_url = "http://domain.com/path/to/above.box"
-</span><span class='line'>
-</span><span class='line'>  # Create a forwarded port mapping which allows access to a specific port
-</span><span class='line'>  # within the machine from a port on the host machine. In the example below,
-</span><span class='line'>  # accessing "localhost:8080" will access port 80 on the guest machine.
-</span><span class='line'>  # config.vm.network :forwarded_port, guest: 80, host: 8080
-</span><span class='line'>
-</span><span class='line'>  # Create a private network, which allows host-only access to the machine
-</span><span class='line'>  # using a specific IP.
-</span><span class='line'>  # config.vm.network :private_network, ip: "192.168.33.10"
-</span><span class='line'>
-</span><span class='line'>  # Create a public network, which generally matched to bridged network.
-</span><span class='line'>  # Bridged networks make the machine appear as another physical device on
-</span><span class='line'>  # your network.
-</span><span class='line'>  # config.vm.network :public_network
-</span><span class='line'>
-</span><span class='line'>  # Share an additional folder to the guest VM. The first argument is
-</span><span class='line'>  # the path on the host to the actual folder. The second argument is
-</span><span class='line'>  # the path on the guest to mount the folder. And the optional third
-</span><span class='line'>  # argument is a set of non-required options.
-</span><span class='line'>  # config.vm.synced_folder "../data", "/vagrant_data"
-</span><span class='line'>
-</span><span class='line'>  # Provider-specific configuration so you can fine-tune various
-</span><span class='line'>  # backing providers for Vagrant. These expose provider-specific options.
-</span><span class='line'>  # Example for VirtualBox:
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provider :virtualbox do |vb|
-</span><span class='line'>  #   # Don't boot with headless mode
-</span><span class='line'>  #   vb.gui = true
-</span><span class='line'>  #
-</span><span class='line'>  #   # Use VBoxManage to customize the VM. For example to change memory:
-</span><span class='line'>  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-</span><span class='line'>  # end
-</span><span class='line'>  #
-</span><span class='line'>  # View the documentation for the provider you're using for more
-</span><span class='line'>  # information on available options.
-</span><span class='line'>
-</span><span class='line'>  # Enable provisioning with Puppet stand alone.  Puppet manifests
-</span><span class='line'>  # are contained in a directory path relative to this Vagrantfile.
-</span><span class='line'>  # You will need to create the manifests directory and a manifest in
-</span><span class='line'>  # the file base.pp in the manifests_path directory.
-</span><span class='line'>  #
-</span><span class='line'>  # An example Puppet manifest to provision the message of the day:
-</span><span class='line'>  #
-</span><span class='line'>  # # group { "puppet":
-</span><span class='line'>  # #   ensure =&gt; "present",
-</span><span class='line'>  # # }
-</span><span class='line'>  # #
-</span><span class='line'>  # # File { owner =&gt; 0, group =&gt; 0, mode =&gt; 0644 }
-</span><span class='line'>  # #
-</span><span class='line'>  # # file { '/etc/motd':
-</span><span class='line'>  # #   content =&gt; "Welcome to your Vagrant-built virtual machine!
-</span><span class='line'>  # #               Managed by Puppet.\n"
-</span><span class='line'>  # # }
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provision :puppet do |puppet|
-</span><span class='line'>  #   puppet.manifests_path = "manifests"
-</span><span class='line'>  #   puppet.manifest_file  = "init.pp"
-</span><span class='line'>  # end
-</span><span class='line'>
-</span><span class='line'>  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-</span><span class='line'>  # path, and data_bags path (all relative to this Vagrantfile), and adding
-</span><span class='line'>  # some recipes and/or roles.
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provision :chef_solo do |chef|
-</span><span class='line'>  #   chef.cookbooks_path = "../my-recipes/cookbooks"
-</span><span class='line'>  #   chef.roles_path = "../my-recipes/roles"
-</span><span class='line'>  #   chef.data_bags_path = "../my-recipes/data_bags"
-</span><span class='line'>  #   chef.add_recipe "mysql"
-</span><span class='line'>  #   chef.add_role "web"
-</span><span class='line'>  #
-</span><span class='line'>  #   # You may also specify custom JSON attributes:
-</span><span class='line'>  #   chef.json = { :mysql_password =&gt; "foo" }
-</span><span class='line'>  # end
-</span><span class='line'>
-</span><span class='line'>  # Enable provisioning with chef server, specifying the chef server URL,
-</span><span class='line'>  # and the path to the validation key (relative to this Vagrantfile).
-</span><span class='line'>  #
-</span><span class='line'>  # The Opscode Platform uses HTTPS. Substitute your organization for
-</span><span class='line'>  # ORGNAME in the URL and validation key.
-</span><span class='line'>  #
-</span><span class='line'>  # If you have your own Chef Server, use the appropriate URL, which may be
-</span><span class='line'>  # HTTP instead of HTTPS depending on your configuration. Also change the
-</span><span class='line'>  # validation key to validation.pem.
-</span><span class='line'>  #
-</span><span class='line'>  # config.vm.provision :chef_client do |chef|
-</span><span class='line'>  #   chef.chef_server_url = "https://api.opscode.com/organizations/ORGNAME"
-</span><span class='line'>  #   chef.validation_key_path = "ORGNAME-validator.pem"
-</span><span class='line'>  # end
-</span><span class='line'>  #
-</span><span class='line'>  # If you're using the Opscode platform, your validator client is
-</span><span class='line'>  # ORGNAME-validator, replacing ORGNAME with your organization name.
-</span><span class='line'>  #
-</span><span class='line'>  # If you have your own Chef Server, the default validation client name is
-</span><span class='line'>  # chef-validator, unless you changed the configuration.
-</span><span class='line'>  #
-</span><span class='line'>  #   chef.validation_client_name = "ORGNAME-validator"
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面几乎有所有的配置说明，我们可以根据自己需要进行命令的配置，我根据自己的需要进行了如下配置：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>VAGRANTFILE_API_VERSION = "2"
-</span><span class='line'>
-</span><span class='line'>Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-</span><span class='line'>  config.vm.box = "base"
-</span><span class='line'>  config.vm.box = 'centos-6.4'
-</span><span class='line'>  config.vm.box_url = 'https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box'
-</span><span class='line'>  config.vm.network :private_network, ip:'192.168.3.10'
-</span><span class='line'>  config.vm.network :forwarded_port, guest: 27017, host: 8888
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>根据配置名字可以知道各项的具体作用，包括此系统的下载地址，系统的类型及版本号，虚拟机的内网IP，虚拟机的端口转发等。注意这里的host端口默认为27017，但是这个端口被我电脑中的mongodb占用，所以我修改成另外一个闲置的端口。<br/>
-配置完成后，我们的工作基本完成。</p>
-
-<h3>2. vagrant up</h3>
-
-<p><code>vagrant up</code>用于启动虚拟机。文件配置完成之后在此文件夹中运行<code>vagrant up</code>，将加载此文件夹中的Vagrantfile，首次加载时需要下载虚拟机系统，所以耗时会略长。下载完成之后你会看到成功的提示。</p>
-
-<h3>3. ssh connect virtual machine</h3>
-
-<p>虚拟机成功启动后，我们只需要在terminal中通过<code>ssh</code>就可以连接到虚拟机设备上。然后就想在远程服务器中来操作就可以了。vagrant启动的地址是我们配置文件中的<code>192.168.3.10</code>，其默认的用户名为root，初始密码为 vagrant。所以我们使用如下命令登陆：<code>ssh root@192.168.3.10</code>，提示密码时输入<code>vagrant</code>，最后我们可以成功登陆。</p>
-
-<p>登陆完成后，如果我们想停下虚拟机，可以使用<code>vagrant destroy</code>关闭虚拟机。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -695,121 +281,12 @@
   <div class="entry-content"><p>IM(Instant Messaging)在Android中可谓运用广泛。QQ，Wechat，陌陌等应用都可以看作IM实时通讯APP，实时通讯在社交类APP中运用范围较广，其功能看起来也是比较cool的。今天我们将研究一下android IM软件是如何实现的。像IM这种实施通讯软件，除非公司有比较大的实力和精力，才会自己去整这么一套框架。对于广大中小软件开发者来说，想到比较多的就是开源框架。Opensource对于开发者来说简直就是福音，对于整个软件行业也起到了不小的推动性的作用。<br/>
 Openfire在这种环境下应运而生，而且作为实时通讯类开源框架迅速走红，下面我们就一起来学习这样一款拯救宇宙的开源框架，文章的最后会运用Openfire做出一个可以实时通讯的AndroidAPP，如果结合上地理位置再多点UI和交互上的设计提升，这不就是陌陌吗？YY了一会，觉得挺有趣，那么 <code>Just do it</code>。</p>
 
-<p>Openfire概念性介绍请点击：<a href="http://blog.csdn.net/ithomer/article/details/7192257">http://blog.csdn.net/ithomer/article/details/7192257</a><br/>
-Openfire官网：<a href="http://www.igniterealtime.org/">http://www.igniterealtime.org/</a><br/>
-Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/docs/latest/documentation/install-guide.html">http://www.igniterealtime.org/builds/openfire/docs/latest/documentation/install-guide.html</a></p>
-
-<h3>1. 选择服务器</h3>
-
-<p>对于实时通讯软件，除了我们的客户端，服务器端更是关键。因为服务器是连接两个会话的桥梁。根据安装文档中，Openfire提供了多个平台的安装版本。Windows, Linux/Unix。所以支持还是很丰富的。至于服务器的选择我们可以选择自己的ECS，本地PC，或者Linux虚拟机。选择本机安装的请略过此步骤。<br/>
-为了更加符合真实的安装环境，我选择本地的Linux虚拟机作为服务器环境。方便以后部署到真实的服务器环境中。  <br/>
-在进行下一步之前请先在server上安装mysql和java。</p>
-
-<h3>2. Install openfire</h3>
-
-<p>从官网上下载对应的版本，我这里选择<a href="http://www.igniterealtime.org/downloads/index.jsp">Openfire_3.9.3 Linux版本</a>，登陆服务器后直接使用wget下载</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://www.igniterealtime.org/downloadServlet?filename=openfire/openfire-3.9.3-1.i386.rpm
-</span><span class='line'>
-</span><span class='line'>//下载完成后使用rpm进行安装
-</span><span class='line'>
-</span><span class='line'>rpm -ivh openfire-3.9.3-1.i386.rpm
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Openfire安装完成后会在/opt目录下生成openfire/目录。
-安装完成后就需要进行数据库的配置，按照官方文档：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Make sure that you are using MySQL 4.1.18 or later (5.x recommended) ¹.
-</span><span class='line'>Create a database for the Openfire tables:
-</span><span class='line'>mysqladmin create [databaseName]
-</span><span class='line'>(note: "databaseName" can be something like 'openfire')
-</span><span class='line'>Import the schema file from the resources/database directory of the installation folder:
-</span><span class='line'>Unix/Linux: cat openfire_mysql.sql | mysql [databaseName]; 
-</span><span class='line'>Windows: type openfire_mysql.sql | mysql [databaseName];
-</span><span class='line'>Start the Openfire setup tool, and use the appropriate JDBC connection settings.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>首先使用<code>mysqladmin create openfire</code>创建名为openfire的数据库, <code>cd /opt/openfire/resources/database</code>进入openfire的数据库资源目录，使用<code>cat openfire_mysql.sql | mysql openfire</code>导入openfire的schema数据库文件。</p>
-
-<h3>3. 启动Openfire服务</h3>
-
-<p>使用rpm安装完成后的openfire会在/etc/init.d/中自动生成openfire 文件，可以直接在这里打开服务.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Usage /etc/init.d/openfire {start|stop|restart|status|condrestart|reload}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行openfire服务：<code>/etc/init.d/openfire start</code>，运行<code>/etc/init.d/openfire status</code>显示没有成功运行。<br/>
-查看log <code>cat /opt/openfire/logs</code>，显示<code>nohup: cannot run command /opt/openfire/jre/bin/java: No such file or directory</code>，看来openfire找不到java，所以不能成功启动，但是我们的系统的确已经安装了java，所以可以通过软链解决：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd /opt/openfire/jre/bin
-</span><span class='line'>cp java java.bak
-</span><span class='line'>rm java
-</span><span class='line'>ln -s /usr/bin/java java
-</span><span class='line'>service openfire start
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>软链完成之后，再次开启openfire服务：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ bin]# /etc/init.d/openfire status
-</span><span class='line'>openfire is not running
-</span><span class='line'>[root@iZ23572i0rtZ bin]# /etc/init.d/openfire start
-</span><span class='line'>Starting openfire:
-</span><span class='line'>[root@iZ23572i0rtZ bin]# /etc/init.d/openfire status
-</span><span class='line'>openfire is running
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>status显示openfire已经成功启动。通过虚拟机ip访问9090端口，这时会跳转到setup界面，只需要通过setup便可以完成相关配置。</p>
-
-<p>配置完成之后即可以登录自己的管理控制台。</p>
-
-<h3>4. Integrate to Android</h3>
-
-<p>既然服务器安装完成，那我们可以着手我们的APP。与Openfire关联的客户端XMPP协议库是smack。摸索一番之后发现，要在Android中使用Smack必须使用ASmack库。<a href="http://asmack.freakempire.de/">ASmack下载地址</a>。<br/>
-以实例为主，通过smack实现两个客户端之间的即时通信。<a href="https://github.com/gongmingqm10/SmackDemo">下载地址</a></p>
-
-<h4>Attention</h4>
-
-<ul>
-<li>在AndroidManifest中必须添加Internet permission,否则连接失败。<code>&lt;uses-permission android:name="android.permission.INTERNET"/&gt;</code>.</li>
-<li>客户端对客户端创建聊天时，SID为 username@XXXX, XXXX表示的是服务器名字，我这里是ECS主机名。</li>
-</ul>
-
-
-<h3>5. Github Repository</h3>
-
-<p><a href="https://github.com/gongmingqm10/SmackDemo">https://github.com/gongmingqm10/SmackDemo</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/21/openfire-android-im-kuang-jia-shi-yong/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -845,54 +322,12 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
 
   <div class="entry-content"><p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
 
-<h3>Proguard－代码混淆</h3>
-
-<p>我们经常在js库中看到各种代码混淆，代码混淆主要是对你的代码的类名，方法名以及字段名进行命名，并删除一些无用的换行空格等。让你的代码变得难以读懂，这样能够防止别人反编译你的代码后窃取你的内容。<br/>
-android中代码混淆主要使用IDE自动生成的文件，并通过一些简单的配置就可以实现。中间的混淆步骤则不需要我们关系，android编译过程中自身会处理这些内部的逻辑。我们只需要配置文件就可以。<br/>
-通过官网提供的资料，<a href="http://developer.android.com/tools/help/proguard.html">http://developer.android.com/tools/help/proguard.html</a>，以及网上的大部分资料都是过时的，目前的AndroidStudio0.89中生成project时候只会生成proguard.cfg文件，要想启用proguard代码混淆，我们只需要在app的build.gradle中添加下述配置：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>android {
-</span><span class='line'>    buildTypes {
-</span><span class='line'>        release {
-</span><span class='line'>            runProguard true
-</span><span class='line'>            proguardFile getDefaultProguardFile('proguard-android.txt')
-</span><span class='line'>        }
-</span><span class='line'>    }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>而这个proguard-android.txt则在<code>{sdk.dir}/tools/proguard/proguard-android.txt</code>中，这时proguard混淆时默认的文件，不过我们的sdk目录下却没有。Google君终于帮我们找到了：<a href="https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt">https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt</a>。于是简单粗暴的在tools/目录下新建proguard/proguard-android.txt文件。这时候android就可以使用默认文件进行混淆啦。</p>
-
-<h3>Signing your application</h3>
-
-<p>Android需要所有的应用在安装之前被数字签名，Android通过签名凭证识别应用的作者信息等。在App的Debug模式活着Release模式中都可以进行应用签名，在调试模式中一般是android自动生成凭证给App签名，而在Release发布模式中则需要开发者自己生成凭证来给用户签名。<br/>
-我们主要关注在Release中怎么给自己的应用签名，签名之后的应用才可以发布到各市场中，在Release时给App签名：</p>
-
-<ol>
-<li>Create a keystore. Keystore是一个包含一些private key的二进制文件，你必须把这个文件放在一个安全独立的地方。</li>
-<li>Create a private key. Private key 代表App作者的信息，例如一个开发者或者公司。</li>
-<li>Build a project. 编译你的工程，这时会生成一个未签名的APP。</li>
-<li>Sign your app. 用你的private key来生成你签名版本的APK。</li>
-</ol>
-
-
-<p>这样的APK就能够发布到市场中供用户更新下载。</p>
-
-<p>签名既可以通过IDE直接操作，也可以通过android提供的工具在命令行中进行签名。在IDE中能够简单的生成一个keystore（需要说明的是不同的IDE生成的keystore文件格式是不一样的，主要有.jks, .keystore, 无后缀）。这些keystore在首次创建后下次就可以直接使用了。keystore包含的是一些软件作者的一些信息，也是你更新软件等的重要凭据。通过IDE签名的APK文件都经过了<code>jarsigner, zipalign</code>等操作，所以我们也不需要做额外的事情。<br/>
-如果通过命令行来进行签名，这样的好处是使用命令来自动部署，开发者可以把所有的步骤写在一个shell文件中，部署时只要简单的run这个命令就可以实现了，如果需要编译很多个针对不同市场的版本，通过命令的模式就能够大大节约发布APP的时间。</p>
-
-<p>更多详细信息请参考<a href="http://developer.android.com/tools/publishing/app-signing.html">http://developer.android.com/tools/publishing/app-signing.html</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/17/android-deploy-your-app/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -983,51 +418,15 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
 <li><p>进入到自己工程所在的目录下，以Users/mingong/project/Sheldon为例：<code>cd  project/Sheldon</code></p></li>
 <li><p>在Git项目根目录下开启Daemon服务器  <code>git daemon --base-path=. --export-all --reuseaddr --informative-errors  —verbose</code></p></li>
 <li><p>使用ifconfig查看本机电脑内网IP地址：<code>ifconfig</code>，以我的电脑为例，查看到的IP地址为 <code>10.113.241.150</code></p></li>
-<li><p><code>clone/pull</code>代码到另外一台电脑（两台电脑需在同一个内网下即可），为模拟需要，直接到我的Downloads目录下面模拟进行后续步骤。<br/>
-首先我需要在Doanloads文件夹中<code>clone project: git clone git://10.113.241.150/sheldon</code> ，
-ls可以看到我的Downloads中已经成功clone了sheldon工程，clone了工程的下一步就是pull, 当A电脑上的代码变动之后，我需要直接更新代码，首先进入sheldon根目录中：<code>git pull git://10.113.241.150/</code></p></li>
-<li><p>增加push权限<br/>
-在B电脑上clone代码后，B电脑上的伙伴修改完代码会需要将代码push回A电脑的工程中，
-在第2步中开启的git daemon给可访问的客户端read权限，在需要开启write权限时，我们需要给git daemon增加 <code>—enable=receive-pack</code>，执行命令如下，  <br/>
-<code>git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors  —verbose</code><br/>
-There is one quirk: client can’t push into your active git branch. Before pushing, user on the server should change the branch, if client wants to push to this branch.<br/>
-客户端B不能直接提交master到当前活跃分支，所以可以在B新建一个分支，只要提交分支到A的repo中即可，由A决定是否进行分支merge.</p></li>
 </ol>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ git checkout -b sharing
-</span><span class='line'># made some changes ...
-</span><span class='line'>$ git commit -am "add sharing feature"
-</span><span class='line'>$ git push -u origin sharing
-</span><span class='line'>...
-</span><span class='line'>* [new branch]      sharing -&gt; sharing
-</span><span class='line'>...
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>在服务器端merge分支</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ git checkout master
-</span><span class='line'>$ git merge sharing
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>至此，push工作也就基本完成了。Git 还是很强大的。</p>
-
-<p>参考网址： <a href="http://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/">taming-the-git-daemon-to-quickly-share-git-repository</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/14/git-daemon-jian-li-ben-di-gitfu-wu-qi/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -1069,58 +468,12 @@ There is one quirk: client can’t push into your active git branch. Before push
 
 <p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
 
-<hr />
-
-<p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
-
-<p>A: 答案显然是Override不是必须的，没有onCreate()的Activity还是可以运行的，那么究竟会运行成什么样子呢。<br/>
-实例中试一试，从MainActivity中打开没有Override任何Method的Activity，发现界面上会出现一个白底界面的Activity，说明我们的Activity最终还是运行了的。只不过界面上没有任何元素，因为我们没有指定contentView。</p>
-
-<hr />
-
-<p><strong>Q: onStop()等在生命周期中是否一定会被调用?</strong></p>
-
-<p>A: onStart(), onResume(), onPause(), onStop()都可以不被调用。因为一旦在onCreate()中我们直接手动调用finish()，相当于告诉Activity结束，于是系统会直接调用onDestroy()来销毁当前的Activity。</p>
-
-<hr />
-
-<p><strong>Q: onCreate()中的参数savedInstanceState意义是什么，会在什么情况下用到？</strong></p>
-
-<p>A：按照官方的解释：</p>
-
-<blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
- *     previously being shut down then this Bundle contains the data it most
- *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
- * 
-</code></pre></blockquote>
-
-<p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>
-
-<hr />
-
-<p><strong>Q: Activity与Fragment的区别</strong></p>
-
-<p>A: Activity相信大家都不陌生，其实可以简单的看着一个页面，跳转到另外一个页面一般就进入新的Activity。那么Android从API11开始使用Fragment的原因呢？其实主要是为了适配Android的多屏（特别是手机与平板）问题。一般情况下，如果按照普通的设计思路，我们会同时维护两份代码，并且UI上会有比较大的区别。对于快速升级的互联网产品而言，简直就是一个灾难。这时Google想了一个好的办法，在代码中引入Fragment，Fragment相当于一个module，我们所有的UI可以以模块的形式放到Fragment中。这时候的Fragment能够被多个Activity复用，我们的Activity此时做的事情就是组装这些Fragment。在平板中，我可以在ActivityA中放入FragmentA和FragmentB；在手机中，我则会在ActivityA中放入FragmentA，而在ActivityB中放入FragmentB。所以平板和手机的适配问题变成了简单的组装。从而我们的View不需要进行各种大的变动。这能够为开发者节省很多时间。<br/>
-具体参考：<a href="http://developer.android.com/guide/components/fragments.html">Android Fragment Component</a></p>
-
-<hr />
-
-<p><strong>Q: UI线程你知道多少？</strong></p>
-
-<p>A：UI线程就是我们常说的主线程，UI线程负责着与用户的交互操作，会处理用户的触摸滑动点击等事件，并把这些事件分发给相应的组件来处理。如果我们尝试在UI线程中进行一个耗时的操作，那么我们的APP会出现ANR（Application not responsing）异常。在UI线程中直接进行耗时操作就会造成主线程阻塞，阻塞到达一定时间则会产生ANR。<br/>
-为了防止这种UI错误，我们进行的处理是将耗时操作放到另外一个线程中处理，耗时操作完成后，我们不能在非UI线程中进行UI的操作，这样是不安全的。因为我们可以借助Handler把更新的消息发给主线程，然后在主线程中更新UI操作。下面是几种耗时操作后更新UI线程的方法：</p>
-
-<ul>
-<li>View.post(Runnable runnable)</li>
-<li>Activity.runOnUiThread(Runnable runnable)</li>
-<li>AsyncTask</li>
-<li>Hanlder + Thread</li>
-</ul>
-
-
-<p>事实上前面三种都是使用java封装好的其他线程中操作UI线程的方法，这些方法都是为了方便开发人员而进行的一些处理。具体用法，大家可以Google之。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/13/android-quiz-questions/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -1165,140 +518,12 @@ There is one quirk: client can’t push into your active git branch. Before push
 </ul>
 
 
-<h3>2. 打包Webapp为war文件</h3>
-
-<p>不同的工程可以使用不同的工具进行打包，我们项目工程采用gradle + jetty构建的，因此在打包时还是使用gradle自带的方式进行打包。本项目build.gradle配置如下:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apply plugin: 'idea'
-</span><span class='line'>apply plugin: 'war'
-</span><span class='line'>apply plugin: 'jetty'
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>tasks.withType(Compile) {
-</span><span class='line'>    options.encoding = "UTF-8"
-</span><span class='line'>}
-</span><span class='line'>repositories {
-</span><span class='line'>    mavenCentral()
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>dependencies {
-</span><span class='line'>    providedCompile 'javax.servlet:servlet-api:2.5'
-</span><span class='line'>
-</span><span class='line'>    def springFrameworkVersion = '3.2.2.RELEASE'
-</span><span class='line'>
-</span><span class='line'>    compile "org.springframework:spring-web:${springFrameworkVersion}",
-</span><span class='line'>            "org.springframework:spring-webmvc:${springFrameworkVersion}",
-</span><span class='line'>            "org.springframework:spring-beans:${springFrameworkVersion}",
-</span><span class='line'>            "org.springframework:spring-context:${springFrameworkVersion}",
-</span><span class='line'>            "org.springframework:spring-jdbc:${springFrameworkVersion}"
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    compile "aopalliance:aopalliance:1.0"
-</span><span class='line'>    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.+"
-</span><span class='line'>    compile "org.mybatis:mybatis:3.2.3"
-</span><span class='line'>    compile 'org.apache.commons:commons-lang3:3.1'
-</span><span class='line'>    compile 'commons-fileupload:commons-fileupload:1.2.2'
-</span><span class='line'>    compile 'commons-io:commons-io:1.3.2'
-</span><span class='line'>
-</span><span class='line'>    runtime "commons-pool:commons-pool:1.3",
-</span><span class='line'>            "commons-dbcp:commons-dbcp:1.2.2",
-</span><span class='line'>            "commons-collections:commons-collections:3.2",
-</span><span class='line'>            'javax.servlet:jstl:1.2',
-</span><span class='line'>            "org.slf4j:slf4j-log4j12:1.6.0",
-</span><span class='line'>            "mysql:mysql-connector-java:5.1.5",
-</span><span class='line'>            'log4j:log4j:1.2.16'
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>根目录下直接使用 <code>gradle war</code>就可以快速打包完成。打包完成后我们在 <code>build/libs/</code> 目录下可以看到工程的war包, demo.war</p>
-
-<h3>3. 服务器上安装java7, mysql, tomcat7</h3>
-
-<p>服务器中要安装的环境主要根据我们项目中所需的环境。安装好环境之后，我们的webapp才可能服务器中正常运行。java7和mysql我们前面已经介绍过，所有这些安装问题其实都可以google找到解答。下面主要介绍tomcat7的安装过程：  <br/>
-首先通过<code>ssh root@121.40.97.118</code>连接到ECS上：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd /tmp  
-</span><span class='line'>wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.56/bin/apache-tomcat-7.0.56.tar.gz
-</span><span class='line'>tar xzf apache-tomcat-7.0.56.tar.gz
-</span><span class='line'>mv apache-tomcat-7.0.57 /usr/local/tomcat7
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装完成后，通过 <code>cd /usr/lcoal/tomcat7</code>进入到tomcat根目录下，<code>./bin/startup.sh</code>运行tomcat服务器，本机浏览器中访问 <code>121.40.97.118:8080</code>，如果成功出现tomcat的配置页面，则tomcat7安装完成。当然我们业可以通过 <code>/usr/local/tomcat7/conf/tomcat-users.xml</code>来配置tomcat的管理员角色，具体请参考apache tomcat 官网。</p>
-
-<h3>4. 复制war文件到tomcat7/webapps目录中</h3>
-
-<p>我们需要将第2步生成的demo.war复制到服务器的webapp目录中，直接在terminal中使用<code>scp</code>命令：<br/>
-<code>scp demo.war root@121.40.97.118:/usr/local/tomcat7/webapps/demo.war</code>，复制过程完成后，文件开始存在于服务器的webapps文件夹下面，war包能够被tomcat自动解析。访问<code>121.40.97.118:8080/demo</code>，我们可以看到自己的app终于可以访问了。</p>
-
-<h3>5. More</h3>
-
-<p>到第4步，其实基本完成了部署过程。<br/>
-我们自己访问时必须加上8080端口号看的也是略不爽。此时可以通过<code>/usr/local/tomcat7/conf/server.xml</code>对里面默认的8080端口进行修改，改为80端口。这次我们直接访问<code>121.40.97.118/demo</code>，发现可以访问成功了。  <br/>
-再看看，我们地址后面还需要加上demo，看起来业有点不爽。我想让这台主机默认直接访问demo工程。通过观察webapps看到里面有个ROOT目录，先备份ROOT目录，然后把我们的demo.war改称ROOT.war再看看效果:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mv ROOT root.backup  
-</span><span class='line'>mv demo.war ROOT.war
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>再次访问<code>121.40.97.118</code>，这时候我们可以直接看到我们的web应用了。</p>
-
-<p>如果你还嫌不够酷的话，可以增加一个域名来转到这个网站。我在自己的域名管理中增加了一个二级域名<code>demo.gongmingqm10.net</code>映射到<code>121.40.97.118</code>，再次访问<code>demo.gongmingqm10.net</code>，但是事情没有预料的那么好，显示网站没有备案，好吧。其实下一步我可以去备案了～～</p>
-
-<hr />
-
-<p>此博客主要用于自己学习的记录过程，小弟才疏学浅，如有纰漏的地方请各位看官多多指正，共同进步。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/12/deploy-app-to-remote-server/">Read on &rarr;</a>
+    </footer>
   
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-09-14T17:50:46+08:00</updated>
+  <updated>2015-09-14T17:57:59+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -131,6 +131,9 @@
     <content type="html"><![CDATA[<p>当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。</p>
 
 <p>在测试方面，Android早期即存在UIAtomator和Monkey之类的测试，但是用起来实在不方便。2013年，Google开源了针对An ndroid平台的移动测试框架 &ndash; Espresso。Espresso可以针对每个页面(Activity)进行测试。开发者可以根据ID获取到页面元素，然后进行点击、长按等操作。结合Junit和Mock等工具，使得移动端测试成为可能。移动端拥有了测试框架的辅助，借助CI平台，持续交付也成为可能。</p>
+
+<!-- more -->
+
 
 <h2>Android测试的类别</h2>
 
@@ -349,6 +352,9 @@
     <content type="html"><![CDATA[<p>14年6月26日的Google I/O大会上，Google推出了一门全新的设计语言Material Design。Material Design在随后的一年里被逐渐应用到Android, Web等平台中。Material Design的推出意味着Google对移动端和网页端设计的整合。固然没有引起轩然大波，但是Material Design却让Android开发者看到了一点福音。</p>
 
 <p>虽然Android系统广受诟病，越来越多的用户投奔苹果的iOS系统。然而这阻挡不了Android的不断改进。14年Google I/O, Google推出了Android的5.0版本，代号Lollipop。5.0版本在设计上采用全新的Material Design，虽然这次升级对ROM生产商来说是道“过不去的坎儿”，但是对开发者群体而言却是一次很不错的升级。因为开发者可以凭借有些的设计资源打造出更好看的App。</p>
+
+<!-- more -->
+
 
 <h2>关于Material Design</h2>
 
@@ -683,6 +689,9 @@
 
 <p>在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率</p>
 
+<!-- more -->
+
+
 <p><img src="http://www.gongmingqm10.net/images/retina_one_screen.jpg" title="Mac retina resolution" ></p>
 
 <p>上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。</p>
@@ -802,6 +811,9 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
 <p>这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性，降低其他不可知因素对代码的影响。而Docker和VM虚拟机相比又有其特点，比如启动速度快，可以单独将Docker保存为镜像，上传后能够让别人使用。甚至可以直接将自己的code放在Docker中，直接将环境和代码一起交付给客户。客户只需要安装这个Docker，运行后就可以直接使用这个application了。</p>
 
 <blockquote><p>Develop, Ship and Run Any Application, Anywhere</p></blockquote>
+
+<!-- more -->
+
 
 <p>Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.</p>
 
@@ -1151,7 +1163,7 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
 </pre></td><td class='code'><pre><code class=''><span class='line'>android {
 </span><span class='line'>
 </span><span class='line'>  defaultConfig{...}
-</span><span class='line'>  
+</span><span class='line'>
 </span><span class='line'>    productFlavors {
 </span><span class='line'>        dev {
 </span><span class='line'>            applicationId "com.tarcle.moment.dev"
@@ -1164,15 +1176,15 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
 </span><span class='line'>        }
 </span><span class='line'>
 </span><span class='line'>    }
-</span><span class='line'>    
+</span><span class='line'>
 </span><span class='line'>    signingConfigs {
 </span><span class='line'>      release {...}
 </span><span class='line'>    }
-</span><span class='line'>    
+</span><span class='line'>
 </span><span class='line'>    buildTypes {
 </span><span class='line'>      release {...}
 </span><span class='line'>    }
-</span><span class='line'>    
+</span><span class='line'>
 </span><span class='line'>    packageOptions {...}
 </span><span class='line'>}
 </span></code></pre></td></tr></table></div></figure>
@@ -1216,6 +1228,9 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
     <content type="html"><![CDATA[<p>随着Android平台的逐渐成熟，伴随着一系列针对Android测试框架的推出，开发人员终于可以如愿以偿的在移动端的开发上进行单元测试，集成测试以及功能测试。在敏捷流程中从开发，到测试，到验收最终成为面向用户的Release版本，经历的是Story一个完整的生命周期。CI(Continuous Integration, 持续交付)在敏捷实践中也因此扮演了非常重要的角色。</p>
 
 <p>如果说Web的持续集成，以及各类测试框架有一定的历史积淀了。那么Android的持续集成可以说是新鲜事物，大部分IT公司知道如何对服务器端或者Web端进行一系列自动化测试，保证其功能的正确性。而对于移动端的产品比较多的则是由测试人员组成的人肉测试。移动端的这种人工测试，无论是对测试人员，还是要经常打包并且来修复各种Bug的开发人员来说，其代价是巨大的。</p>
+
+<!-- more -->
+
 
 <p>从Android 2.3.3 版本就开始，我就成为了Android的开发者。从开发者的角度见证了Android的步步升级，也从普通用户的角度见证了Android在中低端市场上的统治权。虽然我对Apple的产品也很满意，但是我对Android的感情却也是无法割舍的。我庆幸自己终于能够在Android上也见证测试驱动开发的实践，也庆幸自己有机会去亲身实践，从零开始学习并了解Android的持续集成。</p>
 
@@ -1605,6 +1620,9 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
 
 <p>由于敏捷包含的方面很多，作为Developer的我，也会主要从Developer的角度，结合自己的想法来谈自己在这一年对敏捷的认识。此文不是软文，只是自己闲时的一点纪录。不喜求轻喷。</p>
 
+<!-- more -->
+
+
 <h3>开发驱动测试(DDT)</h3>
 
 <p>加入TW，很长一段时间我一直都抱有这个想法。当时虽然已经在项目上工作，在Code Review的压力下也会偶尔用开发驱动测试(DDT)。因为别人告诉我<code>不写测试的程序员不是好程序员</code>，这个句式怎么听起来和<code>不想当将军的士兵不是好士兵</code>一个道理。听起来是很多道理，但是真正实施的时候呢，我开始犯难了。</p>
@@ -1792,6 +1810,9 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
     <id>http://www.gongmingqm10.net/blog/2015/01/22/2015-annual-review</id>
     <content type="html"><![CDATA[<p>2015年悄然来临，算上实习期，在TW待的日子也将近一年。在Annual Review这个环节我也开始梳理自己走过的2014年，关于项目，关于团队，关于成长的那点苦与甜。按照惯例，我将从以下几个方面一一道来：</p>
 
+<!-- more -->
+
+
 <h2>Sponser Review</h2>
 
 <h4>过去一年做得好的地方 (What did I do well during the last year) ?</h4>
@@ -1906,6 +1927,9 @@ ls -a ： 查看目录下所有文件，包括隐藏文件  <br/>
 ls -l : 查看目录下可见文件的详细信息<br/>
 ls -al 查看目录下所有文件的详细信息</p>
 
+<!-- more -->
+
+
 <p>cat file: 查看文件内容<br/>
 cat -n file: 查看文件内容，并显示出行号<br/>
 cat file1 file2 >> file3：将file1, file2的文件内容以此加到file3中，如果file3存在，则会在file3后面继续追加，不会覆盖file3原来的内容，如果file3不存在，则会自动创建。若需要强行覆盖，使用一个  > 即可</p>
@@ -1956,6 +1980,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <content type="html"><![CDATA[<p>看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：<br/>
 我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
 在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
+
+<!-- more -->
+
 
 <p>实现部分主要注册一个CallReceiver，并给我们的Receiver监听电话，发送短信，开机重启等权限。编译通过后便可以安装在手机上使用了。贴出主要代码：</p>
 
@@ -2104,6 +2131,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <id>http://www.gongmingqm10.net/blog/2014/10/28/android-data-cache</id>
     <content type="html"><![CDATA[<p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
 
+<!-- more -->
+
+
 <h3>Usage</h3>
 
 <p>整个Cache模块的设计思想很简单，每个缓存数据都对应一个key，每个缓存数据又会被存到以此key命名的文件中，需要时直接读取。关键类分别为<code>CacheData</code>, <code>CacheManager</code>, <code>CacheUtils</code>。</p>
@@ -2151,8 +2181,12 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <updated>2014-10-21T11:06:42+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/21/vagrant-da-jian-ben-di-xu-ni-ji</id>
     <content type="html"><![CDATA[<p>多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。<br/>
-虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。<br/>
-安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
+虚拟机除了大家熟知的界面化的VirtualBox外，其实还有一个神器叫做<a href="https://www.vagrantup.com/">Vagrant</a>，Vagrant是依赖于VirtualBox的，但是其好处是提供命令行式的操作，我们直接通过命令行控制虚拟机的运行状态，并可以通过ssh命令直接连接到虚拟机中，命令行操作一切，还是相当方面的。</p>
+
+<!-- more -->
+
+
+<p>安装过程见官方文档：<a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>。</p>
 
 <h3>1. vagrant init</h3>
 
@@ -2431,6 +2465,9 @@ find . -name *.png 在当前文件夹下查找后缀名为.png的文件，子文
     <content type="html"><![CDATA[<p>IM(Instant Messaging)在Android中可谓运用广泛。QQ，Wechat，陌陌等应用都可以看作IM实时通讯APP，实时通讯在社交类APP中运用范围较广，其功能看起来也是比较cool的。今天我们将研究一下android IM软件是如何实现的。像IM这种实施通讯软件，除非公司有比较大的实力和精力，才会自己去整这么一套框架。对于广大中小软件开发者来说，想到比较多的就是开源框架。Opensource对于开发者来说简直就是福音，对于整个软件行业也起到了不小的推动性的作用。<br/>
 Openfire在这种环境下应运而生，而且作为实时通讯类开源框架迅速走红，下面我们就一起来学习这样一款拯救宇宙的开源框架，文章的最后会运用Openfire做出一个可以实时通讯的AndroidAPP，如果结合上地理位置再多点UI和交互上的设计提升，这不就是陌陌吗？YY了一会，觉得挺有趣，那么 <code>Just do it</code>。</p>
 
+<!-- more -->
+
+
 <p>Openfire概念性介绍请点击：<a href="http://blog.csdn.net/ithomer/article/details/7192257">http://blog.csdn.net/ithomer/article/details/7192257</a><br/>
 Openfire官网：<a href="http://www.igniterealtime.org/">http://www.igniterealtime.org/</a><br/>
 Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/docs/latest/documentation/install-guide.html">http://www.igniterealtime.org/builds/openfire/docs/latest/documentation/install-guide.html</a></p>
@@ -2474,7 +2511,7 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
 </span><span class='line'>mysqladmin create [databaseName]
 </span><span class='line'>(note: "databaseName" can be something like 'openfire')
 </span><span class='line'>Import the schema file from the resources/database directory of the installation folder:
-</span><span class='line'>Unix/Linux: cat openfire_mysql.sql | mysql [databaseName]; 
+</span><span class='line'>Unix/Linux: cat openfire_mysql.sql | mysql [databaseName];
 </span><span class='line'>Windows: type openfire_mysql.sql | mysql [databaseName];
 </span><span class='line'>Start the Openfire setup tool, and use the appropriate JDBC connection settings.
 </span></code></pre></td></tr></table></div></figure>
@@ -2553,6 +2590,9 @@ Openfire安装文档：<a href="http://www.igniterealtime.org/builds/openfire/do
     <updated>2014-10-17T12:56:13+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2014/10/17/android-deploy-your-app</id>
     <content type="html"><![CDATA[<p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
+
+<!-- more -->
+
 
 <h3>Proguard－代码混淆</h3>
 
@@ -2638,6 +2678,13 @@ android中代码混淆主要使用IDE自动生成的文件，并通过一些简�
 <li><p>进入到自己工程所在的目录下，以Users/mingong/project/Sheldon为例：<code>cd  project/Sheldon</code></p></li>
 <li><p>在Git项目根目录下开启Daemon服务器  <code>git daemon --base-path=. --export-all --reuseaddr --informative-errors  —verbose</code></p></li>
 <li><p>使用ifconfig查看本机电脑内网IP地址：<code>ifconfig</code>，以我的电脑为例，查看到的IP地址为 <code>10.113.241.150</code></p></li>
+</ol>
+
+
+<!-- more -->
+
+
+<ol>
 <li><p><code>clone/pull</code>代码到另外一台电脑（两台电脑需在同一个内网下即可），为模拟需要，直接到我的Downloads目录下面模拟进行后续步骤。<br/>
 首先我需要在Doanloads文件夹中<code>clone project: git clone git://10.113.241.150/sheldon</code> ，
 ls可以看到我的Downloads中已经成功clone了sheldon工程，clone了工程的下一步就是pull, 当A电脑上的代码变动之后，我需要直接更新代码，首先进入sheldon根目录中：<code>git pull git://10.113.241.150/</code></p></li>
@@ -2697,6 +2744,9 @@ There is one quirk: client can’t push into your active git branch. Before push
 
 <p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
 
+<!-- more -->
+
+
 <hr />
 
 <p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
@@ -2719,7 +2769,7 @@ There is one quirk: client can’t push into your active git branch. Before push
 <blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
  *     previously being shut down then this Bundle contains the data it most
  *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
- * 
+ *
 </code></pre></blockquote>
 
 <p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>
@@ -2764,6 +2814,9 @@ There is one quirk: client can’t push into your active git branch. Before push
 <li>一个远程服务器主机</li>
 <li>Mac或者Linux系统的机器</li>
 </ul>
+
+
+<!-- more -->
 
 
 <h3>2. 打包Webapp为war文件</h3>
