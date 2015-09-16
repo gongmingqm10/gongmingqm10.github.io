@@ -18,6 +18,8 @@ categories: DevOps
 2. 使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；
 3. 从本机浏览器中访问 jenkins 主页；
 
+<!-- more -->
+
 ![Tomcat](http://7xj9js.com1.z0.glb.clouddn.com/tomcat.png =500x)
 
 
