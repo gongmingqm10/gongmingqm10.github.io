@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-09-16T16:44:23+08:00</updated>
+  <updated>2015-09-16T20:44:13+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -124,6 +124,153 @@
 <p>如果 Tomcat 已经运行成功，并且我们成功下载 jenkins.war。</p>
 
 <p><img src="http://7xj9js.com1.z0.glb.clouddn.com/jenkins.png" width="500" alt="Jenkins" /></p>
+
+<h2>用户权限与控制</h2>
+
+<p>Linux 有着完善的用户管理，不同的用户大致分为如下几组：</p>
+
+<ul>
+<li>文件拥有者</li>
+<li>群组</li>
+<li>其他人</li>
+</ul>
+
+
+<h4>passwd</h4>
+
+<p>用来记录文件的基本属性</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat /etc/passwd</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>将 jenkins 和 tomcat 用户添加到 DevOps 群组中</h3>
+
+<p>首先新建群组，然后将用户添加到群组中。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ming@ubuntu:/$ sudo groupadd DevOps
+</span><span class='line'>ming@ubuntu:/$ sudo usermod -G DevOps jenkins</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>查看群组下所有用户</h3>
+
+<p>为了验证我们上述的用户添加组操作已经成功，需要查看群组下所有用户：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat /etc/group</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>给 DevOps 设置管理员 ming</h3>
+
+<p>使用 gpasswd 命令来设置：<code>sudo gpasswd －A ming DevOps</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ming@ubuntu:/$ sudo gpasswd --help
+</span><span class='line'>Usage: gpasswd [option] GROUP
+</span><span class='line'>
+</span><span class='line'>Options:
+</span><span class='line'>  -a, --add USER                add USER to GROUP
+</span><span class='line'>  -d, --delete USER             remove USER from GROUP
+</span><span class='line'>  -h, --help                    display this help message and exit
+</span><span class='line'>  -Q, --root CHROOT_DIR         directory to chroot into
+</span><span class='line'>  -r, --remove-password         remove the GROUP's password
+</span><span class='line'>  -R, --restrict                restrict access to GROUP to its members
+</span><span class='line'>  -M, --members USER,...        set the list of members of GROUP
+</span><span class='line'>  -A, --administrators ADMIN,...
+</span><span class='line'>                                set the list of administrators for GROUP
+</span><span class='line'>Except for the -A and -M options, the options cannot be combined.</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>文件权限</h2>
+
+<p>以下列目录为例，查看该目录下面所有文件/文件夹的权限：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ming@ubuntu:/$ ls -l
+</span><span class='line'>total 80
+</span><span class='line'>drwxr-xr-x   2 root root  4096 Sep 14 15:51 app
+</span><span class='line'>drwxr-xr-x   2 root root  4096 Sep 16 15:31 bin
+</span><span class='line'>drwxr-xr-x   3 root root  4096 Sep  7 17:30 boot
+</span><span class='line'>drwxr-xr-x  18 root root  4160 Sep 16 13:46 dev
+</span><span class='line'>drwxr-xr-x 107 root root  4096 Sep 16 19:43 etc
+</span><span class='line'>drwxr-xr-x   6 root root  4096 Sep 16 19:29 home
+</span><span class='line'>lrwxrwxrwx   1 root root    33 Sep  7 17:16 initrd.img -&gt; boot/initrd.img-3.19.0-15-generic
+</span><span class='line'>drwxr-xr-x  21 root root  4096 Sep  7 17:26 lib
+</span><span class='line'>drwxr-xr-x   2 root root  4096 Sep  7 17:16 lib64
+</span><span class='line'>drwx------   2 root root 16384 Sep  7 17:16 lost+found
+</span><span class='line'>drwxr-xr-x   3 root root  4096 Sep  7 17:16 media
+</span><span class='line'>drwxr-xr-x   2 root root  4096 Apr 18 05:34 mnt
+</span><span class='line'>drwxr-xr-x   3 root root  4096 Sep 16 15:51 opt
+</span><span class='line'>dr-xr-xr-x 103 root root     0 Sep 16 13:46 proc
+</span><span class='line'>drwx------   2 root root  4096 Sep  7 17:16 root</span></code></pre></td></tr></table></div></figure>
+
+
+<p>r(可读, 2<sup>2</sup>) w (可写, 2<sup>1</sup>) x (可执行, 2<sup>0</sup>)</p>
+
+<p>第一个参数表述文件类型：文件夹、文件、链接等。</p>
+
+<p>rwx(Owner) rwx(Group) rwx(Others)</p>
+
+<h3>改变文件属性</h3>
+
+<p>使用 usermod 将用户 jenkins 主目录设置为 <code>/devops/jenkins</code>：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo usermod -m -d /devops/jenkins jenkins</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更改 <code>devops/jenkins</code> 和 <code>/devops/tomcat</code> 文件可以被 jenkins 和 tomcat 用户互相读：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ming@ubuntu:/devops$ sudo chmod 740 jenkins
+</span><span class='line'>ming@ubuntu:/devops$ ls -l
+</span><span class='line'>total 8
+</span><span class='line'>drwxr----- 2 jenkins jenkins 4096 Sep 16 20:11 jenkins
+</span><span class='line'>drwxr-xr-x 5 tomcat  tomcat  4096 Sep 16 20:11 tomcat</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参考</h2>
+
+<p>如果你的 VirtualBox 虚拟机不能通过 SSH 登录，请参考 <a href="http://louisrli.github.io/blog/2012/08/30/virtualbox-ipv6-ssh/#.VflDXZ2qqkp">Enabling VirtualBox SSH on IPv6</a>.</p>
+
+<p>Linux 命令大全之 passwd 命令：<a href="http://man.linuxde.net/passwd">http://man.linuxde.net/passwd</a></p>
+
+<p>鸟哥的 Linux 账号管理与 ACL 权限设定：<a href="http://linux.vbird.org/linux_basic/0410accountmanager.php">http://linux.vbird.org/linux_basic/0410accountmanager.php</a></p>
 ]]></content>
   </entry>
   
