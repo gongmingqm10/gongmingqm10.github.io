@@ -100,3 +100,115 @@ mv apache-tomcat-7.0.64/* /opt/tomcat7
 如果 Tomcat 已经运行成功，并且我们成功下载 jenkins.war。
 
 ![Jenkins](http://7xj9js.com1.z0.glb.clouddn.com/jenkins.png =500x)
+
+## 用户权限与控制
+
+Linux 有着完善的用户管理，不同的用户大致分为如下几组：
+
+* 文件拥有者
+* 群组
+* 其他人
+
+#### passwd
+
+用来记录文件的基本属性
+
+```
+cat /etc/passwd
+```
+
+### 将 jenkins 和 tomcat 用户添加到 DevOps 群组中
+
+首先新建群组，然后将用户添加到群组中。
+
+```
+ming@ubuntu:/$ sudo groupadd DevOps
+ming@ubuntu:/$ sudo usermod -G DevOps jenkins
+```
+
+### 查看群组下所有用户
+
+为了验证我们上述的用户添加组操作已经成功，需要查看群组下所有用户：
+
+```
+cat /etc/group
+```
+
+### 给 DevOps 设置管理员 ming
+
+使用 gpasswd 命令来设置：`sudo gpasswd －A ming DevOps`
+
+```
+ming@ubuntu:/$ sudo gpasswd --help
+Usage: gpasswd [option] GROUP
+
+Options:
+  -a, --add USER                add USER to GROUP
+  -d, --delete USER             remove USER from GROUP
+  -h, --help                    display this help message and exit
+  -Q, --root CHROOT_DIR         directory to chroot into
+  -r, --remove-password         remove the GROUP's password
+  -R, --restrict                restrict access to GROUP to its members
+  -M, --members USER,...        set the list of members of GROUP
+  -A, --administrators ADMIN,...
+                                set the list of administrators for GROUP
+Except for the -A and -M options, the options cannot be combined.
+```
+
+## 文件权限
+
+以下列目录为例，查看该目录下面所有文件/文件夹的权限：
+
+```
+ming@ubuntu:/$ ls -l
+total 80
+drwxr-xr-x   2 root root  4096 Sep 14 15:51 app
+drwxr-xr-x   2 root root  4096 Sep 16 15:31 bin
+drwxr-xr-x   3 root root  4096 Sep  7 17:30 boot
+drwxr-xr-x  18 root root  4160 Sep 16 13:46 dev
+drwxr-xr-x 107 root root  4096 Sep 16 19:43 etc
+drwxr-xr-x   6 root root  4096 Sep 16 19:29 home
+lrwxrwxrwx   1 root root    33 Sep  7 17:16 initrd.img -> boot/initrd.img-3.19.0-15-generic
+drwxr-xr-x  21 root root  4096 Sep  7 17:26 lib
+drwxr-xr-x   2 root root  4096 Sep  7 17:16 lib64
+drwx------   2 root root 16384 Sep  7 17:16 lost+found
+drwxr-xr-x   3 root root  4096 Sep  7 17:16 media
+drwxr-xr-x   2 root root  4096 Apr 18 05:34 mnt
+drwxr-xr-x   3 root root  4096 Sep 16 15:51 opt
+dr-xr-xr-x 103 root root     0 Sep 16 13:46 proc
+drwx------   2 root root  4096 Sep  7 17:16 root
+```
+r(可读, 2^2) w (可写, 2^1) x (可执行, 2^0)
+
+第一个参数表述文件类型：文件夹、文件、链接等。
+
+rwx(Owner) rwx(Group) rwx(Others)
+
+### 改变文件属性
+
+使用 usermod 将用户 jenkins 主目录设置为 `/devops/jenkins`：
+
+```
+sudo usermod -m -d /devops/jenkins jenkins
+```
+
+更改 `devops/jenkins` 和 `/devops/tomcat` 文件可以被 jenkins 和 tomcat 用户互相读：
+
+```
+ming@ubuntu:/devops$ sudo chmod 740 jenkins
+ming@ubuntu:/devops$ ls -l
+total 8
+drwxr----- 2 jenkins jenkins 4096 Sep 16 20:11 jenkins
+drwxr-xr-x 5 tomcat  tomcat  4096 Sep 16 20:11 tomcat
+```
+
+## 参考
+
+如果你的 VirtualBox 虚拟机不能通过 SSH 登录，请参考 [Enabling VirtualBox SSH on IPv6](http://louisrli.github.io/blog/2012/08/30/virtualbox-ipv6-ssh/#.VflDXZ2qqkp).
+
+Linux 命令大全之 passwd 命令：[http://man.linuxde.net/passwd](http://man.linuxde.net/passwd)
+
+鸟哥的 Linux 账号管理与 ACL 权限设定：[http://linux.vbird.org/linux_basic/0410accountmanager.php](http://linux.vbird.org/linux_basic/0410accountmanager.php)
+
+
+
