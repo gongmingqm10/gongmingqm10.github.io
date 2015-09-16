@@ -9,7 +9,8 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="最近公司在组织DevOps培训，于是就有个这个系列的文章，作为培训笔记，作为以后参考。如果你还不知道DevOps概念，请参考Wikipedia。 DevOps（英文Development和Operations的组合）是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、 &hellip;">
+  <meta name="description" content="本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。 课前准备 课前准备阶段，我们需要完成简单的作业： 使用 tomcat 用户安装 tomcat7 服务器；
+使用 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,147 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/16/devops-session-2/">DevOps Session 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-16T14:24:51+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2015</time>
+        
+        
+        | <a href="/blog/2015/09/16/devops-session-2/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。</p>
+
+<h2>课前准备</h2>
+
+<p>课前准备阶段，我们需要完成简单的作业：</p>
+
+<ol>
+<li>使用 tomcat 用户安装 tomcat7 服务器；</li>
+<li>使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；</li>
+<li>从本机浏览器中访问 jenkins 主页；</li>
+</ol>
+
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/tomcat.png" width="500" alt="Tomcat" /></p>
+
+<h3>创建用户</h3>
+
+<p>我们需要分别创建<code>jenkins</code>和<code>tomcat</code>用户。出于安全的考虑，这两个用户不应该有管理员权限。创建用户命令如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo adduser jenkins
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装提示，进一步设置 jenkins 用户的密码，设置完成后，应该可以通过 <code>su jenkins</code> 切换到 jenkins 用户验证用户是否创建成功。</p>
+
+<h3>安装 Java</h3>
+
+<p>直接在主用户下面使用 <code>apt-get</code>安装 Java7，命令如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install openjdk-7-jdk</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想了解更多，请查看文章：<a href="http://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu">Install Java7 on Ubuntu</a></p>
+
+<h3>安装 Tomcat</h3>
+
+<p>apt 可以直接安装 Tomcat，我们这里从源码安装 tomcat7。</p>
+
+<p>首先需要从 <a href="https://tomcat.apache.org/download-70.cgi">Tomcat</a> 官网获得源码包下载地址：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://mirror.bit.edu.cn/apache/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下载后，我们需要解压 tomcat，然后将 tomcat7 放到 <code>/opt/</code>目录中。如果在 tomcat 用户下操作，发现对 opt 文件夹没有写权限。所以我们需要在 <code>/opt</code> 中添加 tomcat7 文件夹，该文件夹所有者为 <code>tomcat</code>。</p>
+
+<h4>新建 /opt/tomcat7 目录</h4>
+
+<p>登录具有 sudo 权限的用户 <code>ming</code>，<code>sudo mkdir tomcat7</code>，然后通过 <code>sudo chown tomcat tomcat7/</code> 将 tomcat 用户设置为 <code>/opt/tomcat7</code>目录的所有者。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tomcat@ubuntu:/opt$ su ming
+</span><span class='line'>Password:
+</span><span class='line'>ming@ubuntu:/opt$ sudo mkdir tomcat7
+</span><span class='line'>ming@ubuntu:/opt$ ls -l
+</span><span class='line'>total 4
+</span><span class='line'>drwxr-xr-x 2 root root 4096 Sep 16 15:51 tomcat7
+</span><span class='line'>ming@ubuntu:/opt$ sudo chown tomcat tomcat7/
+</span><span class='line'>ming@ubuntu:/opt$ ls -l
+</span><span class='line'>total 4
+</span><span class='line'>drwxr-xr-x 2 tomcat root 4096 Sep 16 15:51 tomcat7
+</span><span class='line'>ming@ubuntu:/opt$
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>文件新建完成后，切换回 tomcat 用户，开始解压 tomcat7，然后移动 tomcat7 至 <code>/opt</code> 目录下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tar xvzf apache-tomcat-7.0.64.tar.gz
+</span><span class='line'>mv apache-tomcat-7.0.64/* /opt/tomcat7</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后，启动 tomcat7</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/opt/tomcat7/bin/startup.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>访问 <code>http://192.168.56.101:8080/</code> 如果成功访问到 Tomcat 主页面，则表示 Tomcat 安装成功。</p>
+
+<h3>Jenkins 在 Tomcat 中运行</h3>
+
+<p>如果 Tomcat 已经运行成功，并且我们成功下载 jenkins.war。</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/jenkins.png" width="500" alt="Jenkins" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -508,53 +650,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/30/chang-yong-de-linux-cmd/">常用的Linux Cmd</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-30T15:47:40+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2014</time>
-        
-        
-        | <a href="/blog/2014/10/30/chang-yong-de-linux-cmd/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>ls：查看目录下所有可见文件<br/>
-ls -a ： 查看目录下所有文件，包括隐藏文件  <br/>
-ls -l : 查看目录下可见文件的详细信息<br/>
-ls -al 查看目录下所有文件的详细信息</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/10/30/chang-yong-de-linux-cmd/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -568,6 +663,10 @@ ls -al 查看目录下所有文件的详细信息</p>
     <section>
   <h1>最新文章</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/09/16/devops-session-2/">DevOps Session 2</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/09/10/devops-session-1/">DevOps Session 1</a>
@@ -585,15 +684,11 @@ ls -al 查看目录下所有文件的详细信息</p>
         <a href="/blog/2015/05/09/android-design-difference-between-px/">Android Design - Difference Between Px Sp and Dp</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(15)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(5)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(15)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(2)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>

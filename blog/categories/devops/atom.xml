@@ -4,7 +4,7 @@
   <title><![CDATA[Category: DevOps | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-09-15T12:28:23+08:00</updated>
+  <updated>2015-09-16T16:41:58+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DevOps Session 2]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/09/16/devops-session-2/"/>
+    <updated>2015-09-16T14:24:51+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/09/16/devops-session-2</id>
+    <content type="html"><![CDATA[<p>本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。</p>
+
+<h2>课前准备</h2>
+
+<p>课前准备阶段，我们需要完成简单的作业：</p>
+
+<ol>
+<li>使用 tomcat 用户安装 tomcat7 服务器；</li>
+<li>使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；</li>
+<li>从本机浏览器中访问 jenkins 主页；</li>
+</ol>
+
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/tomcat.png" width="500" alt="Tomcat" /></p>
+
+<h3>创建用户</h3>
+
+<p>我们需要分别创建<code>jenkins</code>和<code>tomcat</code>用户。出于安全的考虑，这两个用户不应该有管理员权限。创建用户命令如下：</p>
+
+<p>```
+sudo adduser jenkins
+&hellip;</p>
+
+<p>```</p>
+
+<p>安装提示，进一步设置 jenkins 用户的密码，设置完成后，应该可以通过 <code>su jenkins</code> 切换到 jenkins 用户验证用户是否创建成功。</p>
+
+<h3>安装 Java</h3>
+
+<p>直接在主用户下面使用 <code>apt-get</code>安装 Java7，命令如下：</p>
+
+<p><code>
+sudo apt-get update
+sudo apt-get install openjdk-7-jdk
+</code></p>
+
+<p>如果想了解更多，请查看文章：<a href="http://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu">Install Java7 on Ubuntu</a></p>
+
+<h3>安装 Tomcat</h3>
+
+<p>apt 可以直接安装 Tomcat，我们这里从源码安装 tomcat7。</p>
+
+<p>首先需要从 <a href="https://tomcat.apache.org/download-70.cgi">Tomcat</a> 官网获得源码包下载地址：</p>
+
+<p><code>
+http://mirror.bit.edu.cn/apache/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz
+</code></p>
+
+<p>下载后，我们需要解压 tomcat，然后将 tomcat7 放到 <code>/opt/</code>目录中。如果在 tomcat 用户下操作，发现对 opt 文件夹没有写权限。所以我们需要在 <code>/opt</code> 中添加 tomcat7 文件夹，该文件夹所有者为 <code>tomcat</code>。</p>
+
+<h4>新建 /opt/tomcat7 目录</h4>
+
+<p>登录具有 sudo 权限的用户 <code>ming</code>，<code>sudo mkdir tomcat7</code>，然后通过 <code>sudo chown tomcat tomcat7/</code> 将 tomcat 用户设置为 <code>/opt/tomcat7</code>目录的所有者。</p>
+
+<p>```
+tomcat@ubuntu:/opt$ su ming
+Password:
+ming@ubuntu:/opt$ sudo mkdir tomcat7
+ming@ubuntu:/opt$ ls -l
+total 4
+drwxr-xr-x 2 root root 4096 Sep 16 15:51 tomcat7
+ming@ubuntu:/opt$ sudo chown tomcat tomcat7/
+ming@ubuntu:/opt$ ls -l
+total 4
+drwxr-xr-x 2 tomcat root 4096 Sep 16 15:51 tomcat7
+ming@ubuntu:/opt$</p>
+
+<p>```</p>
+
+<p>文件新建完成后，切换回 tomcat 用户，开始解压 tomcat7，然后移动 tomcat7 至 <code>/opt</code> 目录下：</p>
+
+<p><code>
+tar xvzf apache-tomcat-7.0.64.tar.gz
+mv apache-tomcat-7.0.64/* /opt/tomcat7
+</code></p>
+
+<p>然后，启动 tomcat7</p>
+
+<p>```
+/opt/tomcat7/bin/startup.sh</p>
+
+<p>```</p>
+
+<p>访问 <code>http://192.168.56.101:8080/</code> 如果成功访问到 Tomcat 主页面，则表示 Tomcat 安装成功。</p>
+
+<h3>Jenkins 在 Tomcat 中运行</h3>
+
+<p>如果 Tomcat 已经运行成功，并且我们成功下载 jenkins.war。</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/jenkins.png" width="500" alt="Jenkins" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[DevOps Session 1]]></title>
@@ -232,7 +330,7 @@ docker run --name androidJenkins -p 8080:8080 -v /var/jenkins_home jenkins
 
 <p>```
 FROM jenkins
-MAINTAINER Ming Gong, <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x67;&#x6f;&#110;&#x67;&#x6d;&#x69;&#110;&#x67;&#x71;&#x6d;&#x31;&#48;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;">&#103;&#111;&#x6e;&#x67;&#109;&#105;&#x6e;&#x67;&#x71;&#109;&#49;&#48;&#x40;&#x67;&#x6d;&#97;&#x69;&#108;&#x2e;&#99;&#111;&#109;</a>
+MAINTAINER Ming Gong, <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#103;&#111;&#110;&#x67;&#x6d;&#105;&#x6e;&#103;&#x71;&#x6d;&#49;&#48;&#x40;&#x67;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#103;&#x6f;&#110;&#x67;&#109;&#105;&#110;&#x67;&#x71;&#109;&#49;&#x30;&#x40;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a>
 USER root
 RUN apt-get update &amp;&amp; apt-get -y install libstdc++6 lib32z1 lib32stdc++6 expect</p>
 
@@ -654,100 +752,6 @@ end</p>
 <p>虚拟机成功启动后，我们只需要在terminal中通过<code>ssh</code>就可以连接到虚拟机设备上。然后就想在远程服务器中来操作就可以了。vagrant启动的地址是我们配置文件中的<code>192.168.3.10</code>，其默认的用户名为root，初始密码为 vagrant。所以我们使用如下命令登陆：<code>ssh root@192.168.3.10</code>，提示密码时输入<code>vagrant</code>，最后我们可以成功登陆。</p>
 
 <p>登陆完成后，如果我们想停下虚拟机，可以使用<code>vagrant destroy</code>关闭虚拟机。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[云服务器使用记录]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu/"/>
-    <updated>2014-09-29T15:01:31+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu</id>
-    <content type="html"><![CDATA[<h3>我的第一个云服务器ECS</h3>
-
-<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。<br/>
-使用teminal，用SSH登录进去</p>
-
-<!-- more -->
-
-
-<p>```
-minggong:octopress minggong$ ssh <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#114;&#x6f;&#111;&#116;&#64;&#88;&#88;&#88;&#x2e;&#x58;&#88;&#x2e;&#x58;&#88;&#x58;&#x2e;&#x58;&#x58;">&#114;&#x6f;&#111;&#116;&#64;&#88;&#x58;&#88;&#46;&#88;&#88;&#46;&#88;&#x58;&#x58;&#46;&#x58;&#x58;</a>
-root@<a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x72;&#111;&#111;&#116;&#x40;&#x58;&#88;&#88;&#x2e;&#88;&#88;&#x2e;&#x58;&#88;&#x58;&#x2e;&#x58;&#x58;">&#x72;&#111;&#111;&#x74;&#x40;&#88;&#88;&#x58;&#46;&#x58;&#x58;&#46;&#88;&#88;&#88;&#46;&#88;&#x58;</a>&rsquo;s password:</p>
-
-<p><code>``
-</code>XXX.XX.XXX.XX`是我主机的IP地址，然后根据提示输入密码，然后就顺利的登录进去，刚进去的系统是很干净的。由于系统是centerOS的（试了半天的apt-get都无效），那就使用yum来安装软件吧。</p>
-
-<h3>yum安装java</h3>
-
-<p><strong>BUG1:</strong> 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.<br/>
-<strong>SOLVE1:</strong> 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问
-题解决.</p>
-
-<p><strong>BUG2:</strong> 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.<br/>
-<strong>SOLVE2:</strong> 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
-
-<p><strong>a.通过rpm命令查看有哪些yum包，然后进行卸载</strong><br/>
-<code>rpm -qa|grep yum</code></p>
-
-<p>yum-3.2.22-20.el5<br/>
-yum-metadata-parser-1.1.2-3.el5</p>
-
-<p><code>rpm -e --nodeps yum-3.2.22-20.el5rpm -e --nodeps yum-metadata-parser-1.1.2-3.el5</code></p>
-
-<p><strong>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</strong></p>
-
-<p>```
-wget <a href="http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-3.2.22-40.el5.centos.noarch.rpm">http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-3.2.22-40.el5.centos.noarch.rpm</a>
-wget <a href="http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-metadata-parser-1.1.2-4.el5.x86_64.rpm">http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-metadata-parser-1.1.2-4.el5.x86_64.rpm</a>
-wget <a href="http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm">http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm</a></p>
-
-<p><code>``
-下载完成后使用</code>rpm -ivh yum*`，这几个文件需要同时安装，所以用一行命令来安装。</p>
-
-<p>c.更新CentOS-Base.repo源</p>
-
-<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：<br/>
-<code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
-
-<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：<br/>
-<code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
-
-<p>d.生成缓存文件到/var/cache/yum目录<br/>
-<code>yum makecache</code></p>
-
-<hr />
-
-<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。<br/>
-解决了YUM的安装问题，我们步入正题安装java：</p>
-
-<p>```
-[root@iZ23572i0rtZ home]# yum search java | grep -i &mdash;color JDK
-java-1.6.0-openjdk.x86_64 : OpenJDK Runtime Environment
-java-1.6.0-openjdk-demo.x86_64 : OpenJDK Demos
-java-1.6.0-openjdk-devel.x86_64 : OpenJDK Development Environment
-java-1.6.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
-java-1.6.0-openjdk-src.x86_64 : OpenJDK Source Bundle
-java-1.7.0-openjdk.x86_64 : OpenJDK Runtime Environment
-java-1.7.0-openjdk-demo.x86_64 : OpenJDK Demos
-java-1.7.0-openjdk-devel.x86_64 : OpenJDK Development Environment
-java-1.7.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
-java-1.7.0-openjdk-src.x86_64 : OpenJDK Source Bundle
-ldapjdk.x86_64 : The Mozilla LDAP Java SDK
-ldapjdk-javadoc.x86_64 : Javadoc for ldapjdk
-[root@iZ23572i0rtZ home]# yum install java-1.7.0-openjdk.x86_64</p>
-
-<p>```</p>
-
-<p>然后按照步骤，一步步确认，最后就安装成功，查看 <code>java -version</code> 验证是否正确安装：</p>
-
-<p>```
-[root@iZ23572i0rtZ home]# java -version
-java version &ldquo;1.7.0_65&rdquo;
-OpenJDK Runtime Environment (rhel-2.5.1.2.el5_10-x86_64 u65-b17)
-OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
-[root@iZ23572i0rtZ home]#</p>
-
-<p>```</p>
 ]]></content>
   </entry>
   

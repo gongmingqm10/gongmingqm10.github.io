@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>云服务器使用记录 - gongmingqm10</title>
+  <title>DevOps Session 2 - gongmingqm10</title>
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="阿里云服务器使用教程">
+  <meta name="description" content="本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。 课前准备 课前准备阶段，我们需要完成简单的作业： 使用 tomcat 用户安装 tomcat7 服务器；
+使用 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2014/09/29/yun-fu-wu-qi-shi-yong-ji-lu">
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2015/09/16/devops-session-2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
@@ -82,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">云服务器使用记录</h1>
+      <h1 class="entry-title">DevOps Session 2</h1>
     
     
       <p class="meta">
@@ -98,7 +99,7 @@
   
 
 
-<time datetime="2014-09-29T15:01:31+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2014</time>
+<time datetime="2015-09-16T14:24:51+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2015</time>
         
         
         | <a href="#comments">Comments</a>
@@ -108,70 +109,61 @@
   </header>
 
 
-<div class="entry-content"><h3>我的第一个云服务器ECS</h3>
+<div class="entry-content"><p>本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。</p>
 
-<p>云服务器简单来说就是一台远程主机，在MAC上可轻松登录进去进行，然后在命令行中可以轻松部署你的网站，应用等等。于是花了100大洋租了几个月的阿里云Aliyun Linux 5.7 主机，出于学习的目的，所有的配置都采用最低配，日后有需要再进行升级吧。<br/>
-使用teminal，用SSH登录进去</p>
+<h2>课前准备</h2>
 
-<!-- more -->
+<p>课前准备阶段，我们需要完成简单的作业：</p>
 
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>minggong:octopress minggong$ ssh root@XXX.XX.XXX.XX
-</span><span class='line'>root@root@XXX.XX.XXX.XX's password:
-</span></code></pre></td></tr></table></div></figure>
+<ol>
+<li>使用 tomcat 用户安装 tomcat7 服务器；</li>
+<li>使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；</li>
+<li>从本机浏览器中访问 jenkins 主页；</li>
+</ol>
 
 
-<p><code>XXX.XX.XXX.XX</code>是我主机的IP地址，然后根据提示输入密码，然后就顺利的登录进去，刚进去的系统是很干净的。由于系统是centerOS的（试了半天的apt-get都无效），那就使用yum来安装软件吧。</p>
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/tomcat.png" width="500" alt="Tomcat" /></p>
 
-<h3>yum安装java</h3>
+<h3>创建用户</h3>
 
-<p><strong>BUG1:</strong> 首次尝试运行 <code>sudo yum update</code>，但是控制台立即返回<code>Failed to set locale, defaulting to C</code>.<br/>
-<strong>SOLVE1:</strong> 执行命令 <code>echo "export LC_ALL=en_US.UTF-8"  &gt;&gt;  /etc/profile</code>，退出连接重新登录，问
-题解决.</p>
-
-<p><strong>BUG2:</strong> 再次尝试运行 <code>sudo yum update</code>，返回错误<code>No Packages marked for Update</code>.<br/>
-<strong>SOLVE2:</strong> 尝试了N种方法终于在<a href="http://www.itartisan.cn/article/aliyun-redhat-setup-jdk-mysql-nginx-tomcat.html">阿里云主机安装JDK</a>上找到了解决办法，如下：</p>
-
-<p><strong>a.通过rpm命令查看有哪些yum包，然后进行卸载</strong><br/>
-<code>rpm -qa|grep yum</code></p>
-
-<p>yum-3.2.22-20.el5<br/>
-yum-metadata-parser-1.1.2-3.el5</p>
-
-<p><code>rpm -e --nodeps yum-3.2.22-20.el5rpm -e --nodeps yum-metadata-parser-1.1.2-3.el5</code></p>
-
-<p><strong>b.wget从163镜像上下载CentOS的yum包，先 cd /home，把文件下载/home文件夹中，便于管理：</strong></p>
+<p>我们需要分别创建<code>jenkins</code>和<code>tomcat</code>用户。出于安全的考虑，这两个用户不应该有管理员权限。创建用户命令如下：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-3.2.22-40.el5.centos.noarch.rpm
-</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-metadata-parser-1.1.2-4.el5.x86_64.rpm
-</span><span class='line'>wget http://mirrors.163.com/centos/5/os/x86_64/CentOS/yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo adduser jenkins
+</span><span class='line'>...
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>下载完成后使用 <code>rpm -ivh yum*</code>，这几个文件需要同时安装，所以用一行命令来安装。</p>
+<p>安装提示，进一步设置 jenkins 用户的密码，设置完成后，应该可以通过 <code>su jenkins</code> 切换到 jenkins 用户验证用户是否创建成功。</p>
 
-<p>c.更新CentOS-Base.repo源</p>
+<h3>安装 Java</h3>
 
-<p>进入<code>/etc/yum.repos.d/</code>目录，并备份原始的CentOS-Base.repo文件：<br/>
-<code>cd /etc/yum.repos.d/ &amp;&amp;  mv CentOS-Base.repo CentOS-Base.repo.back</code></p>
+<p>直接在主用户下面使用 <code>apt-get</code>安装 Java7，命令如下：</p>
 
-<p>wget下载Cent-OS.repo文件到<code>/etc/yum.repos.d/</code>目录下：<br/>
-<code>wget http://www.linuxidc.com/files/2011/05/06/CentOS-Base.repo</code></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install openjdk-7-jdk</span></code></pre></td></tr></table></div></figure>
 
-<p>d.生成缓存文件到/var/cache/yum目录<br/>
-<code>yum makecache</code></p>
 
-<hr />
+<p>如果想了解更多，请查看文章：<a href="http://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu">Install Java7 on Ubuntu</a></p>
 
-<p>OK，最后终于work了。运行<code>sudo yum update</code>，可以看到一些update。<br/>
-解决了YUM的安装问题，我们步入正题安装java：</p>
+<h3>安装 Tomcat</h3>
+
+<p>apt 可以直接安装 Tomcat，我们这里从源码安装 tomcat7。</p>
+
+<p>首先需要从 <a href="https://tomcat.apache.org/download-70.cgi">Tomcat</a> 官网获得源码包下载地址：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://mirror.bit.edu.cn/apache/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下载后，我们需要解压 tomcat，然后将 tomcat7 放到 <code>/opt/</code>目录中。如果在 tomcat 用户下操作，发现对 opt 文件夹没有写权限。所以我们需要在 <code>/opt</code> 中添加 tomcat7 文件夹，该文件夹所有者为 <code>tomcat</code>。</p>
+
+<h4>新建 /opt/tomcat7 目录</h4>
+
+<p>登录具有 sudo 权限的用户 <code>ming</code>，<code>sudo mkdir tomcat7</code>，然后通过 <code>sudo chown tomcat tomcat7/</code> 将 tomcat 用户设置为 <code>/opt/tomcat7</code>目录的所有者。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -184,42 +176,42 @@ yum-metadata-parser-1.1.2-3.el5</p>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# yum search java | grep -i --color JDK
-</span><span class='line'>java-1.6.0-openjdk.x86_64 : OpenJDK Runtime Environment
-</span><span class='line'>java-1.6.0-openjdk-demo.x86_64 : OpenJDK Demos
-</span><span class='line'>java-1.6.0-openjdk-devel.x86_64 : OpenJDK Development Environment
-</span><span class='line'>java-1.6.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
-</span><span class='line'>java-1.6.0-openjdk-src.x86_64 : OpenJDK Source Bundle
-</span><span class='line'>java-1.7.0-openjdk.x86_64 : OpenJDK Runtime Environment
-</span><span class='line'>java-1.7.0-openjdk-demo.x86_64 : OpenJDK Demos
-</span><span class='line'>java-1.7.0-openjdk-devel.x86_64 : OpenJDK Development Environment
-</span><span class='line'>java-1.7.0-openjdk-javadoc.x86_64 : OpenJDK API Documentation
-</span><span class='line'>java-1.7.0-openjdk-src.x86_64 : OpenJDK Source Bundle
-</span><span class='line'>ldapjdk.x86_64 : The Mozilla LDAP Java SDK
-</span><span class='line'>ldapjdk-javadoc.x86_64 : Javadoc for ldapjdk
-</span><span class='line'>[root@iZ23572i0rtZ home]# yum install java-1.7.0-openjdk.x86_64
+</pre></td><td class='code'><pre><code class=''><span class='line'>tomcat@ubuntu:/opt$ su ming
+</span><span class='line'>Password:
+</span><span class='line'>ming@ubuntu:/opt$ sudo mkdir tomcat7
+</span><span class='line'>ming@ubuntu:/opt$ ls -l
+</span><span class='line'>total 4
+</span><span class='line'>drwxr-xr-x 2 root root 4096 Sep 16 15:51 tomcat7
+</span><span class='line'>ming@ubuntu:/opt$ sudo chown tomcat tomcat7/
+</span><span class='line'>ming@ubuntu:/opt$ ls -l
+</span><span class='line'>total 4
+</span><span class='line'>drwxr-xr-x 2 tomcat root 4096 Sep 16 15:51 tomcat7
+</span><span class='line'>ming@ubuntu:/opt$
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>然后按照步骤，一步步确认，最后就安装成功，查看 <code>java -version</code> 验证是否正确安装：</p>
+<p>文件新建完成后，切换回 tomcat 用户，开始解压 tomcat7，然后移动 tomcat7 至 <code>/opt</code> 目录下：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@iZ23572i0rtZ home]# java -version
-</span><span class='line'>java version "1.7.0_65"
-</span><span class='line'>OpenJDK Runtime Environment (rhel-2.5.1.2.el5_10-x86_64 u65-b17)
-</span><span class='line'>OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
-</span><span class='line'>[root@iZ23572i0rtZ home]#
-</span><span class='line'>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tar xvzf apache-tomcat-7.0.64.tar.gz
+</span><span class='line'>mv apache-tomcat-7.0.64/* /opt/tomcat7</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后，启动 tomcat7</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/opt/tomcat7/bin/startup.sh
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>访问 <code>http://192.168.56.101:8080/</code> 如果成功访问到 Tomcat 主页面，则表示 Tomcat 安装成功。</p>
+
+<h3>Jenkins 在 Tomcat 中运行</h3>
+
+<p>如果 Tomcat 已经运行成功，并且我们成功下载 jenkins.war。</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/jenkins.png" width="500" alt="Jenkins" /></p>
 </div>
 
 
@@ -242,7 +234,7 @@ yum-metadata-parser-1.1.2-3.el5</p>
   
 
 
-<time datetime="2014-09-29T15:01:31+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2014</time>
+<time datetime="2015-09-16T14:24:51+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2015</time>
       
 
 <span class="categories">
@@ -263,10 +255,8 @@ yum-metadata-parser-1.1.2-3.el5</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/09/25/androidzi-ding-yi-view/" title="Previous Post: Android自定义View">&laquo; Android自定义View</a>
+        <a class="basic-alignment left" href="/blog/2015/09/10/devops-session-1/" title="Previous Post: DevOps Session 1">&laquo; DevOps Session 1</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/09/30/android-ontouch-chu-tan/" title="Next Post: Android onTouch() 初探">Android onTouch() 初探 &raquo;</a>
       
     </p>
   </footer>
