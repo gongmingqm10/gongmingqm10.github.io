@@ -235,6 +235,9 @@ TabLayout帮助开发者创建符合界面风格的Tab，并且简单易用。
 
 Material Design作为Android App设计风格的趋势，尝试在你的App中使用新的风格，也许可以给你的产品带来不一样的体验。
 
+##Open Party PPT 下载地址
+
+[Android Material Design PPT 下载](http://7xj9js.com1.z0.glb.clouddn.com/Android%20Material%20Design.pptx)
 
 **参考**
 
