@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deploy app to remote server —— 网站部署篇"
+title: "部署 Spring Web 至服务器"
 date: 2014-10-12 11:14:37 +0800
 comments: true
 categories: Web
