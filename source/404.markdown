@@ -3,5 +3,5 @@ layout: page
 sharing: false
 ---
 
-## Sorry!!
-We are lost in posts. Just go [home](/) and try again!
+## 对不起!!
+您访问的文章不存在或已被博主删除. 请返回 [首页](/) 并重试！
