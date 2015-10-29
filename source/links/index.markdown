@@ -11,7 +11,6 @@ footer: true
 本专栏收集了平时遇到的优秀博客站点，以供大家学习进步！
 
 * [ObjC 中国](http://objccn.io/)
-* [谢权's blog](http://xiequan.info/)
 * [Google Android 官方](http://android-developers.blogspot.hk/)
 * [CodeKK](http://a.codekk.com/)
 * [破狼](http://greengerong.com/)
