@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="803a91c2-1dc3-4a3b-8e1b-f61a6dfc371e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/404.markdown" afterPath="$PROJECT_DIR$/source/404.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/_includes/custom/navigation.html" afterPath="$PROJECT_DIR$/source/_includes/custom/navigation.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/links/index.markdown" afterPath="$PROJECT_DIR$/source/links/index.markdown" />
     </list>
     <ignored path="octopress.iws" />
     <ignored path=".idea/workspace.xml" />
