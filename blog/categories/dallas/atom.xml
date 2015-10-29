@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Dallas | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/dallas/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-10-29T13:19:54+08:00</updated>
+  <updated>2015-10-29T13:44:22+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -175,31 +175,31 @@
 
 <blockquote><p>Life is a journey, not a destination</p></blockquote>
 
-<p><img src="/images/dallas-redlight.jpg" title="红绿灯路口" ></p>
+<p>{% img /images/dallas-redlight.jpg 红绿灯路口 %}</p>
 
 <p>行人通过红绿灯路口需要按下按钮，估计这边车多行人少的缘故</p>
 
-<p><img src="/images/dallas-target.jpg" title="Target百货店" ></p>
+<p>{% img /images/dallas-target.jpg Target百货店 %}</p>
 
 <p>这是Target百货店，我在这里找到了自己要买的电饭煲</p>
 
-<p><img src="/images/dallas-dfl.jpg" title="耸动的云" ></p>
+<p>{% img /images/dallas-dfl.jpg 耸动的云 %}</p>
 
 <p>纯净的天空下那股耸动的云，如末日来临一样宏大的场面</p>
 
-<p><img src="/images/dallas-travis-street.jpg" title="Travis Street" ></p>
+<p>{% img /images/dallas-travis-street.jpg Travis Street %}</p>
 
 <p>自己生活的Travis Street, 天气晴好时外面还是很值得去的。视野一下子清新了不少</p>
 
-<p><img src="/images/dallas-snow.jpg" title="Dallas雪景" ></p>
+<p>{% img /images/dallas-snow.jpg Dallas雪景 %}</p>
 
 <p>Dallas也是会下雪的，或者说是冻雨。路面全部结冰，上班出行困难。温度变化太快</p>
 
-<p><img src="/images/dallas-social-security-office.jpg" title="Dallas Social Security Office" ></p>
+<p>{% img /images/dallas-social-security-office.jpg Dallas Social Security Office %}</p>
 
 <p>办社会安全卡的地方，这里很少见高高的大楼</p>
 
-<p><img src="/images/dallas-laoganma.jpg" title="神器老干妈" ></p>
+<p>{% img /images/dallas-laoganma.jpg 神器老干妈 %}</p>
 
 <p>老干妈，出行必备神器。美国亚马逊上直接购买</p>
 ]]></content>
