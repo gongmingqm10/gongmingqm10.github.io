@@ -468,7 +468,7 @@ compile 'com.android.support:design:22.2.0'
 <!-- more -->
 
 
-<p>{% img /images/retina_one_screen.jpg Mac retina resolution %}</p>
+<p><img src="/images/retina_one_screen.jpg" title="Mac retina resolution" ></p>
 
 <p>上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。</p>
 
