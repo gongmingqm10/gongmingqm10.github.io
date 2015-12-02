@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-11-30T00:18:30+08:00</updated>
+  <updated>2015-12-03T00:07:57+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,145 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android 新手成长计划]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/11/30/android-xin-shou-jiao-cheng/"/>
+    <updated>2015-11-30T21:17:42+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/11/30/android-xin-shou-jiao-cheng</id>
+    <content type="html"><![CDATA[<p><img src="http://www.webmastergrade.com/wp-content/uploads/2011/04/Android-VS-Apple.jpg" width="500" alt="Android starter" /></p>
+
+<p>最近在公司里开始遇到了新人培养的问题，新人被 assign 到 Android 项目上，为了让他能够很快有所产出，于是我们得思考怎么样快速锻炼一个新人并让他对 Android 开发产生兴趣并持续做下去呢？当然也会有一时兴起的同事会想着学习 Android，Android 入门门槛不高，但是要想真正的熟练驾驭，确实是一件道阻且长的事情，需要付出额外的努力。</p>
+
+<h2>兴趣驱动法则</h2>
+
+<p>其实“兴趣”不只是在 Android 开发上体现的重要，兴趣在任何地方都是最重要的。之前接触过一些朋友，某次会突然告诉我想学习 Android，但是往往一个 Hello World 都可以将之难倒。这时候学习者明显缺少兴趣驱动。Android 开发好玩的一点是我们开发的应用都可以很简单的在手机上安装使用。所以你可以尽情尝试各种新奇的点子。</p>
+
+<p>当然，兴趣并不是本文讨论的重点，我们假设真心想学习的人都是出于兴趣。</p>
+
+<h2>循序渐进的练习计划</h2>
+
+<p>有了兴趣远远还不够，兴趣只能促使你完成一个 Hello World，要想真正做出东西还应该有循序渐进的计划来配合。我当时学习 Android 的方法就是每周一个任务。把学习新知识当作升级打怪，这样子你还会松懈吗？</p>
+
+<h3>你应该掌握的 Android 开发知识</h3>
+
+<p>Android 开发的入门门槛不高，但是细节知识真心不少。作为初学者，我们可以先了解广度，然后了解深度。刚开始可以接触尝试了解一点远离性的知识，然后直接运用一些流行的框架。快速迭代完成一个 App。那么对于新手而言，应该掌握的 Android 开发知识有哪些呢？</p>
+
+<h4>1. Hello Android</h4>
+
+<p>开发调试基础看起来比较模糊，具体一点是完成一个 Hello World，让此应用运行在你的手机或者模拟器中。借此了解各个文件夹模块的作用以及 App 运行的基础原理。涵盖知识点如下：</p>
+
+<ul>
+<li>搭建 Android 开发环境： Java + Android Studio + SDK；</li>
+<li>熟悉项目结构：src, res, assets, values, layouts, drawable/mipmap, styles, AndroidManifest.xml, Activity；</li>
+<li>解读 Hello World 运行机制：项目从哪里运行，Activity 与 layout 的关联，Activity 中如何找到布局中的实例化控件，Activity 的生命周期；</li>
+</ul>
+
+
+<h4>2. 计算器</h4>
+
+<p>计算器的经典程度不亚于 Hello World，Android 计算器能够让初学者迅速建立信心，同时作为一个单纯的无网络交互的应用，计算器主要处理布局，点击事件，计算逻辑。因此在了解了 Hello World 之后做计算器，再合适不过了。计算器最终效果图如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/calculator.png" width="300" alt="计算器" /></p>
+
+<p>那么对于计算器这个 demo 的要求如下：</p>
+
+<ul>
+<li>界面效果如上图，并且能够进行简单的整数运算：<code>1+1, 4*2, 6/3, 1-10</code> 等；</li>
+<li>异常处理，除数为 0 时界面提示 <code>Error</code>；</li>
+<li>小数点以及连续运算的支持；</li>
+<li>继承 Robolectric 添加单元测试；</li>
+<li>每次打开 App 结果栏会自动显示上一次的运算结果；</li>
+<li>添加<code>History</code>菜单，点击列表显示历史计算表达式以及结果；</li>
+</ul>
+
+
+<p>通过这些要求，涵盖的知识点如下：</p>
+
+<ul>
+<li>布局管理器的了解及使用：RelativeLayout, LinearLayout；</li>
+<li>Android 控件添加点击事件，TextView 动态设值；</li>
+<li>Android 项目集成 Robolectric，添加简单的单元测试；</li>
+<li>Android 数据持久化保存 &ndash; SharedPreferences；</li>
+<li>Android 数据持久化存储 &ndash; Sqlite 数据库；</li>
+<li>Android ListView 列表及数据绑定；</li>
+<li>Android Activity 跳转 &ndash; Intent；</li>
+<li>添加 <a href="http://jakewharton.github.io/butterknife/">ButterKnife</a> 框架，重构项目；</li>
+<li>添加 <a href="http://greenrobot.org/greendao/">GreenDao</a> 框架，重构数据库数据存储及读取；</li>
+</ul>
+
+
+<h4>3. 豆瓣图书列表 &ndash; 图片缓存</h4>
+
+<p>豆瓣图书列表最初起源于公司内部的一次 Android 培训，由于对 Android 初学者而言，还比较有意义，于是设置为专题的形式供大家练习。需求很简单，将给定的图书列表数据(JSON 格式)显示到界面上。包括图书信息在列表中展示，网络图片的加载以及缓存。JSON 数据<a href="http://7xj9js.com1.z0.glb.clouddn.com/douban-books.json">点击此处</a>查看。完成之后效果图如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/douban-reading.png" width="300" alt="Douban Books" /></p>
+
+<p>具体要求如下：</p>
+
+<ul>
+<li>列表显示图书信息：图书图片，名称，作者／出版社／出版年份，评价，简介；</li>
+<li>多次滑动列表，保证文字以及图片显示不会发生错位，并且始终流畅（有列表控件重用）；</li>
+<li>添加图片缓存：图片加载成功后，断开网络，退出 App，打开应用仍然能够正确显示图片；</li>
+</ul>
+
+
+<p>通过这些要求我们期望初学者掌握的技能点如下：</p>
+
+<ul>
+<li>Android ListView 自定义列表样式；</li>
+<li>Android Adapter 使用 ViewHolder 进行控件复用；</li>
+<li>Android 主线程（UI线程）的概念，主线程阻塞的解决方案，Handler 的概念以及使用方法；</li>
+<li>图片缓存的应用，内存级别的缓存以及磁盘级别的缓存；</li>
+<li>使用 <a href="http://square.github.io/picasso/">Picasso</a>/<a href="https://github.com/nostra13/Android-Universal-Image-Loader">ImageLoader</a> 图片加载及缓存框架，简化开发；</li>
+</ul>
+
+
+<p>如果你对图片缓存部分的实现有任何疑惑，请参考工程 <a href="https://github.com/gongmingqm10/AndroidWorkshop/tree/2nd-step4">AndroidWorkShop</a>。图片磁盘缓存部分参考了 Android 官方教程。</p>
+
+<h4>4. 豆瓣图书列表 &ndash; 网络请求</h4>
+
+<p>这个任务其实是对第 3 条任务的改造。不同之处在于，本次任务侧重于让初学者了解如何快速构建出一个有网络请求模块的 App。我们的效果图和上一条任务的相同，不同点在于本次我们会使用真实的网络API数据。并且会对 API 请求回来的数据进行缓存。具体要求如下：</p>
+
+<ul>
+<li>推荐使用 <a href="http://square.github.io/retrofit/">Retrofit</a> 框架，从豆瓣读书 API 网络获取<a href="https://api.douban.com/v2/book/search?q=Java">图书列表</a>及<a href="http://api.douban.com/v2/book/2130190">图书详情</a>。详情参见<a href="http://developers.douban.com/wiki/?title=guide">豆瓣API</a>；</li>
+<li>列表显示豆瓣图书列表，图片显示可直接使用 Picasso；</li>
+<li>点击 Item 跳转至图书详情界面，显示该书籍详细信息；</li>
+<li>缓存此 API 的搜索结果 (文件或者数据库Key-Value的形式缓存JSON数据)；</li>
+<li>使用 SwipeRefreshLayout 添加下拉刷新功能，下拉刷新时重新添加请求数据并更新缓存；</li>
+</ul>
+
+
+<p>此任务我们期望初学者掌握的知识点：</p>
+
+<ul>
+<li>Retrofit 框架的使用；</li>
+<li>Android 数据缓存的简易实现方案（数据库／文件形式）；</li>
+<li>简单的列表点击事件，页面跳转等；</li>
+<li><a href="http://android-developers.blogspot.com/2015/05/android-design-support-library.html">Android Design Support Library</a> 中常用的组件及使用；</li>
+</ul>
+
+
+<h4>5. 设计并实现你自己的 App</h4>
+
+<p>如果你顺利完成了上述四条任务，那么这一步你应该已经具备了完成一个简单的 App 的技能，这一步可以按照个人兴趣完成自己的创意点子。在开始编码之前，可以先制作出一套 UI 交互图，然后整理 API 并开始编码。</p>
+
+<h3>Android 学习常用的链接</h3>
+
+<p>Android 拥有全面的官方学习教程以及各种丰富的开源库。我们初学时可以多浏览官方教程学习一些好的实现，下面列举了一些很常用的链接：</p>
+
+<ol>
+<li><a href="developer.android.com/training/index.html">Android 官方文档</a></li>
+<li><a href="http://android-developers.blogspot.com/">Android 官方博客</a></li>
+<li><a href="www.google.com/design/spec/style/color.html#">Google Material Design</a></li>
+<li><a href="http://square.github.io/">Square Open Source</a></li>
+<li><a href="http://jakewharton.com/">Jake Wharton 的博客</a></li>
+</ol>
+
+
+<p>全文很多观点都是一家之言，更多的是结合自己的项目经验以及学习经验总结而成，如有谬误及不当之处，请读者不吝赐教。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android Adapter notifyDataSetChanged Not Working]]></title>
@@ -677,322 +816,6 @@ WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
 <p>Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。</p>
 
 <p>另附上豆瓣关于这些单位更<a href="http://www.douban.com/note/155032221/">具体的阐释</a>。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Setup Jenkins for Android Integration Using Docker]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/"/>
-    <updated>2015-03-12T10:46:59+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker</id>
-    <content type="html"><![CDATA[<h2>About Docker</h2>
-
-<p>什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？</p>
-
-<p>这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性，降低其他不可知因素对代码的影响。而Docker和VM虚拟机相比又有其特点，比如启动速度快，可以单独将Docker保存为镜像，上传后能够让别人使用。甚至可以直接将自己的code放在Docker中，直接将环境和代码一起交付给客户。客户只需要安装这个Docker，运行后就可以直接使用这个application了。</p>
-
-<blockquote><p>Develop, Ship and Run Any Application, Anywhere</p></blockquote>
-
-<!-- more -->
-
-
-<p>Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.</p>
-
-<h3>Provision</h3>
-
-<p>我的目标在于构建一个可以运行Android的CI服务器。出于省钱的目的，我使用本地的Vagrant启动Ubuntu虚拟机来代替真正的服务器。大致思路是：</p>
-
-<ol>
-<li>启动Ubuntu虚拟机，在Ubuntu上安装Docker；</li>
-<li>通过Docker安装Jenkins Docker官方镜像；</li>
-<li>在这个实例Docker中配置Jenkins并安装Android运行环境；</li>
-<li>在Jenkins上搭建Android CI，使得Android单元测试和集成测试能够顺利通过；</li>
-<li>上传这个具有Android CI功能的Jenkins镜像；</li>
-<li>本地启动B虚拟机，下载镜像，访问B虚拟机的地址，查看Android Jenkins；</li>
-</ol>
-
-
-<h3>1. 启动Ubuntu虚拟机并安装Docker Jenkins</h3>
-
-<p>在安装Docker之前，首先得有一个Linux的机器能够进入，如果你已经有一台干净的Linux服务器，直接进入安装Docker步骤。</p>
-
-<p>Vagrant安装之前，你应该在电脑上安装VirtualBox虚拟机。VirtualBox安装完成之后请参考 <a href="http://docs.vagrantup.com/v2/installation/index.html">Vagrant Installation Guide</a>。</p>
-
-<p>Vagrant成功安装后，<code>vagrant init ubuntu/trusty64</code> 能够帮你快速安装一台Ubuntu14.04的虚拟机，第一次安装的时候会稍微慢点，因为Vagrant会帮你生成Vagrantfile文件，并下载镜像。</p>
-
-<p>Vagrantfile生成之后不要立即启动，因为我们想通过localhost访问Vagrant，然后通过Vagrant访问其中的Docker。由于Jenkins默认会使用8080端口，所以如果Vagrant的8080端口可以转发到Docker Container中的Jenkins。localhost:8080能够转发到Vagrant Ubuntu的8080端口，然后Vagrant的8080端口继续转发到Docker的8080端口，于是可以通过<code>localhost:8080</code>访问Jenkins了。所以Vagrantfile部分配置如下，添加端口转发。因为我本机的8080端口被其他程序占用，所以我将本地的8088端口转发到虚拟机的8080端口：</p>
-
-<p><code>
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  #config.vm.network :forwarded_port, guest: 80, host: 8080
-  config.vm.network :forwarded_port, guest: 8080, host: 8088
-</code></p>
-
-<p>如果你之前已经启动了vagrant up, 然后更改了Vagrantfile想让forward_port生效，需要先<code>vagrant suspend</code>暂停vagrant，然后使用<code>vagrant reload</code>重新加载Vagrantfile使配置生效。</p>
-
-<p>Vagrant Ubuntu 初始化完成之后，还是在这个有Vagrantfile的文件夹下，<code>vagrant up</code>能够直接启动这台Ubuntu服务器。</p>
-
-<p>顺利的话我们可以进入通过<code>vagrant ssh</code>进入Ubuntu，随后需要在这台干净的Ubuntu机器上<a href="http://docs.docker.com/installation/ubuntulinux/">安装Docker</a>：</p>
-
-<p>```
-$ sudo apt-get update
-$ sudo apt-get install docker.io
-$ source /etc/bash_completion.d/docker.io</p>
-
-<p>// 上述方法安装的Docker版本为1.0.1，如果你想使用较高版本Docker1.3.3</p>
-
-<p>$ echo deb <a href="http://get.docker.com/ubuntu">http://get.docker.com/ubuntu</a> docker main > /etc/apt/sources.list.d/docker.list
-$ apt-key adv &mdash;keyserver pgp.mit.edu &mdash;recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
-$ apt-get update
-$ apt-get install -y lxc-docker-1.3.3</p>
-
-<p><code>``
-Note:</code>vagrant destroy<code>会关闭并重新格式化ubuntu机器，如果你只是想简单的停止机器，请使用</code>vagrant suspend`</p>
-
-<p>Docker成功安装后，直接启动Jenkins官方镜像：</p>
-
-<p><code>
-docker run --name androidJenkins -p 8080:8080 -v /var/jenkins_home jenkins
-</code></p>
-
-<p>安装完成后，访问 <code>http://localhost:8088/</code>，如果可以看到Jenkins界面，说明Jenkins已经安装成功。</p>
-
-<p>进入后发现没有登录或者注册入口，然后就看到了stackoverflow上的<a href="http://stackoverflow.com/questions/10825614/how-can-i-add-a-username-and-password-to-jenkins">解决方案</a>: 系统管理 &ndash; Configure Global Security &ndash; 启用安全 — Jenkins专有用户数据库，允许用户注册 &ndash; 任何用户可以做任何事情。注册常用用户名和邮箱，然后就可以直接登录Jenkins。</p>
-
-<h3>2. Jenkins Docker中安装Android 运行环境</h3>
-
-<p>既然我们的Jenkins已经搭建完成，这一步我们则需要基于Jenkins安装Android的运行环境，如何在Ubuntu系统中通过命令行安装Android运行环境呢，主要参考<a href="https://www.digitalocean.com/community/tutorials/how-to-build-android-apps-with-jenkins">这篇文章</a>。</p>
-
-<p>安装Android运行环境主要的流程为：</p>
-
-<ol>
-<li>下载Android SDK安装包 并设置环境变量.</li>
-<li>下载platform-tools, Android SDK API, Android Build Tools.</li>
-</ol>
-
-
-<p>我这里安装Android SDK API版本为21，Build Tools版本号为21.1.2。</p>
-
-<p>为了使Jenkins Android 环境能够在下次使用，我们通过新建 Dockerfile 的方式基于Jenkins来创建一个新的镜像，具体步骤如下：</p>
-
-<ol>
-<li><a href="https://registry.hub.docker.com/">Docker Hub</a>注册账号，用于存放自己的Repository。</li>
-<li>新建Dockerfile文件，并添加配置信息。</li>
-<li>运行Dockerfile，此时会执行Dockerfile中所配置的一系列命令。</li>
-<li>提交Dockerfile生成的jenkins-android镜像。</li>
-</ol>
-
-
-<h4>配置Dockerfile</h4>
-
-<p>```
-FROM jenkins
-MAINTAINER Ming Gong, <a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#103;&#111;&#110;&#103;&#x6d;&#x69;&#110;&#103;&#x71;&#x6d;&#49;&#48;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#111;&#109;">&#103;&#111;&#x6e;&#x67;&#109;&#105;&#x6e;&#x67;&#113;&#x6d;&#49;&#48;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;</a>
-USER root
-RUN apt-get update &amp;&amp; apt-get -y install libstdc++6 lib32z1 lib32stdc++6 expect</p>
-
-<p>RUN wget &mdash;progress=dot:giga <a href="http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz">http://dl.google.com/android/android-sdk_r24.1.2-linux.tgz</a>
-RUN mv android-sdk_r24.1.2-linux.tgz /opt/
-RUN cd /opt &amp;&amp; tar xzvf ./android-sdk_r24.1.2-linux.tgz
-ENV ANDROID_HOME /opt/android-sdk-linux/
-ENV PATH $ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
-RUN echo $PATH
-RUN echo &ldquo;y&rdquo; | android update sdk -u &mdash;filter platform-tools,android-21
-RUN echo &ldquo;y&rdquo; | android update sdk -u &mdash;all &mdash;filter 5
-RUN chmod -R 755 $ANDROID_HOME</p>
-
-<p>RUN apt-get install -y git-core
-RUN android update sdk &mdash;no-ui</p>
-
-<p>```</p>
-
-<p>其中 <code>android update sdk -u --all --filter 5</code> 主要用来更新build-tools。在有android环境的机器上运行'android list sdk &mdash;all'可以查看所有的SDK信息，找到最新版本的build-tools，然后通过提供的最新版本号即可。</p>
-
-<p>Dockerfile配置成功后，我们首先在Vagrant虚拟机里面，<code>mkdir /var/jenkins_home</code>，并给予所有权限 <code>chmod 777 /var/jenkins_home</code>。/var/jenkins_home 能够映射到Docker中的jenkins_home目录，方便我们直接备份jenkins数据。</p>
-
-<h4>Build Dockerfile</h4>
-
-<p>准备工作完成之后，build Dockerfile，首先切换到Dockerfile所在的当前目录下，</p>
-
-<p>```
-vagrant@ubuntu-14: sudo docker build -t gongmingqm10/jenkins-android:latest .</p>
-
-<p>&hellip;</p>
-
-<p>Successfully built 184c7dad595a</p>
-
-<p>```</p>
-
-<h4>Push Image</h4>
-
-<p>最后输出的信息就是我们通过Dockerfile生成的新的镜像ID。构建完成之后我们需要commit并push这个镜像到docker hub的repository上。</p>
-
-<p>```
-vagrant@ubuntu-14:~/test$ sudo docker images
-REPOSITORY                     TAG                   IMAGE ID            CREATED             VIRTUAL SIZE
-gongmingqm10/jenkins-android       latest                184c7dad595a        11 minutes ago      188.3 MB</p>
-
-<p>```
-通过 docker images能够看到最新的镜像已经生成，这一步我们需要首先启动这个镜像，然后得到container ID，然后再PUSH 这个container。</p>
-
-<p>首先启动镜像：</p>
-
-<p>```
-vagrant@ubuntu-14:~/test$ sudo docker run -t -i -d gongmingqm10/jenkins-android:latest
-&hellip;</p>
-
-<p>vagrant@ubuntu-14:~/test$ sudo docker ps
-CONTAINER ID        IMAGE                              COMMAND                CREATED             STATUS              PORTS                               NAMES
-43fcce2388fc        gongmingqm10/jenkins-adnroid:latest    /bin/bash              17 seconds ago      Up 16 seconds                                           determined_lumiere
-vagrant@ubuntu-14:~/test$ sudo docker commit -m &ldquo;Add Android Config&rdquo; -a &ldquo;Ming Gong&rdquo; 43fcce2388fc gongmingqm10/jenkins-android:latest
-75f1b93aedc4b57426b75c96ce69170016b3c0b0b6283cda5562f8464bbfd2f4
-vagrant@ubuntu-14:~/test$ sudo docker push gongmingqm10/jenkins-android</p>
-
-<p>```
-首次push，可能会提示你输入自己的Docker Hub的用户名和密码。</p>
-
-<h4>运行 jenkins-android</h4>
-
-<p>```
-sudo docker run &mdash;name jenkinsAndroid -p 8080:8080 -v /var/jenkins_home:/var/jenkins_home gongmingqm10/jenkins-android</p>
-
-<p>```</p>
-
-<p>我们使用jenkinsAndroid作为container的名字，注意这个名字也不能与已用的container 名字重复。运行一次之后，如果被自己停了，发现没有启动的话，可以使用 <code>sudo docker ps -a</code> 查看所有的container，然后找到 jenkinsAndroid这个名字的container对应的ID。启动之：</p>
-
-<p>```
-sudo docker start f6b88bdad68f</p>
-
-<p>```</p>
-
-<h4>访问 Jenkins</h4>
-
-<p>在第一部分，我们直接使用Jenkins官方的Repository启动了Jenkins进行访问，经过这部分我们自己构建Dockerfile，添加了一些Android的运行环境，目的是给Android Test提供必要的运行环境。访问 <code>localhost:8088</code>可以访问这个具有Android环境的Jenkins。注册用户并登录，这一部分就完成了。</p>
-
-<h3>4. Jenkins中配置Android Build</h3>
-
-<p>通过访问<code>localhost:8088</code>，我们可以进入Jenkins控制台。为了使得Jenkins可以运行Android的单元测试和功能测试，主要安装如下插件：</p>
-
-<p><code>git plugin</code>： 从 git repo 中 clone 代码</p>
-
-<p><code>android emulator plugin</code>：Android运行功能测试时，能够帮助我们生成或者启动Android虚拟机</p>
-
-<p><code>build monitor view</code>：全屏显示当前Build情况，适合投影到大屏幕上，方便所有人实时了解build情况</p>
-
-<p>构建Functional test过程中，我希望通过android emulator pligin直接启动在container中已经新建的AVD。运行过程中却始终出错:</p>
-
-<p>```
-$ /opt/android-sdk-linux/tools/emulator -no-boot-anim -ports 9731,9732 -avd Nexus_5_API_21 -no-snapshot-load -no-snapshot-save -no-window
-emulator: ERROR: Could not load OpenGLES emulation library: libX11.so.6: cannot open shared object file: No such file or directory
-emulator: WARNING: Could not initialize OpenglES emulation, using software renderer.
-emulator: warning: opening audio output failed</p>
-
-<p>$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-connected to localhost:9732
-[android] Waiting for emulator to finish booting&hellip;
-$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
-error: device offline
-$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
-error: device offline
-$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
-error: device offline
-$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
-error: device offline
-$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
-error: device offline
-$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb -s localhost:9732 shell getprop init.svc.bootanim
-error: device offline
-$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
-$ /opt/android-sdk-linux/platform-tools/adb connect localhost:9732
-[android] Emulator was shut down before it finished booting
-$ /opt/android-sdk-linux/platform-tools/adb disconnect localhost:9732
-[android] Stopping Android emulator
-$ /opt/android-sdk-linux/platform-tools/adb kill-server
-Finished: NOT_BUILT</p>
-
-<p>```
-网上查了一下，主要是64位机器下运行32位emulator导致的一些问题。如果可以在一台都图形界面的机器上手动启动虚拟机，运行functional test的时候就应该不存在这个问题。此处先略过这个问题，后面会有专门的文章来研究这个问题。</p>
-
-<p>在Jenkins中，建立的Build主要为 Android Unit Test &ndash; Android Functional Test &ndash; Android Deploy Hocky App.</p>
-
-<p>通过Android的单元测试和功能测试基本可以保证App的功能处于正常状态；而Deploy到Hockey App则是为了持续集成的需要，我们要确保我们的App能够被实时生成，这样我们的产品就可以随时被测试并展示给客户，或者直接发布Hockey App 上某一个稳定的版本。</p>
-
-<p>要想Jenkins能够直接将应用上传到HockeyApp上，我们只需要在Jenkins中安装<code>Hockey App Plugin</code>，然后通过注册Hockey App提供相应的API Token并进行简单配置，即可以直接通过Jenkins来上传发布我们的App。</p>
-
-<h3>5. Android Flavor</h3>
-
-<p>Android Flavor是为了Android在构建时使用不同的资源，类似于Ruby运行时可以设置不同的环境。</p>
-
-<p>在app/build.gradle做如下配置：</p>
-
-<p>```
-android {</p>
-
-<pre><code>defaultConfig{...}
-
-productFlavors {
-    dev {
-        applicationId "com.tarcle.moment.dev"
-    }
-    qa {
-        applicationId "com.tarcle.moment.qa"
-    }
-    production {
-        applicationId "com.tarcle.moment"
-    }
-
-}
-
-signingConfigs {
-    release {...}
-}
-
-buildTypes {
-    release {...}
-}
-
-packageOptions {...}
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-
-<p>通过上面的配置，我们给APP添加了三种环境变量，于是可以直接在app目录下面新建<code>dev, qa, production</code>等文件夹。通过IDE中选择不同的Build variables，便可以在当前工程中使用什么环境的配置。</p>
-
-<p>通过<code>./gradlew clean build 任务</code>， 能够在 <code>app/build/outputs/apk</code>等目录下生成不同环境下的Debug和Release包。而这里面的Release包则可以用来Jenkins中上传到Hockey App中。</p>
-
-<p>配置Jenkins Build和Hockey App可能用到如下插件。对于不同的Flavor，我们可以在Deploy HockeyApp 的配置中添加Build Parameters，构建时我们可以自己选择不同类型的包。从而发布不同环境下的版本。</p>
-
-<p><code>Copy Artifact Plugin</code> 从其他的Build中直接拷贝已经生成的APK文件包。</p>
-
-<p><code>Android Lint Plugin</code> 构建后发布Lint Report。</p>
-
-<h3>Other</h3>
-
-<p>关于如何直接在虚拟机中，不使用Docker构建Android Build, 将会在另一篇博文中阐述。</p>
-
-<p>如下是我们可能用到的关于Docker 和 Android的常用命令：</p>
-
-<p><code>android list avd</code> 查看所有当前设备。</p>
-
-<p><code>android create avd -f -a -s 1080x1920 -n Nexus_5_API_21 -t android-21</code> 创建API-21名为Nexus_5_API_21的emulator。</p>
-
-<p><code>emulator -avd Nexus_5_API_21</code> 运行已创建的名为 Nexus_5_API_21的emulator，注意运行时命令行会一直处于阻塞中，所以可以在末尾加上 <code>&amp;</code> 让其进入后台运行。</p>
-
-<p><code>adb devices</code> List of devices attached。</p>
-
-<p><code>sudo docker exec -i -t a45953b9f2fe bash</code> 进入运行中的container的控制台</p>
-
-<p><code>echo 'y' | apt-get install libgl1-mesa-dev</code></p>
 ]]></content>
   </entry>
   

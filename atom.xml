@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-11-30T00:18:30+08:00</updated>
+  <updated>2015-12-03T00:07:57+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,145 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android 新手成长计划]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/11/30/android-xin-shou-jiao-cheng/"/>
+    <updated>2015-11-30T21:17:42+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/11/30/android-xin-shou-jiao-cheng</id>
+    <content type="html"><![CDATA[<p><img src="http://www.webmastergrade.com/wp-content/uploads/2011/04/Android-VS-Apple.jpg" width="500" alt="Android starter" /></p>
+
+<p>最近在公司里开始遇到了新人培养的问题，新人被 assign 到 Android 项目上，为了让他能够很快有所产出，于是我们得思考怎么样快速锻炼一个新人并让他对 Android 开发产生兴趣并持续做下去呢？当然也会有一时兴起的同事会想着学习 Android，Android 入门门槛不高，但是要想真正的熟练驾驭，确实是一件道阻且长的事情，需要付出额外的努力。</p>
+
+<h2>兴趣驱动法则</h2>
+
+<p>其实“兴趣”不只是在 Android 开发上体现的重要，兴趣在任何地方都是最重要的。之前接触过一些朋友，某次会突然告诉我想学习 Android，但是往往一个 Hello World 都可以将之难倒。这时候学习者明显缺少兴趣驱动。Android 开发好玩的一点是我们开发的应用都可以很简单的在手机上安装使用。所以你可以尽情尝试各种新奇的点子。</p>
+
+<p>当然，兴趣并不是本文讨论的重点，我们假设真心想学习的人都是出于兴趣。</p>
+
+<h2>循序渐进的练习计划</h2>
+
+<p>有了兴趣远远还不够，兴趣只能促使你完成一个 Hello World，要想真正做出东西还应该有循序渐进的计划来配合。我当时学习 Android 的方法就是每周一个任务。把学习新知识当作升级打怪，这样子你还会松懈吗？</p>
+
+<h3>你应该掌握的 Android 开发知识</h3>
+
+<p>Android 开发的入门门槛不高，但是细节知识真心不少。作为初学者，我们可以先了解广度，然后了解深度。刚开始可以接触尝试了解一点远离性的知识，然后直接运用一些流行的框架。快速迭代完成一个 App。那么对于新手而言，应该掌握的 Android 开发知识有哪些呢？</p>
+
+<h4>1. Hello Android</h4>
+
+<p>开发调试基础看起来比较模糊，具体一点是完成一个 Hello World，让此应用运行在你的手机或者模拟器中。借此了解各个文件夹模块的作用以及 App 运行的基础原理。涵盖知识点如下：</p>
+
+<ul>
+<li>搭建 Android 开发环境： Java + Android Studio + SDK；</li>
+<li>熟悉项目结构：src, res, assets, values, layouts, drawable/mipmap, styles, AndroidManifest.xml, Activity；</li>
+<li>解读 Hello World 运行机制：项目从哪里运行，Activity 与 layout 的关联，Activity 中如何找到布局中的实例化控件，Activity 的生命周期；</li>
+</ul>
+
+
+<h4>2. 计算器</h4>
+
+<p>计算器的经典程度不亚于 Hello World，Android 计算器能够让初学者迅速建立信心，同时作为一个单纯的无网络交互的应用，计算器主要处理布局，点击事件，计算逻辑。因此在了解了 Hello World 之后做计算器，再合适不过了。计算器最终效果图如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/calculator.png" width="300" alt="计算器" /></p>
+
+<p>那么对于计算器这个 demo 的要求如下：</p>
+
+<ul>
+<li>界面效果如上图，并且能够进行简单的整数运算：<code>1+1, 4*2, 6/3, 1-10</code> 等；</li>
+<li>异常处理，除数为 0 时界面提示 <code>Error</code>；</li>
+<li>小数点以及连续运算的支持；</li>
+<li>继承 Robolectric 添加单元测试；</li>
+<li>每次打开 App 结果栏会自动显示上一次的运算结果；</li>
+<li>添加<code>History</code>菜单，点击列表显示历史计算表达式以及结果；</li>
+</ul>
+
+
+<p>通过这些要求，涵盖的知识点如下：</p>
+
+<ul>
+<li>布局管理器的了解及使用：RelativeLayout, LinearLayout；</li>
+<li>Android 控件添加点击事件，TextView 动态设值；</li>
+<li>Android 项目集成 Robolectric，添加简单的单元测试；</li>
+<li>Android 数据持久化保存 &ndash; SharedPreferences；</li>
+<li>Android 数据持久化存储 &ndash; Sqlite 数据库；</li>
+<li>Android ListView 列表及数据绑定；</li>
+<li>Android Activity 跳转 &ndash; Intent；</li>
+<li>添加 <a href="http://jakewharton.github.io/butterknife/">ButterKnife</a> 框架，重构项目；</li>
+<li>添加 <a href="http://greenrobot.org/greendao/">GreenDao</a> 框架，重构数据库数据存储及读取；</li>
+</ul>
+
+
+<h4>3. 豆瓣图书列表 &ndash; 图片缓存</h4>
+
+<p>豆瓣图书列表最初起源于公司内部的一次 Android 培训，由于对 Android 初学者而言，还比较有意义，于是设置为专题的形式供大家练习。需求很简单，将给定的图书列表数据(JSON 格式)显示到界面上。包括图书信息在列表中展示，网络图片的加载以及缓存。JSON 数据<a href="http://7xj9js.com1.z0.glb.clouddn.com/douban-books.json">点击此处</a>查看。完成之后效果图如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/douban-reading.png" width="300" alt="Douban Books" /></p>
+
+<p>具体要求如下：</p>
+
+<ul>
+<li>列表显示图书信息：图书图片，名称，作者／出版社／出版年份，评价，简介；</li>
+<li>多次滑动列表，保证文字以及图片显示不会发生错位，并且始终流畅（有列表控件重用）；</li>
+<li>添加图片缓存：图片加载成功后，断开网络，退出 App，打开应用仍然能够正确显示图片；</li>
+</ul>
+
+
+<p>通过这些要求我们期望初学者掌握的技能点如下：</p>
+
+<ul>
+<li>Android ListView 自定义列表样式；</li>
+<li>Android Adapter 使用 ViewHolder 进行控件复用；</li>
+<li>Android 主线程（UI线程）的概念，主线程阻塞的解决方案，Handler 的概念以及使用方法；</li>
+<li>图片缓存的应用，内存级别的缓存以及磁盘级别的缓存；</li>
+<li>使用 <a href="http://square.github.io/picasso/">Picasso</a>/<a href="https://github.com/nostra13/Android-Universal-Image-Loader">ImageLoader</a> 图片加载及缓存框架，简化开发；</li>
+</ul>
+
+
+<p>如果你对图片缓存部分的实现有任何疑惑，请参考工程 <a href="https://github.com/gongmingqm10/AndroidWorkshop/tree/2nd-step4">AndroidWorkShop</a>。图片磁盘缓存部分参考了 Android 官方教程。</p>
+
+<h4>4. 豆瓣图书列表 &ndash; 网络请求</h4>
+
+<p>这个任务其实是对第 3 条任务的改造。不同之处在于，本次任务侧重于让初学者了解如何快速构建出一个有网络请求模块的 App。我们的效果图和上一条任务的相同，不同点在于本次我们会使用真实的网络API数据。并且会对 API 请求回来的数据进行缓存。具体要求如下：</p>
+
+<ul>
+<li>推荐使用 <a href="http://square.github.io/retrofit/">Retrofit</a> 框架，从豆瓣读书 API 网络获取<a href="https://api.douban.com/v2/book/search?q=Java">图书列表</a>及<a href="http://api.douban.com/v2/book/2130190">图书详情</a>。详情参见<a href="http://developers.douban.com/wiki/?title=guide">豆瓣API</a>；</li>
+<li>列表显示豆瓣图书列表，图片显示可直接使用 Picasso；</li>
+<li>点击 Item 跳转至图书详情界面，显示该书籍详细信息；</li>
+<li>缓存此 API 的搜索结果 (文件或者数据库Key-Value的形式缓存JSON数据)；</li>
+<li>使用 SwipeRefreshLayout 添加下拉刷新功能，下拉刷新时重新添加请求数据并更新缓存；</li>
+</ul>
+
+
+<p>此任务我们期望初学者掌握的知识点：</p>
+
+<ul>
+<li>Retrofit 框架的使用；</li>
+<li>Android 数据缓存的简易实现方案（数据库／文件形式）；</li>
+<li>简单的列表点击事件，页面跳转等；</li>
+<li><a href="http://android-developers.blogspot.com/2015/05/android-design-support-library.html">Android Design Support Library</a> 中常用的组件及使用；</li>
+</ul>
+
+
+<h4>5. 设计并实现你自己的 App</h4>
+
+<p>如果你顺利完成了上述四条任务，那么这一步你应该已经具备了完成一个简单的 App 的技能，这一步可以按照个人兴趣完成自己的创意点子。在开始编码之前，可以先制作出一套 UI 交互图，然后整理 API 并开始编码。</p>
+
+<h3>Android 学习常用的链接</h3>
+
+<p>Android 拥有全面的官方学习教程以及各种丰富的开源库。我们初学时可以多浏览官方教程学习一些好的实现，下面列举了一些很常用的链接：</p>
+
+<ol>
+<li><a href="developer.android.com/training/index.html">Android 官方文档</a></li>
+<li><a href="http://android-developers.blogspot.com/">Android 官方博客</a></li>
+<li><a href="www.google.com/design/spec/style/color.html#">Google Material Design</a></li>
+<li><a href="http://square.github.io/">Square Open Source</a></li>
+<li><a href="http://jakewharton.com/">Jake Wharton 的博客</a></li>
+</ol>
+
+
+<p>全文很多观点都是一家之言，更多的是结合自己的项目经验以及学习经验总结而成，如有谬误及不当之处，请读者不吝赐教。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android Adapter notifyDataSetChanged Not Working]]></title>
@@ -3024,75 +3163,6 @@ There is one quirk: client can’t push into your active git branch. Before push
 <p>至此，push工作也就基本完成了。Git 还是很强大的。</p>
 
 <p>参考网址： <a href="http://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/">taming-the-git-daemon-to-quickly-share-git-repository</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android Quiz Questions]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions/"/>
-    <updated>2014-10-13T17:19:22+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2014/10/13/android-quiz-questions</id>
-    <content type="html"><![CDATA[<p>关于Android的几个常见的问题，记录如下，小问题看到本质也可以了解很多原理性的东西。</p>
-
-<hr />
-
-<p><strong>Q: Android中Activity的生命周期？</strong></p>
-
-<p>A: onCreate() &ndash;> onStart() &ndash;> onResume() &ndash;> onPause() &ndash;> onStop() &ndash;>onDestroy().</p>
-
-<!-- more -->
-
-
-<hr />
-
-<p><strong>Q：Activity的onCreate()等函数必须Override吗？如果没有onCreate()，Activity能否运行？</strong></p>
-
-<p>A: 答案显然是Override不是必须的，没有onCreate()的Activity还是可以运行的，那么究竟会运行成什么样子呢。<br/>
-实例中试一试，从MainActivity中打开没有Override任何Method的Activity，发现界面上会出现一个白底界面的Activity，说明我们的Activity最终还是运行了的。只不过界面上没有任何元素，因为我们没有指定contentView。</p>
-
-<hr />
-
-<p><strong>Q: onStop()等在生命周期中是否一定会被调用?</strong></p>
-
-<p>A: onStart(), onResume(), onPause(), onStop()都可以不被调用。因为一旦在onCreate()中我们直接手动调用finish()，相当于告诉Activity结束，于是系统会直接调用onDestroy()来销毁当前的Activity。</p>
-
-<hr />
-
-<p><strong>Q: onCreate()中的参数savedInstanceState意义是什么，会在什么情况下用到？</strong></p>
-
-<p>A：按照官方的解释：</p>
-
-<blockquote><pre><code> * @param savedInstanceState If the activity is being re-initialized after
- *     previously being shut down then this Bundle contains the data it most
- *     recently supplied in {@link #onSaveInstanceState}.  &lt;b&gt;&lt;i&gt;Note: Otherwise it is null.&lt;/i&gt;&lt;/b&gt;
- *
-</code></pre></blockquote>
-
-<p>savedInstanceState表示当Activity在前一个关闭再度初始化的时候会保存的信息。举例来讲，在我们的APP运行时，如果系统内存不足，系统会把Activity栈中一些比较古老的Activity给终结掉，此时系统会调用<code>onSaveInstanceState()</code>方法，此方法默认保存此Intent的一些信息，当这个Activity再次被调用时，这些保存的信息会传递到onCreate的savedInstanceState中。我们如果需要自定义的保存某些很重要的信息，可以复写<code>onSaveInstanceState()</code>方法把某些重要信息放到bundle中，也可以把那些信息写到本地文件中或者数据库中进行保存。方便下次进入时能够获取到。</p>
-
-<hr />
-
-<p><strong>Q: Activity与Fragment的区别</strong></p>
-
-<p>A: Activity相信大家都不陌生，其实可以简单的看着一个页面，跳转到另外一个页面一般就进入新的Activity。那么Android从API11开始使用Fragment的原因呢？其实主要是为了适配Android的多屏（特别是手机与平板）问题。一般情况下，如果按照普通的设计思路，我们会同时维护两份代码，并且UI上会有比较大的区别。对于快速升级的互联网产品而言，简直就是一个灾难。这时Google想了一个好的办法，在代码中引入Fragment，Fragment相当于一个module，我们所有的UI可以以模块的形式放到Fragment中。这时候的Fragment能够被多个Activity复用，我们的Activity此时做的事情就是组装这些Fragment。在平板中，我可以在ActivityA中放入FragmentA和FragmentB；在手机中，我则会在ActivityA中放入FragmentA，而在ActivityB中放入FragmentB。所以平板和手机的适配问题变成了简单的组装。从而我们的View不需要进行各种大的变动。这能够为开发者节省很多时间。<br/>
-具体参考：<a href="http://developer.android.com/guide/components/fragments.html">Android Fragment Component</a></p>
-
-<hr />
-
-<p><strong>Q: UI线程你知道多少？</strong></p>
-
-<p>A：UI线程就是我们常说的主线程，UI线程负责着与用户的交互操作，会处理用户的触摸滑动点击等事件，并把这些事件分发给相应的组件来处理。如果我们尝试在UI线程中进行一个耗时的操作，那么我们的APP会出现ANR（Application not responsing）异常。在UI线程中直接进行耗时操作就会造成主线程阻塞，阻塞到达一定时间则会产生ANR。<br/>
-为了防止这种UI错误，我们进行的处理是将耗时操作放到另外一个线程中处理，耗时操作完成后，我们不能在非UI线程中进行UI的操作，这样是不安全的。因为我们可以借助Handler把更新的消息发给主线程，然后在主线程中更新UI操作。下面是几种耗时操作后更新UI线程的方法：</p>
-
-<ul>
-<li>View.post(Runnable runnable)</li>
-<li>Activity.runOnUiThread(Runnable runnable)</li>
-<li>AsyncTask</li>
-<li>Hanlder + Thread</li>
-</ul>
-
-
-<p>事实上前面三种都是使用java封装好的其他线程中操作UI线程的方法，这些方法都是为了方便开发人员而进行的一些处理。具体用法，大家可以Google之。</p>
 ]]></content>
   </entry>
   
