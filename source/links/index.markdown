@@ -15,3 +15,6 @@ footer: true
 * [CodeKK](http://a.codekk.com/)
 * [破狼](http://greengerong.com/)
 * [HuKai](http://hukai.me/)
+* [郭霖](http://blog.csdn.net/guolin_blog)
+* [邱俊涛](http://icodeit.org/)
+* [极客学院](http://wiki.jikexueyuan.com/)
