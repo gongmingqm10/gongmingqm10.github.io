@@ -11,7 +11,9 @@ published: true
 
 在 Android 开发或面试过程中，屏幕旋转是一个容易让人忽视的知识点。在我之前经历的项目中，App 通常是为竖屏状态设置的，所以通常我们会对每个页面都设置竖屏方向，这时候我们不需要考虑旋转屏问题。但是最近项目中，我们的 App 是为平板设计的，而横竖屏旋转是属于客户的一个需求，当然平板上横竖屏的确比较常用。所以就借此机会研究了下 Android 横竖屏问题。
 
-![Android 横竖屏](http://speakinbytes.com/wp-content/uploads/2014/01/portrait_landscape.png =500x)
+![Android 横竖屏](http://7xj9js.com1.z0.glb.clouddn.com/portrait_landscape.png =500x)
+
+<!-- More -->
 
 横竖屏之所以需要引起开发者的注意，是因为 App 在横竖屏切换的过程中，页面会重绘，那么页面上已有的数据（比如登录页面已经输入的用户名）如何保存成为了一个问题。按照官方的推荐，Activity本身的确有处理旋转屏事件的函数，但是当一个页面中需要保存的数据很多的时候（比如很多 EditText），还是手工处理，就显得有些繁琐了。下面我们将循序渐进地探索 Android 屏幕旋转之最佳实践。
 
