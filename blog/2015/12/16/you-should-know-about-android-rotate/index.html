@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>gongmingqm10</title>
+  <title>Android 转屏那些事儿 - gongmingqm10</title>
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="在 Android 开发或面试过程中，屏幕旋转是一个容易让人忽视的知识点。在我之前经历的项目中，App 通常是为竖屏状态设置的，所以通常我们会对每个页面都设置竖屏方向，这时候我们不需要考虑旋转屏问题。但是最近项目中，我们的 App 是为平板设计的，而横竖屏旋转是属于客户的一个需求， &hellip;">
+  <meta name="description" content="Android屏幕旋转，Fragment生命周期, 状态保存">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.gongmingqm10.net">
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2015/12/16/you-should-know-about-android-rotate">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
@@ -78,15 +78,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a></h1>
+      <h1 class="entry-title">Android 转屏那些事儿</h1>
     
     
       <p class="meta">
@@ -105,14 +102,14 @@
 <time datetime="2015-12-16T15:39:43+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2015</time>
         
         
-        | <a href="/blog/2015/12/16/you-should-know-about-android-rotate/#comments">Comments</a>
+        | <a href="#comments">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>在 Android 开发或面试过程中，屏幕旋转是一个容易让人忽视的知识点。在我之前经历的项目中，App 通常是为竖屏状态设置的，所以通常我们会对每个页面都设置竖屏方向，这时候我们不需要考虑旋转屏问题。但是最近项目中，我们的 App 是为平板设计的，而横竖屏旋转是属于客户的一个需求，当然平板上横竖屏的确比较常用。所以就借此机会研究了下 Android 横竖屏问题。</p>
+<div class="entry-content"><p>在 Android 开发或面试过程中，屏幕旋转是一个容易让人忽视的知识点。在我之前经历的项目中，App 通常是为竖屏状态设置的，所以通常我们会对每个页面都设置竖屏方向，这时候我们不需要考虑旋转屏问题。但是最近项目中，我们的 App 是为平板设计的，而横竖屏旋转是属于客户的一个需求，当然平板上横竖屏的确比较常用。所以就借此机会研究了下 Android 横竖屏问题。</p>
 
 <p><img src="http://speakinbytes.com/wp-content/uploads/2014/01/portrait_landscape.png" width="500" alt="Android 横竖屏" /></p>
 
@@ -412,68 +409,16 @@
 
 <p>如果你的 App 恰好可以不做转屏，那么你可以很省事的在 Manifest 文件中添加标注，强制所有页面使用竖屏/横屏。如果你的页面不幸的需要支持横竖屏切换，那么你在预估工作量或者给客户报价时一定要考虑到。虽然加入转屏支持不会导致工作量翻倍，但是却有可能引起许多问题。尤其当页面有很多业务逻辑，有状态值的时候。所以我们在项目开发过程中，应该知道什么时候需要考虑状态保存，当状态保存出现问题时，应该怎么解决之。</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/30/android-xin-shou-jiao-cheng/">Android 新手成长计划</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
 
-<time datetime="2015-11-30T21:17:42+08:00" pubdate data-updated="true">Nov 30<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/11/30/android-xin-shou-jiao-cheng/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.webmastergrade.com/wp-content/uploads/2011/04/Android-VS-Apple.jpg" width="500" alt="Android starter" /></p>
-
-<p>最近在公司里开始遇到了新人培养的问题，新人被 assign 到 Android 项目上，为了让他能够很快有所产出，于是我们得思考怎么样快速锻炼一个新人并让他对 Android 开发产生兴趣并持续做下去呢？当然也会有一时兴起的同事会想着学习 Android，Android 入门门槛不高，但是要想真正的熟练驾驭，确实是一件道阻且长的事情，需要付出额外的努力。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/30/android-xin-shou-jiao-cheng/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/29/android-adapter-notifydatasetchanged-not-working/">Android Adapter notifyDataSetChanged Not Working</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -485,386 +430,55 @@
   
 
 
-<time datetime="2015-11-29T11:30:39+08:00" pubdate data-updated="true">Nov 29<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/11/29/android-adapter-notifydatasetchanged-not-working/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>刚开发 Android 开发时，总是遇到一个看似很简单的问题 “Android Adapter notifyDataSetChanegd 不生效”，而每次解决这个问题的方法总是简单粗暴，直接了当。大概是以前的时候做事以结果导向，所以对于这些奇怪的问题也总是没有深究。刚好最近在项目中再次遇到了这个问题，决心深究一下。</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/Its_not_working_anymore.png" width="500" alt="notifyDataSetChanged not working" /></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/29/android-adapter-notifydatasetchanged-not-working/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2015-12-16T15:39:43+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2015</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/16/devops-session-2/">DevOps Session 2</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/android/'>Android</a>
+  
+</span>
 
 
-<time datetime="2015-09-16T14:24:51+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/09/16/devops-session-2/#comments">Comments</a>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。</p>
-
-<h2>课前准备</h2>
-
-<p>课前准备阶段，我们需要完成简单的作业：</p>
-
-<ol>
-<li>使用 tomcat 用户安装 tomcat7 服务器；</li>
-<li>使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；</li>
-<li>从本机浏览器中访问 jenkins 主页；</li>
-</ol>
-
-
+      <div class="sharing">
+  
+  
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/16/devops-session-2/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/10/devops-session-1/">DevOps Session 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-10T22:09:55+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/09/10/devops-session-1/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近公司在组织DevOps培训，于是就有个这个系列的文章，作为培训笔记，作为以后参考。如果你还不知道DevOps概念，请参考<a href="https://zh.wikipedia.org/wiki/DevOps">Wikipedia</a>。</p>
-
-<blockquote><p>DevOps（英文Development和Operations的组合）是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。</p></blockquote>
-
-<h2>课前准备</h2>
-
-<p>因为需要使用一台Linux机器来作为测试主机，我们使用VirtualBox安装<a href="http://releases.ubuntu.com/15.04/ubuntu-15.04-server-amd64.iso">Ubuntu Server</a>。安装完成之后，我们能够登录这台“服务器”。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/10/devops-session-1/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2015/11/30/android-xin-shou-jiao-cheng/" title="Previous Post: Android 新手成长计划">&laquo; Android 新手成长计划</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/29/android-testing-practice/">Android 应用的持续交付</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-29T11:40:16+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/06/29/android-testing-practice/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。</p>
-
-<p>在测试方面，Android早期即存在UIAtomator和Monkey之类的测试，但是用起来实在不方便。2013年，Google开源了针对An ndroid平台的移动测试框架 &ndash; Espresso。Espresso可以针对每个页面(Activity)进行测试。开发者可以根据ID获取到页面元素，然后进行点击、长按等操作。结合Junit和Mock等工具，使得移动端测试成为可能。移动端拥有了测试框架的辅助，借助CI平台，持续交付也成为可能。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/06/29/android-testing-practice/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/25/material-design-your-android-app/">Material Design Your Android App</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-25T15:22:27+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/06/25/material-design-your-android-app/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>14年6月26日的Google I/O大会上，Google推出了一门全新的设计语言Material Design。Material Design在随后的一年里被逐渐应用到Android, Web等平台中。Material Design的推出意味着Google对移动端和网页端设计的整合。固然没有引起轩然大波，但是Material Design却让Android开发者看到了一点福音。</p>
-
-<p>虽然Android系统广受诟病，越来越多的用户投奔苹果的iOS系统。然而这阻挡不了Android的不断改进。14年Google I/O, Google推出了Android的5.0版本，代号Lollipop。5.0版本在设计上采用全新的Material Design，虽然这次升级对ROM生产商来说是道“过不去的坎儿”，但是对开发者群体而言却是一次很不错的升级。因为开发者可以凭借有些的设计资源打造出更好看的App。</p>
+<section>
+  <h1>Comments</h1>
+  <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"gongmingqm10"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+</section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/06/25/material-design-your-android-app/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/09/android-design-difference-between-px/">Android Design - Difference Between Px Sp and Dp</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-09T11:32:59+08:00" pubdate data-updated="true">May 9<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/05/09/android-design-difference-between-px/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。并且随着不同厂家定制化不同的ROM，Android设备的碎片化现象日益严重。这篇文章主要讲述如何设计中严格遵从设计图标准的Android页面。</p>
-
-<h2>1. px, dp, sp区别</h2>
-
-<h3>什么是px</h3>
-
-<p>px就是我们通常所说的像素的单位，在css里面，我们用px比较多。px主要指用户在屏幕上看到的事物的实际大小单位。</p>
-
-<h3>什么是dp</h3>
-
-<p>在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/05/09/android-design-difference-between-px/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-12T10:46:59+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>About Docker</h2>
-
-<p>什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？</p>
-
-<p>这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性，降低其他不可知因素对代码的影响。而Docker和VM虚拟机相比又有其特点，比如启动速度快，可以单独将Docker保存为镜像，上传后能够让别人使用。甚至可以直接将自己的code放在Docker中，直接将环境和代码一起交付给客户。客户只需要安装这个Docker，运行后就可以直接使用这个application了。</p>
-
-<blockquote><p>Develop, Ship and Run Any Application, Anywhere</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/03/09/android-continuous-integration/">Android Continuous Integration</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-09T12:39:35+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/03/09/android-continuous-integration/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>随着Android平台的逐渐成熟，伴随着一系列针对Android测试框架的推出，开发人员终于可以如愿以偿的在移动端的开发上进行单元测试，集成测试以及功能测试。在敏捷流程中从开发，到测试，到验收最终成为面向用户的Release版本，经历的是Story一个完整的生命周期。CI(Continuous Integration, 持续交付)在敏捷实践中也因此扮演了非常重要的角色。</p>
-
-<p>如果说Web的持续集成，以及各类测试框架有一定的历史积淀了。那么Android的持续集成可以说是新鲜事物，大部分IT公司知道如何对服务器端或者Web端进行一系列自动化测试，保证其功能的正确性。而对于移动端的产品比较多的则是由测试人员组成的人肉测试。移动端的这种人工测试，无论是对测试人员，还是要经常打包并且来修复各种Bug的开发人员来说，其代价是巨大的。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/03/09/android-continuous-integration/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -901,22 +515,10 @@
     <h1>最新评论</h1>
     <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
     
-    <!--多说js加载开始，一个页面只需要加载一次 -->
-    <script type="text/javascript">
-        var duoshuoQuery = {short_name:"gongmingqm10"};
-        (function() {
-            var ds = document.createElement('script');
-            ds.type = 'text/javascript';ds.async = true;
-            ds.src = 'http://static.duoshuo.com/embed.js';
-            ds.charset = 'UTF-8';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-        })();
-    </script>
-    <!--多说js加载结束，一个页面只需要加载一次 -->
-    
 </section>
   
 </aside>
+
 
     </div>
   </div>

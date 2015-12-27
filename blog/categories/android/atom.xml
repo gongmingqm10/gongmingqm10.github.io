@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2015-12-21T23:04:34+08:00</updated>
+  <updated>2015-12-27T21:56:01+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,241 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android 转屏那些事儿]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2015/12/16/you-should-know-about-android-rotate/"/>
+    <updated>2015-12-16T15:39:43+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2015/12/16/you-should-know-about-android-rotate</id>
+    <content type="html"><![CDATA[<p>在 Android 开发或面试过程中，屏幕旋转是一个容易让人忽视的知识点。在我之前经历的项目中，App 通常是为竖屏状态设置的，所以通常我们会对每个页面都设置竖屏方向，这时候我们不需要考虑旋转屏问题。但是最近项目中，我们的 App 是为平板设计的，而横竖屏旋转是属于客户的一个需求，当然平板上横竖屏的确比较常用。所以就借此机会研究了下 Android 横竖屏问题。</p>
+
+<p><img src="http://speakinbytes.com/wp-content/uploads/2014/01/portrait_landscape.png" width="500" alt="Android 横竖屏" /></p>
+
+<p>横竖屏之所以需要引起开发者的注意，是因为 App 在横竖屏切换的过程中，页面会重绘，那么页面上已有的数据（比如登录页面已经输入的用户名）如何保存成为了一个问题。按照官方的推荐，Activity本身的确有处理旋转屏事件的函数，但是当一个页面中需要保存的数据很多的时候（比如很多 EditText），还是手工处理，就显得有些繁琐了。下面我们将循序渐进地探索 Android 屏幕旋转之最佳实践。</p>
+
+<h2>Activity 旋转中的保存与恢复</h2>
+
+<p>在解决问题或者探索最佳实践的时候，我们可以从简单的问题入手，慢慢衍生至复杂的情形，最后再抽象出一些比较通用的解决方案。这一步我们单纯的探索一个 Activity（没有 Fragment）的数据保存与恢复。</p>
+
+<h3>Activity 的生命周期</h3>
+
+<p>Activity 从创建到呈现在用户面前到消亡，有着自己完整的生命周期：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_lifecycle.png" width="500" alt="Activity 生命周期" /></p>
+
+<p>旋转屏幕时，打印相关 Log 如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_rotate_cycle.png" width="600" alt="Activity 旋转中的生命周期" /></p>
+
+<p>从 Log 可以看到，在屏幕旋转时，原来的 Activity 调用了 onDestroy，随后重新实例化了一个 MainActivity。重新实例化的 MainActivity 也会经历 “onCreate &ndash;> onStart &ndash;> onResume” 的生命周期。</p>
+
+<h3>Activity 中窗口保存与恢复</h3>
+
+<p>为了进一步探索 Activity 在旋转屏过程中的数据保存及恢复的逻辑，我们构造了一个具有用户名和密码的登录界面。当用户在用户名中输入用户名时，这时候旋转屏幕，此时期望的操作应该是输入的用户名仍然能够保留：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_login.png" width="400" alt="Activity Login 页面" /></p>
+
+<p>在不添加任何额外代码的情况下，我们可以看到输入框中的数据在旋转屏后仍然能够保留，这些控件基本状态的值是如何被保留的呢？</p>
+
+<p>Activity 中方法 <code>protected void onSaveInstanceState(Bundle outState) {...}</code> 主要做状态保存相关的处理，如果我们有需要特地保存的变量等，我们可以在 <code>onSaveInstanceState</code> 中保存，保存后的 bundle 以 outState Bundle 的格式保存。当 Activity 再次被初始化时，<code>onCreate(Bundle savedInstanceState)</code> 会将保存的 bundle 传递给 Activity 主页面，Activity 主页面接收到这些状态保存的数据后，能够根据保存中的控件的ID信息，状态数据等对页面进行自动的初始化。当我们转屏时，会主动触发 <code>onSaveInstanceState</code> 被调用。Log 打印如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_onrestore_data.png" width="600" alt="Activity onSaveInstanceState &amp; onRestoreInstanceState" /></p>
+
+<p>根据 Log 很明确看出在旋转屏之后，随着 onPause 的执行，<code>onSaveInstanceState</code> 也被执行。当 Activity 再次初始化时，<code>onCreate(Bundle savedInstanceState)</code> 会传递回一个非空的 savedInstanceState（而当 Activity 第一次初始化时此值为空），同时 <code>onRestoreInstanceState</code> 也会被调用，用来将保存的窗口状态信息重新应用：</p>
+
+<p>生命周期：<code>onCreate</code> &ndash;> <code>onStart</code> &ndash;> <code>onResume</code> &ndash;> Running 转屏 &ndash;> <code>onPause</code> &ndash;> <code>onSaveInstanceState</code> &ndash;> <code>onStop</code> &ndash;> <code>onDestroy</code> &ndash;> <code>onCreate</code> &ndash;> <code>onStart</code> &ndash;> <code>onRestoreInstanceState</code> &ndash;> <code>onResume</code>;</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_savedInstanceState.png" width="600" alt="Android savedInstanceState" /></p>
+
+<p>通过对 <code>savedInstanceState</code> 的查看，发现 savedInstanceState 中包含有 Key 为 <code>android:viewHierarchyState</code> 的 bundle 数据，此 bundle 数据具体内容如下：</p>
+
+<p>```
+Bundle[{android:views={</p>
+
+<pre><code>    16908290=android.view.AbsSavedState$1@347440f8,         2131492927=android.view.AbsSavedState$1@347440f8,       2131492928=android.view.AbsSavedState$1@347440f8,       2131492929=android.support.v7.widget.Toolbar$SavedState@391b69d1,       2131492930=android.view.AbsSavedState$1@347440f8,       2131492944=TextView.SavedState{138fec36 start=8 end=8 text=gongming},       2131492945=TextView.SavedState{16043737 start=0 end=0 text=},       2131492946=android.view.AbsSavedState$1@347440f8
+},
+android:focusedViewId=2131492944}
+</code></pre>
+
+<p>]
+```
+可以看到 username 的输入框 EditText，其 ID 以及当前的值都已经保存至 savedInstanceState 中。</p>
+
+<p>那么，对于 Activity.java 的而言，最重要的保存数据和恢复数据的源代码如下：</p>
+
+<p>```</p>
+
+<pre><code>private static final String WINDOW_HIERARCHY_TAG = "android:viewHierarchyState";
+
+protected void onSaveInstanceState(Bundle outState) {
+    outState.putBundle(WINDOW_HIERARCHY_TAG, mWindow.saveHierarchyState());
+    Parcelable p = mFragments.saveAllState();
+    if (p != null) {
+        outState.putParcelable(FRAGMENTS_TAG, p);
+    }
+    getApplication().dispatchActivitySaveInstanceState(this, outState);
+}
+
+protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    if (mWindow != null) {
+        Bundle windowState = savedInstanceState.getBundle(WINDOW_HIERARCHY_TAG);
+        if (windowState != null) {
+            mWindow.restoreHierarchyState(windowState);
+        }
+    }
+}
+</code></pre>
+
+<p>```
+这就是为什么我们没有做过多的处理却可以让 App 在旋转屏幕时仍然自动保存恢复输入框中的文字。</p>
+
+<h3>Activity 中数据保存与恢复</h3>
+
+<p>既然 Activity 本身对窗口（控件）的状态信息进行了保存及恢复处理。那么我们在屏幕切换时最应该关心的就是页面数据的保存与恢复。页面数据主要有两种：</p>
+
+<ul>
+<li>API 请求的数据：在横竖屏切换时对API数据进行保存及恢复能够防止 API 的重复调用；</li>
+<li>页面中的状态值：在 Activity 运行过程中被改变的状态值，在恢复时需要手动保存及恢复，以便不影响状态值相关的页面逻辑；</li>
+</ul>
+
+
+<p>在 Activity 中进行变量的存储及读取时，使用 <code>onSaveInstanceState</code> 进行数据的存储，使用 <code>onRestoreInstanceState</code> 进行数据的读取：</p>
+
+<p>```</p>
+
+<pre><code>private boolean shouldSaveData = false;
+
+private static final String KEY_SHOULD_SAVE_DATA = "save_data_key";
+
+@Override
+protected void onSaveInstanceState(Bundle outState) {
+    outState.putBoolean(KEY_SHOULD_SAVE_DATA, shouldSaveData);
+    super.onSaveInstanceState(outState);
+
+    Log.i(TAG, "@@Activity onSaveInstanceState@@" + this.toString());
+}
+
+@Override
+protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    shouldSaveData = savedInstanceState.getBoolean(KEY_SHOULD_SAVE_DATA);
+    Log.i(TAG, "@@Activity onRestoreInstanceState@@" + this.toString());
+}
+</code></pre>
+
+<p>```</p>
+
+<h3>Activity 中弹框的状态保存及恢复</h3>
+
+<p>在 Activity 中经常会遇到 Dialog，甚至像下面具有输入框的 Dialog：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_signature_dialog.png" width="400" alt="Android Dialog" /></p>
+
+<p>当用户点击 Login 按钮，弹出弹框需要用户签名，这时如果屏幕不小心进行了一次旋转，那么这个弹出的 Dialog 便消失，随之消失的还有用户输入了一半的输入框文字。Activity 在旋转过程中对于 Dialog 自身的生命周期进行很好的管理，如果为了达到更好的用户体验，转屏时也需要保存输入框状态，那么此处我们强烈推荐用户使用 <a href="http://developer.android.com/reference/android/app/DialogFragment.html">DialogFragment</a> 代替 Dialog。</p>
+
+<p>由于 Fragment 也具有生命周期，使用 DialogFragment 之后，我们结合 Activity 与 Fragment 的生命周期，查看整个过程经历了哪些流程。</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/fragment_lifecycle.png" width="300" alt="Frgament 生命周期" /></p>
+
+<p>结合 DialogFragment 在 Activity 中旋转的重新初始化及数据恢复，我们可以看到执行顺序如下：</p>
+
+<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/activity_fragment_rotate.png" width="500" alt="Android Fragment 执行顺序" /></p>
+
+<p>在转屏时，Activity 和 Fragment 都会重新实例化，并且都通过 <code>onSaveInstanceState</code> 进行状态保存。值得注意的是不同于 Activity, Fragment 并没有 <code>onRestoreInstanceState</code> 方法，Fragment 的状态恢复在 <code>onActivityCreated</code> 方法中。查看 DialogFragment 源码，我们可以看到如下调用：</p>
+
+<p>```</p>
+
+<pre><code>@Override
+public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    ...
+    if (savedInstanceState != null) {
+        Bundle dialogState = savedInstanceState.getBundle(SAVED_DIALOG_STATE_TAG);
+        if (dialogState != null) {
+            mDialog.onRestoreInstanceState(dialogState);
+        }
+    }
+}
+
+...
+
+@Override
+public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (mDialog != null) {
+        Bundle dialogState = mDialog.onSaveInstanceState();
+        if (dialogState != null) {
+            outState.putBundle(SAVED_DIALOG_STATE_TAG, dialogState);
+        }
+    }
+    ...
+}
+</code></pre>
+
+<p>```</p>
+
+<p>由于 DialogFragment 其实就是展示一个 Dialog，而 DialogFragment 对 Dialog 的状态保存及恢复使得 Dialog 的状态得以保存。</p>
+
+<h2>Fragment 状态的保存及恢复</h2>
+
+<p>有了上面对 DialogFragment 转屏时状态保存及恢复的研究，那么在一个普通的 Fragment(DialogFragment 是一种特殊的 Fragment) 中状态保存及恢复又是怎样的呢？</p>
+
+<p>实际上通过 DialogFragment 我们可以知道保存状态值还是通过 <code>onSaveInstanceState</code> 方法，而 <code>onActivityCreated</code> 中则可以获取状态值。</p>
+
+<p>在转屏时，我们会有很多特殊的考虑。所以如果你的 App 需要支持横竖屏切换，你可以留意如下几点：</p>
+
+<h3>1. Dialog 转屏消失问题</h3>
+
+<p>Dialog 转屏消失在现实中是一个很常见的情形，对应的解决方案就是利用 DialogFragment 来替代 Dialog。这样旋转屏幕时弹起的 Dialog 就不会消失。</p>
+
+<h3>2. Fragment 保存组件信息的坑</h3>
+
+<p>最近在项目中发现，有时候放置在 Fragment 中的 ListView 转屏后不能自动回到转屏之前的位置。后来发现导致原因是 Activity 的 Layout 在添加 Fragment 时候没有指定 id 或 tag。于是该 Fragment 在 Activity 重绘时不能被系统当作 “同一个” Fragment，所以旋转时控件的一些基本状态信息没办法恢复。</p>
+
+<p>```
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+&lt;fragment xmlns:android=&ldquo;<a href="http://schemas.android.com/apk/res/android">http://schemas.android.com/apk/res/android</a>&rdquo;</p>
+
+<pre><code>android:id="@+id/home_fragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:name="net.gongmingqm10.androidrotate.HomeFragment" /&gt;
+</code></pre>
+
+<p><code>``
+其中的</code>android:id=&ldquo;@+id/home_fragment&rdquo;` 是重点。一旦 Fragment 的状态保存出现问题，可先确认 Fragment 是不是设置了 id 或 tag。</p>
+
+<h3>3. 使用 setRetainInstance</h3>
+
+<p>关于 Fragment，我们发现 <code>setRetainInstance</code> 方法经常被用到，那么这个方法的作用是什么呢？我们看看官方的解释：</p>
+
+<p>```</p>
+
+<pre><code>/**
+ * Control whether a fragment instance is retained across Activity
+ * re-creation (such as from a configuration change).  This can only
+ * be used with fragments not in the back stack.  If set, the fragment
+ * lifecycle will be slightly different when an activity is recreated:
+ * &lt;ul&gt;
+ * &lt;li&gt; {@link #onDestroy()} will not be called (but {@link #onDetach()} still
+ * will be, because the fragment is being detached from its current activity).
+ * &lt;li&gt; {@link #onCreate(Bundle)} will not be called since the fragment
+ * is not being re-created.
+ * &lt;li&gt; {@link #onAttach(Activity)} and {@link #onActivityCreated(Bundle)} &lt;b&gt;will&lt;/b&gt;
+ * still be called.
+ * &lt;/ul&gt;
+ */
+</code></pre>
+
+<p><code>``
+结合方法名以及方法的解释，可以知道一旦我们设置</code>setRetainInstance(true)<code>，意味着在 Activity 重绘时，我们的 Fragment 不会被重复绘制，也就是它会被“保留”。为了验证其作用，我们发现在设置为</code>true<code>状态时，旋转屏幕，Fragment 依然是之前的 Fragment。而如果将它设置为默认的 false，那么旋转屏幕时 Fragment 会被销毁，然后重新创建出另外一个 fragment 实例。并且如官方所说，如果 Fragment 不重复创建，意味着 Fragment 的</code>onCreate<code>和</code>onDestroy<code>方法不会被重复调用。所以在旋转屏 Fragment 中，我们经常会设置</code>setRetainInstance(true)`，这样旋转时 Fragment 不需要重新创建。</p>
+
+<p>如果你的 App 恰好可以不做转屏，那么你可以很省事的在 Manifest 文件中添加标注，强制所有页面使用竖屏/横屏。如果你的页面不幸的需要支持横竖屏切换，那么你在预估工作量或者给客户报价时一定要考虑到。虽然加入转屏支持不会导致工作量翻倍，但是却有可能引起许多问题。尤其当页面有很多业务逻辑，有状态值的时候。所以我们在项目开发过程中，应该知道什么时候需要考虑状态保存，当状态保存出现问题时，应该怎么解决之。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android 新手成长计划]]></title>
@@ -694,131 +929,6 @@ compile 'com.android.support:design:22.2.0'
 <p><a href="http://developer.android.com/training/material/index.html">Material Design for Developers</a></p>
 
 <p><a href="http://android-developers.blogspot.sg/2015/05/android-design-support-library.html">Android Design Support Library</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android Design - Difference Between Px Sp and Dp]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/05/09/android-design-difference-between-px/"/>
-    <updated>2015-05-09T11:32:59+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/05/09/android-design-difference-between-px</id>
-    <content type="html"><![CDATA[<p>Android自兴起以来，开发者不断增加，与此同时市场上参差不齐的设备也不断增加，随之而来的则是开发者需要适配众多机型而带来的困扰与抱怨。并且随着不同厂家定制化不同的ROM，Android设备的碎片化现象日益严重。这篇文章主要讲述如何设计中严格遵从设计图标准的Android页面。</p>
-
-<h2>1. px, dp, sp区别</h2>
-
-<h3>什么是px</h3>
-
-<p>px就是我们通常所说的像素的单位，在css里面，我们用px比较多。px主要指用户在屏幕上看到的事物的实际大小单位。</p>
-
-<h3>什么是dp</h3>
-
-<p>在看手机或者电脑参数时，我们经常说到一个关键词，屏幕分辨率(resolution)，分辨率被表示成每一个方向上的像素数量，比如800x480分辨率</p>
-
-<!-- more -->
-
-
-<p><img src="/images/retina_one_screen.jpg" title="Mac retina resolution" ></p>
-
-<p>上图中，我们可以看到15寸的retina pro分辨率是2880x1800，而60寸的HDTV分辨率却只有1920x1080。可见如果60寸的HDTV也要达到Retina的显示效果，其分辨率大概至少为11520x7200。</p>
-
-<p>既然已经有了分辨率的概念，那么我们就可以了解 dpi(dot per inch)的概念了。dpi本意是每英寸点的数量，但是也经常和ppi(pixel per inch)混用。指每英寸的像素数量，也被我们称为屏幕密度，dpi越大，图像从视觉上看起来越清晰。</p>
-
-<p>Google官方对dp的解释如下：</p>
-
-<blockquote><p>A virtual pixel unit that you should use when defining UI layout, to express layout dimensions or position in a density-independent way.
-The density-independent pixel is equivalent to one physical pixel on a 160 dpi screen, which is the baseline density assumed by the system for a &ldquo;medium&rdquo; density screen. At runtime, the system transparently handles any scaling of the dp units, as necessary, based on the actual density of the screen in use. The conversion of dp units to screen pixels is simple: px = dp * (dpi / 160). For example, on a 240 dpi screen, 1 dp equals 1.5 physical pixels. You should always use dp units when defining your application&rsquo;s UI, to ensure proper display of your UI on screens with different densities.</p></blockquote>
-
-<p>有了密度的概念，我们可以更好的理解dp(density independent pixel)了。dp是Android中用来定义UI布局中表达元素尺寸或位置的一个虚拟的像素单位，dp的存在是为了页面元素位置不受屏幕密度所影响。以设计师设计一个APP页面为例，设计师希望用户视觉上看起来如此，也就是设计师设计时通常以px作为基础单位。而在其他不同屏幕密度的设备中，也希望能够进行一定的伸缩，类似于维持一个相对一致的百分比。所以开发者通常需要以dp为单位，以适应不同密度的屏幕。</p>
-
-<p>所以dp和px之间有一套换算标准：<code>px = dp * (dpi / 160)</code>。假设在dpi为320的屏幕上，1dp = 2px。</p>
-
-<h3>什么是sp</h3>
-
-<p>sp是Android中专业为字体而设置的单位。使用sp作为字体单位不仅能够使字体大小受屏幕密度影响，并且能够使字体受用户系统设置的影响。Android提供字体大小的设置选项。一旦使用sp作为字体，根据用户设置字体的不同，App中的字体大小也会显示不同。但是在正常字体设置下，1dp ＝ 1sp。</p>
-
-<h2>2. 设计师视角</h2>
-
-<p>Android的多屏适配存在这么多的尺寸，自然需要设计师和工程师之间找到沟通的桥梁，设计师如何规范设计才能够更加符合Android的设计标准呢。设计师与工程师对于页面的尺寸需要有一个共识性的标准，测试人员才可能进行更有效的测试，才不致于因为不同机型显示不同效果而引起不必要的工作量。</p>
-
-<p>首先我们需要选择一个相对通用的屏幕尺寸，可以参考现有的一些主流机型的尺寸。为了便于计算，我们选择Nexus 4作为设计图的原版标准。那么所有的页面都是基于Nexus4而产生的。Nexus4尺寸如下:</p>
-
-<p><code>主屏尺寸4.7，主屏分辨率：1280x768像素，屏幕像素密度320ppi。</code></p>
-
-<p>一般来说，我们选择市场上最常见的机型来设计，这里我们为了计算方便，选择320ppi的机型，设计图中尺寸将是标准图中的2倍。假设在设计图中，页面内边距为32px, 按钮的高度为96px, icon大小为48x48。</p>
-
-<p>通过<code>px＝dp*(dpi/160)</code>的标准，设计师给开发者标注图时可标注页边距为16dp，按钮高度为48dp，icon则分别出四套mdpi, hdpi, xhdpi, xxhdpi标准。</p>
-
-<h2>3. 开发者视角</h2>
-
-<h3>margin, padding, height, width</h3>
-
-<p>从开发者角度来看，对于控件的尺寸，高度等，只需要按照转化后的dp设置即可。</p>
-
-<p>```
-android:layout_padding=&ldquo;16dp&rdquo;</p>
-
-<p>android:layout_height=&ldquo;48dp&rdquo;</p>
-
-<p>```</p>
-
-<p>以dp为单位能够保证不同分辨率屏幕上显示不同大小的字体。并且能够保持相对大小，这样也更符合设计的初衷。</p>
-
-<h3>图片资源</h3>
-
-<p>对于png制作出来的图片，一般大小固定，没办法像尺寸一样自动的伸缩。所以Android会存在至少4个资源文件夹。当App运行过程中，系统能够根据当前设备的屏幕密度，自动选择使用哪种尺寸的图片资源。</p>
-
-<table>
-<thead>
-<tr>
-<th>ldpi </th>
-<th> mdpi </th>
-<th> hdpi </th>
-<th> xhdpi </th>
-<th> xxhdpi </th>
-<th> xxxhdpi</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0.75 </td>
-<td> 1  </td>
-<td> 1.5 </td>
-<td> 2 </td>
-<td> 3 </td>
-<td> 4</td>
-</tr>
-<tr>
-<td>120 </td>
-<td> 160 </td>
-<td> 240 </td>
-<td> 320 </td>
-<td> 480 </td>
-<td> 640</td>
-</tr>
-<tr>
-<td>18x18 </td>
-<td> 24x24 </td>
-<td> 36x36 </td>
-<td> 48x48 </td>
-<td> 72x72 </td>
-<td> 96x96</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>4. 更多</h2>
-
-<p>附上Android主流机型：</p>
-
-<p>Android：主流机型主要为 480x800, 480x854, 540x960, 720x1280, 800x1280 这五种。
-（非主流机型还包括：240x320, 320x480, 640x960 这三种，其中两种都与 iPhone 一致。）
-iOS: 主流机型主要为 320x480, 640x960, 640x1136, 1024x768, 2048x1536, 这五种。
-WP：主流机型主要为 480x800，720x1280, 768x1280 这三种</p>
-
-<p>Photoshop制图时，字体大小通常是pt这个单位。pt是长度单位， 1pt = 1/72英寸， px = pt * dpi/72。</p>
-
-<p>另附上豆瓣关于这些单位更<a href="http://www.douban.com/note/155032221/">具体的阐释</a>。</p>
 ]]></content>
   </entry>
   
