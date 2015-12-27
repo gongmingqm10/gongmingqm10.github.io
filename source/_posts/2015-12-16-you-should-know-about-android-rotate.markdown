@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "You should know about Android rotate"
+title: "Android 转屏那些事儿"
 date: 2015-12-16 15:39:43 +0800
 description: Android屏幕旋转，Fragment生命周期, 状态保存
 comments: true
 categories: Android
-published: false
+published: true
 
 ---
 
@@ -54,7 +54,7 @@ Activity 中方法 `protected void onSaveInstanceState(Bundle outState) {...} ` 
 ```
 Bundle[{android:views={
 		16908290=android.view.AbsSavedState$1@347440f8, 		2131492927=android.view.AbsSavedState$1@347440f8, 		2131492928=android.view.AbsSavedState$1@347440f8, 		2131492929=android.support.v7.widget.Toolbar$SavedState@391b69d1, 		2131492930=android.view.AbsSavedState$1@347440f8, 		2131492944=TextView.SavedState{138fec36 start=8 end=8 text=gongming}, 		2131492945=TextView.SavedState{16043737 start=0 end=0 text=}, 		2131492946=android.view.AbsSavedState$1@347440f8
-	}, 
+	},
 	android:focusedViewId=2131492944}
 ]
 ```
@@ -64,7 +64,7 @@ Bundle[{android:views={
 
 ```
     private static final String WINDOW_HIERARCHY_TAG = "android:viewHierarchyState";
-    
+
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBundle(WINDOW_HIERARCHY_TAG, mWindow.saveHierarchyState());
         Parcelable p = mFragments.saveAllState();
@@ -73,7 +73,7 @@ Bundle[{android:views={
         }
         getApplication().dispatchActivitySaveInstanceState(this, outState);
     }
-    
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if (mWindow != null) {
             Bundle windowState = savedInstanceState.getBundle(WINDOW_HIERARCHY_TAG);
@@ -97,7 +97,7 @@ Bundle[{android:views={
 
 ```
     private boolean shouldSaveData = false;
-    
+
     private static final String KEY_SHOULD_SAVE_DATA = "save_data_key";
 
     @Override
@@ -146,9 +146,9 @@ Bundle[{android:views={
             }
         }
     }
-    
+
     ...
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -160,10 +160,61 @@ Bundle[{android:views={
         }
 		...
     }
-    
+
 ```
 
 由于 DialogFragment 其实就是展示一个 Dialog，而 DialogFragment 对 Dialog 的状态保存及恢复使得 Dialog 的状态得以保存。
 
 ## Fragment 状态的保存及恢复
 
+有了上面对 DialogFragment 转屏时状态保存及恢复的研究，那么在一个普通的 Fragment(DialogFragment 是一种特殊的 Fragment) 中状态保存及恢复又是怎样的呢？
+
+实际上通过 DialogFragment 我们可以知道保存状态值还是通过 `onSaveInstanceState` 方法，而 `onActivityCreated` 中则可以获取状态值。
+
+在转屏时，我们会有很多特殊的考虑。所以如果你的 App 需要支持横竖屏切换，你可以留意如下几点：
+
+### 1. Dialog 转屏消失问题
+
+Dialog 转屏消失在现实中是一个很常见的情形，对应的解决方案就是利用 DialogFragment 来替代 Dialog。这样旋转屏幕时弹起的 Dialog 就不会消失。
+
+### 2. Fragment 保存组件信息的坑
+
+最近在项目中发现，有时候放置在 Fragment 中的 ListView 转屏后不能自动回到转屏之前的位置。后来发现导致原因是 Activity 的 Layout 在添加 Fragment 时候没有指定 id 或 tag。于是该 Fragment 在 Activity 重绘时不能被系统当作 “同一个” Fragment，所以旋转时控件的一些基本状态信息没办法恢复。
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:name="net.gongmingqm10.androidrotate.HomeFragment" />
+```
+其中的 `android:id="@+id/home_fragment"` 是重点。一旦 Fragment 的状态保存出现问题，可先确认 Fragment 是不是设置了 id 或 tag。
+
+### 3. 使用 setRetainInstance
+
+关于 Fragment，我们发现 `setRetainInstance` 方法经常被用到，那么这个方法的作用是什么呢？我们看看官方的解释：
+
+```
+    /**
+     * Control whether a fragment instance is retained across Activity
+     * re-creation (such as from a configuration change).  This can only
+     * be used with fragments not in the back stack.  If set, the fragment
+     * lifecycle will be slightly different when an activity is recreated:
+     * <ul>
+     * <li> {@link #onDestroy()} will not be called (but {@link #onDetach()} still
+     * will be, because the fragment is being detached from its current activity).
+     * <li> {@link #onCreate(Bundle)} will not be called since the fragment
+     * is not being re-created.
+     * <li> {@link #onAttach(Activity)} and {@link #onActivityCreated(Bundle)} <b>will</b>
+     * still be called.
+     * </ul>
+     */
+```
+结合方法名以及方法的解释，可以知道一旦我们设置 `setRetainInstance(true)`，意味着在 Activity 重绘时，我们的 Fragment 不会被重复绘制，也就是它会被“保留”。为了验证其作用，我们发现在设置为 `true` 状态时，旋转屏幕，Fragment 依然是之前的 Fragment。而如果将它设置为默认的 false，那么旋转屏幕时 Fragment 会被销毁，然后重新创建出另外一个 fragment 实例。并且如官方所说，如果 Fragment 不重复创建，意味着 Fragment 的 `onCreate` 和 `onDestroy` 方法不会被重复调用。所以在旋转屏 Fragment 中，我们经常会设置 `setRetainInstance(true)`，这样旋转时 Fragment 不需要重新创建。
+
+
+如果你的 App 恰好可以不做转屏，那么你可以很省事的在 Manifest 文件中添加标注，强制所有页面使用竖屏/横屏。如果你的页面不幸的需要支持横竖屏切换，那么你在预估工作量或者给客户报价时一定要考虑到。虽然加入转屏支持不会导致工作量翻倍，但是却有可能引起许多问题。尤其当页面有很多业务逻辑，有状态值的时候。所以我们在项目开发过程中，应该知道什么时候需要考虑状态保存，当状态保存出现问题时，应该怎么解决之。
