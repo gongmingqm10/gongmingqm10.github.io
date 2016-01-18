@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="随着Android平台的逐渐成熟，伴随着一系列针对Android测试框架的推出，开发人员终于可以如愿以偿的在移动端的开发上进行单元测试，集成测试以及功能测试。在敏捷流程中从开发，到测试，到验收最终成为面向用户的Release版本，经历的是Story一个完整的生命周期。CI(Continuous &hellip;">
+  <meta name="description" content="About Docker 什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？ 这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Setup Jenkins for Android Integration Using Docker</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-12T10:46:59+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
+        
+        
+        | <a href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>About Docker</h2>
+
+<p>什么Docker，为什么我们要折腾Docker，而不是直接在服务器上安装运行appilication所需的各种环境呢？</p>
+
+<p>这个问题的产生和为什么需要虚拟机的理由差不多，我需要让我的代码运行在一个干净的无干扰的机器上，这样能够保证代码测试运行环境的一致性，降低其他不可知因素对代码的影响。而Docker和VM虚拟机相比又有其特点，比如启动速度快，可以单独将Docker保存为镜像，上传后能够让别人使用。甚至可以直接将自己的code放在Docker中，直接将环境和代码一起交付给客户。客户只需要安装这个Docker，运行后就可以直接使用这个application了。</p>
+
+<blockquote><p>Develop, Ship and Run Any Application, Anywhere</p></blockquote>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/03/12/setup-jenkins-for-android-integration-using-docker/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -492,50 +542,6 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/17/android-deploy-your-app/">Android Deploy Your App</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-17T12:56:13+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
-        
-        
-        | <a href="/blog/2014/10/17/android-deploy-your-app/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>发布Android APP说通俗点就是“打包”，大部分情况下我们可以直接通过IDE进行签名打包，打包好的apk文件就可以上传到各大应用市场啦。今天项目开发过程中突然遇到需要更换debug.keystore的问题了，于是突然想好好研究一下Android打包的全过程，以及各个文件的作用。说做就做，how to publish your app?</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/10/17/android-deploy-your-app/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -569,14 +575,14 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
       </li>
     
       <li class="post">
-        <a href="/blog/2015/09/16/devops-session-2/">DevOps Session 2</a>
+        <a href="/blog/2015/11/17/owasp-top-10-training/">OWASP Top 10 Training</a>
       </li>
     
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(18)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(3)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(18)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(3)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>
@@ -602,7 +608,7 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Gong Ming -
+  Copyright &copy; 2016 - Gong Ming -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
