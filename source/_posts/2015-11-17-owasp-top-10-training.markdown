@@ -5,7 +5,7 @@ date: 2015-11-17 12:04:05 +0800
 description: 
 comments: true
 categories: Security
-published: false
+published: true
 
 ---
 ## 环境配置及安装
@@ -81,6 +81,8 @@ mv DVWA-1.9 /opt/lampp/htdocs/DVWA
 
 ## DVWA Practice
 
+关于十大安全问题的实践：未完，持续更新中 :)
+
 ### Brute Force
 
 密码暴力破解，根据理解就是根据一个用户名密码字典进行试错。
@@ -89,6 +91,6 @@ mv DVWA-1.9 /opt/lampp/htdocs/DVWA
 
 在 Mac 下面我使用 [ZAP](https://github.com/zaproxy/zaproxy/wiki/Downloads?tm=2) 进行暴力破解。ZAP 有适用于 Mac 版本的安装包。
 
-### Command Injection
+...
 
 
