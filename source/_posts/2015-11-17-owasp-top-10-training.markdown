@@ -81,7 +81,7 @@ mv DVWA-1.9 /opt/lampp/htdocs/DVWA
 
 ## DVWA Practice
 
-关于十大安全问题的实践：未完，持续更新中 :)
+DVWA 安装成功之后，我们开始学习相关的安全问题。DVWA 所培训的例子和 OWASP Top 10 安全问题并不完全一致，但是我们可以先学习 DVWA 上列举的安全问题，然后再逐步学习 Top 10 安全问题。
 
 ### Brute Force
 
@@ -90,6 +90,17 @@ mv DVWA-1.9 /opt/lampp/htdocs/DVWA
 通过以下链接找到适合你的 Brute Force 的工具：[http://resources.infosecinstitute.com/10-popular-password-cracking-tools/?dl=true](http://resources.infosecinstitute.com/10-popular-password-cracking-tools/?dl=true)
 
 在 Mac 下面我使用 [ZAP](https://github.com/zaproxy/zaproxy/wiki/Downloads?tm=2) 进行暴力破解。ZAP 有适用于 Mac 版本的安装包。
+
+几种不同的授权方式：
+
+* 基础验证: Basic Access Authentication;
+* 摘要验证: Digest Access Authentication;
+* Https验证: HTTPS Client Authentication;
+* 表单验证: Form Based Authentication;
+
+http://java.boot.by/wcd-guide/ch05s03.html
+
+https://www.owasp.org/index.php/Testing_for_Brute_Force_(OWASP-AT-004)
 
 ...
 
