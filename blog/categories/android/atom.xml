@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2016-03-19T15:40:06+08:00</updated>
+  <updated>2016-03-19T15:43:27+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[App Localisation Solution]]></title>
+    <title type="html"><![CDATA[App 本地化解决方案]]></title>
     <link href="http://www.gongmingqm10.net/blog/2016/03/19/app-localisation-solution/"/>
     <updated>2016-03-19T13:38:10+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2016/03/19/app-localisation-solution</id>
@@ -25,6 +25,9 @@
 <h2>业务</h2>
 
 <p>了解了本地化的背景之后，我们开始了解客户的具体业务。首先了解我们的用户：运动相机主要是喜欢极限运动的年轻人才会购买。当然在极限运动不够流行的中国，大部分中国人使用运动相机主要功能还是自拍，然后自拍发朋友圈。我们的 APP 目前主要用于和相机连接，然后 APP 可以控制相机拍照，设置相机拍照参数等并下载相机照片到手机中。</p>
+
+<!-- More -->
+
 
 <h2>本地化</h2>
 
