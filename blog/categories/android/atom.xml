@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2016-02-19T13:24:51+08:00</updated>
+  <updated>2016-03-19T15:40:06+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[App Localisation Solution]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2016/03/19/app-localisation-solution/"/>
+    <updated>2016-03-19T13:38:10+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2016/03/19/app-localisation-solution</id>
+    <content type="html"><![CDATA[<h2>背景</h2>
+
+<p>最近在公司里面参与了一个 App Localisation 项目，服务客户是国外的某运动相机厂商，由于近年来需要扩展中国市场。因此原来的英文版的 App 需要进行本地化。这个项目做起来技术难度并不大，因为发展足够成熟的 Android 和 iOS 对 本地化都有了很好的支持。那么一个本地化项目究竟应该挖掘什么呢？</p>
+
+<h2>业务</h2>
+
+<p>了解了本地化的背景之后，我们开始了解客户的具体业务。首先了解我们的用户：运动相机主要是喜欢极限运动的年轻人才会购买。当然在极限运动不够流行的中国，大部分中国人使用运动相机主要功能还是自拍，然后自拍发朋友圈。我们的 APP 目前主要用于和相机连接，然后 APP 可以控制相机拍照，设置相机拍照参数等并下载相机照片到手机中。</p>
+
+<h2>本地化</h2>
+
+<p>本地化(Localisation)主要是为了方便不同地区不同环境的用户都能轻松的使用我们的网站或者 App。从语言角度来说，我们需要给 App 支持中文。但是翻译就是一个 App 本地化的所有吗？</p>
+
+<p>本地化既然是为了更好的用户体验而服务，那么本地化不仅仅是语言。还包括语言，网络，文化等因素的影响。</p>
+
+<p><strong>1.语言</strong></p>
+
+<p>语言关系着用户能否使用你的App，是否理解App的核心价值。所以在移动端Android/iOS开发中，开发人员能够轻易的创建出针对不同语言的字符串资源文件，App运行时会根据当前设备的语言设置加载对应的字符串资源。</p>
+
+<p><strong>2.网络</strong></p>
+
+<p>网络意味着App中所使用的各种服务能够工作，在Web平台上表现为网站无法被访问。而在App中表现为某些功能无法使用。比如App中内嵌的Google地图在国内4G网络环境下是不能被访问的。当然如果是对中国市场做本地化，那么网络这块可以简单理解为"防火长城"。</p>
+
+<p><strong>3.文化</strong></p>
+
+<p>文化方面比如对数字的偏好。Arabic文字从右到左的方向。Android4.2版本开始全面支持Right to Left布局，iOS也在WWDC2015中宣布全面支持右到左的文字布局。文化当然也包括用户行为偏好。比如美国用户可以喜欢用运动相机拍摄极限视频。但是中国用户却更喜欢用运动相机自拍，然后分享朋友圈。</p>
+
+<p>本地化通常和翻译，国际化一起比较。下面我们可以了解下主要区别：</p>
+
+<p><img src="http://rack.2.mshcdn.com/media/ZgkyMDEyLzAyLzEzLzE3XzAyXzUyXzgzM19maWxlCnAJdGh1bWIJMTIwMHg5NjAwPg/00de5e48" alt="本地化比较" /></p>
+
+<h2>实践与坑</h2>
+
+<p>了解了本地化之后，那么在整个的项目实践中，我们有哪些需要注意的地方呢？</p>
+
+<h3>翻译</h3>
+
+<p>在本地化翻译过程中，我们一般需要先进行翻译相关文本。然后给客户验证反馈。翻译过程中需要提前确认，特别是对于法律性质的长文本翻译，可能还要和客户的法务部门打交道，敦促他们尽快完成翻译校对服务。当然，如果你自己没办法翻译一些服务条款等，可以把翻译服务委托给淘宝。</p>
+
+<p>翻译的沟通和确认可以直接使用 Google Excel 在线协作编辑，当然也可以使用 <a href="http://transfix.io/">Transfix</a>。</p>
+
+<h3>代码库维护</h3>
+
+<p>本地化无论是采取何种方案，最佳方案是能够和原来的代码共用同一份代码库。这样对于后期发布新功能将很有帮助。如果一开始就采用两套不同的代码库来做本地化，那以后英文版上增加了新功能，再复制到现在的版本上，将增加很多不必要的工作量，并带来诸多不一致性。</p>
+
+<h3>国内媒体分享</h3>
+
+<p>国内媒体分享可以说是本地化中一个很重要的方面。美国的社交平台主要是 Facebook, Twitter, Pinterest, youtube 等，但是在中国这些分享平台将是 微信朋友圈，QQ 空间，新浪微博, youku等。</p>
+
+<p>如果选择做国内媒体分享，需要确定是使用系统默认( Android 系统默认的分享方式支持 QQ, Wechat 等； iOS 不支持国内的渠道分享)，还是使用各社交平台的 SDK 进行集成。工作量是不一样的，所以要根据项目的进度安排进行合适的计划。</p>
+
+<p>如果你已经决定要集成各大社交平台 SDK 进行分享，那么我们应该尽快提交审核，申请相关的 key 和 secret。因为我们要预防审核过程中的各种问题。如果你的客户是国外的客户，那么这个申请 key 的工作一定需要你的参与，因为客户很难理解如何申请你需要的东西。</p>
+
+<h3>网络-GFW</h3>
+
+<p>网络可用性这个问题估计只有在做 APP 汉化的时候才会遇到。具体来说，中国市场Google服务(包括Google Map, Google Analytics, Google Cloud Messaging, Google Plus)等处于不可用(或者不稳定)状态。因此，除了App的文字资源需要汉化之外，App中使用的系列Google服务也应该更换为在国内可以使用的服务。</p>
+
+<p>由于 Google 服务不可用的情况，很多国产 Android 手机将手机中的 Google 服务给移除掉了，所以国内的 APP 应用还是慎用 Google 服务，毕竟网络是个很大的问题。</p>
+
+<p>当然除了 Google 服务之外，对于其他的服务也需要考虑稳定性等。因为有些国外的服务虽然不是Google的，但是在国内也很难访问。</p>
+
+<p>APP 上常见的服务：</p>
+
+<ol>
+<li>地图：Google Map不可用，国内可以替代为高德地图服务；</li>
+<li>社会化分享/登录: Google plus登录，Facebook和Twitter分享；</li>
+<li>App统计：Google Analytics不稳定；Flurry 统计；</li>
+<li>消息推送：Google Cloud Messaging不稳定；国内可以用个推或 JPush；</li>
+</ol>
+
+
+<p>当我们在对应用做服务选择的时候，除了需要考虑网络易用性之外，也需要考虑所选框架的文档是否适合客户的后期维护。因为我们的项目一般结束之后，要让客户能够快速接手，如果选择一些文档不全后期支持很差的服务，那团队解散之后。客户将很难维护这份代码。</p>
+
+<h3>应用分发</h3>
+
+<p>应用开发完成之后，离发布还有一步。你需要将 APP 分发到应用市场中，才能够真正让用户使用 APP。应用分发，这里主要指的是 Android 应用的分发，至于 iOS 的应用分发，按照官方流程走，应该不会出现太多意外。</p>
+
+<p>Android 应用市场分发，在中国尤其繁琐。由于 Google Play Store 在国内的 Android 手机号基本不可用，从而给了其他应用商店很多机会，比如 腾讯应用宝、百度市场、豌豆荚、安卓市场、360市场以及小米市场等。</p>
+
+<p>在我们给客户分发应用的时候，发现 Android 应用市场一般会自动爬取 Google Play 上的应用，于是我们的英文版就被官方市场收录，当时我们提交开发完成的中文版应用的时候，我们被告知应用侵权无法上架。最后经过复杂的邮件沟通，版权证明，应用认领等来解决这些版权问题。而这种特定的应用审核问题是没有提前预知的。这种问题也使得整个上线时间推迟了半个月左右。</p>
+
+<p>所以在应用分发之前，我们应该提前在应用上线之前进行试水。避免这种应用审核可能带来的风险。</p>
+
+<h2>写在后面</h2>
+
+<p>App本地化不再是字符串的本地化，包括影响软件可用性的服务的本地化。有效且全面的本地化才能够真正构建出一款易用“接地气”的App。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android 转屏那些事儿]]></title>
@@ -669,269 +762,6 @@ query "android.widget.TextView id: 'error_box' text:'用户名或者密码错误
 <h2>结语</h2>
 
 <p>移动端测试虽然发展时间不长，但是却不断在完善中。我们以前习惯用邮件或U盘发布新版供他人测试。我们以前习惯开发App时不写测试。那些时代应该过去了。运用Robolectric，我们可以很轻松的测试驱动开发Android App；运用Calabash或Appium，我们可以更好的控制App质量，保证App功能；运用Jenkins等CI平台，我们的App可以持续交付啦!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Material Design Your Android App]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/06/25/material-design-your-android-app/"/>
-    <updated>2015-06-25T15:22:27+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/06/25/material-design-your-android-app</id>
-    <content type="html"><![CDATA[<p>14年6月26日的Google I/O大会上，Google推出了一门全新的设计语言Material Design。Material Design在随后的一年里被逐渐应用到Android, Web等平台中。Material Design的推出意味着Google对移动端和网页端设计的整合。固然没有引起轩然大波，但是Material Design却让Android开发者看到了一点福音。</p>
-
-<p>虽然Android系统广受诟病，越来越多的用户投奔苹果的iOS系统。然而这阻挡不了Android的不断改进。14年Google I/O, Google推出了Android的5.0版本，代号Lollipop。5.0版本在设计上采用全新的Material Design，虽然这次升级对ROM生产商来说是道“过不去的坎儿”，但是对开发者群体而言却是一次很不错的升级。因为开发者可以凭借有些的设计资源打造出更好看的App。</p>
-
-<!-- more -->
-
-
-<h2>关于Material Design</h2>
-
-<blockquote><p>Material design is a comprehensive guide for visual, motion, and interaction design across platforms and devices.</p></blockquote>
-
-<p>这是Google官方给的解释， Material Design 中文直译为 “物质的设计”。可以简单理解为画面中的所有元素都可以看作是真实的物质，物质存在于空间中，并且存在光、影、运动等特征。所以Material Design的众多原则都是基于Material这个概念而提出的。</p>
-
-<h3>Material Design基本原则</h3>
-
-<p>Material Design作为设计与交互的一部分，由设计师来阐述更为专业。以下只是抛砖引玉的介绍，也许身边的设计师朋友会更专业的见解。</p>
-
-<h4>Material is the metaphor</h4>
-
-<blockquote><p>A material metaphor is the unifying theory of a rationalized space and a system of motion</p></blockquote>
-
-<p>举例来说，在Android Lollipop系统中，当用户点击操作时，界面会反馈出水纹般的涟漪向周边散去，作为对用户点击操作的直接反馈。Material的设计都是基于现实，并在现实世界的基础上予以创新的。创新之处表现在元素之间整理运动的和谐。即使是在现实世界进行创新，最重要的是要Material Design不会破坏物理世界的规则。</p>
-
-<h4>Bold, graphic, intentional</h4>
-
-<blockquote><p>The foundational elements of print-based design—typography, grids, space, scale, color, and use of imagery—guide visual treatments.</p></blockquote>
-
-<p>设计中的基本元素网格，空间，比例，字体，颜色等的结合能够给用户带来更好的体验，从而产生更大的价值。Material Design给我们指定了一些常见的搭配组合，比如颜色的组合、App中不同部分字体大小，组件之间的边距等。</p>
-
-<h4>Motion provides meaning</h4>
-
-<blockquote><p>Motion respects and reinforces the user as the prime mover. Primary user actions are inflection points that initiate motion, transforming the whole design.</p></blockquote>
-
-<p>动画通常是App中最常见的交互，在Material Design出来之前，大部分App是很少有动画的。因为动画从设计到最后被用户使用，需要动画的设计以及开发，有时还会受限于平台。Material Design在动画方面有所加强，官方推出了许多默认的动作，页面各个元素之间的相互运动等。期望通过元素的运动向用户传达更为核心的价值和功能。</p>
-
-<h3>为什么我们需要Material Design</h3>
-
-<p>设计主要是为了提升用户体验，辅助产品功能，起到锦上添花的效果。Google推出Material Design也许希望对所有的Google产品进行设计上的统一化。</p>
-
-<p>从Android平台来看，以前的Google Apps很难说有什么风格，其他厂商开发的App也是风格各异。Google希望通过Lollipop对App统一风格，所以在5.0＋平台上的Gmail, Youtube, Calender等都进行了风格的统一化，借此引导更多的设计师和开发者开发出更“接地气”的App。</p>
-
-<p>Material Design强调跨平台设计，如果你遵从Material Design，你会发现将无论是宽屏平板设备、还是手机，你会发现你的应用可以很智能的进行展示。这将极大减轻适配平板带来的工作量。是不是有点类似于Web上的响应式设计呢？</p>
-
-<p>当然选择是自由的，如果你觉得你的App不需要Material Design，那么TA真的不需要。</p>
-
-<h2>如何Material Design App</h2>
-
-<p>据个人观察，目前国内市场上大部分的App没有Material Design的概念。原因不得而知。但是遵循Material Design的应用在国外却比较常见。比如我个人常用的雅虎天气。</p>
-
-<p>那么如何空手开发Material Design 应用呢？假定读到这里的你是个开发人员：</p>
-
-<h3>1.合适的SDK版本和相关兼容包</h3>
-
-<p>build.gradle</p>
-
-<p>```
-apply plugin: &lsquo;com.android.application&rsquo;</p>
-
-<p>android {</p>
-
-<pre><code>compileSdkVersion 22
-buildToolsVersion "22.0.1"
-
-defaultConfig {
-    applicationId "net.gongmingqm10.training"
-    minSdkVersion 16
-    targetSdkVersion 22
-    versionCode 1
-    versionName "1.0"
-}
-...
-</code></pre>
-
-<p>}</p>
-
-<p>dependencies {</p>
-
-<pre><code>compile fileTree(dir: 'libs', include: ['*.jar'])
-//required
-compile 'com.android.support:appcompat-v7:22.2.0'
-//optional for RecyclerView
-compile 'com.android.support:recyclerview-v7:22.2.0'
-//optional for GridLayout
-compile 'com.android.support:gridlayout-v7:22.2.0'
-//optional for CardView
-compile 'com.android.support:cardview-v7:22.2.0'
-//optional for some useful libraries
-compile 'com.android.support:design:22.2.0'
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-
-<h3>2.使用 Material theme</h3>
-
-<p>values-v21/styles.xml</p>
-
-<p>```
-&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
-<resources></p>
-
-<pre><code>&lt;style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"&gt;
-    &lt;!-- Main theme colors --&gt;
-    &lt;!--   your app branding color for the app bar --&gt;
-    &lt;item name="colorPrimary"&gt;@color/color_primary&lt;/item&gt;
-    &lt;!--   darker variant for the status bar and contextual app bars --&gt;
-    &lt;item name="colorPrimaryDark"&gt;@color/color_primary_dark&lt;/item&gt;
-    &lt;!--   theme UI controls like checkboxes and text fields --&gt;
-    &lt;item name="colorAccent"&gt;@color/color_accent&lt;/item&gt;
-
-&lt;/style&gt;
-</code></pre>
-
-<p></resources></p>
-
-<p>```</p>
-
-<p>values/styles.xml</p>
-
-<p>```
-<resources></p>
-
-<pre><code>&lt;!-- Base application theme. --&gt;
-&lt;style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"&gt;
-    &lt;!-- Customize your theme here. --&gt;
-    &lt;item name="android:actionBarStyle"&gt;@style/MyActionBar&lt;/item&gt;
-    &lt;!-- Support library compatibility --&gt;
-
-    &lt;item name="actionBarStyle"&gt;@style/MyActionBar&lt;/item&gt;
-&lt;/style&gt;
-
-&lt;style name="AppTheme.NoActionBar"&gt;
-    &lt;item name="windowActionBar"&gt;false&lt;/item&gt;
-    &lt;item name="windowNoTitle"&gt;true&lt;/item&gt;
-&lt;/style&gt;
-
-&lt;!-- ActionBar styles --&gt;
-&lt;style name="MyActionBar"
-    parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"&gt;
-    &lt;item name="android:background"&gt;@color/color_primary&lt;/item&gt;
-    &lt;item name="android:titleTextStyle"&gt;@style/MyActionBarTitleText&lt;/item&gt;
-
-    &lt;!-- Support library compatibility --&gt;
-    &lt;item name="background"&gt;@color/color_primary&lt;/item&gt;
-    &lt;item name="titleTextStyle"&gt;@style/MyActionBarTitleText&lt;/item&gt;
-&lt;/style&gt;
-
-&lt;style name="MyActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title"&gt;
-    &lt;item name="android:textColor"&gt;@color/white&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p></resources></p>
-
-<p>```</p>
-
-<p>使用你定义的AppTheme</p>
-
-<p>```</p>
-
-<pre><code>&lt;application
-    android:name=".TrainingApp"
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:theme="@style/AppTheme" &gt;
-    ...
-&lt;/application&gt;
-</code></pre>
-
-<p>```</p>
-
-<h3>3.使用专为Material Design打造的Android控件</h3>
-
-<p>你可以参考<a href="http://developer.android.com/training/material/index.html">Google Training Material Design</a>获取更多的Material Design组件的使用方法。</p>
-
-<h4>Lists and Cards</h4>
-
-<h5>RecyclerView</h5>
-
-<p>引入RecyclerView到工程中：</p>
-
-<p><code>
-compile 'com.android.support:recyclerview-v7:22.2.0'
-</code>
-RecyclerView控件是ListView的更高效更灵活的版本。可以看作是对ListView更好的封装：</p>
-
-<ul>
-<li>解决ListView多列显示的难题；</li>
-<li>不用担心开发人员没有复用View，因为它会强迫你这样做；</li>
-<li>更方便的动画支持，移除中间某一项时，可以设置后面几项动画移动;</li>
-</ul>
-
-
-<h5>CardView</h5>
-
-<p><code>
-compile 'com.android.support:cardview-v7:22.2.0'
-</code>
-卡片式布局，你的界面就是有导航和卡片组成的。卡片能够设置圆角和阴影。</p>
-
-<h4>Design support library</h4>
-
-<p>使用Design support包含的空间，需要引入Design support库：</p>
-
-<p><code>
-compile 'com.android.support:design:22.2.0'
-</code></p>
-
-<p>Design support提供了一些很常见很实用的控件。</p>
-
-<h5>Navigation View</h5>
-
-<p>Material Design推荐使用DrawerLayout抽屉式布局显示导航，所以Android一直没有为底部导航推出相应的控件。按照Google最新的设计，所有的导航都会被设置为抽屉显示，点击左上角菜单可以抽屉式弹出菜单项。</p>
-
-<p>NavigationView就是和DrawerLayout搭配使用的神器。使用NavigationView只需要提供icon和title就可以生成专业的侧边导航。</p>
-
-<h5>Floating Action Button</h5>
-
-<p>Material Design引入了z轴，这个控件可以轻松制作出有阴影的悬浮圆形按钮。</p>
-
-<h5>Snackbar</h5>
-
-<p>底部栏消息提示控件，显示显示不再只有Toast和AlertDialog，还有Snackbar。</p>
-
-<h5>Tabs</h5>
-
-<p>在TabLayout出来之前，开发者通常手写Tab控件，并且需要手动控制UI。并且设计出来的Tab效果很一般。Google在2014年的iosched工程中推出了<a href="https://github.com/google/iosched/blob/master/android/src/main/java/com/google/samples/apps/iosched/ui/widget/SlidingTabLayout.java">SlidingTabLayout</a>，这个组件后来也在众多项目中被开发者用到。但是开发者还是得添加额外的代码来控制UI。</p>
-
-<p>TabLayout帮助开发者创建符合界面风格的Tab，并且简单易用。</p>
-
-<h5>CoordinatorLayout &amp; Collapse Toolbar</h5>
-
-<p>更加优美的导航，导航可以相应页面滚动，也产生相应的滚动效果。可以参考Android 5.0版本默认的联系人应用。</p>
-
-<h2>结语</h2>
-
-<p>目前 Material Design 在国内潜伏了一年，也没引起太大的市场反馈。互联网泡沫下，决策者的心思都花在了如何推广如何吸引第一批用户上了，难以负担App重新设计带来的时间成本，更不行因为重设计造成现有用户的流失。</p>
-
-<p>当然，如果某一天所有的国内手机都可以升级为5.0系统，是不是会有许多软件开发者考虑对App做Material Design呢？Android系统深度定制化依然成为5.0难以在国产手机中推广的重要阻碍。</p>
-
-<p>Material Design作为Android App设计风格的趋势，尝试在你的App中使用新的风格，也许可以给你的产品带来不一样的体验。</p>
-
-<h2>Open Party PPT 下载地址</h2>
-
-<p><a href="http://7xj9js.com1.z0.glb.clouddn.com/Android%20Material%20Design.pptx">Android Material Design PPT 下载</a></p>
-
-<p><strong>参考</strong></p>
-
-<p><a href="https://www.google.com/design/spec/material-design/introduction.html">Google Materil Design</a></p>
-
-<p><a href="http://developer.android.com/training/material/index.html">Material Design for Developers</a></p>
-
-<p><a href="http://android-developers.blogspot.sg/2015/05/android-design-support-library.html">Android Design Support Library</a></p>
 ]]></content>
   </entry>
   

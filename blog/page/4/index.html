@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="Mybatis Migration 初探 持续交付项目中，项目会不断的迭代上线，这是会出现数据库的改动问题。在一个还未上线的项目中，我更改数据库可以使用简单的直接对sql进行更改，但是面对一个已投入使用的系统而言，每次部署都对数据库进行init显得有点不太可能。 &hellip;">
+  <meta name="description" content="从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。 Android &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/16/android-best-practice/">Android Best Practice</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-16T10:41:25+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2014</time>
+        
+        
+        | <a href="/blog/2014/09/16/android-best-practice/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从事android开发两年有余，但是自己的代码自己却不太敢恭维。于是我不得不来改善我的Android程序，为了使它变得更加的稳固，更加的专业。本文旁征博引，多处观点都是Google之，结合自己的经验总结了Android开发中的一些最佳实践，厚积方能博发，多积累多学习才能多进步。</p>
+
+<h3>Android Activity 的生命周期</h3>
+
+<p>生命周期（Lifecycle）描述的是Android一个页面从开始创建到消亡的整个过程。伴随着一系列对象的创建及消失，涵盖着整个页面所包含的业务逻辑。以及与用户之间的交互，接受用户的输入并返回输出信息给用户。</p>
+
+<p><img src="http://i.imgur.com/rPrTr.png" alt="Android Lifecycle" /></p>
+
+<p>从其生命流程图中，我们可以看到Android单个Activity的生命周期主要为 onCreate &ndash;> onStart &ndash;> onResume &ndash;> Activity Running &ndash;> onPause &ndash;> onStop &ndash;> onDestroy. 通常单个App是由诸多的Activity组成的，一般情况我们肉眼所见的一个页面就是一个Activity，我们也经常再APP中点击Button或者Back，于是我们实现了Activity之间的切换。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/09/16/android-best-practice/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -285,6 +337,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/19/app-localisation-solution/">App Localisation Solution</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/27/say-hi-to-2016/">再见 2015， 你好 2016</a>
       </li>
     
@@ -300,15 +356,11 @@
         <a href="/blog/2015/11/29/android-adapter-notifydatasetchanged-not-working/">Android Adapter notifyDataSetChanged Not Working</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/11/17/owasp-top-10-training/">OWASP Top 10 Training</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(18)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(3)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(19)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(3)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>
