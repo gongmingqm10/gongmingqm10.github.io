@@ -4,7 +4,7 @@
   <title><![CDATA[gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2016-04-20T21:24:01+08:00</updated>
+  <updated>2016-04-21T11:10:19+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -113,7 +113,7 @@
 
 <p><strong>2.网络</strong></p>
 
-<p>网络意味着连通性，决定着App中的各项服务能否正常使用。比如某跑步软件中，内嵌 Google 地图来记录用户的位置以及轨迹，当一个中国用户下载这个用户时并不能正常使用。因为应用没有考虑到中国用户对 Google 服务访问受限。网络问题在中国本地化中尤其突出，因为你需要时刻考虑&#8221;防火长城&#8221;对软件中各服务模块的影响。</p>
+<p>网络意味着连通性，决定着App中的各项服务能否正常使用。比如某跑步软件中，内嵌 Google 地图来记录用户的位置以及轨迹，当一个中国用户下载这个应用时并不能正常使用。因为应用没有考虑到中国用户对 Google 服务访问受限。网络问题在中国本地化中尤其突出，因为你需要时刻考虑&#8221;防火长城&#8221;对软件中各服务模块的影响。</p>
 
 <p><strong>3.文化</strong></p>
 
