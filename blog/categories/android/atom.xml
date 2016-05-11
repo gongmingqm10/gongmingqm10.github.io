@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2016-05-11T15:20:53+08:00</updated>
+  <updated>2016-05-11T15:47:31+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.gongmingqm10.net/blog/2016/05/11/butterknife-principle/"/>
     <updated>2016-05-11T15:15:25+08:00</updated>
     <id>http://www.gongmingqm10.net/blog/2016/05/11/butterknife-principle</id>
-    <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/576124-831ee4dbd091aa30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200" alt="ButterKnife 原理" /></p>
+    <content type="html"><![CDATA[<p><img src="http://7u2gky.com1.z0.glb.clouddn.com/576124-831ee4dbd091aa30.png" width="250" alt="ButterKnife 原理" /></p>
 
 <p>最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：<a href="https://github.com/JakeWharton/butterknife">ButterKnife</a>, <a href="https://github.com/roboguice/roboguice">Roboguice</a>, <a href="https://github.com/roboguice/roboguice">Dagger</a> 。ButterKnife 主要是 View Binding, 而 Roboguice 和 Dagger 则主要是做 DI(Dependency Injection)。本文主要研究 ButterKnife 的原理。</p>
 
@@ -35,7 +35,7 @@
 
 <p>通过 ButterKnife <a href="http://jakewharton.github.io/butterknife/">官方文档</a>，我们可以很快速的使用它。并且可以看到 ButterKnife 主要是实例化 View 或者给某个 View 添加各种事件 Listenters。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/576124-2be2b864707172b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt="ButterKnife View Binding" /></p>
+<p><img src="http://7u2gky.com1.z0.glb.clouddn.com/576124-2be2b864707172b7.png" height="300" alt="ButterKnife View Binding" /></p>
 
 <p>所以使用 ButterKnife 主要有几步：</p>
 
@@ -102,11 +102,11 @@ ButterKnife.bind(this);
 
 <p>ButterKnifeProcessor 的关键逻辑如下：</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/576124-0fa0624d662090af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="ButterKnifeProcessor.process()" /></p>
+<p><img src="http://7u2gky.com1.z0.glb.clouddn.com/576124-0fa0624d662090af.png" width="600" alt="ButterKnifeProcessor.process()" /></p>
 
 <p>process() 会找到所有 ButterKnife 相关的 annotation，并将这些相应的注解生成为 ViewBinder 类，一个 ViewBinder 示例如下：</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/576124-a9f0fdf997e95ed8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="Screen Shot 2016-05-11 at 2.52.20 PM.png" /></p>
+<p><img src="http://7u2gky.com1.z0.glb.clouddn.com/576124-a9f0fdf997e95ed8.png" width="600" alt="Screen Shot 2016-05-11 at 2.52.20 PM.png" /></p>
 
 <p>ViewBinder 通过 findViewById 实例化 Activity 中页面上的组件，并且能够设置各控件的点击时间，滑动事件等。</p>
 
@@ -120,7 +120,7 @@ ButterKnife.bind(this);
 
 <p>在 ButterKnife 工作之前，我们一定得在设置 View  后调用 <code>ButterKnife.bind(Activity)</code> ，这样才能使 ButterKnife View 注入成功。那么 ButterKnife.bind(Activity) 是如何工作的呢？</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/576124-dce842ddf87bb891.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="ButterKnife.bind(this)" /></p>
+<p><img src="http://7u2gky.com1.z0.glb.clouddn.com/576124-dce842ddf87bb891.png" width="600" alt="ButterKnife.bind(this)" /></p>
 
 <p>App 在打包时，ButterKnife Processor 就为所有使用 ButterKnife 注解的 Activity 生成 ViewBinder()。通过上述代码可以看到，ButterKnife 会尝试实例化当前 Activity 所关联的所有 ViewBinder 类。实例化之后再调用 <code>ViewBinder.bind(...)</code> 方法，bind() 方法是在 App 运行过程中才会被调用的。于是当前 Avtivity 的 View 被实例化赋值，如果有点击事件的注解，也会绑定相应的事件。</p>
 
