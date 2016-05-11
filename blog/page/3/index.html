@@ -9,8 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="多数情况下，为了模拟服务器环境，我们经常使用虚拟机，通过虚拟机，我们可以轻松模拟出真实的服务器环境，从而对我们代码的部署等进行模拟，当然也可以当作自己练手的好工具。把Linux虚拟机当作是真实的服务器，然后通过内网访问虚拟机上的服务器资源。
-虚拟机除了大家熟知的界面化的VirtualBox外， &hellip;">
+  <meta name="description" content="adb devices : 列出所有的设备 adb -s XXXX shell: 进入指定的shell adb shell: 进入唯一的shell 在terminal中直接： adb pull /data/data/com.jingdong.app.reader/files/epub/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/26/hack-jing-dong-lebook/">Hack 京东 Lebook</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-26T22:46:18+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2014</time>
+        
+        
+        | <a href="/blog/2014/10/26/hack-jing-dong-lebook/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>adb devices : 列出所有的设备</p>
+
+<p>adb -s XXXX shell: 进入指定的shell</p>
+
+<p>adb shell: 进入唯一的shell</p>
+
+<p>在terminal中直接： adb pull /data/data/com.jingdong.app.reader/files/epub/3690098/534543.jeb <br/>
+~/Desktop/test.epub。可以直接拿到epub文件</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -515,54 +560,6 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/25/androidzi-ding-yi-view/">Android自定义View</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-09-25T23:22:11+08:00" pubdate data-updated="true">Sep 25<span>th</span>, 2014</time>
-        
-        
-        | <a href="/blog/2014/09/25/androidzi-ding-yi-view/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Android开发中经常用到各种各样的View，有时需要自定义View来满足当前的需求。这些自定义View主要是复写View绘制时的一些方法，从而产生新的View供项目中使用。</p>
-
-<h2>View的绘制流程</h2>
-
-<p>自定义控件从最基础的View开始，View有几个重要的函数：<code>onMeasure()</code>, <code>onLayout()</code>, <code>onDraw()</code>，与触摸动作相关的还有<code>onTouchEvent()</code>，View也和Activity一样具有一定的生命周期，从View被创建开始到创建完成，主要经历了 <code>onMeasure</code> <code>onLayout</code> <code>onDraw()</code> 等过程，这些过程都是一步步完成的。也代表着View从声明到被用户看到的具体步骤。通过对这些中间步骤的了解与<code>Override</code>，我们可以创造出一些特殊的View。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/09/25/androidzi-ding-yi-view/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -580,6 +577,10 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
       </li>
     
@@ -595,15 +596,11 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
         <a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/11/30/android-xin-shou-jiao-cheng/">Android 新手成长计划</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(19)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(20)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>

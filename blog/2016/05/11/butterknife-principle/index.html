@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ButterKnife Principle - gongmingqm10</title>
+  <meta name="author" content="Gong Ming">
+
+  
+  <meta name="description" content="ButterKnife原理">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2016/05/11/butterknife-principle">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300italic,600,700,600italic,700italic,300|Roboto:300,300italic,400,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>-->
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48787063-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">gongmingqm10</a></h1>
+  
+    <h2>Life is a journey, not a destination</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="gongmingqm10@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.gongmingqm10.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">博客</a></li>
+  <li><a href="/showcases">作品</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/links">优秀博客</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">ButterKnife Principle</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-11T15:15:25+08:00" pubdate data-updated="true">May 11<span>th</span>, 2016</time>
+        
+        
+        | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="http://upload-images.jianshu.io/upload_images/576124-831ee4dbd091aa30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200" alt="ButterKnife 原理" /></p>
+
+<p>最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：<a href="https://github.com/JakeWharton/butterknife">ButterKnife</a>, <a href="https://github.com/roboguice/roboguice">Roboguice</a>, <a href="https://github.com/roboguice/roboguice">Dagger</a> 。ButterKnife 主要是 View Binding, 而 Roboguice 和 Dagger 则主要是做 DI(Dependency Injection)。本文主要研究 ButterKnife 的原理。</p>
+
+<p>开始之前，还是应该向 ButterKnife 的作者 Jake Wharton 大神以及开源社区致敬。</p>
+
+<!-- More -->
+
+
+<h2>ButterKnife 初瞰</h2>
+
+<p>ButterKnife 到底是什么？看看官方的解释：</p>
+
+<blockquote><p>Bind Android views and callbacks to fields and methods.</p></blockquote>
+
+<p>通过 ButterKnife <a href="http://jakewharton.github.io/butterknife/">官方文档</a>，我们可以很快速的使用它。并且可以看到 ButterKnife 主要是实例化 View 或者给某个 View 添加各种事件 Listenters。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-2be2b864707172b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt="ButterKnife View Binding" /></p>
+
+<p>所以使用 ButterKnife 主要有几步：</p>
+
+<p>1.Gradle 中引入 ButterKnife 框架：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>compile 'com.jakewharton:butterknife:8.0.1'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.ButterKnife 初始化:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@Override
+</span><span class='line'>protected void onCreate(Bundle savedInstanceState) {          
+</span><span class='line'>    super.onCreate(savedInstanceState);   
+</span><span class='line'>    setContentView(getLayoutResourceId());    
+</span><span class='line'>    ButterKnife.bind(this);
+</span><span class='line'>}}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.声明 Field/Method</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@Bind(R.id.btn_home)ImageView homeBtn;
+</span><span class='line'>@Bind(R.id.btn_explore)ImageView exploreBtn;
+</span><span class='line'>@OnClick(R.id.btn_home) void clickHomeBtn() {      
+</span><span class='line'>    // Handle the home btn click
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Java Annotation</h2>
+
+<p>如果你对注解了解比较少，在进一步了解 ButterKnife 之前，有必要了解一下 Java Annotation 的基础知识。可以参考如下两份资料：</p>
+
+<ol>
+<li>Mkyong <a href="http://www.mkyong.com/java/java-custom-annotations-example/">Java Custom Annotations</a></li>
+<li>Trenia <a href="http://trinea.github.io/download/pdf/android/java-annotation.pdf">Java Annotations</a></li>
+</ol>
+
+
+<p>通过上面的例子以及讲解，我们可以知道如何自定义注解。自定义注解我们需要知道两个基础的元注解<code>@Retention</code> 和 <code>@Target</code>.</p>
+
+<h3>元注解 @Retention</h3>
+
+<p><code>@Retention</code> 保留时间：有三类值可以选择，<code>SOURCE</code>  <code>RUNTIME</code> <code>CLASS</code>。</p>
+
+<p><code>SOURCE</code> 源码时保留：使用此类的注解多为标记注解，比如 <code>@Override</code>、<code>@Deprecated</code>、<code>@SuppressWarnings</code> 等。</p>
+
+<p><code>RUNTIME</code> 运行时保留：程序在运行过程中，使用这些 Annotation, 比如我们常用的 <code>@Test</code>。</p>
+
+<p><code>CLASS</code> 编译时保留：Java 文件在编译时由 apt 自动解析，需要自定义类继承自 AbstractProcessor 并重写 Process 函数。比如 ButterKnife 中使用的  <code>@BindView</code>, <code>@OnClick</code> 等就是声明为 CLASS 的。</p>
+
+<h3>元注解 @Target</h3>
+
+<p>Target 表示注解可以用来修饰哪些元素。可选值包括 TYPE, METHOD, CONSTRUCTOR, FIELD, PARAMETER 等。</p>
+
+<h2>ButterKnifeProcessor</h2>
+
+<p>ButterKnife 中所有的注解都使用 Retention 为 CLASS 保留。所以在 ButterKnife 中，有个很重要的 ButterKnifeProcessor。当 java 文件进行编译时，ButterKnifeProcessor 的 process() 方法被调用，生成相关的 ViewBinder 类，用于将 View 或者 Listener 进行绑定。</p>
+
+<p>ButterKnifeProcessor 的关键逻辑如下：</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-0fa0624d662090af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="ButterKnifeProcessor.process()" /></p>
+
+<p>process() 会找到所有 ButterKnife 相关的 annotation，并将这些相应的注解生成为 ViewBinder 类，一个 ViewBinder 示例如下：</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-a9f0fdf997e95ed8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="Screen Shot 2016-05-11 at 2.52.20 PM.png" /></p>
+
+<p>ViewBinder 通过 findViewById 实例化 Activity 中页面上的组件，并且能够设置各控件的点击时间，滑动事件等。</p>
+
+<blockquote><p>为什么 ButterKnife Annotation 的字段或者方法不能声明为 private?</p></blockquote>
+
+<p>bind() 方法中，通过 activity.homeBtn 对 View 赋值。因此所有 ButterKnife annotation 标记的 field 或者 method 都不能声明为 private, 因为 private 没办法在 ViewBinder 中直接访问。由此可见：</p>
+
+<blockquote><p>ButterKnife 并不是依靠反射实现 View Injection 的！</p></blockquote>
+
+<h2>ButterKnife.bind(this)</h2>
+
+<p>在 ButterKnife 工作之前，我们一定得在设置 View  后调用 <code>ButterKnife.bind(Activity)</code> ，这样才能使 ButterKnife View 注入成功。那么 ButterKnife.bind(Activity) 是如何工作的呢？</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-dce842ddf87bb891.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="ButterKnife.bind(this)" /></p>
+
+<p>App 在打包时，ButterKnife Processor 就为所有使用 ButterKnife 注解的 Activity 生成 ViewBinder()。通过上述代码可以看到，ButterKnife 会尝试实例化当前 Activity 所关联的所有 ViewBinder 类。实例化之后再调用 <code>ViewBinder.bind(...)</code> 方法，bind() 方法是在 App 运行过程中才会被调用的。于是当前 Avtivity 的 View 被实例化赋值，如果有点击事件的注解，也会绑定相应的事件。</p>
+
+<h2>结语</h2>
+
+<p>ButterKnife 主要是做 View 注入的，使用起来比较简便。当然如果你想做一些 依赖注入，比如 Android MVP 架构中 Activity 与 Presenter 的依赖。你可能需要借助一些其他的库， 比如 Dagger。研究下 ButterKnife 的原理，才发现这个库做得如此的睿智。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-11T15:15:25+08:00" pubdate data-updated="true">May 11<span>th</span>, 2016</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>Android</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/04/03/zhangjiajie-travel-perception/" title="Previous Post: 张家界所见">&laquo; 张家界所见</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+<section>
+  <h1>Comments</h1>
+  <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"gongmingqm10"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/19/app-localisation-solution/">App 本地化解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/27/say-hi-to-2016/">再见 2015， 你好 2016</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">标签</h1>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(20)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+</section>
+<section>
+    <h1>最新评论</h1>
+    <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+    
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Gong Ming -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

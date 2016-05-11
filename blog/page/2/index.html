@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="14年6月26日的Google I/O大会上，Google推出了一门全新的设计语言Material Design。Material Design在随后的一年里被逐渐应用到Android, Web等平台中。Material Design的推出意味着Google对移动端和网页端设计的整合。 &hellip;">
+  <meta name="description" content="当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。 在测试方面， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/29/android-testing-practice/">Android 应用的持续交付</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-29T11:40:16+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2015</time>
+        
+        
+        | <a href="/blog/2015/06/29/android-testing-practice/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。</p>
+
+<p>在测试方面，Android早期即存在UIAtomator和Monkey之类的测试，但是用起来实在不方便。2013年，Google开源了针对An ndroid平台的移动测试框架 &ndash; Espresso。Espresso可以针对每个页面(Activity)进行测试。开发者可以根据ID获取到页面元素，然后进行点击、长按等操作。结合Junit和Mock等工具，使得移动端测试成为可能。移动端拥有了测试框架的辅助，借助CI平台，持续交付也成为可能。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/06/29/android-testing-practice/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -506,52 +552,6 @@ ls -al 查看目录下所有文件的详细信息</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/26/hack-jing-dong-lebook/">Hack 京东 Lebook</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-26T22:46:18+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2014</time>
-        
-        
-        | <a href="/blog/2014/10/26/hack-jing-dong-lebook/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>adb devices : 列出所有的设备</p>
-
-<p>adb -s XXXX shell: 进入指定的shell</p>
-
-<p>adb shell: 进入唯一的shell</p>
-
-<p>在terminal中直接： adb pull /data/data/com.jingdong.app.reader/files/epub/3690098/534543.jeb <br/>
-~/Desktop/test.epub。可以直接拿到epub文件</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -569,6 +569,10 @@ ls -al 查看目录下所有文件的详细信息</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
       </li>
     
@@ -584,15 +588,11 @@ ls -al 查看目录下所有文件的详细信息</p>
         <a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/11/30/android-xin-shou-jiao-cheng/">Android 新手成长计划</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(19)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(20)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>

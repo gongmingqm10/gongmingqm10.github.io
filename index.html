@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="计划了许久的旅行在四月份如期进行了，由于时间原因，这次的旅行并没有女生的参与。只是三个纯爷们的一次“放空”。上次的旅行还是14年大学毕业那会儿，掐指算来，两年一次的旅行似乎也并不过分。于是我们心安理得的去了。我们的主要游览地是张家界森林公园，返程特地路过湖南，体验下湖南的美食。 旅行社的利益链 &hellip;">
+  <meta name="description" content="最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：ButterKnife, Roboguice, Dagger 。ButterKnife 主要是 View Binding, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-11T15:15:25+08:00" pubdate data-updated="true">May 11<span>th</span>, 2016</time>
+        
+        
+        | <a href="/blog/2016/05/11/butterknife-principle/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://upload-images.jianshu.io/upload_images/576124-831ee4dbd091aa30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200" alt="ButterKnife 原理" /></p>
+
+<p>最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：<a href="https://github.com/JakeWharton/butterknife">ButterKnife</a>, <a href="https://github.com/roboguice/roboguice">Roboguice</a>, <a href="https://github.com/roboguice/roboguice">Dagger</a> 。ButterKnife 主要是 View Binding, 而 Roboguice 和 Dagger 则主要是做 DI(Dependency Injection)。本文主要研究 ButterKnife 的原理。</p>
+
+<p>开始之前，还是应该向 ButterKnife 的作者 Jake Wharton 大神以及开源社区致敬。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/11/butterknife-principle/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -618,52 +666,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/29/android-testing-practice/">Android 应用的持续交付</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-29T11:40:16+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/06/29/android-testing-practice/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。</p>
-
-<p>在测试方面，Android早期即存在UIAtomator和Monkey之类的测试，但是用起来实在不方便。2013年，Google开源了针对An ndroid平台的移动测试框架 &ndash; Espresso。Espresso可以针对每个页面(Activity)进行测试。开发者可以根据ID获取到页面元素，然后进行点击、长按等操作。结合Junit和Mock等工具，使得移动端测试成为可能。移动端拥有了测试框架的辅助，借助CI平台，持续交付也成为可能。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/06/29/android-testing-practice/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -677,6 +679,10 @@
     <section>
   <h1>最新文章</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
@@ -694,15 +700,11 @@
         <a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/11/30/android-xin-shou-jiao-cheng/">Android 新手成长计划</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(19)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(20)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>

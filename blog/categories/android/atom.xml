@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2016-04-21T11:10:19+08:00</updated>
+  <updated>2016-05-11T15:20:53+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ButterKnife Principle]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2016/05/11/butterknife-principle/"/>
+    <updated>2016-05-11T15:15:25+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2016/05/11/butterknife-principle</id>
+    <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/576124-831ee4dbd091aa30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200" alt="ButterKnife 原理" /></p>
+
+<p>最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：<a href="https://github.com/JakeWharton/butterknife">ButterKnife</a>, <a href="https://github.com/roboguice/roboguice">Roboguice</a>, <a href="https://github.com/roboguice/roboguice">Dagger</a> 。ButterKnife 主要是 View Binding, 而 Roboguice 和 Dagger 则主要是做 DI(Dependency Injection)。本文主要研究 ButterKnife 的原理。</p>
+
+<p>开始之前，还是应该向 ButterKnife 的作者 Jake Wharton 大神以及开源社区致敬。</p>
+
+<!-- More -->
+
+
+<h2>ButterKnife 初瞰</h2>
+
+<p>ButterKnife 到底是什么？看看官方的解释：</p>
+
+<blockquote><p>Bind Android views and callbacks to fields and methods.</p></blockquote>
+
+<p>通过 ButterKnife <a href="http://jakewharton.github.io/butterknife/">官方文档</a>，我们可以很快速的使用它。并且可以看到 ButterKnife 主要是实例化 View 或者给某个 View 添加各种事件 Listenters。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-2be2b864707172b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt="ButterKnife View Binding" /></p>
+
+<p>所以使用 ButterKnife 主要有几步：</p>
+
+<p>1.Gradle 中引入 ButterKnife 框架：</p>
+
+<p><code>
+compile 'com.jakewharton:butterknife:8.0.1'
+</code>
+2.ButterKnife 初始化:</p>
+
+<p>```
+@Override
+protected void onCreate(Bundle savedInstanceState) {</p>
+
+<pre><code>super.onCreate(savedInstanceState);   
+setContentView(getLayoutResourceId());    
+ButterKnife.bind(this);
+</code></pre>
+
+<p>}}
+```
+3.声明 Field/Method</p>
+
+<p>```
+@Bind(R.id.btn_home)ImageView homeBtn;
+@Bind(R.id.btn_explore)ImageView exploreBtn;
+@OnClick(R.id.btn_home) void clickHomeBtn() {</p>
+
+<pre><code>// Handle the home btn click
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Java Annotation</h2>
+
+<p>如果你对注解了解比较少，在进一步了解 ButterKnife 之前，有必要了解一下 Java Annotation 的基础知识。可以参考如下两份资料：</p>
+
+<ol>
+<li>Mkyong <a href="http://www.mkyong.com/java/java-custom-annotations-example/">Java Custom Annotations</a></li>
+<li>Trenia <a href="http://trinea.github.io/download/pdf/android/java-annotation.pdf">Java Annotations</a></li>
+</ol>
+
+
+<p>通过上面的例子以及讲解，我们可以知道如何自定义注解。自定义注解我们需要知道两个基础的元注解<code>@Retention</code> 和 <code>@Target</code>.</p>
+
+<h3>元注解 @Retention</h3>
+
+<p><code>@Retention</code> 保留时间：有三类值可以选择，<code>SOURCE</code>  <code>RUNTIME</code> <code>CLASS</code>。</p>
+
+<p><code>SOURCE</code> 源码时保留：使用此类的注解多为标记注解，比如 <code>@Override</code>、<code>@Deprecated</code>、<code>@SuppressWarnings</code> 等。</p>
+
+<p><code>RUNTIME</code> 运行时保留：程序在运行过程中，使用这些 Annotation, 比如我们常用的 <code>@Test</code>。</p>
+
+<p><code>CLASS</code> 编译时保留：Java 文件在编译时由 apt 自动解析，需要自定义类继承自 AbstractProcessor 并重写 Process 函数。比如 ButterKnife 中使用的  <code>@BindView</code>, <code>@OnClick</code> 等就是声明为 CLASS 的。</p>
+
+<h3>元注解 @Target</h3>
+
+<p>Target 表示注解可以用来修饰哪些元素。可选值包括 TYPE, METHOD, CONSTRUCTOR, FIELD, PARAMETER 等。</p>
+
+<h2>ButterKnifeProcessor</h2>
+
+<p>ButterKnife 中所有的注解都使用 Retention 为 CLASS 保留。所以在 ButterKnife 中，有个很重要的 ButterKnifeProcessor。当 java 文件进行编译时，ButterKnifeProcessor 的 process() 方法被调用，生成相关的 ViewBinder 类，用于将 View 或者 Listener 进行绑定。</p>
+
+<p>ButterKnifeProcessor 的关键逻辑如下：</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-0fa0624d662090af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="ButterKnifeProcessor.process()" /></p>
+
+<p>process() 会找到所有 ButterKnife 相关的 annotation，并将这些相应的注解生成为 ViewBinder 类，一个 ViewBinder 示例如下：</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-a9f0fdf997e95ed8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="Screen Shot 2016-05-11 at 2.52.20 PM.png" /></p>
+
+<p>ViewBinder 通过 findViewById 实例化 Activity 中页面上的组件，并且能够设置各控件的点击时间，滑动事件等。</p>
+
+<blockquote><p>为什么 ButterKnife Annotation 的字段或者方法不能声明为 private?</p></blockquote>
+
+<p>bind() 方法中，通过 activity.homeBtn 对 View 赋值。因此所有 ButterKnife annotation 标记的 field 或者 method 都不能声明为 private, 因为 private 没办法在 ViewBinder 中直接访问。由此可见：</p>
+
+<blockquote><p>ButterKnife 并不是依靠反射实现 View Injection 的！</p></blockquote>
+
+<h2>ButterKnife.bind(this)</h2>
+
+<p>在 ButterKnife 工作之前，我们一定得在设置 View  后调用 <code>ButterKnife.bind(Activity)</code> ，这样才能使 ButterKnife View 注入成功。那么 ButterKnife.bind(Activity) 是如何工作的呢？</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/576124-dce842ddf87bb891.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="ButterKnife.bind(this)" /></p>
+
+<p>App 在打包时，ButterKnife Processor 就为所有使用 ButterKnife 注解的 Activity 生成 ViewBinder()。通过上述代码可以看到，ButterKnife 会尝试实例化当前 Activity 所关联的所有 ViewBinder 类。实例化之后再调用 <code>ViewBinder.bind(...)</code> 方法，bind() 方法是在 App 运行过程中才会被调用的。于是当前 Avtivity 的 View 被实例化赋值，如果有点击事件的注解，也会绑定相应的事件。</p>
+
+<h2>结语</h2>
+
+<p>ButterKnife 主要是做 View 注入的，使用起来比较简便。当然如果你想做一些 依赖注入，比如 Android MVP 架构中 Activity 与 Presenter 的依赖。你可能需要借助一些其他的库， 比如 Dagger。研究下 ButterKnife 的原理，才发现这个库做得如此的睿智。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[App 本地化解决方案]]></title>
@@ -593,178 +710,6 @@ public void setAdapter(ListAdapter adapter) {
 <h3>End</h3>
 
 <p>Android 中有很多优秀的设计，当我们出现问题时，可以通过阅读源码的方式探索，并结合 Google 的相关资料，了解事物的根源，方能设计出更优秀的代码。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android 应用的持续交付]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/06/29/android-testing-practice/"/>
-    <updated>2015-06-29T11:40:16+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/06/29/android-testing-practice</id>
-    <content type="html"><![CDATA[<p>当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。</p>
-
-<p>在测试方面，Android早期即存在UIAtomator和Monkey之类的测试，但是用起来实在不方便。2013年，Google开源了针对An ndroid平台的移动测试框架 &ndash; Espresso。Espresso可以针对每个页面(Activity)进行测试。开发者可以根据ID获取到页面元素，然后进行点击、长按等操作。结合Junit和Mock等工具，使得移动端测试成为可能。移动端拥有了测试框架的辅助，借助CI平台，持续交付也成为可能。</p>
-
-<!-- more -->
-
-
-<h2>Android测试的类别</h2>
-
-<p>从开发者角度来看，通常的Web平台测试可以分为单元测试、集成测试以及功能测试。移动应用主要用来显示数据，显示框输入数据，相应用户的点击、滑动等操作。所以Android应用的开发工作大部分集中在UI上。因此，App测试大致可分为UI单元测试和功能测试。</p>
-
-<p>UI单元测试覆盖界面显示以及用户与界面的交互。功能测试则是确保功能的正确性。</p>
-
-<p>为了更好的说明App中UI测试和功能测试如何进行的，以一个Story举例如下：</p>
-
-<p>```
-Story-101
-Summary: 登录模块，用户能够使用用户名和密码登录App。
-Acceptance criterions:</p>
-
-<p>Given 作为用户，我打开App进入首页；
-When 我点击“登录”按钮；
-Then 我跳转到登录页面；</p>
-
-<p>Given 作为用户，我在登录页面
-When 我只输入用户名
-Then 登录按钮处于Disable状态
-When 我输入密码
-Then 登录按钮可以点击，点击之后，调用API</p>
-
-<p>Given 作为用户，我在登录页面
-When 我输入正确的用户名和密码，并登录
-Then 页面跳转到首页</p>
-
-<p>Given 作为用户，我在登录页面
-When 我输入错误的用户名和密码，并登录
-Then 页面上方显示“用户名或密码错误”提示
-And 密码被清空，登录按钮重新Disable</p>
-
-<p>```</p>
-
-<h3>UI单元测试</h3>
-
-<p>UI(User interaction)测试又指界面测试。界面是软件与用户交互的最直接的部分，通过UI测试核实用户和软件拥有正常的交互。</p>
-
-<p>UI测试的功能点比较简单：比如点击按钮的行为，按钮是否应该被禁用，页面文字、颜色等信息，是否弹框，点击弹框按钮应该跳转到什么页面等。</p>
-
-<p>在登录页面中，假设登录页面的名字为LoginActivity，这是需要写的UI测试如下：</p>
-
-<p>1.Test login button is not available until username and password are filled</p>
-
-<p>```
-usernameEditText.setText(&ldquo;gongmingqm10&rdquo;)
-assertThat(loginButton.isDisabled()).isTrue()</p>
-
-<p>passwordEditText.setText(&ldquo;password&rdquo;)
-assertThat(loginButton.isDisabled()).isFalse()
-```</p>
-
-<p>2.Test should invoke Api when login button is clicked</p>
-
-<p>```
-usernameEditText.setText(&ldquo;gongmingqm10&rdquo;)
-passwordEditText.setText(&ldquo;password&rdquo;)</p>
-
-<p>loginButton.performClick()</p>
-
-<p>verify(loginApi).login(eq(&ldquo;gongmingqm10&rdquo;), eq(&ldquo;encryptedpassword&rdquo;)</p>
-
-<p>```</p>
-
-<p>3.Test should show error dialog when login failed</p>
-
-<p>```
-usernameEditText.setText(&ldquo;gongmingqm10&rdquo;)
-passwordEditText.setText(&ldquo;wrongpassword&rdquo;)
-activity.loginFailed()
-assertThat(passwordEditText.getText().toString()).isEqualTo(&ldquo;&rdquo;)
-assertThat(errorText).isVisibile()
-assertThat(errorText.getText().toString()).isEuqalTo(&ldquo;用户名或密码错误&rdquo;)</p>
-
-<p>```</p>
-
-<p>4.Test should navigate to home page when login succeed</p>
-
-<p><code>
-usernameEditText.setText("gongmingqm10")
-passwordEditText.setText("correctpassword")
-activity.loginSuccess()
-String actualPageName = getNextStartedActivity().getComponentName()
-assertThat(actualPageName).isEqualTo(HomeActivity.class.getName())
-</code></p>
-
-<p>观察上述几个测试，我们可以看到对UI的测试粒度相对较小。主要测试用户输入，按钮点击，服务器返回结果之后，界面应该如何反应。UI测试通常也包括简单的单元测试，Android中需要进行单元测试的内容较少，所以对于一些工具类的单元测试通常和UI测试放在同一个模块中。(PS: 上述测试代码的写法和你选取的测试框架有关)</p>
-
-<h3>功能测试</h3>
-
-<p>功能测试主要把测试对象看作一个黑盒子，测试者并不关注具体的功能实现逻辑，只需要关注输入产生期望的输出即可。Android的功能测试和Web的功能测试类似。在真机或模拟器中运行App，模拟输入、点击等操作，识别界面上是否存在某些期望的文字或行为。</p>
-
-<p>功能测试不需要关注细节，只需要关注功能，对登录Story的功能测试如下：</p>
-
-<p>1.With valid username and password, user can successfully login and navigate to home screen</p>
-
-<p><code>
-tap_when_element_exists "android.widget.EditText hint:'Username'"
-keyboard_enter_text 'gongmingqm10'
-tap_when_element_exists "android.widget.EditText hint:'Password'"
-keyboard_enter_text 'some_correct_password'
-@home_page.wait_for_page_to_load
-welcome_message = @home_page.get_welcome_message
-raise 'Navigate to home page failed' if welcome_message.empty?
-</code></p>
-
-<p>2.With wrong username and password, user will see an error text</p>
-
-<p><code>
-tap_when_element_exists "android.widget.EditText hint:'Username'"
-keyboard_enter_text 'gongmingqm10'
-tap_when_element_exists "android.widget.EditText hint:'Password'"
-keyboard_enter_text 'wrong_password'
-query "android.widget.TextView id: 'error_box' text:'用户名或者密码错误'"
-</code></p>
-
-<h2>Android常用测试框架</h2>
-
-<h3>针对UI测试</h3>
-
-<p>一般项目上都会采用<a href="http://robolectric.org/">Robolectric</a>框架，Robolectric运行过程中不需要启动模拟器，因此执行过程很快。</p>
-
-<p>除了Robolectric，Google官方推荐使用Espresso来做UI测试。Espresso既可以作UI测试，也可以做简单的功能测试。</p>
-
-<h3>针对功能测试</h3>
-
-<p>可以做功能测试的框架也很多，包括Robotium, uiautomator, Espresso, Appium 和 Calabash。对比其主要区别如下：</p>
-
-<p>真实项目过程中功能测试框架使用较多的是Appium和Calabash。这两个框架的优点是能够同时支持Android和iOS，并且不需要注入到工程中(即只需要编译后生成的安装包)，配合响应的测试脚本即可完成测试。</p>
-
-<h2>Android持续交付</h2>
-
-<p>CD(Continuous Dilivery)强调能够随时给客户交付有价值的产品。在Web开发上，我们通常运用CI平台持续部署网站到各个环境中。从而实现整个产品的持续交付。在Android平台上也是类似，唯一不同点是Android每发布一个版本需要用户手动更新手机上的App。</p>
-
-<p><strong>1. 集成你的测试框架</strong></p>
-
-<p>假定我们已经选定其他的技术栈，这时只需要集成UI测试和功能测试即可。UI单元测试框架我们选择Robolectric，而功能测试框架选择Calabash。参考<a href="http://robolectric.org/">Robolectric</a>和<a href="https://github.com/calabash/calabash-android">Calabash for Android</a>官方文档，集成测试框架并编写第一个Dummy Test。</p>
-
-<p><strong>2. 通过你的第一个Dummy Test</strong></p>
-
-<p>CI(Continuous Integration)平台，选择Jenkins。因为Jenkins有各种丰富的插件支持。选择Jenkins平台之后，最后能够有一台带界面的Mac Mini(虽然Android可以配置无界面运行，但是配置相对麻烦并且运行太慢)。在Mac Mini上搭建CI环境，配置Android运行环境。此步的目的是你的Dummy Test能够在Jenkins上运行</p>
-
-<p><strong>3. 自动上传你的应用</strong></p>
-
-<p>我们希望每次Push之后生成的包能够被QA测试，Showcase时候能够被客户测试。所以我们需要持续的发布新生成的包。我接触到的通常有两种做法：</p>
-
-<ul>
-<li>使用Dropbox自动同步上传：这种方法是最省成本的。每次打包新版本的时候只需要给文件带上不同的版本号，方便辨识。包生成之后，只需要存放到本地的Dropbox共享文件夹中。Dropbox会为我们自动上传。手机端则可以直接访问Dropbox下载，安装。</li>
-<li>使用<a href="http://hockeyapp.net/features/">HockeyApp</a>管理版本：HockeyApp需要收费，但是可以很方便的通过部署脚本自动上传新生成的包。手机端只需要安装HockeyApp客户端，即可选择更新。</li>
-</ul>
-
-
-<p>类似的工具还有很多，选择适合自己的才是最好的。</p>
-
-<h2>结语</h2>
-
-<p>移动端测试虽然发展时间不长，但是却不断在完善中。我们以前习惯用邮件或U盘发布新版供他人测试。我们以前习惯开发App时不写测试。那些时代应该过去了。运用Robolectric，我们可以很轻松的测试驱动开发Android App；运用Calabash或Appium，我们可以更好的控制App质量，保证App功能；运用Jenkins等CI平台，我们的App可以持续交付啦!</p>
 ]]></content>
   </entry>
   
