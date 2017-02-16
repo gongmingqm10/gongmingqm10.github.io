@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Know More About Android Inflater.inflate() - gongmingqm10</title>
+  <meta name="author" content="Gong Ming">
+
+  
+  <meta name="description" content="Android, Inflater, attachToRoot">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2017/02/13/know-more-about-android-inflater-inflate">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300italic,600,700,600italic,700italic,300|Roboto:300,300italic,400,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>-->
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48787063-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">gongmingqm10</a></h1>
+  
+    <h2>Life is a journey, not a destination</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="gongmingqm10@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.gongmingqm10.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">博客</a></li>
+  <li><a href="/showcases">作品</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/links">优秀博客</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Know More About Android Inflater.inflate()</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-13T15:37:45+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2017</time>
+        
+        
+        | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在 Android 开发中，有很多看起来 “约定俗成” 的代码，有时候不妨停下来想一想深层次的含义。最近我在给 Fragment 填充布局时，写到一句熟悉的代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Nullable</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">View</span> <span class="nf">onCreateView</span><span class="o">(</span><span class="n">LayoutInflater</span> <span class="n">inflater</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">View</span> <span class="n">view</span> <span class="o">=</span> <span class="n">inflater</span><span class="o">.</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">view</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我又一次陷入了思索，其中的第三个参数 <code>false</code> 到底是什么意思，此处能不能变为 <code>true</code>。</p>
+
+<!-- more -->
+
+
+<h2>探究</h2>
+
+<p>首页我们还是通过函数本身的注释来看各参数的作用，通过源码查看如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Inflate a new view hierarchy from the specified xml resource. Throws</span>
+</span><span class='line'><span class="cm"> * {@link InflateException} if there is an error.</span>
+</span><span class='line'><span class="cm"> * </span>
+</span><span class='line'><span class="cm"> * @param resource ID for an XML layout resource to load (e.g.,</span>
+</span><span class='line'><span class="cm"> *        &lt;code&gt;R.layout.main_page&lt;/code&gt;)</span>
+</span><span class='line'><span class="cm"> * @param root Optional view to be the parent of the generated hierarchy (if</span>
+</span><span class='line'><span class="cm"> *        &lt;em&gt;attachToRoot&lt;/em&gt; is true), or else simply an object that</span>
+</span><span class='line'><span class="cm"> *        provides a set of LayoutParams values for root of the returned</span>
+</span><span class='line'><span class="cm"> *        hierarchy (if &lt;em&gt;attachToRoot&lt;/em&gt; is false.)</span>
+</span><span class='line'><span class="cm"> * @param attachToRoot Whether the inflated hierarchy should be attached to</span>
+</span><span class='line'><span class="cm"> *        the root parameter? If false, root is only used to create the</span>
+</span><span class='line'><span class="cm"> *        correct subclass of LayoutParams for the root view in the XML.</span>
+</span><span class='line'><span class="cm"> * @return The root View of the inflated hierarchy. If root was supplied and</span>
+</span><span class='line'><span class="cm"> *         attachToRoot is true, this is root; otherwise it is the root of</span>
+</span><span class='line'><span class="cm"> *         the inflated XML file.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">View</span> <span class="nf">inflate</span><span class="o">(</span><span class="nd">@LayoutRes</span> <span class="kt">int</span> <span class="n">resource</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ViewGroup</span> <span class="n">root</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">attachToRoot</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的解释比较官方，但是不一定好理解。至少我就看了好几遍，最后结合网上的总结才明白其含义。</p>
+
+<p>首先就 <code>LayoutInflater.inflate()</code>这个函数而言，功能是将一段 XML 资源文件加载成为 View。所以通常用于将 XML 文件实例化为 View。然后获取 View 上的组件最后操作之。</p>
+
+<p>对于这个函数，我们通常容易引发歧义的地方在 <code>attachToRoot</code>的值，当这个值为 true/false 时，是由显著的区别的。</p>
+
+<h3>attachToRoot = true</h3>
+
+<p>当设置 <code>attachToRoot = true</code> 时, 表示 xml 实例化的 View 会被添加到第二个参数 rootView 中。 所以此时相当于处理了两件事：</p>
+
+<ul>
+<li>将 XML 实例化为 View；</li>
+<li>将实例化的 View 添加到非空的 rootView 中；</li>
+</ul>
+
+
+<p>经典的使用方法，对于不为空的 container，</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">getContext</span><span class="o">()).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">demo</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或者:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">getContext</span><span class="o">()).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">demo</span><span class="o">,</span> <span class="n">container</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当 ViewGroup 不为空时，第三个 true 参数可以直接省略。</p>
+
+<h3>attachToRoot = false</h3>
+
+<p>当设置 <code>attachToRoot = false</code> 时，表示直接将 xml 实例化为 View，而不用将 View 添加到指定的 ViewGroup 中。如果需要将 View 加入到 ViewGroup 中，还需要手动的调用 <code>ViewGroup.addView(view)</code>。</p>
+
+<p>经典写法为：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">getContext</span><span class="o">()).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">demo</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意：对于上面的第二个参数 container，如果直接设置为 null，有可能导致 View 的位置或者大小等显示不正确。所以上面代码做了两件事：</p>
+
+<ul>
+<li>将 XML 实例化为 View;</li>
+<li>根据 ViewGroup 为子元素 View 设置正确的位置、大小等 LayoutParams 属性；</li>
+</ul>
+
+
+<p>所以，实例化 View 时，如果已经明确知道父容器 ViewGroup，请直接传递 ViewGroup，避免出现子 View 显示时的位置、大小等异常情形。</p>
+
+<h3>比较</h3>
+
+<p>对于非空的 ViewGroup continer，以下两句是等效的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">View</span> <span class="n">buttonView</span> <span class="o">=</span> <span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">getContext</span><span class="o">()).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">ugly_button</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'><span class="n">container</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">buttonView</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>与</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">View</span> <span class="n">buttonView</span> <span class="o">=</span> <span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">getContext</span><span class="o">()).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">ugly_button</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>应用</h2>
+
+<p>通常将 XML 实例化为 View 涉及到以下常见情形：</p>
+
+<h3>ListView/RecyclerView 中 Adapter.getView</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">View</span> <span class="nf">getView</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">View</span> <span class="n">convertView</span><span class="o">,</span> <span class="n">ViewGroup</span> <span class="n">parent</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">ViewHolder</span> <span class="n">viewHolder</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">convertView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">convertView</span> <span class="o">=</span> <span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">ugly_button</span><span class="o">,</span> <span class="n">parent</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">viewHolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ViewHolder</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">convertView</span><span class="o">.</span><span class="na">setTag</span><span class="o">(</span><span class="n">viewHolder</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">viewHolder</span> <span class="o">=</span> <span class="o">(</span><span class="n">ViewHolder</span><span class="o">)</span> <span class="n">convertView</span><span class="o">.</span><span class="na">getTag</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">convertView</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此处应该设置 <strong>attachToRoot = true</strong></p>
+
+<p>因为 ListView 何时显示，以及如何显示。应该是由 ListView 决定的。Adapter.getView() 主要是根据指定的函数返回相应的 View 实例。显示逻辑则由 ListView 处理，因此设置 <code>attachToRoot = true</code>。</p>
+
+<h3>自定义 View</h3>
+
+<p>为了使得布局的层级足够浅，我们在布局时通常使用 <code>&lt;merge&gt;&lt;/merge&gt;</code> 定义 layout 的根元素，然后将 layout 填充到自定义的 View 中。</p>
+
+<p>res/layout/bottom_tab_item.xml:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;1.0&quot;</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="o">?&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">merge</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="nl">xmlns:</span><span class="n">tools</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/tools&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">LinearLayout</span>
+</span><span class='line'>        <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>        <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>        <span class="nl">android:</span><span class="n">gravity</span><span class="o">=</span><span class="s">&quot;center&quot;</span>
+</span><span class='line'>        <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">ImageView</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/tab_icon&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;24dp&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;24dp&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">paddingTop</span><span class="o">=</span><span class="s">&quot;2dp&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="n">TextView</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@+id/tab_label&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">layout_marginTop</span><span class="o">=</span><span class="s">&quot;1dp&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="nl">android:</span><span class="n">textSize</span><span class="o">=</span><span class="s">&quot;14dp&quot;</span>
+</span><span class='line'>            <span class="nl">tools:</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;Tab&quot;</span><span class="o">/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">merge</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>BottomTabItem.java:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BottomTabItem</span> <span class="kd">extends</span> <span class="n">RelativeLayout</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">getContext</span><span class="o">()).</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">bottom_tab_item</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于自定义的 BottomTabItem，需要将定义的 XML 文件添加到其中。所以需要直接将 XML 实例化 View 作为子元素，添加到 BottonTabItem 中。</p>
+
+<p>所以，对于自定义 View， 需要设置 <code>attachToRoot = true</code>。</p>
+
+<h3>Fragment.onCreateView()</h3>
+
+<p>回顾我们最看我们最开始遇到的代码块：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Nullable</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">View</span> <span class="nf">onCreateView</span><span class="o">(</span><span class="n">LayoutInflater</span> <span class="n">inflater</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">View</span> <span class="n">view</span> <span class="o">=</span> <span class="n">inflater</span><span class="o">.</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">view</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>onCreateView 函数直接反馈 View，可以看出函数只需要拿到实例化的 View，至于 View 是如何添加到 Fragnent 中，则是底层 Fragment 的逻辑。</p>
+
+<p>如果在 Fragment 中不恰到的处理这个 attchToRoot 参数，会直接导致严重的崩溃性问题。而且通常出现这种问题时很不容易被发现。</p>
+
+<p>所以，对于 Fragment 添加 layout，需要设置 <code>attachToRoot = false</code>。</p>
+
+<h3>ListView headerView/footerView 等</h3>
+
+<p>对于 ListView.addHeaderView() / addFooterView() 也是我们经常使用 LayoutInflator.inflate() 很多的场合。</p>
+
+<p>从 ListView.addHeaderView(View view) 函数定义可以看到，ListView 需要将实例化的 View 添加作为 header/footer view，所以显然需要的只是 View 的实例。添加或者删除操作通过 ListView 内部进行处理。</p>
+
+<p>所以，对于 ListView 添加 headerView, footerVuew 等，需要设置 <code>attachToRoot = false</code>。</p>
+
+<h2>结语</h2>
+
+<p>知道 LayoutInflater.inflate 的细微知识点，可能会花费你一下午的时间。但是却可以让你对所写的代码更加自信，并且能够对事物认识更加深刻。何乐而不为呢？</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://blog.chengdazhi.com/index.php/110">深入理解LayoutInflater.inflate()</a></li>
+<li><a href="https://www.bignerdranch.com/blog/understanding-androids-layoutinflater-inflate/">Understanding Android&rsquo;s LayoutInflater.inflate()</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-13T15:37:45+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>Android</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/05/11/butterknife-principle/" title="Previous Post: ButterKnife Principle">&laquo; ButterKnife Principle</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2017/02/16/dometic-project-in-three-months/" title="Next Post: Dometic project in three months">Dometic project in three months &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+<section>
+  <h1>Comments</h1>
+  <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"gongmingqm10"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/02/16/dometic-project-in-three-months/">Dometic Project in Three Months</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know More About Android Inflater.inflate()</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/19/app-localisation-solution/">App 本地化解决方案</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">标签</h1>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(21)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+</section>
+<section>
+    <h1>最新评论</h1>
+    <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+    
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Gong Ming -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="ButterKnife Principle May 11th, 2016 Android 最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：ButterKnife, &hellip;">
+  <meta name="description" content="Dometic project in three months Feb 16th, 2017 Work 意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,143 @@
     <div id="content">
       
 
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2017/02/16/dometic-project-in-three-months/">Dometic project in three months</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2017-02-16T16:32:49+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Feb 16<span>th</span>, 2017</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/Work/">Work</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+<div class="entry-content clearfix">
+  <p>意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android App上继续开发，时间紧任务重，整个团队一起努力，项目最后还是获得了不错的成绩。过程中对于当前的工作也有了一点点心得体会：</p>
+
+<h3>关于烂代码</h3>
+
+<h4>现状</h4>
+
+<p>项目前后经手过两三个团队，经历过两三年。看到代码的一刻，整个人都惊呆了，深度超过10层的逻辑嵌套，超过 1500 行的 Activity 文件，重复代码片段可以重复到10多处，莫名其妙的非空判断，随处可见的私吞Exception，哭笑不得的代码注释，从来不敢删除的注释代码(约30%)&hellip;&hellip;</p>
+
+
+  <a class="btn pull-right" href="/blog/2017/02/16/dometic-project-in-three-months/">Read on &rarr;</a>
+</div>
+
+  </article>
+  <hr>
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know more about Android Inflater.inflate()</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2017-02-13T15:37:45+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Feb 13<span>th</span>, 2017</time>
+    
+
+
+
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a href="/blog/categories/Android/">Android</a></li>
+    
+    </ul>
+  </div>
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+<div class="entry-content clearfix">
+  <p>在 Android 开发中，有很多看起来 “约定俗成” 的代码，有时候不妨停下来想一想深层次的含义。最近我在给 Fragment 填充布局时，写到一句熟悉的代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Nullable</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">View</span> <span class="nf">onCreateView</span><span class="o">(</span><span class="n">LayoutInflater</span> <span class="n">inflater</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">View</span> <span class="n">view</span> <span class="o">=</span> <span class="n">inflater</span><span class="o">.</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">view</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我又一次陷入了思索，其中的第三个参数 <code>false</code> 到底是什么意思，此处能不能变为 <code>true</code>。</p>
+
+
+  <a class="btn pull-right" href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Read on &rarr;</a>
+</div>
+
+  </article>
+  <hr>
 
   
   <article class="listing">
@@ -2452,7 +2589,7 @@ Openfire在这种环境下应运而生，而且作为实时通讯类开源框架
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - Gong Ming -
+  Copyright &copy; 2017 - Gong Ming -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

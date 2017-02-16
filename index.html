@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="最近在研究 Java 中的 Annotation，初衷是先了解注解，然后再了解下 Android 开发中常用框架的原理。经历的 Android 项目中，使用注解比较多的是：ButterKnife, Roboguice, Dagger 。ButterKnife 主要是 View Binding, &hellip;">
+  <meta name="description" content="意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android App上继续开发，时间紧任务重，整个团队一起努力，项目最后还是获得了不错的成绩。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,117 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/02/16/dometic-project-in-three-months/">Dometic Project in Three Months</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-16T16:32:49+08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2017</time>
+        
+        
+        | <a href="/blog/2017/02/16/dometic-project-in-three-months/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android App上继续开发，时间紧任务重，整个团队一起努力，项目最后还是获得了不错的成绩。过程中对于当前的工作也有了一点点心得体会：</p>
+
+<h3>关于烂代码</h3>
+
+<h4>现状</h4>
+
+<p>项目前后经手过两三个团队，经历过两三年。看到代码的一刻，整个人都惊呆了，深度超过10层的逻辑嵌套，超过 1500 行的 Activity 文件，重复代码片段可以重复到10多处，莫名其妙的非空判断，随处可见的私吞Exception，哭笑不得的代码注释，从来不敢删除的注释代码(约30%)&hellip;&hellip;</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/02/16/dometic-project-in-three-months/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know More About Android Inflater.inflate()</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-13T15:37:45+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2017</time>
+        
+        
+        | <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在 Android 开发中，有很多看起来 “约定俗成” 的代码，有时候不妨停下来想一想深层次的含义。最近我在给 Fragment 填充布局时，写到一句熟悉的代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Nullable</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">View</span> <span class="nf">onCreateView</span><span class="o">(</span><span class="n">LayoutInflater</span> <span class="n">inflater</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">View</span> <span class="n">view</span> <span class="o">=</span> <span class="n">inflater</span><span class="o">.</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">,</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">view</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我又一次陷入了思索，其中的第三个参数 <code>false</code> 到底是什么意思，此处能不能变为 <code>true</code>。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -561,111 +672,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/16/devops-session-2/">DevOps Session 2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-16T14:24:51+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/09/16/devops-session-2/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。</p>
-
-<h2>课前准备</h2>
-
-<p>课前准备阶段，我们需要完成简单的作业：</p>
-
-<ol>
-<li>使用 tomcat 用户安装 tomcat7 服务器；</li>
-<li>使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；</li>
-<li>从本机浏览器中访问 jenkins 主页；</li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/16/devops-session-2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/10/devops-session-1/">DevOps Session 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-10T22:09:55+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/09/10/devops-session-1/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近公司在组织DevOps培训，于是就有个这个系列的文章，作为培训笔记，作为以后参考。如果你还不知道DevOps概念，请参考<a href="https://zh.wikipedia.org/wiki/DevOps">Wikipedia</a>。</p>
-
-<blockquote><p>DevOps（英文Development和Operations的组合）是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。</p></blockquote>
-
-<h2>课前准备</h2>
-
-<p>因为需要使用一台Linux机器来作为测试主机，我们使用VirtualBox安装<a href="http://releases.ubuntu.com/15.04/ubuntu-15.04-server-amd64.iso">Ubuntu Server</a>。安装完成之后，我们能够登录这台“服务器”。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/10/devops-session-1/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -681,6 +687,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/02/16/dometic-project-in-three-months/">Dometic Project in Three Months</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know More About Android Inflater.inflate()</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
       </li>
     
@@ -692,19 +706,11 @@
         <a href="/blog/2016/03/19/app-localisation-solution/">App 本地化解决方案</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/12/27/say-hi-to-2016/">再见 2015， 你好 2016</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(20)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(21)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>
@@ -730,7 +736,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - Gong Ming -
+  Copyright &copy; 2017 - Gong Ming -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

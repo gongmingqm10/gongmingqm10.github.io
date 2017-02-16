@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Dometic Project in Three Months - gongmingqm10</title>
+  <meta name="author" content="Gong Ming">
+
+  
+  <meta name="description" content="ThoughtWorks 工作体验">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2017/02/16/dometic-project-in-three-months">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300italic,600,700,600italic,700italic,300|Roboto:300,300italic,400,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>-->
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48787063-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">gongmingqm10</a></h1>
+  
+    <h2>Life is a journey, not a destination</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="gongmingqm10@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.gongmingqm10.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">博客</a></li>
+  <li><a href="/showcases">作品</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/links">优秀博客</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Dometic Project in Three Months</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-16T16:32:49+08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2017</time>
+        
+        
+        | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android App上继续开发，时间紧任务重，整个团队一起努力，项目最后还是获得了不错的成绩。过程中对于当前的工作也有了一点点心得体会：</p>
+
+<h3>关于烂代码</h3>
+
+<h4>现状</h4>
+
+<p>项目前后经手过两三个团队，经历过两三年。看到代码的一刻，整个人都惊呆了，深度超过10层的逻辑嵌套，超过 1500 行的 Activity 文件，重复代码片段可以重复到10多处，莫名其妙的非空判断，随处可见的私吞Exception，哭笑不得的代码注释，从来不敢删除的注释代码(约30%)&hellip;&hellip;</p>
+
+<!-- more -->
+
+
+<h4>困境</h4>
+
+<p>对于烂代码，我们想到的第一个词是“重构”，但是“重构”的前提是测试。没有测试保障的重构是一件相当危险的事情。但是遗留混乱代码中怎么可能有测试。所以这是个死结。</p>
+
+<p>当然你也许会说先加上测试，这就涉及到一个需求的问题。因为从代码中你很难推断出真实的需求。因为有些代码也许是和需求无关的，是开发人员的知识储备不够，添加的冗余代码，给冗余代码添加测试是一件很罪恶的事情。相当于在保证垃圾不被清楚掉。更关键的是，如果不知道具体的业务逻辑，那是没办法添加有效测试的。</p>
+
+<p>从客户角度来说，重构烂代码不能带来立竿见影的价值，但却可能引起线上版本的各种未知问题。所以从某种程度上来看，如果大刀阔斧的重构一定得挨刀子。</p>
+
+<h4>解决</h4>
+
+<p>像这种情况，其实最好的解决方案是重写整个代码，当然前提是客户愿意为你的重写买单。这是一劳永逸的办法，但是对于“唯快不破”的国内客户而言，并且客户和我方信任没有完全建立起来的情况下，实现起来难度比较大。</p>
+
+<p>所以我们只能使用一些迂回战术。比如让客户方接口人意识到原有代码质量比较烂的问题，然后对于需求明确的页面，小步的重构，并手动验证需求。当然需要做好版本控制，随时做好回退的准备。对于一些比较大的混乱的页面，可以尝试直接重写一个新的，同时保留老的页面。先直接用新页面验证，一旦出现紧急问题再切换回来。一两个迭代验证之后，再把之前的彻底删除。</p>
+
+<p>所以，关键点在于把握好度，在资源允许的前提下，一步步的重写，并且尽量加上测试的保证，最后达到改善项目代码质量的目的。</p>
+
+<h4>原因</h4>
+
+<p>代码的复杂度反映了需求的复杂度。尤其是面对客户的各种需求，有些开发人员会不假思索的采取填鸭式的方式不断在原有代码上打补丁。我们需要理解需求，理顺需求，然后使用最优的方案实现，这样真的可以有效避免一些奇葩代码。同时对于不断变脏的模块或者方法，要不断的回顾，重构，优化。</p>
+
+<p>烂代码的出现主要主要是软件开发人员自身的技术功底，这需要长期的培养与习惯养成。比如读一下《重构》或者《代码整洁之道》，可能会有效的改善代码质量。</p>
+
+<h3>关于“烂”需求</h3>
+
+<h4>现状</h4>
+
+<p>在上述谈到烂代码的原因时，我们有谈到需求对代码质量的影响。需求本身并不是烂代码的罪魁祸首，但是却是烂代码的催化剂。我也遇到过项目中很多奇葩需求，有些需求人员本身提的需求不太符合现实。比如我遇到的，在一段代码里面出现了:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">bookId</span> <span class="o">==</span> <span class="s">&quot;1388&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">doTrickyThing</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这就是一个典型的奇葩需求影响的结果。对于某些数据做某些特殊处理应该直接放到数据库或者后台API层面做，如果加到客户端，或者有 web/Android/iOS等多个客户端需要显示此数据，那么这种奇怪的逻辑就得在三个地方重复。</p>
+
+<p>或者你觉得这种逻辑出现一两次也没啥关系，但是一旦项目里面充斥着这种逻辑，并且开发人员没有用代码很好的描述时，这种代码对于其他人而言就是魔法代码，后面接手项目的人也将很难理解其中的逻辑。</p>
+
+<h4>方案</h4>
+
+<p>这种问题的出现大多是人为因素，需求本身并没有任何问题。只是实现手段不佳，所以引起来代码上的奇怪逻辑。混乱的代码其实也是一个信号，预示着这个解决方案可能不是最佳的。</p>
+
+<p>所以，“奇葩”需求产生时，尝试保持质疑精神。向客户了解如下内容：</p>
+
+<ul>
+<li>需求的业务价值；</li>
+<li>需求的实现方案；</li>
+<li>评估对比各方案的成本及优劣；</li>
+<li>结合项目实际情况向客户推荐方案；</li>
+</ul>
+
+
+<p>在找技术方案时，最好是能够提前找资料做足功课，才能在面对客户质疑时更加从容。</p>
+
+<h4>原因</h4>
+
+<p>在国内外包项目中，大部分情况下客户都比较强势，直接给需求。但是至于需求的价值，需求的实现手段等，开发人员应该是可以提出自己的见解的。一旦双方能够统一战线，把产品做好作为自己的使命，那么很多需求也是可以讨论优化，然后到达一个和谐的状态。</p>
+
+<p>因为我们是咨询师，我们不是代码的搬运工，必要的时候我们是可以和客户协商需求，并给客户提供各种建议的。</p>
+
+<h3>关于主动性</h3>
+
+<h4>背景</h4>
+
+<p>两周一次的迭代，PM和BA也许需要和客户划定需求的范围，落实需求的细节，考虑项目成本以及交付风险等。当项目交付太紧时，技术负责人以及测试人员都不一定能够顾虑到项目中的所有事情。所以即使作为一个开发，也需要时刻关注手头开发工作之外的事情。</p>
+
+<h4>方案</h4>
+
+<p>其实作为开发人员在项目中承担的任务也可以很多，比如：</p>
+
+<ul>
+<li>迭代内故事卡的技术预研；</li>
+<li>知识总结及传递；</li>
+<li>关注上线流程；</li>
+<li>代码质量，单元测试，功能测试等；</li>
+<li>给故事卡估点；</li>
+</ul>
+
+
+<p>不过在一个项目里面，你能否有机会承担这些工作和项目组本身也有关系。我经历的有些项目可能高级工程师比较多，这时候除非主动争取，要不然这些事情可能都有人做了。如果项目人员配置比较紧张，那你可能是被动的承担这部分工作。</p>
+
+<p>不管是主动还是被动，开发人员是可以成为团队里面的多面手，协助BA(业务分析师)或者QA(质量保障工程师)开展相关工作的。</p>
+
+<h3>感想</h3>
+
+<p>每一个项目都是一段难忘的经历，有些项目现在回想起来觉得不容易。但是你也会惊讶自己在其中的成长，你会感谢当年那个努力奋斗的自己。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-16T16:32:49+08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/work/'>Work</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/02/13/know-more-about-android-inflater-inflate/" title="Previous Post: Know more about Android Inflater.inflate()">&laquo; Know more about Android Inflater.inflate()</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+<section>
+  <h1>Comments</h1>
+  <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"gongmingqm10"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/02/16/dometic-project-in-three-months/">Dometic Project in Three Months</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know More About Android Inflater.inflate()</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/19/app-localisation-solution/">App 本地化解决方案</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">标签</h1>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(21)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+</section>
+<section>
+    <h1>最新评论</h1>
+    <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+    
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Gong Ming -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,8 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="当我们谈软件质量时，我们一般会谈到测试。测试作为保障软件质量的重要手段正在被开发者逐渐认知。谈到测试时，大部分人都知道Web测试，对于前端JS或者后台，大部分“靠谱”的创业公司也都会用测试来保证软件质量。可是对于起步相对较晚的移动端测试，用的人并不多。 在测试方面， &hellip;">
+  <meta name="description" content="本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。 课前准备 课前准备阶段，我们需要完成简单的作业： 使用 tomcat 用户安装 tomcat7 服务器；
+使用 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,111 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/16/devops-session-2/">DevOps Session 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-16T14:24:51+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2015</time>
+        
+        
+        | <a href="/blog/2015/09/16/devops-session-2/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本次课主要学习用户权限概念，为了保证系统的安全性，把所有用户赋予最高权限是极不安全的做法。特别是安装 Tomcat 和 Jenkins 时，使用 sudo 用户来安装很容易被黑客攻击。</p>
+
+<h2>课前准备</h2>
+
+<p>课前准备阶段，我们需要完成简单的作业：</p>
+
+<ol>
+<li>使用 tomcat 用户安装 tomcat7 服务器；</li>
+<li>使用 jenkins 用户安装 jenkins，jenkins 可以放在tomcat7中运行；</li>
+<li>从本机浏览器中访问 jenkins 主页；</li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/09/16/devops-session-2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/10/devops-session-1/">DevOps Session 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-10T22:09:55+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2015</time>
+        
+        
+        | <a href="/blog/2015/09/10/devops-session-1/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近公司在组织DevOps培训，于是就有个这个系列的文章，作为培训笔记，作为以后参考。如果你还不知道DevOps概念，请参考<a href="https://zh.wikipedia.org/wiki/DevOps">Wikipedia</a>。</p>
+
+<blockquote><p>DevOps（英文Development和Operations的组合）是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。</p></blockquote>
+
+<h2>课前准备</h2>
+
+<p>因为需要使用一台Linux机器来作为测试主机，我们使用VirtualBox安装<a href="http://releases.ubuntu.com/15.04/ubuntu-15.04-server-amd64.iso">Ubuntu Server</a>。安装完成之后，我们能够登录这台“服务器”。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/09/10/devops-session-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -462,96 +568,6 @@ ls -al 查看目录下所有文件的详细信息</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/29/androiddian-hua-jian-ting/">Android电话监听</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-29T11:11:48+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2014</time>
-        
-        
-        | <a href="/blog/2014/10/29/androiddian-hua-jian-ting/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>看题名，本篇博文似乎是关于怎么监听别人的电话。其实不然，这里我主要做的是监听自己的电话。监听自己电话的场景来源如下：<br/>
-我最近在换手机，当然也在换号。于是面对两个号码两部手机，特别是一些捆绑了银行卡活着以前的快递等情况下，我必须得带两部手机出门，防止旧手机上重要的电话漏接。最开始是想直接进行通过转接，但是面对电信和移动间的通话转移，我放弃了这个想法。于是开始想着用软件提醒。<br/>
-在老手机上安装APP，这个APP的作用是监听来电，来电挂断之后会自动给你设定的新手机上发送短信，告诉你谁给你打来了一个未接电话，这样你在新手机上看到短信来电提醒，于是可以直接在新手机上进行回复了。虽然不能直接解决通话的问题，但是确解决了我的问题。考虑到老手机上每个月的短信套餐，发现其实成本也几乎为零。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/10/29/androiddian-hua-jian-ting/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/28/android-data-cache/">Android Data Cache</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-28T17:11:26+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2014</time>
-        
-        
-        | <a href="/blog/2014/10/28/android-data-cache/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Android APP开发过程中，我们通常会加入缓存模块。缓存即在本地保存APP的一些数据，大部分是将网络请求的数据进行本地保存，这样在缓存数据有效期内就可以直接使用缓存数据，降低了APP和服务器的压力，也极大提升了用户体验。Android数据缓存既可以以数据表的形式进行保存，也可以以文件的形式进行缓存。这里我主要通过缓存文件存储数据，并在APP下一次启动时读取。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/10/28/android-data-cache/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -569,6 +585,14 @@ ls -al 查看目录下所有文件的详细信息</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/02/16/dometic-project-in-three-months/">Dometic Project in Three Months</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know More About Android Inflater.inflate()</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
       </li>
     
@@ -580,19 +604,11 @@ ls -al 查看目录下所有文件的详细信息</p>
         <a href="/blog/2016/03/19/app-localisation-solution/">App 本地化解决方案</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/12/27/say-hi-to-2016/">再见 2015， 你好 2016</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/16/you-should-know-about-android-rotate/">Android 转屏那些事儿</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(20)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(1)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(21)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>
@@ -618,7 +634,7 @@ ls -al 查看目录下所有文件的详细信息</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - Gong Ming -
+  Copyright &copy; 2017 - Gong Ming -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

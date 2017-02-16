@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2016-05-11T15:47:31+08:00</updated>
+  <updated>2017-02-16T16:36:19+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,255 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Know More About Android Inflater.inflate()]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2017/02/13/know-more-about-android-inflater-inflate/"/>
+    <updated>2017-02-13T15:37:45+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2017/02/13/know-more-about-android-inflater-inflate</id>
+    <content type="html"><![CDATA[<p>在 Android 开发中，有很多看起来 “约定俗成” 的代码，有时候不妨停下来想一想深层次的含义。最近我在给 Fragment 填充布局时，写到一句熟悉的代码：</p>
+
+<p>```java</p>
+
+<pre><code>@Nullable
+@Override
+public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.activity_main, container, false);
+    return view;
+}
+</code></pre>
+
+<p>```</p>
+
+<p>我又一次陷入了思索，其中的第三个参数 <code>false</code> 到底是什么意思，此处能不能变为 <code>true</code>。</p>
+
+<!-- more -->
+
+
+<h2>探究</h2>
+
+<p>首页我们还是通过函数本身的注释来看各参数的作用，通过源码查看如下：</p>
+
+<p>```</p>
+
+<pre><code>/**
+ * Inflate a new view hierarchy from the specified xml resource. Throws
+ * {@link InflateException} if there is an error.
+ * 
+ * @param resource ID for an XML layout resource to load (e.g.,
+ *        &lt;code&gt;R.layout.main_page&lt;/code&gt;)
+ * @param root Optional view to be the parent of the generated hierarchy (if
+ *        &lt;em&gt;attachToRoot&lt;/em&gt; is true), or else simply an object that
+ *        provides a set of LayoutParams values for root of the returned
+ *        hierarchy (if &lt;em&gt;attachToRoot&lt;/em&gt; is false.)
+ * @param attachToRoot Whether the inflated hierarchy should be attached to
+ *        the root parameter? If false, root is only used to create the
+ *        correct subclass of LayoutParams for the root view in the XML.
+ * @return The root View of the inflated hierarchy. If root was supplied and
+ *         attachToRoot is true, this is root; otherwise it is the root of
+ *         the inflated XML file.
+ */
+public View inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot) {
+    ...
+}
+</code></pre>
+
+<p>```</p>
+
+<p>上面的解释比较官方，但是不一定好理解。至少我就看了好几遍，最后结合网上的总结才明白其含义。</p>
+
+<p>首先就 <code>LayoutInflater.inflate()</code>这个函数而言，功能是将一段 XML 资源文件加载成为 View。所以通常用于将 XML 文件实例化为 View。然后获取 View 上的组件最后操作之。</p>
+
+<p>对于这个函数，我们通常容易引发歧义的地方在 <code>attachToRoot</code>的值，当这个值为 true/false 时，是由显著的区别的。</p>
+
+<h3>attachToRoot = true</h3>
+
+<p>当设置 <code>attachToRoot = true</code> 时, 表示 xml 实例化的 View 会被添加到第二个参数 rootView 中。 所以此时相当于处理了两件事：</p>
+
+<ul>
+<li>将 XML 实例化为 View；</li>
+<li>将实例化的 View 添加到非空的 rootView 中；</li>
+</ul>
+
+
+<p>经典的使用方法，对于不为空的 container，</p>
+
+<p>```java
+LayoutInflater.from(getContext()).inflate(R.layout.demo, container, true);</p>
+
+<p>```</p>
+
+<p>或者:</p>
+
+<p><code>java
+LayoutInflater.from(getContext()).inflate(R.layout.demo, container);
+</code></p>
+
+<p>当 ViewGroup 不为空时，第三个 true 参数可以直接省略。</p>
+
+<h3>attachToRoot = false</h3>
+
+<p>当设置 <code>attachToRoot = false</code> 时，表示直接将 xml 实例化为 View，而不用将 View 添加到指定的 ViewGroup 中。如果需要将 View 加入到 ViewGroup 中，还需要手动的调用 <code>ViewGroup.addView(view)</code>。</p>
+
+<p>经典写法为：</p>
+
+<p><code>java
+LayoutInflater.from(getContext()).inflate(R.layout.demo, container, false);
+</code></p>
+
+<p>注意：对于上面的第二个参数 container，如果直接设置为 null，有可能导致 View 的位置或者大小等显示不正确。所以上面代码做了两件事：</p>
+
+<ul>
+<li>将 XML 实例化为 View;</li>
+<li>根据 ViewGroup 为子元素 View 设置正确的位置、大小等 LayoutParams 属性；</li>
+</ul>
+
+
+<p>所以，实例化 View 时，如果已经明确知道父容器 ViewGroup，请直接传递 ViewGroup，避免出现子 View 显示时的位置、大小等异常情形。</p>
+
+<h3>比较</h3>
+
+<p>对于非空的 ViewGroup continer，以下两句是等效的：</p>
+
+<p><code>java
+View buttonView = LayoutInflater.from(getContext()).inflate(R.layout.ugly_button, container, false);
+container.addView(buttonView);
+</code></p>
+
+<p>与</p>
+
+<p><code>java
+View buttonView = LayoutInflater.from(getContext()).inflate(R.layout.ugly_button, container, true);
+</code></p>
+
+<h2>应用</h2>
+
+<p>通常将 XML 实例化为 View 涉及到以下常见情形：</p>
+
+<h3>ListView/RecyclerView 中 Adapter.getView</h3>
+
+<p>```java
+@Override
+public View getView(int position, View convertView, ViewGroup parent) {</p>
+
+<pre><code>ViewHolder viewHolder;
+
+if (convertView == null) {
+    convertView = LayoutInflater.from(context).inflate(R.layout.ugly_button, parent, false);
+    viewHolder = new ViewHolder();
+    convertView.setTag(viewHolder);
+} else {
+    viewHolder = (ViewHolder) convertView.getTag();
+}
+
+// ...
+return convertView;
+</code></pre>
+
+<p>}
+```
+此处应该设置 <strong>attachToRoot = true</strong></p>
+
+<p>因为 ListView 何时显示，以及如何显示。应该是由 ListView 决定的。Adapter.getView() 主要是根据指定的函数返回相应的 View 实例。显示逻辑则由 ListView 处理，因此设置 <code>attachToRoot = true</code>。</p>
+
+<h3>自定义 View</h3>
+
+<p>为了使得布局的层级足够浅，我们在布局时通常使用 <code>&lt;merge&gt;&lt;/merge&gt;</code> 定义 layout 的根元素，然后将 layout 填充到自定义的 View 中。</p>
+
+<p>res/layout/bottom_tab_item.xml:</p>
+
+<p>```
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+&lt;merge xmlns:android=&ldquo;<a href="http://schemas.android.com/apk/res/android">http://schemas.android.com/apk/res/android</a>&rdquo;</p>
+
+<pre><code>xmlns:tools="http://schemas.android.com/tools"&gt;
+
+&lt;LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"&gt;
+    &lt;ImageView
+        android:id="@+id/tab_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:paddingTop="2dp" /&gt;
+    &lt;TextView
+        android:id="@+id/tab_label"
+        android:layout_marginTop="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        tools:text="Tab"/&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+
+<p></merge>
+```</p>
+
+<p>BottomTabItem.java:</p>
+
+<p>```java
+public class BottomTabItem extends RelativeLayout {</p>
+
+<pre><code>...
+
+public void init() {
+    LayoutInflater.from(getContext()).inflate(R.layout.bottom_tab_item, this, true);
+}
+...
+</code></pre>
+
+<p>}
+```</p>
+
+<p>对于自定义的 BottomTabItem，需要将定义的 XML 文件添加到其中。所以需要直接将 XML 实例化 View 作为子元素，添加到 BottonTabItem 中。</p>
+
+<p>所以，对于自定义 View， 需要设置 <code>attachToRoot = true</code>。</p>
+
+<h3>Fragment.onCreateView()</h3>
+
+<p>回顾我们最看我们最开始遇到的代码块：</p>
+
+<p>```
+@Nullable
+@Override
+public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {</p>
+
+<pre><code>View view = inflater.inflate(R.layout.activity_main, container, false);
+return view;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>onCreateView 函数直接反馈 View，可以看出函数只需要拿到实例化的 View，至于 View 是如何添加到 Fragnent 中，则是底层 Fragment 的逻辑。</p>
+
+<p>如果在 Fragment 中不恰到的处理这个 attchToRoot 参数，会直接导致严重的崩溃性问题。而且通常出现这种问题时很不容易被发现。</p>
+
+<p>所以，对于 Fragment 添加 layout，需要设置 <code>attachToRoot = false</code>。</p>
+
+<h3>ListView headerView/footerView 等</h3>
+
+<p>对于 ListView.addHeaderView() / addFooterView() 也是我们经常使用 LayoutInflator.inflate() 很多的场合。</p>
+
+<p>从 ListView.addHeaderView(View view) 函数定义可以看到，ListView 需要将实例化的 View 添加作为 header/footer view，所以显然需要的只是 View 的实例。添加或者删除操作通过 ListView 内部进行处理。</p>
+
+<p>所以，对于 ListView 添加 headerView, footerVuew 等，需要设置 <code>attachToRoot = false</code>。</p>
+
+<h2>结语</h2>
+
+<p>知道 LayoutInflater.inflate 的细微知识点，可能会花费你一下午的时间。但是却可以让你对所写的代码更加自信，并且能够对事物认识更加深刻。何乐而不为呢？</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://blog.chengdazhi.com/index.php/110">深入理解LayoutInflater.inflate()</a></li>
+<li><a href="https://www.bignerdranch.com/blog/understanding-androids-layoutinflater-inflate/">Understanding Android&rsquo;s LayoutInflater.inflate()</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ButterKnife Principle]]></title>
@@ -603,113 +852,6 @@ android:name="net.gongmingqm10.androidrotate.HomeFragment" /&gt;
 
 
 <p>全文很多观点都是一家之言，更多的是结合自己的项目经验以及学习经验总结而成，如有谬误及不当之处，请读者不吝赐教。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android Adapter notifyDataSetChanged Not Working]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/11/29/android-adapter-notifydatasetchanged-not-working/"/>
-    <updated>2015-11-29T11:30:39+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/11/29/android-adapter-notifydatasetchanged-not-working</id>
-    <content type="html"><![CDATA[<p>刚开发 Android 开发时，总是遇到一个看似很简单的问题 “Android Adapter notifyDataSetChanegd 不生效”，而每次解决这个问题的方法总是简单粗暴，直接了当。大概是以前的时候做事以结果导向，所以对于这些奇怪的问题也总是没有深究。刚好最近在项目中再次遇到了这个问题，决心深究一下。</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/Its_not_working_anymore.png" width="500" alt="notifyDataSetChanged not working" /></p>
-
-<!-- more -->
-
-
-<h3>Adapter notifyDataSetChanged 做了什么事</h3>
-
-<p>要弄清楚 <code>adapter.notifyDataSetChanged</code> 为什么不工作，还是应该首先弄清楚它究竟做了什么事情。根据函数名的描述，主要是通知 “数据源改变”，从而刷新页面，这样新改变的数据就呈现在用户面前了。</p>
-
-<p>Android Adapter 使用了观察者模式，每一个 ListView 可以实例化出一个 Observer，而每个 Adapter 则会实例化出一个 Subject。在 ListView setAdapter 的时候，Adapter 会将 ListView 中实例化的 Observer 注册入观察者列表中。当 Adapter 通过观察者更新时，则会调用 Observer 的 notifyChanged() 方法，如此重新刷新 ListView 的界面。</p>
-
-<p>这个通知者模式的 UML 关系图大致可以描述如下：</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/adapter%20obervable%20pattern.png" width="500" alt="notifyDataSetChanged not working" /></p>
-
-<p>继续查看 ListView.setAdapter 方法，可以看到在设置 Adapter 的时候，ListView 会将自己的 Observer 注册入 Subject:</p>
-
-<p>```</p>
-
-<pre><code>@Override
-public void setAdapter(ListAdapter adapter) {
-    if (mAdapter != null &amp;&amp; mDataSetObserver != null) {
-        mAdapter.unregisterDataSetObserver(mDataSetObserver);
-    }
-
-    ...
-
-    super.setAdapter(adapter);
-
-    if (mAdapter != null) {
-        ...
-        mDataSetObserver = new AdapterDataSetObserver();
-        mAdapter.registerDataSetObserver(mDataSetObserver);
-
-        ...
-        }
-    }
-
-    ...
-}
-</code></pre>
-
-<p>```</p>
-
-<h3>为什么 notifyDataSetChanged 生效</h3>
-
-<p>既然 <code>notifyDataSetChanged</code> 能够促使 ListView 重绘界面，那么让其生效的方式就是保证 Adapter 中的数据源生效，这样在 ListView 重绘时才能使用新的数据刷新界面。看下面一段失效的 ListView 更新失效的问题。</p>
-
-<p>```</p>
-
-<pre><code>    ListView itemList = (ListView) findViewById(android.R.id.list);
-    data = new ArrayList&lt;&gt;();
-    data.addAll(Arrays.asList("Item 1", "Item 2", "Item 3"));
-    adapter = new ItemListAdapter(data);
-    itemList.setAdapter(adapter);
-
-    findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            // 模拟请求 API 刷新重新获得数据
-            data = new ArrayList&lt;&gt;();
-            data.addAll(Arrays.asList("Item 1", "Item 2", "Item 3", "Item 4"));
-            adapter.notifyDataSetChanged();
-        }
-    });
-</code></pre>
-
-<p>```</p>
-
-<p>让我们分析失效的原因，首先将 ArrayList data 设置为 Adapter 的数据源，而 Java 是引用传值，所以在 onClick() 回调函数中，当我们对 data 重新赋值时，重新赋值后的 data 并不能和 Adapter 中的数据源产生关联。因此 Adapter 中的数据源还是 “Item 1”, “Item 2”, &ldquo;Item 3"。所以这里无论怎样调用 notifyDataSetChanged 都是不能生效的。</p>
-
-<h3>如何让 notifyDataSetChanged 生效</h3>
-
-<p>让更新生效的方式是，让你的 Adapter 保持最新数据源。就上述例子来看，当 data 更新新值时，我们可以通过 List.add() 来更新 Adapter 中引用对应的值。实现代码如下：</p>
-
-<p>```</p>
-
-<pre><code>    ListView itemList = (ListView) findViewById(android.R.id.list);
-    data = new ArrayList&lt;&gt;();
-    data.addAll(Arrays.asList("Item 1", "Item 2", "Item 3"));
-    adapter = new ItemListAdapter(data);
-    itemList.setAdapter(adapter);
-
-    findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            data.add("New Item " + view.toString());
-            adapter.notifyDataSetChanged();
-        }
-    });
-</code></pre>
-
-<p>```</p>
-
-<h3>End</h3>
-
-<p>Android 中有很多优秀的设计，当我们出现问题时，可以通过阅读源码的方式探索，并结合 Google 的相关资料，了解事物的根源，方能设计出更优秀的代码。</p>
 ]]></content>
   </entry>
   
