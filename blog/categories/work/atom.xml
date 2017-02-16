@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Work | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/work/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2017-02-16T16:36:19+08:00</updated>
+  <updated>2017-02-16T16:39:20+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Dometic Project in Three Months]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2017/02/16/dometic-project-in-three-months/"/>
+    <title type="html"><![CDATA[国内项目三月记]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2017/02/16/domestic-project-in-three-months/"/>
     <updated>2017-02-16T16:32:49+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2017/02/16/dometic-project-in-three-months</id>
+    <id>http://www.gongmingqm10.net/blog/2017/02/16/domestic-project-in-three-months</id>
     <content type="html"><![CDATA[<p>意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android App上继续开发，时间紧任务重，整个团队一起努力，项目最后还是获得了不错的成绩。过程中对于当前的工作也有了一点点心得体会：</p>
 
 <h3>关于烂代码</h3>
