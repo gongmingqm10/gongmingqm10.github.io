@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何上传 AAR 到 Jcenter - gongmingqm10</title>
+  <meta name="author" content="Gong Ming">
+
+  
+  <meta name="description" content="Android, aar, 上传JCenter">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.gongmingqm10.net/blog/2017/02/17/upload-android-aar-to-jcenter">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="gongmingqm10" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300italic,600,700,600italic,700italic,300|Roboto:300,300italic,400,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>-->
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48787063-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">gongmingqm10</a></h1>
+  
+    <h2>Life is a journey, not a destination</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="gongmingqm10@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.gongmingqm10.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">博客</a></li>
+  <li><a href="/showcases">作品</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/links">优秀博客</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何上传 AAR 到 Jcenter</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-17T16:38:01+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2017</time>
+        
+        
+        | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>自我进入到代码这个行业开始，就有前辈早早告诉我要积极活跃在开源社区，于是认识了 github, 然后也见识到了开源社区的魅力之处。看到大神们都会积极贡献自己的开源仓库，自己也被这种开源精神感动到了。过程中我也尝试写过一些小框架，但是发布到 jcenter 上，所以知名度大大降低。</p>
+
+<p>相比于几年前，现在直接拷贝源代码到自己工程中的做法越来越少了。得益于 Android 使用 Gradle 管理依赖，更多的人选择将开源仓库发布到 jcenter 中，然后被更多的人使用。今天我们将尝试从零开始，一步步上传自己的应用到 Jcenter，然后优雅的通过 gradle <code>compile 'x.y.z:a:0.0.1'</code> 引用。</p>
+
+<!-- more -->
+
+
+<h2>理解 Android Gradle 构建</h2>
+
+<p>以 BottomTabAndroid 工程为例，在一个项目中通常至少有三个 gradle 文件，分别为：</p>
+
+<ul>
+<li>BottomTabAndroid/settings.gradle</li>
+<li>BottomTabAndroid/build.gradle</li>
+<li>BottomTabAndroid/app/build.gradle</li>
+</ul>
+
+
+<p>分析各 gradle 文件的具体内容，我们可以发现位于最外层的 settings.gradle 定义项目中的各个不同 module，这时候指定的 module 才能被我们的工程识别。识别之后，如果 A module 需要引用 B module，那么在 A 的 build.gradle 文件中，则需要 <code>compile project(':B')</code>。</p>
+
+<p><img src="/images/android_gradle.png" title="Gradle 示例工程" ></p>
+
+<p>在这个工程中，存在 bottomtab 和 app 两个 module, 而 bottomtab 被 app 所引用。</p>
+
+<p>settings.gradle 内容如下:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>include ':app', ':bottomtab'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>build.gradle 内容如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
+</span><span class='line'>    repositories {
+</span><span class='line'>       // 指定构建脚本的下载库
+</span><span class='line'>        jcenter()
+</span><span class='line'>    }
+</span><span class='line'>    dependencies {
+</span><span class='line'>       // 指定引入何种构建脚本，比如注释中引入了上传到 jecneter 和 maven 构建的脚本
+</span><span class='line'>        classpath 'com.android.tools.build:gradle:2.2.3'
+</span><span class='line'>
+</span><span class='line'>//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+</span><span class='line'>//        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>allprojects {
+</span><span class='line'>    repositories {
+</span><span class='line'>       // 指定从何处下载子项目的库依赖
+</span><span class='line'>        jcenter()
+</span><span class='line'>//        maven {
+</span><span class='line'>//            url 'https://dl.bintray.com/gongmingqm10/maven/'
+</span><span class='line'>//        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>task clean(type: Delete) {
+</span><span class='line'>    delete rootProject.buildDir
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>build.gradle 文件中主要定义了 buildscript和 allprojects.repositories 两部分内容。确定了当前项目中使用的构建脚本库，以及项目中依赖库的下载仓库。</p>
+
+<p>app/build.gradle 文件则定义了当前 module 的配置信息，比如 Android 工程中需要对 API，签名，项目依赖等信息进行配置。本文暂且略过其详细介绍。</p>
+
+<p>认识了 Gradle 的基本配置，我们再看看如下这句熟悉的 Gradle 语言：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>compile 'net.gongmingqm10.uikit:bottomtab:0.2.0'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所有的仓库都是按照 <code>Group_ID:ARTIFACT_ID:VERSION</code> 定义，所以对于 bottomtab 这个库而言， groupID = net.gongmingqm10.uikit， artifactId = bottomtab，version = 0.2.0。这种方式的好处是，我不需要在项目中导入众多的子 module，只需要通过这一句 DSL (领域特定语言) 引入仓库，并且能够随时更改版本。</p>
+
+<p>下面我们一步步构建出这个 <code>net.gongmingqm10.uikit.bottomtab</code> 依赖库，上传到 jcenter，以在项目中直接使用。</p>
+
+<h2>发布开源库</h2>
+
+<p>本阶段我们将从零开始一步步构建并发布自己的第一款开源库。我们假设你已经在使用 Android Studio 开发应用，并且对 Gradle 有一定的了解。Android 仓库通常有两种格式，aar 和 jar，其中 aar 格式中包含 Android 自身相关的资源文件。而 jar 则主要包含 .class 类文件。考虑到我们希望做出一款 Bottom Tab 底部栏的库，因此我们最后使用的是 aar 格式。</p>
+
+<h3>1. 配置 bintray</h3>
+
+<p>首先注册 <a href="https://bintray.com/signup/oss">Bintray OpenSource</a>，如果之前有账号请跳过此步骤。通过 OpenSource 途径注册的 bintray 属于公开免费版，这正和我的期望相符。注意不要直接在首页注册，那样默认注册的是收费版本。</p>
+
+<p>访问个人主页，点击 &ldquo;Add New Repository&rdquo; 跳转到创建 repository 页面，这里我们需要创建一个 name = maven，type = Maven 的 Repository。其中的 license 以及 description 按照个人偏好自行填写。</p>
+
+<p><img src="/images/bintray_1.png" title="创建 maven 仓库" ></p>
+
+<p>点击 <code>Create</code> 之后，我们可以顺利在首页看到 repository 中多了一个 maven 的仓库。</p>
+
+<p><img src="/images/bintray_2.png" title="首页 maven 仓库" ></p>
+
+<p>点击刚创建的 maven 仓库，如果是第一次创建，应该看不到任何的 package。我们需要 <code>Add New Package</code>。</p>
+
+<p><img src="/images/bintray_3.png" title="maven 仓库" ></p>
+
+<p>创建 package 时，我们填写 packageName = ‘bottom-tab’，这个属性比较重要，在后续步骤的 gradle 中需要用到。注意到需要填写 versionControl，我提前在 github 上创建了一个 repository bottomtab，然后把URL填入即可。</p>
+
+<p>创建完成之后，bintray 的配置基本告一段落。但是正式开始之前我们还需要拿到 API_KEY，要不然所有人都可以更新你的库，岂不是一件很恐怖的事情。</p>
+
+<p>总结这一步，我们所需要完成的事情：</p>
+
+<ul>
+<li>注册bintray，获得 bintray 用户名和 API KEY;</li>
+<li>在 GITHUB 新建 bottom-tab 仓库；</li>
+<li>在 bintray 新建 maven/bottom-tab 仓库；</li>
+</ul>
+
+
+<h3>2. 配置 GRADLE 工程</h3>
+
+<p>为了发布一款 “接地气” 的 bottom-tab 库，我们先构建一个 BottomTabAndroid 应用，然后添加 bottom-tab 子模块，然后将 bottom-tab 子模块打包并发布到 jcenter 上，而 app 模块则是一个 demo。展示 bottom-tab 的实际效果。</p>
+
+<p>具体代码请参考：<a href="https://github.com/gongmingqm10/BottomTabAndroid">https://github.com/gongmingqm10/BottomTabAndroid</a>。项目截图如下：</p>
+
+<p><img src="/images/android_gradle.png" title="BottomTabAndroid" ></p>
+
+<p>开发过程中，我先让 app 直接引用子模块 bottom-tab，功能开发完成之后，开始准备最重要的打包上传。</p>
+
+<p><strong>Step 1: 配置 local.properties</strong></p>
+
+<p>我们需要将 bintray 账户相关的 username 和 apikey 存放在此文件中。在提交代码时，此文件被自动忽略，从而保证了其安全性。默认的 local.properties 文件中保存了 sdk 路径。我们在其后添加上 uername 和 apikey:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sdk.dir=/Users/mingong/Project/sdk
+</span><span class='line'>
+</span><span class='line'>bintray.user=gongmingqm10
+</span><span class='line'>bintray.apikey=thisissomesecretkeyanddonotcopyme
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>请将你自己的 username 和 apikey 复制替换到此文件。</p>
+
+<p><strong>Step 2: 配置 $projectDir/build.gradle</strong></p>
+
+<p>为了上传 bintray，我们需要使用 <a href="https://github.com/bintray/gradle-bintray-plugin">gradle-bintray-plugin</a> 和 <a href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a> 两款构建插件。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>buildscript {
+</span><span class='line'>    repositories {
+</span><span class='line'>        jcenter()
+</span><span class='line'>    }
+</span><span class='line'>    dependencies {
+</span><span class='line'>        classpath 'com.android.tools.build:gradle:2.2.3'
+</span><span class='line'>
+</span><span class='line'>       // 添加如下插件以上传 AAR 至 bintray
+</span><span class='line'>        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+</span><span class='line'>        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>请关注 buildscript{dependecies{}} 中配置，其余的配置项已省略。</p>
+
+<p><strong>Step 3: 配置 $projectDir/bottomtab/build.gradle</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apply plugin: 'com.android.library'
+</span><span class='line'>apply plugin: 'com.github.dcendents.android-maven'
+</span><span class='line'>apply plugin: 'com.jfrog.bintray'
+</span><span class='line'>
+</span><span class='line'>android {
+</span><span class='line'>    compileSdkVersion 23
+</span><span class='line'>    buildToolsVersion "23.0.3"
+</span><span class='line'>
+</span><span class='line'>    defaultConfig {
+</span><span class='line'>        minSdkVersion 17
+</span><span class='line'>        targetSdkVersion 23
+</span><span class='line'>        versionCode 1
+</span><span class='line'>        versionName "1.0"
+</span><span class='line'>
+</span><span class='line'>        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    buildTypes {
+</span><span class='line'>        release {
+</span><span class='line'>            minifyEnabled false
+</span><span class='line'>            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>dependencies {
+</span><span class='line'>    compile fileTree(dir: 'libs', include: ['*.jar'])
+</span><span class='line'>    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+</span><span class='line'>        exclude group: 'com.android.support', module: 'support-annotations'
+</span><span class='line'>    })
+</span><span class='line'>    compile 'com.android.support:appcompat-v7:23.3.0'
+</span><span class='line'>    testCompile 'junit:junit:4.12'
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>if (project.hasProperty("android")) { // Android libraries
+</span><span class='line'>    task sourcesJar(type: Jar) {
+</span><span class='line'>        classifier = 'sources'
+</span><span class='line'>        from android.sourceSets.main.java.srcDirs
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    task javadoc(type: Javadoc) {
+</span><span class='line'>        source = android.sourceSets.main.java.srcDirs
+</span><span class='line'>        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+</span><span class='line'>    }
+</span><span class='line'>} else { // Java libraries
+</span><span class='line'>    task sourcesJar(type: Jar, dependsOn: classes) {
+</span><span class='line'>        classifier = 'sources'
+</span><span class='line'>        from sourceSets.main.allSource
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>task javadocJar(type: Jar, dependsOn: javadoc) {
+</span><span class='line'>    classifier = 'javadoc'
+</span><span class='line'>    from javadoc.destinationDir
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>artifacts {
+</span><span class='line'>    archives javadocJar
+</span><span class='line'>    archives sourcesJar
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>// 你只需要把这里的参数修改为自己的库名称即可
+</span><span class='line'>ext {
+</span><span class='line'>    siteUrl = 'https://github.com/gongmingqm10/BottomTabAndroid'
+</span><span class='line'>    gitUrl = 'https://github.com/gongmingqm10/BottomTabAndroid.git'
+</span><span class='line'>    currentVersion = '0.2.0'
+</span><span class='line'>    groupId = 'net.gongmingqm10.uikit'
+</span><span class='line'>    artifactId = 'bottom-tab'
+</span><span class='line'>    desc = 'Android bottom tab'
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>group = groupId
+</span><span class='line'>version = currentVersion
+</span><span class='line'>
+</span><span class='line'>install {
+</span><span class='line'>    repositories.mavenInstaller {
+</span><span class='line'>        pom {
+</span><span class='line'>            project {
+</span><span class='line'>                name artifactId
+</span><span class='line'>                description desc
+</span><span class='line'>                url siteUrl
+</span><span class='line'>
+</span><span class='line'>                packaging 'aar'
+</span><span class='line'>                groupId groupId
+</span><span class='line'>                artifactId artifactId
+</span><span class='line'>                version currentVersion
+</span><span class='line'>
+</span><span class='line'>                licenses {
+</span><span class='line'>                    license {
+</span><span class='line'>                        name 'The Apache Software License, Version 2.0'
+</span><span class='line'>                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+</span><span class='line'>                    }
+</span><span class='line'>                }
+</span><span class='line'>                developers {
+</span><span class='line'>                    developer {
+</span><span class='line'>                        id 'gongmingqm10'
+</span><span class='line'>                        name 'Ming Gong'
+</span><span class='line'>                        email 'gongmingqm10@foxmail.com'
+</span><span class='line'>                    }
+</span><span class='line'>                }
+</span><span class='line'>                scm {
+</span><span class='line'>                    connection gitUrl
+</span><span class='line'>                    developerConnection gitUrl
+</span><span class='line'>                    url siteUrl
+</span><span class='line'>                }
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>Properties properties = new Properties()
+</span><span class='line'>properties.load(project.rootProject.file('local.properties').newDataInputStream())
+</span><span class='line'>bintray {
+</span><span class='line'>    user = properties.getProperty("bintray.user")
+</span><span class='line'>    key = properties.getProperty("bintray.apikey")
+</span><span class='line'>    configurations = ['archives']
+</span><span class='line'>    pkg {
+</span><span class='line'>        repo = "maven"
+</span><span class='line'>        name = artifactId
+</span><span class='line'>        websiteUrl = siteUrl
+</span><span class='line'>        vcsUrl = gitUrl
+</span><span class='line'>        licenses = ["Apache-2.0"]
+</span><span class='line'>        publish = true
+</span><span class='line'>        publicDownloadNumbers = true
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意，其中大部分配置都是很通用的，对于不同的 library，我们只需要修改如下不同的配置即可：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 你只需要把这里的参数修改为自己的库名称即可
+</span><span class='line'>ext {
+</span><span class='line'>    siteUrl = 'https://github.com/gongmingqm10/BottomTabAndroid'
+</span><span class='line'>    gitUrl = 'https://github.com/gongmingqm10/BottomTabAndroid.git'
+</span><span class='line'>    currentVersion = '0.2.0'
+</span><span class='line'>    groupId = 'net.gongmingqm10.uikit'
+</span><span class='line'>    artifactId = 'bottom-tab'
+</span><span class='line'>    desc = 'Android bottom tab'
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3. 正式发布 jcenter</h3>
+
+<p>如上配置完成后，我们开始正式发布 AAR 到 jcenter。在项目根目录下，运行 gradle 命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./gradlew clean install bintrayUpload
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果一切顺利的话，这一步将直接成功。如果出错，请根据错误信息重新诊断并修复。再次访问 bintray/gongmingqm10/maven/bottom-tab 项目首页，你可以看到刚上传的新版本。</p>
+
+<p><img src="/images/bintray_6.png" title="上传新版本成功" ></p>
+
+<p>上传到个人仓库中，可以看到右上方有一个地址 <code>https://dl.bintray.com/gongmingqm10/maven</code>。这是个人的 maven 仓库地址，如果我们在在 $projectDir/build.gradle 添加此地址：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>allprojects {
+</span><span class='line'>    repositories {
+</span><span class='line'>        jcenter()
+</span><span class='line'>        maven {
+</span><span class='line'>            url 'https://dl.bintray.com/gongmingqm10/maven/'
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后直接在 app/build.gradle 中，添加如下语句，则可以直接引用刚才上传的 bottom-tab。如果这种引用方式成功，说明我们的 <code>./gradlew install bintrayUpload</code> 这一步没有问题。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dependencies {
+</span><span class='line'>    compile fileTree(include: ['*.jar'], dir: 'libs')
+</span><span class='line'>    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+</span><span class='line'>        exclude group: 'com.android.support', module: 'support-annotations'
+</span><span class='line'>    })
+</span><span class='line'>    compile 'com.android.support:appcompat-v7:23.3.0'
+</span><span class='line'>    testCompile 'junit:junit:4.12'
+</span><span class='line'> 
+</span><span class='line'>    compile 'net.gongmingqm10.uikit:bottomtab:0.2.0'
+</span><span class='line'>//    compile project(':bottomtab')
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然而，事情到这里并没有完。因为我们使用的大部分的库是不需要在 $projectDir/build.gradle 中做配置的。重新观察 bottom-tab 这个主页面，右下角 <code>linked to</code> 可以点击链接 <code>Add to JCenter</code>。这一步才是真正的发布 library 到 JCenter 中。然后我们需要做的就是等待 JCenter 官方团队的审核。一般两三个工作日就可以审核通过。然后下一次引用，你就不需要添加私有的 maven 地址了。当然如果你对这个库有更新，也需要重新点击 Add to JCenter。</p>
+
+<p>所以最后的效果是  <code>compile 'net.gongmingqm10.uikit:bottomtab:0.2.0'</code> 可以一键引用我们新建的 Android 底部栏组件，试用效果如下：</p>
+
+<p><img src="/images/bintray_demo.png" title="底部栏效果" ></p>
+
+<p>具体使用方法，请参考 <a href="https://github.com/gongmingqm10/BottomTabAndroid/blob/master/README.md">BottomTab README</a>。</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en">How to distribute your own Android library through jCenter and Maven Central from Android Studio</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gong Ming</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-17T16:38:01+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>Android</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/02/16/domestic-project-in-three-months/" title="Previous Post: 国内项目三月记">&laquo; 国内项目三月记</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+<section>
+  <h1>Comments</h1>
+  <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"gongmingqm10"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/02/17/upload-android-aar-to-jcenter/">如何上传 AAR 到 Jcenter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/16/domestic-project-in-three-months/">国内项目三月记</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/13/know-more-about-android-inflater-inflate/">Know More About Android Inflater.inflate()</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/11/butterknife-principle/">ButterKnife Principle</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
+  <h1 class="title delta">标签</h1>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(22)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+</section>
+<section>
+    <h1>最新评论</h1>
+    <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+    
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Gong Ming -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

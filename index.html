@@ -9,7 +9,7 @@
   <meta name="author" content="Gong Ming">
 
   
-  <meta name="description" content="意外的加入了国内项目，一待就是三个多月。之前常驻国外项目，一下子跳转到国内项目，对比还是很明显的。由于工作环境的限制，我们只得常驻客户现场 (暂称为A厂)。工作内容是在一个遗留Android App上继续开发，时间紧任务重，整个团队一起努力，项目最后还是获得了不错的成绩。 &hellip;">
+  <meta name="description" content="自我进入到代码这个行业开始，就有前辈早早告诉我要积极活跃在开源社区，于是认识了 github, 然后也见识到了开源社区的魅力之处。看到大神们都会积极贡献自己的开源仓库，自己也被这种开源精神感动到了。过程中我也尝试写过一些小框架，但是发布到 jcenter 上，所以知名度大大降低。 相比于几年前， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/02/17/upload-android-aar-to-jcenter/">如何上传 AAR 到 Jcenter</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-17T16:38:01+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2017</time>
+        
+        
+        | <a href="/blog/2017/02/17/upload-android-aar-to-jcenter/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>自我进入到代码这个行业开始，就有前辈早早告诉我要积极活跃在开源社区，于是认识了 github, 然后也见识到了开源社区的魅力之处。看到大神们都会积极贡献自己的开源仓库，自己也被这种开源精神感动到了。过程中我也尝试写过一些小框架，但是发布到 jcenter 上，所以知名度大大降低。</p>
+
+<p>相比于几年前，现在直接拷贝源代码到自己工程中的做法越来越少了。得益于 Android 使用 Gradle 管理依赖，更多的人选择将开源仓库发布到 jcenter 中，然后被更多的人使用。今天我们将尝试从零开始，一步步上传自己的应用到 Jcenter，然后优雅的通过 gradle <code>compile 'x.y.z:a:0.0.1'</code> 引用。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/02/17/upload-android-aar-to-jcenter/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -526,152 +572,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/17/owasp-top-10-training/">OWASP Top 10 Training</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-17T12:04:05+08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2015</time>
-        
-        
-        | <a href="/blog/2015/11/17/owasp-top-10-training/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>环境配置及安装</h2>
-
-<p>我们使用 DVWA 工程来学习 OWASP TOP10 安全问题。本节的目的是搭建好这一个易受攻击的 PHP/Mysql 应用，以实例的方式学习这十大安全问题。</p>
-
-<h3>启动 Vagrant 虚拟机</h3>
-
-<p><em>如果你决定直接在本地电脑上安装 XAMPP，请自动忽略此步。</em></p>
-
-<p>为了营造一个安全纯净无干扰的环境，我们选择 Vagrant 启动虚拟机，在虚拟机中安装 XAMPP 环境， Vagrantfile 配置如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>VAGRANTFILE_API_VERSION = "2"
-</span><span class='line'>
-</span><span class='line'>Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-</span><span class='line'>  config.vm.box = "ubuntu/trusty64"
-</span><span class='line'>  config.vm.network :private_network, ip: "192.168.33.10"
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>从配置文件中，可以看出我们使用 ubunt 14.04 系统，并且给虚拟机设置了一个内网 IP， 意味着在主机中可以通过 IP 直接访问虚拟机中的网页。</p>
-
-<p><code>Vagrant up</code> 启动该虚拟机，并通过 <code>Vagrant ssh</code> 登录虚拟机。</p>
-
-<h3>安装 XAMPP</h3>
-
-<p>XAMPP(Apache + MariaDB + PHP + Perl)，为了安装 DVWA Training 的实例，我们需要先安装相应的环境。</p>
-
-<p>XAMPP 有针对 Linux/Windows/Mac的安装包，下载地址参考<a href="https://www.apachefriends.org/index.html">官方地址</a>. 由于本次试验的在 ubuntu/trusty 虚拟机中，因此使用命令行安装，大致安装过程如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget https://www.apachefriends.org/xampp-files/5.6.14/xampp-linux-x64-5.6.14-3-installer.run
-</span><span class='line'>
-</span><span class='line'>sudo chmod +x xampp-linux-x64-5.6.14-3-installer.run
-</span><span class='line'>sudo ./xampp-linux-x64-5.6.14-3-installer.run
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/xampp-snapshots.png" width="400" alt="XAMPP 首页" /></p>
-
-<p>安装完成后，使用 <code>sudo /opt/lampp/lampp start</code> 打开 lmapp 服务，这时候你应该能够访问 <code>192.168.33.10/xampp</code>。<a href="http://ubuntuportal.com/2013/12/how-to-install-xampp-1-8-3-for-linux-in-ubuntu-desktop.html">详细请参考</a></p>
-
-<h3>安装 DVWA</h3>
-
-<p>如果你已经能够访问 xampp 默认的主页，那么你几乎快成功了。XAMPP 中提供了 Apache 服务器，那么我们只需要将 DVWA 的包放在相应的 Web 目录下面，DVWA 项目就能够运行了。</p>
-
-<p>DVWA 官网：<a href="http://www.dvwa.co.uk/">http://www.dvwa.co.uk/</a>.</p>
-
-<p>DVWA Github 地址：<a href="https://github.com/RandomStorm/DVWA">https://github.com/RandomStorm/DVWA</a>.</p>
-
-<p>开始从命令行安装：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget https://github.com/RandomStorm/DVWA/archive/v1.9.tar.gz
-</span><span class='line'>tar -xzvf v1.9.tar.gz
-</span><span class='line'>mv DVWA-1.9 /opt/lampp/htdocs/DVWA
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>访问 <code>192.168.33.10/DVWA</code>，自动跳转到 setup 界面，这时我们只需要按照提示就可以完成对应的初始化操作。如果你没有预先设置数据库用户名和密码，那么你会看到不能连接到 Mysql 数据库，根据提示重新设置数据库用户名和密码以继续操作。</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/DVWA%20Setup.png" width="400" alt="DVWA Setup" /></p>
-
-<p>按照 <a href="https://github.com/RandomStorm/DVWA">DVWA README</a> 中进行更改，试验过程中如果发现 <code>allow_url_include</code> 始终 Disable, 无法修改成功。请尝试在 <code>/opt/lampp/etc/php.ini</code> 中将原来的 <code>allow_url_include = Off</code> 修改为 <code>allow_url_include = on</code>。</p>
-
-<p>将 PHP 相关的配置修改完成后，注意需要将 XMAPP 中 mysql root 用户默认的密码更改为<code>p@ssw0rd</code>，这个密码在 <code>/opt/lampp/htdocs/DVWA/config/config.inc.php</code> 中可以找到。当然也可以将此配置中的数据库密码更改为默认的空。</p>
-
-<p>更改完成后，点击 <code>Create / Reset Database</code> 能够创建初始数据，随后访问 <code>192.168.33.10/DVWA</code> 即可跳转至登录界面。使用默认的 admin/password 可以登录此系统。登录成功之后，意味着我们可以通过实例学习 OWASP TOP10 的安全问题啦。</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/DVWA%20Index.png" width="400" alt="DVWA index" /></p>
-
-<h2>DVWA Practice</h2>
-
-<p>DVWA 安装成功之后，我们开始学习相关的安全问题。DVWA 所培训的例子和 OWASP Top 10 安全问题并不完全一致，但是我们可以先学习 DVWA 上列举的安全问题，然后再逐步学习 Top 10 安全问题。</p>
-
-<h3>Brute Force</h3>
-
-<p>密码暴力破解，根据理解就是根据一个用户名密码字典进行试错。</p>
-
-<p>通过以下链接找到适合你的 Brute Force 的工具：<a href="http://resources.infosecinstitute.com/10-popular-password-cracking-tools/?dl=true">http://resources.infosecinstitute.com/10-popular-password-cracking-tools/?dl=true</a></p>
-
-<p>在 Mac 下面我使用 <a href="https://github.com/zaproxy/zaproxy/wiki/Downloads?tm=2">ZAP</a> 进行暴力破解。ZAP 有适用于 Mac 版本的安装包。</p>
-
-<p>几种不同的授权方式：</p>
-
-<ul>
-<li>基础验证: Basic Access Authentication;</li>
-<li>摘要验证: Digest Access Authentication;</li>
-<li>Https验证: HTTPS Client Authentication;</li>
-<li>表单验证: Form Based Authentication;</li>
-</ul>
-
-
-<p><a href="http://java.boot.by/wcd-guide/ch05s03.html">http://java.boot.by/wcd-guide/ch05s03.html</a></p>
-
-<p><a href="https://www.owasp.org/index.php/Testing_for_Brute_Force_">https://www.owasp.org/index.php/Testing_for_Brute_Force_</a>(OWASP-AT-004)</p>
-
-<p>&hellip;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -685,6 +585,10 @@
     <section>
   <h1>最新文章</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/02/17/upload-android-aar-to-jcenter/">如何上传 AAR 到 Jcenter</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2017/02/16/domestic-project-in-three-months/">国内项目三月记</a>
@@ -702,15 +606,11 @@
         <a href="/blog/2016/04/03/zhangjiajie-travel-perception/">张家界所见</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/03/19/app-localisation-solution/">App 本地化解决方案</a>
-      </li>
-    
   </ul>
 </section>
 <section id="tag-cloud-section" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">标签</h1>
-    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(21)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/android' style='font-size: 100%'>Android(22)</a> <a href='/blog/categories/dallas' style='font-size: 100%'>Dallas(2)</a> <a href='/blog/categories/design' style='font-size: 100%'>Design(2)</a> <a href='/blog/categories/devops' style='font-size: 100%'>DevOps(6)</a> <a href='/blog/categories/life' style='font-size: 100%'>Life(4)</a> <a href='/blog/categories/rails' style='font-size: 100%'>Rails(1)</a> <a href='/blog/categories/security' style='font-size: 100%'>Security(1)</a> <a href='/blog/categories/tools' style='font-size: 100%'>Tools(1)</a> <a href='/blog/categories/web' style='font-size: 100%'>Web(2)</a> <a href='/blog/categories/work' style='font-size: 100%'>Work(2)</a> <a href='/blog/categories/chan-pin' style='font-size: 100%'>产品(1)</a> <a href='/blog/categories/chuang-ye' style='font-size: 100%'>创业(1)</a> </span>
 </section>
 <section>
     <h1>最新评论</h1>

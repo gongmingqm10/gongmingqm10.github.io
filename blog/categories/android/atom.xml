@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | gongmingqm10]]></title>
   <link href="http://www.gongmingqm10.net/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.gongmingqm10.net/"/>
-  <updated>2017-02-16T16:39:20+08:00</updated>
+  <updated>2017-02-22T16:19:50+08:00</updated>
   <id>http://www.gongmingqm10.net/</id>
   <author>
     <name><![CDATA[Gong Ming]]></name>
@@ -12,6 +12,426 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何上传 AAR 到 Jcenter]]></title>
+    <link href="http://www.gongmingqm10.net/blog/2017/02/17/upload-android-aar-to-jcenter/"/>
+    <updated>2017-02-17T16:38:01+08:00</updated>
+    <id>http://www.gongmingqm10.net/blog/2017/02/17/upload-android-aar-to-jcenter</id>
+    <content type="html"><![CDATA[<p>自我进入到代码这个行业开始，就有前辈早早告诉我要积极活跃在开源社区，于是认识了 github, 然后也见识到了开源社区的魅力之处。看到大神们都会积极贡献自己的开源仓库，自己也被这种开源精神感动到了。过程中我也尝试写过一些小框架，但是发布到 jcenter 上，所以知名度大大降低。</p>
+
+<p>相比于几年前，现在直接拷贝源代码到自己工程中的做法越来越少了。得益于 Android 使用 Gradle 管理依赖，更多的人选择将开源仓库发布到 jcenter 中，然后被更多的人使用。今天我们将尝试从零开始，一步步上传自己的应用到 Jcenter，然后优雅的通过 gradle <code>compile 'x.y.z:a:0.0.1'</code> 引用。</p>
+
+<!-- more -->
+
+
+<h2>理解 Android Gradle 构建</h2>
+
+<p>以 BottomTabAndroid 工程为例，在一个项目中通常至少有三个 gradle 文件，分别为：</p>
+
+<ul>
+<li>BottomTabAndroid/settings.gradle</li>
+<li>BottomTabAndroid/build.gradle</li>
+<li>BottomTabAndroid/app/build.gradle</li>
+</ul>
+
+
+<p>分析各 gradle 文件的具体内容，我们可以发现位于最外层的 settings.gradle 定义项目中的各个不同 module，这时候指定的 module 才能被我们的工程识别。识别之后，如果 A module 需要引用 B module，那么在 A 的 build.gradle 文件中，则需要 <code>compile project(':B')</code>。</p>
+
+<p><img src="/images/android_gradle.png" title="Gradle 示例工程" ></p>
+
+<p>在这个工程中，存在 bottomtab 和 app 两个 module, 而 bottomtab 被 app 所引用。</p>
+
+<p>settings.gradle 内容如下:</p>
+
+<p><code>
+include ':app', ':bottomtab'
+</code></p>
+
+<p>build.gradle 内容如下：</p>
+
+<p>```
+buildscript {</p>
+
+<pre><code>repositories {
+     // 指定构建脚本的下载库
+    jcenter()
+}
+dependencies {
+     // 指定引入何种构建脚本，比如注释中引入了上传到 jecneter 和 maven 构建的脚本
+    classpath 'com.android.tools.build:gradle:2.2.3'
+</code></pre>
+
+<p>//        classpath &lsquo;com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3&rsquo;
+//        classpath &lsquo;com.github.dcendents:android-maven-gradle-plugin:1.5&rsquo;</p>
+
+<pre><code>}
+</code></pre>
+
+<p>}</p>
+
+<p>allprojects {</p>
+
+<pre><code>repositories {
+     // 指定从何处下载子项目的库依赖
+    jcenter()
+</code></pre>
+
+<p>//        maven {
+//            url &lsquo;<a href="https://dl.bintray.com/gongmingqm10/maven/">https://dl.bintray.com/gongmingqm10/maven/</a>&rsquo;
+//        }</p>
+
+<pre><code>}
+</code></pre>
+
+<p>}</p>
+
+<p>task clean(type: Delete) {</p>
+
+<pre><code>delete rootProject.buildDir
+</code></pre>
+
+<p>}</p>
+
+<p>```
+build.gradle 文件中主要定义了 buildscript和 allprojects.repositories 两部分内容。确定了当前项目中使用的构建脚本库，以及项目中依赖库的下载仓库。</p>
+
+<p>app/build.gradle 文件则定义了当前 module 的配置信息，比如 Android 工程中需要对 API，签名，项目依赖等信息进行配置。本文暂且略过其详细介绍。</p>
+
+<p>认识了 Gradle 的基本配置，我们再看看如下这句熟悉的 Gradle 语言：</p>
+
+<p><code>
+compile 'net.gongmingqm10.uikit:bottomtab:0.2.0'
+</code></p>
+
+<p>所有的仓库都是按照 <code>Group_ID:ARTIFACT_ID:VERSION</code> 定义，所以对于 bottomtab 这个库而言， groupID = net.gongmingqm10.uikit， artifactId = bottomtab，version = 0.2.0。这种方式的好处是，我不需要在项目中导入众多的子 module，只需要通过这一句 DSL (领域特定语言) 引入仓库，并且能够随时更改版本。</p>
+
+<p>下面我们一步步构建出这个 <code>net.gongmingqm10.uikit.bottomtab</code> 依赖库，上传到 jcenter，以在项目中直接使用。</p>
+
+<h2>发布开源库</h2>
+
+<p>本阶段我们将从零开始一步步构建并发布自己的第一款开源库。我们假设你已经在使用 Android Studio 开发应用，并且对 Gradle 有一定的了解。Android 仓库通常有两种格式，aar 和 jar，其中 aar 格式中包含 Android 自身相关的资源文件。而 jar 则主要包含 .class 类文件。考虑到我们希望做出一款 Bottom Tab 底部栏的库，因此我们最后使用的是 aar 格式。</p>
+
+<h3>1. 配置 bintray</h3>
+
+<p>首先注册 <a href="https://bintray.com/signup/oss">Bintray OpenSource</a>，如果之前有账号请跳过此步骤。通过 OpenSource 途径注册的 bintray 属于公开免费版，这正和我的期望相符。注意不要直接在首页注册，那样默认注册的是收费版本。</p>
+
+<p>访问个人主页，点击 &ldquo;Add New Repository&rdquo; 跳转到创建 repository 页面，这里我们需要创建一个 name = maven，type = Maven 的 Repository。其中的 license 以及 description 按照个人偏好自行填写。</p>
+
+<p><img src="/images/bintray_1.png" title="创建 maven 仓库" ></p>
+
+<p>点击 <code>Create</code> 之后，我们可以顺利在首页看到 repository 中多了一个 maven 的仓库。</p>
+
+<p><img src="/images/bintray_2.png" title="首页 maven 仓库" ></p>
+
+<p>点击刚创建的 maven 仓库，如果是第一次创建，应该看不到任何的 package。我们需要 <code>Add New Package</code>。</p>
+
+<p><img src="/images/bintray_3.png" title="maven 仓库" ></p>
+
+<p>创建 package 时，我们填写 packageName = ‘bottom-tab’，这个属性比较重要，在后续步骤的 gradle 中需要用到。注意到需要填写 versionControl，我提前在 github 上创建了一个 repository bottomtab，然后把URL填入即可。</p>
+
+<p>创建完成之后，bintray 的配置基本告一段落。但是正式开始之前我们还需要拿到 API_KEY，要不然所有人都可以更新你的库，岂不是一件很恐怖的事情。</p>
+
+<p>总结这一步，我们所需要完成的事情：</p>
+
+<ul>
+<li>注册bintray，获得 bintray 用户名和 API KEY;</li>
+<li>在 GITHUB 新建 bottom-tab 仓库；</li>
+<li>在 bintray 新建 maven/bottom-tab 仓库；</li>
+</ul>
+
+
+<h3>2. 配置 GRADLE 工程</h3>
+
+<p>为了发布一款 “接地气” 的 bottom-tab 库，我们先构建一个 BottomTabAndroid 应用，然后添加 bottom-tab 子模块，然后将 bottom-tab 子模块打包并发布到 jcenter 上，而 app 模块则是一个 demo。展示 bottom-tab 的实际效果。</p>
+
+<p>具体代码请参考：<a href="https://github.com/gongmingqm10/BottomTabAndroid">https://github.com/gongmingqm10/BottomTabAndroid</a>。项目截图如下：</p>
+
+<p><img src="/images/android_gradle.png" title="BottomTabAndroid" ></p>
+
+<p>开发过程中，我先让 app 直接引用子模块 bottom-tab，功能开发完成之后，开始准备最重要的打包上传。</p>
+
+<p><strong>Step 1: 配置 local.properties</strong></p>
+
+<p>我们需要将 bintray 账户相关的 username 和 apikey 存放在此文件中。在提交代码时，此文件被自动忽略，从而保证了其安全性。默认的 local.properties 文件中保存了 sdk 路径。我们在其后添加上 uername 和 apikey:</p>
+
+<p>```
+sdk.dir=/Users/mingong/Project/sdk</p>
+
+<p>bintray.user=gongmingqm10
+bintray.apikey=thisissomesecretkeyanddonotcopyme</p>
+
+<p>```</p>
+
+<p>请将你自己的 username 和 apikey 复制替换到此文件。</p>
+
+<p><strong>Step 2: 配置 $projectDir/build.gradle</strong></p>
+
+<p>为了上传 bintray，我们需要使用 <a href="https://github.com/bintray/gradle-bintray-plugin">gradle-bintray-plugin</a> 和 <a href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a> 两款构建插件。</p>
+
+<p>```
+buildscript {</p>
+
+<pre><code>repositories {
+    jcenter()
+}
+dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.3'
+
+     // 添加如下插件以上传 AAR 至 bintray
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+}
+</code></pre>
+
+<p>}
+&hellip;
+```
+请关注 buildscript{dependecies{}} 中配置，其余的配置项已省略。</p>
+
+<p><strong>Step 3: 配置 $projectDir/bottomtab/build.gradle</strong></p>
+
+<p>```
+apply plugin: &lsquo;com.android.library&rsquo;
+apply plugin: &lsquo;com.github.dcendents.android-maven&rsquo;
+apply plugin: &lsquo;com.jfrog.bintray&rsquo;</p>
+
+<p>android {</p>
+
+<pre><code>compileSdkVersion 23
+buildToolsVersion "23.0.3"
+
+defaultConfig {
+    minSdkVersion 17
+    targetSdkVersion 23
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+}
+buildTypes {
+    release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>dependencies {</p>
+
+<pre><code>compile fileTree(dir: 'libs', include: ['*.jar'])
+androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+})
+compile 'com.android.support:appcompat-v7:23.3.0'
+testCompile 'junit:junit:4.12'
+</code></pre>
+
+<p>}</p>
+
+<p>if (project.hasProperty(&ldquo;android&rdquo;)) { // Android libraries</p>
+
+<pre><code>task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+</code></pre>
+
+<p>} else { // Java libraries</p>
+
+<pre><code>task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+</code></pre>
+
+<p>}</p>
+
+<p>task javadocJar(type: Jar, dependsOn: javadoc) {</p>
+
+<pre><code>classifier = 'javadoc'
+from javadoc.destinationDir
+</code></pre>
+
+<p>}</p>
+
+<p>artifacts {</p>
+
+<pre><code>archives javadocJar
+archives sourcesJar
+</code></pre>
+
+<p>}</p>
+
+<p>// 你只需要把这里的参数修改为自己的库名称即可
+ext {</p>
+
+<pre><code>siteUrl = 'https://github.com/gongmingqm10/BottomTabAndroid'
+gitUrl = 'https://github.com/gongmingqm10/BottomTabAndroid.git'
+currentVersion = '0.2.0'
+groupId = 'net.gongmingqm10.uikit'
+artifactId = 'bottom-tab'
+desc = 'Android bottom tab'
+</code></pre>
+
+<p>}</p>
+
+<p>group = groupId
+version = currentVersion</p>
+
+<p>install {</p>
+
+<pre><code>repositories.mavenInstaller {
+    pom {
+        project {
+            name artifactId
+            description desc
+            url siteUrl
+
+            packaging 'aar'
+            groupId groupId
+            artifactId artifactId
+            version currentVersion
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            developers {
+                developer {
+                    id 'gongmingqm10'
+                    name 'Ming Gong'
+                    email 'gongmingqm10@foxmail.com'
+                }
+            }
+            scm {
+                connection gitUrl
+                developerConnection gitUrl
+                url siteUrl
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>Properties properties = new Properties()
+properties.load(project.rootProject.file(&lsquo;local.properties&rsquo;).newDataInputStream())
+bintray {</p>
+
+<pre><code>user = properties.getProperty("bintray.user")
+key = properties.getProperty("bintray.apikey")
+configurations = ['archives']
+pkg {
+    repo = "maven"
+    name = artifactId
+    websiteUrl = siteUrl
+    vcsUrl = gitUrl
+    licenses = ["Apache-2.0"]
+    publish = true
+    publicDownloadNumbers = true
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>注意，其中大部分配置都是很通用的，对于不同的 library，我们只需要修改如下不同的配置即可：</p>
+
+<p>```
+// 你只需要把这里的参数修改为自己的库名称即可
+ext {</p>
+
+<pre><code>siteUrl = 'https://github.com/gongmingqm10/BottomTabAndroid'
+gitUrl = 'https://github.com/gongmingqm10/BottomTabAndroid.git'
+currentVersion = '0.2.0'
+groupId = 'net.gongmingqm10.uikit'
+artifactId = 'bottom-tab'
+desc = 'Android bottom tab'
+</code></pre>
+
+<p>}
+```</p>
+
+<h3>3. 正式发布 jcenter</h3>
+
+<p>如上配置完成后，我们开始正式发布 AAR 到 jcenter。在项目根目录下，运行 gradle 命令：</p>
+
+<p>```
+./gradlew clean install bintrayUpload</p>
+
+<p>```</p>
+
+<p>如果一切顺利的话，这一步将直接成功。如果出错，请根据错误信息重新诊断并修复。再次访问 bintray/gongmingqm10/maven/bottom-tab 项目首页，你可以看到刚上传的新版本。</p>
+
+<p><img src="/images/bintray_6.png" title="上传新版本成功" ></p>
+
+<p>上传到个人仓库中，可以看到右上方有一个地址 <code>https://dl.bintray.com/gongmingqm10/maven</code>。这是个人的 maven 仓库地址，如果我们在在 $projectDir/build.gradle 添加此地址：</p>
+
+<p>```
+&hellip;</p>
+
+<p>allprojects {</p>
+
+<pre><code>repositories {
+    jcenter()
+    maven {
+        url 'https://dl.bintray.com/gongmingqm10/maven/'
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>&hellip;
+<code>``
+然后直接在 app/build.gradle 中，添加如下语句，则可以直接引用刚才上传的 bottom-tab。如果这种引用方式成功，说明我们的</code>./gradlew install bintrayUpload` 这一步没有问题。</p>
+
+<p>```
+dependencies {</p>
+
+<pre><code>compile fileTree(include: ['*.jar'], dir: 'libs')
+androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+})
+compile 'com.android.support:appcompat-v7:23.3.0'
+testCompile 'junit:junit:4.12'
+
+compile 'net.gongmingqm10.uikit:bottomtab:0.2.0'
+</code></pre>
+
+<p>//    compile project(&lsquo;:bottomtab&rsquo;)
+}
+```</p>
+
+<p>然而，事情到这里并没有完。因为我们使用的大部分的库是不需要在 $projectDir/build.gradle 中做配置的。重新观察 bottom-tab 这个主页面，右下角 <code>linked to</code> 可以点击链接 <code>Add to JCenter</code>。这一步才是真正的发布 library 到 JCenter 中。然后我们需要做的就是等待 JCenter 官方团队的审核。一般两三个工作日就可以审核通过。然后下一次引用，你就不需要添加私有的 maven 地址了。当然如果你对这个库有更新，也需要重新点击 Add to JCenter。</p>
+
+<p>所以最后的效果是  <code>compile 'net.gongmingqm10.uikit:bottomtab:0.2.0'</code> 可以一键引用我们新建的 Android 底部栏组件，试用效果如下：</p>
+
+<p><img src="/images/bintray_demo.png" title="底部栏效果" ></p>
+
+<p>具体使用方法，请参考 <a href="https://github.com/gongmingqm10/BottomTabAndroid/blob/master/README.md">BottomTab README</a>。</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en">How to distribute your own Android library through jCenter and Maven Central from Android Studio</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Know More About Android Inflater.inflate()]]></title>
@@ -710,148 +1130,6 @@ android:name="net.gongmingqm10.androidrotate.HomeFragment" /&gt;
 结合方法名以及方法的解释，可以知道一旦我们设置</code>setRetainInstance(true)<code>，意味着在 Activity 重绘时，我们的 Fragment 不会被重复绘制，也就是它会被“保留”。为了验证其作用，我们发现在设置为</code>true<code>状态时，旋转屏幕，Fragment 依然是之前的 Fragment。而如果将它设置为默认的 false，那么旋转屏幕时 Fragment 会被销毁，然后重新创建出另外一个 fragment 实例。并且如官方所说，如果 Fragment 不重复创建，意味着 Fragment 的</code>onCreate<code>和</code>onDestroy<code>方法不会被重复调用。所以在旋转屏 Fragment 中，我们经常会设置</code>setRetainInstance(true)`，这样旋转时 Fragment 不需要重新创建。</p>
 
 <p>如果你的 App 恰好可以不做转屏，那么你可以很省事的在 Manifest 文件中添加标注，强制所有页面使用竖屏/横屏。如果你的页面不幸的需要支持横竖屏切换，那么你在预估工作量或者给客户报价时一定要考虑到。虽然加入转屏支持不会导致工作量翻倍，但是却有可能引起许多问题。尤其当页面有很多业务逻辑，有状态值的时候。所以我们在项目开发过程中，应该知道什么时候需要考虑状态保存，当状态保存出现问题时，应该怎么解决之。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android 新手成长计划]]></title>
-    <link href="http://www.gongmingqm10.net/blog/2015/11/30/android-xin-shou-jiao-cheng/"/>
-    <updated>2015-11-30T21:17:42+08:00</updated>
-    <id>http://www.gongmingqm10.net/blog/2015/11/30/android-xin-shou-jiao-cheng</id>
-    <content type="html"><![CDATA[<p><img src="http://www.webmastergrade.com/wp-content/uploads/2011/04/Android-VS-Apple.jpg" width="500" alt="Android starter" /></p>
-
-<p>最近在公司里开始遇到了新人培养的问题，新人被 assign 到 Android 项目上，为了让他能够很快有所产出，于是我们得思考怎么样快速锻炼一个新人并让他对 Android 开发产生兴趣并持续做下去呢？当然也会有一时兴起的同事会想着学习 Android，Android 入门门槛不高，但是要想真正的熟练驾驭，确实是一件道阻且长的事情，需要付出额外的努力。</p>
-
-<!-- more -->
-
-
-<h2>兴趣驱动法则</h2>
-
-<p>其实“兴趣”不只是在 Android 开发上体现的重要，兴趣在任何地方都是最重要的。之前接触过一些朋友，某次会突然告诉我想学习 Android，但是往往一个 Hello World 都可以将之难倒。这时候学习者明显缺少兴趣驱动。Android 开发好玩的一点是我们开发的应用都可以很简单的在手机上安装使用。所以你可以尽情尝试各种新奇的点子。</p>
-
-<p>当然，兴趣并不是本文讨论的重点，我们假设真心想学习的人都是出于兴趣。</p>
-
-<h2>循序渐进的练习计划</h2>
-
-<p>有了兴趣远远还不够，兴趣只能促使你完成一个 Hello World，要想真正做出东西还应该有循序渐进的计划来配合。我当时学习 Android 的方法就是每周一个任务。把学习新知识当作升级打怪，这样子你还会松懈吗？</p>
-
-<h3>你应该掌握的 Android 开发知识</h3>
-
-<p>Android 开发的入门门槛不高，但是细节知识真心不少。作为初学者，我们可以先了解广度，然后了解深度。刚开始可以接触尝试了解一点远离性的知识，然后直接运用一些流行的框架。快速迭代完成一个 App。那么对于新手而言，应该掌握的 Android 开发知识有哪些呢？</p>
-
-<h4>1. Hello Android</h4>
-
-<p>开发调试基础看起来比较模糊，具体一点是完成一个 Hello World，让此应用运行在你的手机或者模拟器中。借此了解各个文件夹模块的作用以及 App 运行的基础原理。涵盖知识点如下：</p>
-
-<ul>
-<li>搭建 Android 开发环境： Java + Android Studio + SDK；</li>
-<li>熟悉项目结构：src, res, assets, values, layouts, drawable/mipmap, styles, AndroidManifest.xml, Activity；</li>
-<li>解读 Hello World 运行机制：项目从哪里运行，Activity 与 layout 的关联，Activity 中如何找到布局中的实例化控件，Activity 的生命周期；</li>
-</ul>
-
-
-<h4>2. 计算器</h4>
-
-<p>计算器的经典程度不亚于 Hello World，Android 计算器能够让初学者迅速建立信心，同时作为一个单纯的无网络交互的应用，计算器主要处理布局，点击事件，计算逻辑。因此在了解了 Hello World 之后做计算器，再合适不过了。计算器最终效果图如下：</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/calculator.png" width="300" alt="计算器" /></p>
-
-<p>那么对于计算器这个 demo 的要求如下：</p>
-
-<ul>
-<li>界面效果如上图，并且能够进行简单的整数运算：<code>1+1, 4*2, 6/3, 1-10</code> 等；</li>
-<li>异常处理，除数为 0 时界面提示 <code>Error</code>；</li>
-<li>小数点以及连续运算的支持；</li>
-<li>继承 Robolectric 添加单元测试；</li>
-<li>每次打开 App 结果栏会自动显示上一次的运算结果；</li>
-<li>添加<code>History</code>菜单，点击列表显示历史计算表达式以及结果；</li>
-</ul>
-
-
-<p>通过这些要求，涵盖的知识点如下：</p>
-
-<ul>
-<li>布局管理器的了解及使用：RelativeLayout, LinearLayout；</li>
-<li>Android 控件添加点击事件，TextView 动态设值；</li>
-<li>Android 项目集成 Robolectric，添加简单的单元测试；</li>
-<li>Android 数据持久化保存 &ndash; SharedPreferences；</li>
-<li>Android 数据持久化存储 &ndash; Sqlite 数据库；</li>
-<li>Android ListView 列表及数据绑定；</li>
-<li>Android Activity 跳转 &ndash; Intent；</li>
-<li>添加 <a href="http://jakewharton.github.io/butterknife/">ButterKnife</a> 框架，重构项目；</li>
-<li>添加 <a href="http://greenrobot.org/greendao/">GreenDao</a> 框架，重构数据库数据存储及读取；</li>
-</ul>
-
-
-<h4>3. 豆瓣图书列表 &ndash; 图片缓存</h4>
-
-<p>豆瓣图书列表最初起源于公司内部的一次 Android 培训，由于对 Android 初学者而言，还比较有意义，于是设置为专题的形式供大家练习。需求很简单，将给定的图书列表数据(JSON 格式)显示到界面上。包括图书信息在列表中展示，网络图片的加载以及缓存。JSON 数据<a href="http://7xj9js.com1.z0.glb.clouddn.com/douban-books.json">点击此处</a>查看。完成之后效果图如下：</p>
-
-<p><img src="http://7xj9js.com1.z0.glb.clouddn.com/douban-reading.png" width="300" alt="Douban Books" /></p>
-
-<p>具体要求如下：</p>
-
-<ul>
-<li>列表显示图书信息：图书图片，名称，作者／出版社／出版年份，评价，简介；</li>
-<li>多次滑动列表，保证文字以及图片显示不会发生错位，并且始终流畅（有列表控件重用）；</li>
-<li>添加图片缓存：图片加载成功后，断开网络，退出 App，打开应用仍然能够正确显示图片；</li>
-</ul>
-
-
-<p>通过这些要求我们期望初学者掌握的技能点如下：</p>
-
-<ul>
-<li>Android ListView 自定义列表样式；</li>
-<li>Android Adapter 使用 ViewHolder 进行控件复用；</li>
-<li>Android 主线程（UI线程）的概念，主线程阻塞的解决方案，Handler 的概念以及使用方法；</li>
-<li>图片缓存的应用，内存级别的缓存以及磁盘级别的缓存；</li>
-<li>使用 <a href="http://square.github.io/picasso/">Picasso</a>/<a href="https://github.com/nostra13/Android-Universal-Image-Loader">ImageLoader</a> 图片加载及缓存框架，简化开发；</li>
-</ul>
-
-
-<p>如果你对图片缓存部分的实现有任何疑惑，请参考工程 <a href="https://github.com/gongmingqm10/AndroidWorkshop/tree/2nd-step4">AndroidWorkShop</a>。图片磁盘缓存部分参考了 Android 官方教程。</p>
-
-<h4>4. 豆瓣图书列表 &ndash; 网络请求</h4>
-
-<p>这个任务其实是对第 3 条任务的改造。不同之处在于，本次任务侧重于让初学者了解如何快速构建出一个有网络请求模块的 App。我们的效果图和上一条任务的相同，不同点在于本次我们会使用真实的网络API数据。并且会对 API 请求回来的数据进行缓存。具体要求如下：</p>
-
-<ul>
-<li>推荐使用 <a href="http://square.github.io/retrofit/">Retrofit</a> 框架，从豆瓣读书 API 网络获取<a href="https://api.douban.com/v2/book/search?q=Java">图书列表</a>及<a href="http://api.douban.com/v2/book/2130190">图书详情</a>。详情参见<a href="http://developers.douban.com/wiki/?title=guide">豆瓣API</a>；</li>
-<li>列表显示豆瓣图书列表，图片显示可直接使用 Picasso；</li>
-<li>点击 Item 跳转至图书详情界面，显示该书籍详细信息；</li>
-<li>缓存此 API 的搜索结果 (文件或者数据库Key-Value的形式缓存JSON数据)；</li>
-<li>使用 SwipeRefreshLayout 添加下拉刷新功能，下拉刷新时重新添加请求数据并更新缓存；</li>
-</ul>
-
-
-<p>此任务我们期望初学者掌握的知识点：</p>
-
-<ul>
-<li>Retrofit 框架的使用；</li>
-<li>Android 数据缓存的简易实现方案（数据库／文件形式）；</li>
-<li>简单的列表点击事件，页面跳转等；</li>
-<li><a href="http://android-developers.blogspot.com/2015/05/android-design-support-library.html">Android Design Support Library</a> 中常用的组件及使用；</li>
-</ul>
-
-
-<h4>5. 设计并实现你自己的 App</h4>
-
-<p>如果你顺利完成了上述四条任务，那么这一步你应该已经具备了完成一个简单的 App 的技能，这一步可以按照个人兴趣完成自己的创意点子。在开始编码之前，可以先制作出一套 UI 交互图，然后整理 API 并开始编码。</p>
-
-<h3>Android 学习常用的链接</h3>
-
-<p>Android 拥有全面的官方学习教程以及各种丰富的开源库。我们初学时可以多浏览官方教程学习一些好的实现，下面列举了一些很常用的链接：</p>
-
-<ol>
-<li><a href="developer.android.com/training/index.html">Android 官方文档</a></li>
-<li><a href="http://android-developers.blogspot.com/">Android 官方博客</a></li>
-<li><a href="www.google.com/design/spec/style/color.html#">Google Material Design</a></li>
-<li><a href="http://square.github.io/">Square Open Source</a></li>
-<li><a href="http://jakewharton.com/">Jake Wharton 的博客</a></li>
-</ol>
-
-
-<p>全文很多观点都是一家之言，更多的是结合自己的项目经验以及学习经验总结而成，如有谬误及不当之处，请读者不吝赐教。</p>
 ]]></content>
   </entry>
   
